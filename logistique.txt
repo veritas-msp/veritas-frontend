@@ -1,0 +1,125 @@
+Vision globale
+L’objectif n’est pas une « injection » dans un silo à part, mais un mode opératoire logistique branché sur l’inventaire Veritas existant — surtout les familles de matériel (v_b_equipment_family_definitions + v_b_clients_m_custom_equipment), déjà génériques et configurables par champ.
+
+La logistique ne devrait pas repasser par la fiche entreprise ni le modal d’ajout équipement actuel (trop lourd pour enchaîner 20 scans). Il faut une surface dédiée, scan-first, qui écrit au même endroit que le reste de l’app.
+
+Module à part ? Oui pour l’UX, non pour les données
+Couche	Recommandation
+Navigation / écran
+Oui — entrée sidebar « Logistique » ou « Sortie de stock »
+Modèle de données
+Non — réutiliser familles + custom_equipment (et à terme les types legacy si besoin)
+API
+Oui — couche fine logistics/* au-dessus de createClientCustomEquipment
+Module Logistique - UX dédiée
+Cœur Veritas existant
+batch commit
+Scan / saisie rapide
+Session de sortie
+Liste à valider
+Familles matériel
+v_b_clients_m_custom_equipment
+Fiche entreprise
+Pourquoi pas un module d’injection isolé : vous dupliqueriez séries, factures, liens client, et il faudrait resynchroniser. La logistique doit être un accélérateur de saisie, pas un second inventaire.
+
+Parcours utilisateur (perte de temps minimale)
+Cible : 3 gestes répétés, le reste mémorisé dans la session.
+
+Étape 0 — Une fois par session (30 s)
+Entreprise — recherche rapide + raccourcis « clients récents »
+Famille — chips des familles actives (Switch, PC, Onduleur, ou familles custom admin)
+(Optionnel) Contexte sortie — n° BL, date, opérateur (prérempli)
+Étape 1 — Boucle scan (cœur du flux)
+Champ scan toujours focus (douchette USB = clavier)
+Chaque scan → ligne dans une liste (pas de modal)
+Feedback immédiat : son / flash vert ou orange si doublon
+Auto-remplissage selon le code :
+N° de série seul → champ numero_serie
+EAN/GTIN → lookup catalogue interne (si vous l’ajoutez) → marque/modèle
+QR métier (JSON) → { family, serial, model, ... }
+Étape 2 — Validation groupée
+Récap : X lignes pour Entreprise Y
+Corriger inline une ligne si besoin
+Valider tout → N inserts en une transaction
+Option : créer ticket « Livraison matériel » ou note sur le contrat (phase 2)
+Sur mobile : bouton caméra en complément de la douchette, pas en remplacement.
+
+Généricité (toutes entreprises, toutes familles)
+Vous avez déjà la bonne base admin :
+
+Familles activables + champs configurables (texte, date, booléen…)
+Champs par défaut utiles logistique : numero_serie, numero_facture, date_facturation, marque, modele
+Principe : le module logistique ne connaît pas « un switch Stormshield », il connaît :
+
+une famille (family_key)
+ses champs (schéma dynamique)
+une règle de mapping scan → champs (config admin légère)
+Exemple de config par famille :
+
+Famille	Identifiant scan	Champs auto	Champs demandés à la volée
+Ordinateurs
+numero_serie
+marque, modèle (si EAN)
+—
+Switch
+numero_serie
+—
+IP (optionnel, skip rapide)
+Matériel divers
+premier champ texte
+—
+nom si vide
+Tout MSP peut créer une famille « Matériel vendu » avec ses propres champs, sans dev.
+
+Ce qu’il faut ajouter techniquement (MVP vs suite)
+MVP (rapide, utile tout de suite)
+Page Logistique → Sortie de stock
+Session en mémoire + brouillon local (pas obligatoire en BDD au début)
+API POST /api/logistics/dispatch :
+{ clientId, familyKey, items: [{ fields }] }
+boucle sur createClientCustomEquipment + log d’audit
+Douchette + champ texte focus permanent
+Détection doublons (même S/N + même client + même famille)
+Droit profil logistics_enabled
+V1.5 (confort)
+Table v_b_logistics_dispatches (qui, quand, combien, client)
+v_b_logistics_dispatch_lines (scan brut, payload, équipement créé)
+Caméra QR / DataMatrix
+Templates de familles « favorites » logistique
+Raccourci depuis fiche entreprise : « Mode scan pour ce client »
+V2 (si vrai stock interne)
+v_b_stock_items (entrepôt MSP, statut : en stock → affecté client)
+La sortie de stock = transition en_stock → affecté + création chez le client
+À ne faire que si la logistique gère un entrepôt avant livraison
+Pour « sortie de stock = vendu/livré chez le client », le MVP sans stock interne suffit souvent.
+
+Schéma d’écran (desktop entrepôt)
+┌─────────────────────────────────────────────────────────────┐
+│ Sortie de stock          Entreprise: [ACME SA      ▼]  [▶]   │
+│ Famille: [Switch] [PC] [Onduleur] [+]                        │
+├─────────────────────────────────────────────────────────────┤
+│ 🔍 Scanner ou saisir code…  [________________]  [Caméra]      │
+├─────────────────────────────────────────────────────────────┤
+│ 12 lignes en attente                    [Tout effacer]        │
+│ ┌────┬──────────────┬─────────┬──────────┬───┐              │
+│ │ #  │ N° série     │ Modèle  │ Statut   │ × │              │
+│ ├────┼──────────────┼─────────┼──────────┼───┤              │
+│ │ 1  │ SN123…       │ MS250-24│ OK       │ × │              │
+│ │ 2  │ SN124…       │ —       │ ⚠ doublon│ × │              │
+│ └────┴──────────────┴─────────┴──────────┴───┘              │
+├─────────────────────────────────────────────────────────────┤
+│                          [Annuler]  [Valider 12 matériels]    │
+└─────────────────────────────────────────────────────────────┘
+Plein écran, peu de chrome, pas de colonnes latérales.
+
+Points d’attention
+Legacy vs custom — Aujourd’hui coexistent équipements typés (Serveurs, NAS…) et familles custom. Pour rester générique : viser les familles custom en priorité ; pont vers legacy seulement pour familles « mappées » (ex. Stockage → NAS).
+Doublons — Règle claire : même S/N chez le même client = alerte, pas blocage silencieux.
+Audit — La logistique a besoin de traçabilité (qui a scanné quoi, quand) ; même un log simple évite les litiges.
+Hors-ligne — Pas au MVP ; session locale + sync si le réseau coupe peut venir plus tard.
+Recommandation synthétique
+Oui à un module navigation dédié « Logistique / Sortie de stock », optimisé scan + validation groupée.
+Non à un silo d’injection séparé : brancher sur familles + custom_equipment.
+Généricité via le modèle familles/champs déjà en admin, plus règles de mapping scan configurables.
+MVP : entreprise + famille + liste de scans + commit batch ; douchette d’abord, caméra ensuite.
+Si tu veux passer à l’implémentation, je proposerais de commencer par le MVP (page + API batch + droits profil) avant toute couche stock interne. On peut détailler le périmètre MVP (champs obligatoires, formats de codes, lien ticket/contrat) si tu as des contraintes métier côté logistique.

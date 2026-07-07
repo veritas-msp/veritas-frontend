@@ -1,0 +1,61 @@
+.wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.wrapCompact .token {
+  max-width: 11rem;
+}
+
+.wrapFull {
+  min-width: 0;
+  flex-shrink: 0;
+}
+
+.tokenFull {
+  max-width: none;
+  overflow: visible;
+  text-overflow: unset;
+  white-space: nowrap;
+  flex: 0 1 auto;
+}
+
+.token {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  color: var(--msp-text, #0f1c2e);
+  background: var(--msp-surface-muted, #f8fafc);
+  border: 1px solid var(--msp-border, #e2e8f0);
+  border-radius: 0.35rem;
+  padding: 0.2rem 0.45rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.copyBtn {
+  border: none;
+  background: transparent;
+  color: var(--msp-text-muted, #64748b);
+  padding: 0.2rem;
+  border-radius: 0.35rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: inline-flex;
+}
+
+.copyBtn:hover {
+  color: var(--msp-accent, #2b5fab);
+  background: var(--msp-accent-soft, rgba(43, 95, 171, 0.08));
+}
+
+.unavailable {
+  font-size: 0.78rem;
+  color: var(--msp-text-muted, #94a3b8);
+  font-style: italic;
+}

@@ -1,0 +1,185 @@
+/* ──────────────────────────────
+   🎨 CampaignStepModal (add / edit étape)
+   ────────────────────────────── */
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--modal-overlay-z-index);
+  padding: 1rem;
+}
+
+.modalContent {
+  background-color: var(--bg-secondary, #1a1a2e);
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-primary, #2a2a4a);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-primary, #2a2a4a);
+}
+
+.modalTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.modalIcon {
+  color: #15D1A0;
+  font-size: 1.5rem;
+}
+
+.modalTitle h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary, #f9fafb);
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary, #9ca3af);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  width: 32px;
+  height: 32px;
+}
+
+.closeButton:hover {
+  background-color: var(--bg-tertiary, #1e1e3f);
+  color: var(--text-primary, #f9fafb);
+}
+
+.modalBody {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.formField {
+  margin-bottom: 1.25rem;
+}
+
+.formField:last-child {
+  margin-bottom: 0;
+}
+
+.fieldLabel {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary, #f9fafb);
+}
+
+.required {
+  color: #ef4444;
+}
+
+.fieldInput {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--bg-primary, #0f0f23);
+  border: 1px solid var(--border-primary, #2a2a4a);
+  border-radius: 0.375rem;
+  color: var(--text-primary, #f9fafb);
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.fieldInput:focus {
+  outline: none;
+  border-color: #15D1A0;
+  box-shadow: 0 0 0 3px rgba(21, 209, 160, 0.1);
+}
+
+.modalFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-primary, #2a2a4a);
+}
+
+.cancelButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--bg-tertiary, #1e1e3f);
+  border: 1px solid var(--border-primary, #2a2a4a);
+  border-radius: 0.375rem;
+  color: var(--text-secondary, #d1d5db);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: var(--bg-primary, #0f0f23);
+  color: var(--text-primary, #f9fafb);
+}
+
+.cancelButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.saveButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #15D1A0;
+  border: none;
+  border-radius: 0.375rem;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.saveButton:hover:not(:disabled) {
+  background-color: #12b588;
+}
+
+.saveButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

@@ -1,0 +1,14 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.formScroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 1.35rem 1.5rem 1rem;
+}

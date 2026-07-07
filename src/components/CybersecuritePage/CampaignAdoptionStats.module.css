@@ -1,0 +1,181 @@
+/* ──────────────────────────────
+   🎨 CampaignAdoptionStats · titre + séparateur (style Microsoft Security), cartes épurées
+   ────────────────────────────── */
+
+.adoptionBlock {
+  margin-bottom: 1.5rem;
+}
+
+/* Titre avec séparateur (comme statsGroupTitle / Microsoft Security) */
+.groupTitle {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary, #f9fafb);
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid #6b7280;
+}
+
+.snapshotsRow {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+/* Bouton PDF · même style que Export CSV (MfaDetailsTable / UtilisateursTab) */
+.headerActionButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-radius: 0.375rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.headerActionIcon {
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.headerActionButtonInactive {
+  background-color: var(--bg-secondary, #1a1a2e);
+  border-color: var(--border-primary, #2a2a4a);
+  color: #6b7280;
+}
+
+.headerActionButtonInactive:hover {
+  background-color: #15D1A0;
+  border-color: #15D1A0;
+  color: #0f172a;
+}
+
+.snapshotBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.snapshotBlockTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary, #f9fafb);
+}
+
+.snapshotBlockDate {
+  font-size: 0.75rem;
+  color: var(--text-muted, #9ca3af);
+}
+
+.snapshotKpis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 1rem;
+  margin: 0;
+  font-size: 0.8125rem;
+}
+
+.snapshotKpi {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.snapshotKpi dt {
+  margin: 0;
+  font-weight: 400;
+  color: var(--text-muted, #9ca3af);
+}
+
+.snapshotKpi dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-primary, #f9fafb);
+}
+
+.snapshotEmpty {
+  font-size: 0.8125rem;
+  color: var(--text-muted, #9ca3af);
+  padding: 0.5rem 0;
+}
+
+/* Comparaison épurée + bouton PDF aligné à droite (même ligne, en bas) */
+.comparisonRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-primary, #2a2a4a);
+  font-size: 0.8125rem;
+}
+
+.comparisonKpis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.comparisonKpi {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.comparisonKpiLabel {
+  color: var(--text-muted, #9ca3af);
+}
+
+.comparisonKpiVal {
+  color: var(--text-primary, #f9fafb);
+  font-weight: 500;
+}
+
+.comparisonDelta {
+  margin-left: 0.25rem;
+  font-weight: 600;
+  color: var(--text-muted, #9ca3af);
+}
+
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: var(--text-secondary, #9ca3af);
+}
+
+.loadingIcon {
+  font-size: 2rem;
+  color: #15D1A0;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .snapshotsRow {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .snapshotKpis {
+    grid-template-columns: 1fr;
+  }
+}

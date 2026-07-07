@@ -1,0 +1,102 @@
+/* Container principal pour les topologies */
+.topologyContainer {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background-color: transparent;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.topologyContainer.dark {
+  background-color: transparent;
+  color: #e5e7eb;
+}
+
+/* Viewport pour le SVG */
+.topologyViewport {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 1rem 0;
+  margin-bottom: 1.5rem;
+  /* Masquer la scrollbar horizontale */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.topologyViewport::-webkit-scrollbar {
+  height: 0; /* Masquer la scrollbar horizontale */
+  display: none;
+}
+
+.topologyViewport::-webkit-scrollbar:horizontal {
+  display: none;
+  height: 0;
+}
+
+/* SVG de la topologie */
+.topologySvg {
+  display: block;
+  margin: 0 auto;
+}
+
+/* État vide */
+.emptyState {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.topologyContainer.dark .emptyState {
+  color: #9ca3af;
+}
+
+/* Container de la légende */
+.topologyLegendContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.topologyContainer.dark .topologyLegendContainer {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+/* Élément de légende */
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.topologyContainer.dark .legendItem {
+  color: #d1d5db;
+}
+
+/* Wrapper pour l'icône de légende */
+.legendIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Label de légende */
+.legendLabel {
+  font-weight: 500;
+  white-space: nowrap;
+}
+

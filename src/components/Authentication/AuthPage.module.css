@@ -1,0 +1,642 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ─── Layout ───────────────────────────────────────────────────────── */
+.wrapper {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  background: #0f1c2e;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.left {
+  flex: 0 0 420px;
+  background: linear-gradient(160deg, #0f1c2e 0%, #162641 60%, #1a3060 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.left::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 600px 400px at 110% 10%, rgba(43, 95, 171, 0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 500px at -10% 90%, rgba(21, 140, 200, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.leftTop { position: relative; z-index: 1; }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+
+.brandIcon {
+  width: 38px;
+  height: 38px;
+  background: var(--login-accent, #2b5fab);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #fff;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.brandLogo {
+  width: auto;
+  height: 38px;
+  max-width: 160px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.brandName {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #e8edf5;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.leftHeadline {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.35;
+  margin: 0 0 14px;
+}
+
+.leftSub {
+  font-size: 0.9rem;
+  color: #7b94b5;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.leftFeatures {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.leftFeature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.84rem;
+  color: #6a88a8;
+}
+
+.leftFeatureDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--login-accent, #2b5fab);
+  flex-shrink: 0;
+}
+
+.leftBranded::before {
+  display: none;
+}
+
+.leftFooterMeta {
+  margin: 0;
+  padding-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.leftVersionMeta {
+  margin: 0;
+  font-size: 0.72rem;
+  color: #5a7290;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 0.05em;
+}
+
+/* ─── Panneau droit ────────────────────────────────────────────────── */
+.right {
+  flex: 1;
+  background: #f4f6fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.right::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(120deg, rgba(43, 95, 171, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 85% 20%, rgba(43, 95, 171, 0.14) 0%, transparent 35%),
+    repeating-linear-gradient(0deg, rgba(16, 35, 60, 0.035) 0 1px, transparent 1px 36px),
+    repeating-linear-gradient(90deg, rgba(16, 35, 60, 0.03) 0 1px, transparent 1px 36px);
+  pointer-events: none;
+}
+
+.right::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 320px 220px at 74% 62%, rgba(59, 130, 246, 0.12) 0%, transparent 72%),
+    radial-gradient(ellipse 260px 180px at 28% 30%, rgba(37, 99, 235, 0.09) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ─── Variante panneau gauche client ───────────────────────────────── */
+.leftClient {
+  background: linear-gradient(160deg, #0f2014 0%, #163020 60%, #1a4030 100%);
+}
+
+.leftClient::before {
+  background-image:
+    radial-gradient(ellipse 600px 400px at 110% 10%, rgba(21, 171, 90, 0.2) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 500px at -10% 90%, rgba(21, 140, 80, 0.12) 0%, transparent 70%);
+}
+
+/* ─── Carte auth ───────────────────────────────────────────────────── */
+.card {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border: 1px solid #dde3ed;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(11, 33, 56, 0.07);
+  padding: 32px 28px 24px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+}
+
+.loadingOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #dde3ed;
+  border-top-color: var(--login-accent, #2b5fab);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Toggle Agent / Client ─────────────────────────────────────────── */
+.accountToggle {
+  display: flex;
+  gap: 0;
+  background: #f0f3f8;
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 20px;
+}
+
+.toggleBtn {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: #5b6d82;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s;
+}
+
+.toggleBtn:hover:not(:disabled) { color: #10233c; }
+.toggleBtn:disabled { cursor: not-allowed; opacity: 0.6; }
+
+.toggleActive {
+  background: #fff;
+  color: #10233c;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(11, 33, 56, 0.1);
+}
+
+.cardHeader {
+  margin-bottom: 24px;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 12px;
+  font-size: 0.84rem;
+  color: var(--login-accent, #2b5fab);
+  cursor: pointer;
+  font-family: inherit;
+  display: block;
+}
+
+.backBtn:hover { text-decoration: underline; }
+.backBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.cardTitle {
+  margin: 0 0 4px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #10233c;
+}
+
+.cardSub {
+  margin: 0;
+  font-size: 0.84rem;
+  color: #5b6d82;
+  line-height: 1.5;
+}
+
+/* ─── Transition entre vues ────────────────────────────────────────── */
+.viewBody {
+  flex: 1;
+  animation: viewIn 0.22s ease-out;
+}
+
+@keyframes viewIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Formulaire ───────────────────────────────────────────────────── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #374a5e;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.field input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccd4e0;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  color: #10233c;
+  background: #f8fafc;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+/* Priorité sur les règles globales AdminPanel (accent vert) */
+.wrapper input:not([type="checkbox"]):not([type="radio"]):focus,
+.wrapper input:not([type="checkbox"]):not([type="radio"]):focus-visible {
+  outline: none;
+  border-color: var(--login-accent, #2b5fab);
+  background: #fff;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--login-accent, #2b5fab) 12%, transparent);
+}
+
+.mfaCodeInput {
+  font-size: 1.3rem;
+  letter-spacing: 0.25em;
+  text-align: center;
+  font-family: monospace;
+}
+
+.field input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+.passwordWrap {
+  position: relative;
+}
+
+.passwordWrap input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.eyeBtn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 4px;
+  color: #7b94b5;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.eyeBtn:hover { color: var(--login-accent, #2b5fab); }
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.84rem;
+  color: #3d4f65;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox input {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--login-accent, #2b5fab);
+  cursor: pointer;
+}
+
+.btnPrimary {
+  width: 100%;
+  padding: 11px 16px;
+  background: var(--login-accent, #2b5fab);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-top: 4px;
+}
+
+.btnPrimary:hover:not(:disabled) { background: #244d91; }
+.btnPrimary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.formLinks {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--login-accent, #2b5fab);
+  font-size: 0.82rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.link:hover:not(:disabled) { text-decoration: underline; }
+.link:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.footer {
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 0.72rem;
+  color: #9aaab8;
+  text-align: center;
+}
+
+.footer p { margin: 0; }
+
+/* ─── Status dock ──────────────────────────────────────────────────── */
+.statusDock {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.statusFab {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(15, 28, 46, 0.82);
+  backdrop-filter: blur(8px);
+  color: #e8edf5;
+  padding: 7px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+}
+
+.statusFabDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.statusFabOk { color: #4ade80; }
+.statusFabError { color: #f87171; }
+
+.statusPanel {
+  width: min(260px, calc(100vw - 36px));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(15, 28, 46, 0.92);
+  backdrop-filter: blur(12px);
+  padding: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  animation: viewIn 0.18s ease-out;
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: #c0d0e0;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.statusRow:last-of-type { border-bottom: none; }
+
+.statusMeta {
+  margin: 6px 0 0;
+  font-size: 0.72rem;
+  color: #4a6278;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 8px;
+}
+
+.dotOk { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #4ade80; }
+.dotError { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #f87171; }
+
+/* ─── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .left { flex: 0 0 340px; padding: 40px 32px; }
+  .leftHeadline { font-size: 1.5rem; }
+}
+
+@media (max-width: 720px) {
+  .wrapper { flex-direction: column; }
+
+  .left {
+    flex: none;
+    padding: 20px;
+    background: linear-gradient(135deg, #0f1c2e 0%, #1a3060 100%);
+  }
+
+  .leftHeadline, .leftSub, .leftFeatures { display: none; }
+  .brand { margin-bottom: 0; }
+
+  .right { padding: 20px 16px 28px; align-items: flex-start; }
+
+  .card {
+    max-width: 100%;
+    min-height: auto;
+    padding: 24px 20px 20px;
+    box-shadow: 0 2px 12px rgba(11, 33, 56, 0.06);
+  }
+
+  .formLinks { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .statusDock { right: 12px; bottom: 12px; }
+}
+
+@media (min-width: 1600px) {
+  .left { flex: 0 0 520px; padding: 64px 56px; }
+  .leftHeadline { font-size: 2rem; }
+  .card { max-width: 440px; }
+}
+
+/* La page login reste en thème clair (carte blanche) même si html.dark est actif */
+:global(html.dark) .wrapper .field input,
+:global(html.dark) .wrapper .passwordWrap input,
+:global(html.dark) .wrapper .mfaCodeInput {
+  background: #f8fafc !important;
+  color: #10233c !important;
+  border-color: #ccd4e0 !important;
+}
+
+:global(html.dark) .wrapper .field input:hover,
+:global(html.dark) .wrapper .passwordWrap input:hover {
+  background: #f8fafc !important;
+  border-color: #ccd4e0 !important;
+}
+
+:global(html.dark) .wrapper input:not([type="checkbox"]):not([type="radio"]):focus,
+:global(html.dark) .wrapper input:not([type="checkbox"]):not([type="radio"]):focus-visible {
+  background: #fff !important;
+  color: #10233c !important;
+  border-color: #2b5fab !important;
+  box-shadow: 0 0 0 3px rgba(43, 95, 171, 0.12) !important;
+}
+
+:global(html.dark) .wrapper .field input::placeholder,
+:global(html.dark) .wrapper .passwordWrap input::placeholder {
+  color: #8b9bb5 !important;
+}
+
+:global(html.dark) .wrapper .card {
+  background: #fff !important;
+  border-color: #dde3ed !important;
+}
+
+:global(html.dark) .wrapper .cardTitle {
+  color: #10233c !important;
+}
+
+:global(html.dark) .wrapper .cardSub,
+:global(html.dark) .wrapper .field label,
+:global(html.dark) .wrapper .checkbox {
+  color: #374a5e !important;
+}
+
+:global(html.dark) .wrapper .accountToggle {
+  background: #f0f3f8 !important;
+}
+
+:global(html.dark) .wrapper .toggleBtn {
+  color: #5b6d82 !important;
+}
+
+:global(html.dark) .wrapper .toggleActive {
+  background: #fff !important;
+  color: #10233c !important;
+}
+
+:global(html.dark) .wrapper .right {
+  background: #f4f6fa !important;
+}
+
+:global(html.dark) .wrapper .footer {
+  color: #9aaab8 !important;
+}
+
+.statusBootScreen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: #f4f6fa;
+  color: #5a6a7a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.statusBootScreen p {
+  margin: 0;
+  font-size: 0.95rem;
+}
