@@ -20,7 +20,11 @@ export default function ResetPassword() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const t = new URLSearchParams(window.location.search).get("token");
+    // Le token est transmis via le fragment (#token=) pour éviter les fuites (logs, Referer).
+    const hash = window.location.hash?.startsWith("#") ? window.location.hash.slice(1) : "";
+    const t =
+      new URLSearchParams(hash).get("token") ||
+      new URLSearchParams(window.location.search).get("token");
     if (!t) {
       showError(reset.invalidLink);
       navigate("/login");
@@ -29,9 +33,21 @@ export default function ResetPassword() {
     }
   }, [navigate, reset.invalidLink]);
 
+  const isStrongPassword = (value) =>
+    value.length >= 12 &&
+    /[a-z]/.test(value) &&
+    /[A-Z]/.test(value) &&
+    /[0-9]/.test(value) &&
+    /[^A-Za-z0-9]/.test(value);
+
   const handleReset = async (e) => {
     e.preventDefault();
-    if (password.length < 6) return showError(reset.passwordTooShort);
+    if (!isStrongPassword(password)) {
+      return showError(
+        reset.passwordTooWeak ||
+          "Mot de passe trop faible : 12 caractères minimum, avec majuscule, minuscule, chiffre et caractère spécial."
+      );
+    }
     if (password !== confirm) return showError(reset.passwordMismatch);
 
     setLoading(true);
