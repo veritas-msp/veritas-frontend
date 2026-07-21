@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { GripVertical } from "lucide-react";
 import { FaGlobe } from "react-icons/fa";
 import { Icon } from "@iconify/react";
@@ -8,12 +8,14 @@ import API_BASE_URL from "../../../../config";
 import styles from "./Form.module.css";
 import adminStyles from "../../AdminPanel.module.css";
 import { mapOvhApiDomainToMonitored } from "../../../EnterprisesPage/domainSolutionUtils";
-
-/**
- * Composant de gestion des noms de domaine OVH (NDD)
- */
-const StepNDD = ({ form, setForm, onAdd, onImport, currentStepData }) => {
-  const domaines = form.equipements.NDD || [];
+const StepNDD = ({
+  form,
+  setForm,
+  onAdd,
+  onImport,
+  currentStepData
+}) => {
+  const domains = form.equipements.NDD || [];
   const bottomRef = useRef(null);
   const [expandedItems, setExpandedItems] = useState(new Set());
   const [draggedIndex, setDraggedIndex] = useState(null);
@@ -23,9 +25,7 @@ const StepNDD = ({ form, setForm, onAdd, onImport, currentStepData }) => {
   const [ovhDomains, setOvhDomains] = useState([]);
   const [loadingOvhDomains, setLoadingOvhDomains] = useState(false);
   const [selectedOvhDomains, setSelectedOvhDomains] = useState(new Set());
-
-  const toggleItemExpansion = (index) => {
-    // Ne pas basculer l'expansion si on vient de faire un drag
+  const toggleItemExpansion = index => {
     if (!isDragging) {
       const newExpanded = new Set(expandedItems);
       if (newExpanded.has(index)) {
@@ -36,21 +36,13 @@ const StepNDD = ({ form, setForm, onAdd, onImport, currentStepData }) => {
       setExpandedItems(newExpanded);
     }
   };
-
-  // Fonctions pour le drag and drop
   const handleDragStart = (e, index) => {
     const target = e.target;
-    const isFormElement = target.tagName === 'INPUT' || 
-                         target.tagName === 'SELECT' || 
-                         target.tagName === 'TEXTAREA' || 
-                         target.tagName === 'BUTTON' ||
-                         target.closest('input, select, textarea, button');
-    
+    const isFormElement = target.tagName === 'INPUT' || target.tagName === 'SELECT' || target.tagName === 'TEXTAREA' || target.tagName === 'BUTTON' || target.closest('input, select, textarea, button');
     if (isFormElement) {
       e.preventDefault();
       return;
     }
-    
     setIsDragging(true);
     setDraggedIndex(index);
     setDragOverIndex(null);
@@ -61,39 +53,32 @@ const StepNDD = ({ form, setForm, onAdd, onImport, currentStepData }) => {
       card.style.opacity = "0.5";
     }
   };
-
   const handleDragOver = (e, index) => {
     e.preventDefault();
     e.stopPropagation();
     e.dataTransfer.dropEffect = "move";
     setDragOverIndex(index);
   };
-
-  const handleDragLeave = (e) => {
+  const handleDragLeave = e => {
     if (!e.currentTarget.contains(e.relatedTarget)) {
       setDragOverIndex(null);
     }
   };
-
   const handleDrop = (e, dropIndex) => {
     e.preventDefault();
     e.stopPropagation();
-    
     if (draggedIndex === null || draggedIndex === dropIndex) {
       setDraggedIndex(null);
       setDragOverIndex(null);
       setIsDragging(false);
       return;
     }
-
     const updated = [...domaines];
     const draggedItem = updated[draggedIndex];
     updated.splice(draggedIndex, 1);
     updated.splice(dropIndex, 0, draggedItem);
-
-    // Mettre à jour les expandedItems pour conserver l'état d'expansion
     const newExpanded = new Set();
-    expandedItems.forEach((oldIndex) => {
+    expandedItems.forEach(oldIndex => {
       if (oldIndex === draggedIndex) {
         newExpanded.add(dropIndex);
       } else if (oldIndex < draggedIndex && oldIndex >= dropIndex) {
@@ -105,18 +90,18 @@ const StepNDD = ({ form, setForm, onAdd, onImport, currentStepData }) => {
       }
     });
     setExpandedItems(newExpanded);
-
-    setForm((prev) => ({
+    setForm(prev => ({
       ...prev,
-      equipements: { ...prev.equipements, NDD: updated },
+      equipements: {
+        ...prev.equipements,
+        NDD: updated
+      }
     }));
-
     setDraggedIndex(null);
     setDragOverIndex(null);
     setIsDragging(false);
   };
-
-  const handleDragEnd = (e) => {
+  const handleDragEnd = e => {
     const card = e.currentTarget.closest(`.${styles.serverCard}`);
     if (card) {
       card.style.opacity = "1";
@@ -127,9 +112,7 @@ const StepNDD = ({ form, setForm, onAdd, onImport, currentStepData }) => {
       setIsDragging(false);
     }, 100);
   };
-
-  // Fonction pour formater la date au format JJ-MM-AAAA
-  const formatDate = (dateString) => {
+  const formatDate = dateString => {
     if (!dateString) return "";
     try {
       const parts = dateString.split('-');
@@ -151,42 +134,42 @@ const StepNDD = ({ form, setForm, onAdd, onImport, currentStepData }) => {
       return dateString;
     }
   };
-
-  // Met à jour un champ d'un domaine
   const update = (index, field, value) => {
     const updated = [...domaines];
     updated[index][field] = value;
-    setForm((prev) => ({
+    setForm(prev => ({
       ...prev,
-      equipements: { ...prev.equipements, NDD: updated },
+      equipements: {
+        ...prev.equipements,
+        NDD: updated
+      }
     }));
   };
-
-  // Supprime un domaine
-  const remove = (index) => {
+  const remove = index => {
     const updated = [...domaines];
     updated.splice(index, 1);
-    setForm((prev) => ({
+    setForm(prev => ({
       ...prev,
-      equipements: { ...prev.equipements, NDD: updated },
+      equipements: {
+        ...prev.equipements,
+        NDD: updated
+      }
     }));
   };
-
-  // Ajoute un domaine
   const add = () => {
-    const newEntry = { 
-      nom: "", 
+    const newEntry = {
+      nom: "",
       expiration: "",
-      registrar: "",
+      registrar: ""
     };
-    setForm((prev) => ({
+    setForm(prev => ({
       ...prev,
-      equipements: { ...prev.equipements, NDD: [...domaines, newEntry] },
+      equipements: {
+        ...prev.equipements,
+        NDD: [...domaines, newEntry]
+      }
     }));
-
   };
-
-  // Exposer les fonctions via onAdd et onImport
   useEffect(() => {
     if (onAdd && currentStepData?.key === 'ndd') {
       onAdd[currentStepData.key] = () => {
@@ -199,13 +182,10 @@ const StepNDD = ({ form, setForm, onAdd, onImport, currentStepData }) => {
       };
     }
   }, [onAdd, onImport, currentStepData]);
-
-  // Charge les domaines depuis l'API OVH
   const loadOvhDomains = async () => {
     setLoadingOvhDomains(true);
     setOvhDomains([]);
     setSelectedOvhDomains(new Set());
-    
     try {
       const response = await fetch(`${API_BASE_URL}/ovh/domains`, {
         method: 'GET',
@@ -214,48 +194,39 @@ const StepNDD = ({ form, setForm, onAdd, onImport, currentStepData }) => {
         },
         credentials: 'include'
       });
-
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        toast.error(`Erreur : ${errorData.error || `HTTP ${response.status}`}`);
+        toast.error(`Error: ${errorData.error || `HTTP ${response.status}`}`);
         return;
       }
-
       const data = await response.json();
-      
       if (data.success && Array.isArray(data.domains)) {
         setOvhDomains(data.domains);
         if (data.domains.length === 0) {
-          toast.info("Aucun domaine trouvé dans votre compte OVH");
+          toast.info("No domains found in your OVH account");
         } else {
-          toast.success(`${data.domains.length} domaine(s) chargé(s)`);
+          toast.success(`${data.domains.length} domain(s) loaded`);
         }
       } else {
-        toast.error(data.error || 'Impossible de charger les domaines OVH');
+        toast.error(data.error || 'Unable to load OVH domains');
       }
     } catch (err) {
-      console.error('Erreur chargement domaines OVH:', err);
-      toast.error("Erreur lors du chargement des domaines OVH");
+      console.error('Erreur chargement domains OVH:', err);
+      toast.error("Error loading OVH domains");
     } finally {
       setLoadingOvhDomains(false);
     }
   };
-
-  // Ouvre la modal et charge les domaines
   const handleOpenOvhModal = () => {
     setShowOvhModal(true);
     loadOvhDomains();
   };
-
-  // Ferme la modal
   const handleCloseOvhModal = () => {
     setShowOvhModal(false);
     setOvhDomains([]);
     setSelectedOvhDomains(new Set());
   };
-
-  // Toggle la sélection d'un domaine
-  const toggleDomainSelection = (domainName) => {
+  const toggleDomainSelection = domainName => {
     setSelectedOvhDomains(prev => {
       const next = new Set(prev);
       if (next.has(domainName)) {
@@ -266,378 +237,402 @@ const StepNDD = ({ form, setForm, onAdd, onImport, currentStepData }) => {
       return next;
     });
   };
-
-  // Importe les domaines sélectionnés
   const handleImportOvhDomains = () => {
     if (selectedOvhDomains.size === 0) {
-      toast.error("Veuillez sélectionner au moins un domaine");
+      toast.error("Please select at least one domain");
       return;
     }
-
-    // Récupérer les domaines existants pour éviter les doublons
     const existingDomains = new Set(domaines.map(d => d.nom?.toLowerCase()));
-    
-    // Filtrer les domaines sélectionnés et les convertir au format attendu
-    const domainsToImport = ovhDomains
-      .filter(domain => {
-        const domainName = domain.domain || domain.name || domain;
-        return selectedOvhDomains.has(domainName) && !existingDomains.has(domainName.toLowerCase());
-      })
-      .map(domain => mapOvhApiDomainToMonitored(domain));
-
+    const domainsToImport = ovhDomains.filter(domain => {
+      const domainName = domain.domain || domain.name || domain;
+      return selectedOvhDomains.has(domainName) && !existingDomains.has(domainName.toLowerCase());
+    }).map(domain => mapOvhApiDomainToMonitored(domain));
     if (domainsToImport.length === 0) {
-      toast.info("Tous les domaines sélectionnés sont déjà présents dans la liste");
+      toast.info("All selected domains are already in the list");
       return;
     }
-
-    // Ajouter les domaines importés
-    setForm((prev) => ({
+    setForm(prev => ({
       ...prev,
-      equipements: { 
-        ...prev.equipements, 
-        NDD: [...domaines, ...domainsToImport] 
-      },
+      equipements: {
+        ...prev.equipements,
+        NDD: [...domaines, ...domainsToImport]
+      }
     }));
-
-    toast.success(`${domainsToImport.length} domaine(s) importé(s) avec succès`);
+    toast.success(`${domainsToImport.length} domain(s) imported successfully`);
     handleCloseOvhModal();
   };
-
-  return (
-    <motion.div
-      className={styles.stepContainer}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: "circOut" }}
-    >
+  return <motion.div className={styles.stepContainer} initial={{
+    opacity: 0,
+    y: 20
+  }} animate={{
+    opacity: 1,
+    y: 0
+  }} transition={{
+    duration: 0.4,
+    ease: "circOut"
+  }}>
       <div className={styles.formSection}>
         <div className={styles.scrollable}>
-          {domaines.length === 0 ? (
-            <div className={styles.emptyState}>
-              <p className={styles.emptyStateTitle}>Aucun nom de domaine configuré</p>
+          {domaines.length === 0 ? <div className={styles.emptyState}>
+              <p className={styles.emptyStateTitle}>No domain names configured</p>
               <p className={styles.emptyStateDescription}>
-                Cliquez sur "Ajouter un domaine" pour commencer
+                Click "Add a domain" to get started
               </p>
-            </div>
-          ) : (
-            domaines.map((domaine, i) => (
-            <motion.div
-              key={i}
-              draggable
-              onDragStart={(e) => handleDragStart(e, i)}
-              onDragOver={(e) => {
-                e.preventDefault();
-                handleDragOver(e, i);
-              }}
-              onDragLeave={handleDragLeave}
-              onDrop={(e) => handleDrop(e, i)}
-              onDragEnd={handleDragEnd}
-              className={`${styles.serverCard} ${draggedIndex === i ? styles.dragging : ''} ${dragOverIndex === i ? styles.dragOver : ''}`}
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3 }}
-              style={{ cursor: 'grab' }}
-            >
-              <div 
-                className={`${styles.serverHeader} ${expandedItems.has(i) ? styles.serverHeaderExpanded : ''}`}
-                onClick={() => toggleItemExpansion(i)}
-                style={{ cursor: 'pointer' }}
-              >
-                <div 
-                  className={styles.dragHandle} 
-                  title="Glisser pour réorganiser"
-                  onClick={(e) => e.stopPropagation()}
-                  onMouseDown={(e) => e.stopPropagation()}
-                  style={{ opacity: 0.3, transition: 'opacity 0.2s ease', cursor: 'grab' }}
-                  onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = 'var(--accent-primary)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.3'; e.currentTarget.style.color = 'inherit'; }}
-                >
+            </div> : domains.map((domaine, i) => <motion.div key={i} draggable onDragStart={e => handleDragStart(e, i)} onDragOver={e => {
+          e.preventDefault();
+          handleDragOver(e, i);
+        }} onDragLeave={handleDragLeave} onDrop={e => handleDrop(e, i)} onDragEnd={handleDragEnd} className={`${styles.serverCard} ${draggedIndex === i ? styles.dragging : ''} ${dragOverIndex === i ? styles.dragOver : ''}`} initial={{
+          opacity: 0,
+          scale: 0.98
+        }} animate={{
+          opacity: 1,
+          scale: 1
+        }} transition={{
+          duration: 0.3
+        }} style={{
+          cursor: 'grab'
+        }}>
+              <div className={`${styles.serverHeader} ${expandedItems.has(i) ? styles.serverHeaderExpanded : ''}`} onClick={() => toggleItemExpansion(i)} style={{
+            cursor: 'pointer'
+          }}>
+                <div className={styles.dragHandle} title="Drag to reorder" onClick={e => e.stopPropagation()} onMouseDown={e => e.stopPropagation()} style={{
+              opacity: 0.3,
+              transition: 'opacity 0.2s ease',
+              cursor: 'grab'
+            }} onMouseEnter={e => {
+              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.color = 'var(--accent-primary)';
+            }} onMouseLeave={e => {
+              e.currentTarget.style.opacity = '0.3';
+              e.currentTarget.style.color = 'inherit';
+            }}>
                   <GripVertical size={18} />
                 </div>
-                <div className={styles.serverTitle} style={{ flex: 1 }}>
-                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <FaGlobe style={{ fontSize: '1rem', color: '#13BA8E' }} />
-                    {domaine.nom || `Domaine #${i + 1}`}
+                <div className={styles.serverTitle} style={{
+              flex: 1
+            }}>
+                  <h4 style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
+              }}>
+                    <FaGlobe style={{
+                  fontSize: '1rem',
+                  color: '#13BA8E'
+                }} />
+                    {domaine.nom || `Domain #${i + 1}`}
                   </h4>
                   <span className={styles.serverType}>
-                    {[
-                      domaine.nom,
-                      domaine.registrar,
-                      domaine.expiration && formatDate(domaine.expiration)
-                    ].filter(Boolean).join(' / ')}
+                    {[domaine.nom, domain.registrar, domain.expiration && formatDate(domaine.expiration)].filter(Boolean).join(' / ')}
                   </span>
                 </div>
                 <div className={styles.serverActions}>
-                  <button
-                    className={styles.deleteButton}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      remove(i);
-                    }}
-                    title="Supprimer ce domaine"
-                  >
+                  <button className={styles.deleteButton} onClick={e => {
+                e.stopPropagation();
+                remove(i);
+              }} title="Delete this domain">
                     ×
                   </button>
                 </div>
               </div>
 
-              {expandedItems.has(i) && (
-                <motion.div 
-                  className={styles.serverForm}
-                  style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
+              {expandedItems.has(i) && <motion.div className={styles.serverForm} style={{
+            background: 'transparent',
+            boxShadow: 'none',
+            border: 'none'
+          }} initial={{
+            opacity: 0,
+            height: 0
+          }} animate={{
+            opacity: 1,
+            height: "auto"
+          }} exit={{
+            opacity: 0,
+            height: 0
+          }} transition={{
+            duration: 0.3
+          }}>
                   <div className={styles.formGrid}>
                     <div className={styles.formField}>
-                      <label htmlFor={`ndd-nom-${i}`}>Nom du domaine *</label>
-                      <input
-                        id={`ndd-nom-${i}`}
-                        value={domaine.nom}
-                        onChange={(e) => update(i, "nom", e.target.value)}
-                        required
-                      />
+                      <label htmlFor={`ndd-nom-${i}`}>Domain name *</label>
+                      <input id={`ndd-nom-${i}`} value={domaine.nom} onChange={e => update(i, "nom", e.target.value)} required />
                     </div>
                     <div className={styles.formField}>
                       <label htmlFor={`ndd-registrar-${i}`}>Registrar</label>
-                      <input
-                        id={`ndd-registrar-${i}`}
-                        value={domaine.registrar || ""}
-                        onChange={(e) => update(i, "registrar", e.target.value)}
-                      />
+                      <input id={`ndd-registrar-${i}`} value={domaine.registrar || ""} onChange={e => update(i, "registrar", e.target.value)} />
                     </div>
                     <div className={styles.formField}>
-                      <label htmlFor={`ndd-expiration-${i}`}>Date d'expiration</label>
-                      <input
-                        id={`ndd-expiration-${i}`}
-                        type="date"
-                        value={domaine.expiration}
-                        onChange={(e) => update(i, "expiration", e.target.value)}
-                      />
+                      <label htmlFor={`ndd-expiration-${i}`}>Expiration date</label>
+                      <input id={`ndd-expiration-${i}`} type="date" value={domaine.expiration} onChange={e => update(i, "expiration", e.target.value)} />
                     </div>
                   </div>
-                </motion.div>
-              )}
-            </motion.div>
-          ))
-          )}
+                </motion.div>}
+            </motion.div>)}
           <div ref={bottomRef} />
         </div>
       </div>
 
-      {/* Modal d'import OVH */}
-      {showOvhModal && (
-        <div className={adminStyles.modalOverlay} onClick={handleCloseOvhModal}>
-          <div className={adminStyles.modalContent} onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px', padding: 0 }}>
-            <div
-              style={{
-                padding: '1rem 1.25rem',
-                borderBottom: '1px solid #e5e7eb',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                background: '#ffffff'
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <Icon icon="mdi:cloud-download" style={{ fontSize: '24px', color: '#15d1a0' }} />
+      {}
+      {showOvhModal && <div className={adminStyles.modalOverlay} onClick={handleCloseOvhModal}>
+          <div className={adminStyles.modalContent} onClick={e => e.stopPropagation()} style={{
+        maxWidth: '800px',
+        padding: 0
+      }}>
+            <div style={{
+          padding: '1rem 1.25rem',
+          borderBottom: '1px solid #e5e7eb',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          background: '#ffffff'
+        }}>
+              <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem'
+          }}>
+                <Icon icon="mdi:cloud-download" style={{
+              fontSize: '24px',
+              color: '#15d1a0'
+            }} />
                 <div>
-                  <h3 style={{ margin: 0, fontSize: '1.08rem', fontWeight: 700, color: '#1a1a1a', textAlign: 'left' }}>
-                    Importer des domaines OVH
+                  <h3 style={{
+                margin: 0,
+                fontSize: '1.08rem',
+                fontWeight: 700,
+                color: '#1a1a1a',
+                textAlign: 'left'
+              }}>
+                    Import OVH domains
                   </h3>
-                  <span style={{ fontSize: '0.875rem', color: '#6b7280', textAlign: 'left' }}>
-                    Sélectionnez les domaines à importer
+                  <span style={{
+                fontSize: '0.875rem',
+                color: '#6b7280',
+                textAlign: 'left'
+              }}>
+                    Select domains to import
                   </span>
                 </div>
               </div>
-              <button
-                className={adminStyles.closeButton}
-                onClick={handleCloseOvhModal}
-                title="Fermer"
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: '6px',
-                  border: 'none',
-                  background: 'transparent',
-                  cursor: 'pointer',
-                  color: '#6b7280',
-                  transition: 'all 0.2s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#f3f4f6';
-                  e.currentTarget.style.color = '#111827';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = '#6b7280';
-                }}
-              >
+              <button className={adminStyles.closeButton} onClick={handleCloseOvhModal} title="Close" style={{
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '6px',
+            border: 'none',
+            background: 'transparent',
+            cursor: 'pointer',
+            color: '#6b7280',
+            transition: 'all 0.2s ease'
+          }} onMouseEnter={e => {
+            e.currentTarget.style.background = '#f3f4f6';
+            e.currentTarget.style.color = '#111827';
+          }} onMouseLeave={e => {
+            e.currentTarget.style.background = 'transparent';
+            e.currentTarget.style.color = '#6b7280';
+          }}>
                 <Icon icon="mdi:close" width={20} height={20} />
               </button>
             </div>
-            <div style={{ padding: '1rem 1.25rem', background: '#ffffff', maxHeight: '70vh', overflowY: 'auto' }}>
-              {loadingOvhDomains ? (
-                <div style={{ textAlign: 'center', padding: '2rem' }}>
-                  <Icon icon="mdi:loading" className={styles.loading} style={{ fontSize: '2rem', color: '#15d1a0', marginBottom: '1rem' }} />
-                  <p style={{ color: '#6b7280', fontSize: '0.875rem' }}>Chargement des domaines...</p>
-                </div>
-              ) : ovhDomains.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '2rem', color: '#6b7280' }}>
-                  <Icon icon="mdi:cloud-off-outline" style={{ fontSize: '3rem', marginBottom: '1rem', opacity: 0.5 }} />
-                  <p style={{ fontSize: '1rem', marginBottom: '0.5rem', fontWeight: 600, color: '#1a1a1a' }}>Aucun domaine trouvé</p>
-                  <p style={{ fontSize: '0.875rem', opacity: 0.7 }}>
-                    Vérifiez vos identifiants OVH dans les paramètres.
+            <div style={{
+          padding: '1rem 1.25rem',
+          background: '#ffffff',
+          maxHeight: '70vh',
+          overflowY: 'auto'
+        }}>
+              {loadingOvhDomains ? <div style={{
+            textAlign: 'center',
+            padding: '2rem'
+          }}>
+                  <Icon icon="mdi:loading" className={styles.loading} style={{
+              fontSize: '2rem',
+              color: '#15d1a0',
+              marginBottom: '1rem'
+            }} />
+                  <p style={{
+              color: '#6b7280',
+              fontSize: '0.875rem'
+            }}>Loading domains...</p>
+                </div> : ovhDomains.length === 0 ? <div style={{
+            textAlign: 'center',
+            padding: '2rem',
+            color: '#6b7280'
+          }}>
+                  <Icon icon="mdi:cloud-off-outline" style={{
+              fontSize: '3rem',
+              marginBottom: '1rem',
+              opacity: 0.5
+            }} />
+                  <p style={{
+              fontSize: '1rem',
+              marginBottom: '0.5rem',
+              fontWeight: 600,
+              color: '#1a1a1a'
+            }}>No domains found</p>
+                  <p style={{
+              fontSize: '0.875rem',
+              opacity: 0.7
+            }}>
+                    Check your OVH credentials in settings.
                   </p>
-                </div>
-              ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '0.75rem' }}>
+                </div> : <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: '0.75rem'
+          }}>
                   {ovhDomains.map((domain, index) => {
-                    const domainName = domain.domain || domain.name || domain;
-                    const domainKey = typeof domain === 'string' ? domain : domainName;
-                    const isSelected = selectedOvhDomains.has(domainName);
-                    const expiration = domain.expiration || domain.expirationDate || '';
-                    const registrar = domain.registrar || 'OVH';
-                    
-                    return (
-                      <motion.button
-                        key={domainKey || index}
-                        onClick={() => toggleDomainSelection(domainName)}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.2 }}
-                        style={{
-                          border: isSelected ? '2px solid #15d1a0' : '1px solid #e5e7eb',
-                          borderRadius: '8px',
-                          padding: '0.75rem',
-                          background: isSelected ? '#f0fdfa' : '#ffffff',
-                          cursor: 'pointer',
-                          textAlign: 'left',
-                          transition: 'all 0.2s ease',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          gap: '0.75rem',
-                          width: '100%'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = '#f0fdfa';
-                          e.currentTarget.style.borderColor = '#15d1a0';
-                          e.currentTarget.style.transform = 'translateY(-2px)';
-                          e.currentTarget.style.boxShadow = '0 4px 12px rgba(21, 209, 160, 0.15)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = isSelected ? '#f0fdfa' : '#ffffff';
-                          e.currentTarget.style.borderColor = isSelected ? '#15d1a0' : '#e5e7eb';
-                          e.currentTarget.style.transform = 'translateY(0)';
-                          e.currentTarget.style.boxShadow = 'none';
-                        }}
-                      >
-                        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                            <span style={{ fontWeight: 600, color: '#1a1a1a', fontSize: '0.875rem', wordBreak: 'break-word' }}>
+              const domainName = domain.domain || domain.name || domain;
+              const domainKey = typeof domain === 'string' ? domain : domainName;
+              const isSelected = selectedOvhDomains.has(domainName);
+              const expiration = domain.expiration || domain.expirationDate || '';
+              const registrar = domain.registrar || 'OVH';
+              return <motion.button key={domainKey || index} onClick={() => toggleDomainSelection(domainName)} initial={{
+                opacity: 0,
+                scale: 0.95
+              }} animate={{
+                opacity: 1,
+                scale: 1
+              }} transition={{
+                duration: 0.2
+              }} style={{
+                border: isSelected ? '2px solid #15d1a0' : '1px solid #e5e7eb',
+                borderRadius: '8px',
+                padding: '0.75rem',
+                background: isSelected ? '#f0fdfa' : '#ffffff',
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '0.75rem',
+                width: '100%'
+              }} onMouseEnter={e => {
+                e.currentTarget.style.backgroundColor = '#f0fdfa';
+                e.currentTarget.style.borderColor = '#15d1a0';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(21, 209, 160, 0.15)';
+              }} onMouseLeave={e => {
+                e.currentTarget.style.backgroundColor = isSelected ? '#f0fdfa' : '#ffffff';
+                e.currentTarget.style.borderColor = isSelected ? '#15d1a0' : '#e5e7eb';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}>
+                        <div style={{
+                  flex: 1,
+                  minWidth: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.25rem'
+                }}>
+                          <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    flexWrap: 'wrap'
+                  }}>
+                            <span style={{
+                      fontWeight: 600,
+                      color: '#1a1a1a',
+                      fontSize: '0.875rem',
+                      wordBreak: 'break-word'
+                    }}>
                               {domainName}
                             </span>
-                            {isSelected && (
-                              <Icon icon="mdi:check-circle" style={{ fontSize: '18px', color: '#15d1a0', flexShrink: 0 }} />
-                            )}
+                            {isSelected && <Icon icon="mdi:check-circle" style={{
+                      fontSize: '18px',
+                      color: '#15d1a0',
+                      flexShrink: 0
+                    }} />}
                           </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', fontSize: '0.7rem', color: '#6b7280' }}>
+                          <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    flexWrap: 'wrap',
+                    fontSize: '0.7rem',
+                    color: '#6b7280'
+                  }}>
                             <span>{registrar}</span>
-                            {expiration && <span>• Expire le {formatDate(expiration)}</span>}
+                            {expiration && <span>• Expires on {formatDate(expiration)}</span>}
                           </div>
                         </div>
-                      </motion.button>
-                    );
-                  })}
-                </div>
-              )}
+                      </motion.button>;
+            })}
+                </div>}
             </div>
-            {!loadingOvhDomains && ovhDomains.length > 0 && (
-              <div style={{ 
-                padding: '1rem 1.25rem', 
-                borderTop: '1px solid #e5e7eb', 
-                background: '#ffffff',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
-                <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>
-                  {selectedOvhDomains.size} domaine(s) sélectionné(s)
+            {!loadingOvhDomains && ovhDomains.length > 0 && <div style={{
+          padding: '1rem 1.25rem',
+          borderTop: '1px solid #e5e7eb',
+          background: '#ffffff',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+                <span style={{
+            fontSize: '0.875rem',
+            color: '#6b7280'
+          }}>
+                  {selectedOvhDomains.size} domain(s) selected
                 </span>
-                <div style={{ display: 'flex', gap: '0.75rem' }}>
-                  <button
-                    onClick={handleCloseOvhModal}
-                    style={{
-                      border: '1px solid #d1d5db',
-                      background: '#ffffff',
-                      color: '#1a1a1a',
-                      padding: '0.625rem 1.25rem',
-                      borderRadius: '8px',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      fontSize: '0.875rem',
-                      transition: 'all 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = '#9ca3af';
-                      e.currentTarget.style.backgroundColor = '#f9fafb';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = '#d1d5db';
-                      e.currentTarget.style.backgroundColor = '#ffffff';
-                    }}
-                  >
-                    Annuler
+                <div style={{
+            display: 'flex',
+            gap: '0.75rem'
+          }}>
+                  <button onClick={handleCloseOvhModal} style={{
+              border: '1px solid #d1d5db',
+              background: '#ffffff',
+              color: '#1a1a1a',
+              padding: '0.625rem 1.25rem',
+              borderRadius: '8px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              fontSize: '0.875rem',
+              transition: 'all 0.2s ease'
+            }} onMouseEnter={e => {
+              e.currentTarget.style.borderColor = '#9ca3af';
+              e.currentTarget.style.backgroundColor = '#f9fafb';
+            }} onMouseLeave={e => {
+              e.currentTarget.style.borderColor = '#d1d5db';
+              e.currentTarget.style.backgroundColor = '#ffffff';
+            }}>
+                    Cancel
                   </button>
-                  <button
-                    onClick={handleImportOvhDomains}
-                    disabled={selectedOvhDomains.size === 0 || loadingOvhDomains}
-                    style={{
-                      background: selectedOvhDomains.size === 0 || loadingOvhDomains ? '#9CA3AF' : '#15d1a0',
-                      color: '#ffffff',
-                      padding: '0.625rem 1.25rem',
-                      borderRadius: '8px',
-                      fontWeight: 700,
-                      border: 'none',
-                      cursor: selectedOvhDomains.size === 0 || loadingOvhDomains ? 'not-allowed' : 'pointer',
-                      fontSize: '0.875rem',
-                      transition: 'all 0.2s ease',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem'
-                    }}
-                    onMouseEnter={(e) => {
-                      if (selectedOvhDomains.size > 0 && !loadingOvhDomains) {
-                        e.currentTarget.style.backgroundColor = '#13ba8e';
-                        e.currentTarget.style.transform = 'translateY(-1px)';
-                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(21, 209, 160, 0.3)';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (selectedOvhDomains.size > 0 && !loadingOvhDomains) {
-                        e.currentTarget.style.backgroundColor = '#15d1a0';
-                        e.currentTarget.style.transform = 'translateY(0)';
-                        e.currentTarget.style.boxShadow = 'none';
-                      }
-                    }}
-                  >
+                  <button onClick={handleImportOvhDomains} disabled={selectedOvhDomains.size === 0 || loadingOvhDomains} style={{
+              background: selectedOvhDomains.size === 0 || loadingOvhDomains ? '#9CA3AF' : '#15d1a0',
+              color: '#ffffff',
+              padding: '0.625rem 1.25rem',
+              borderRadius: '8px',
+              fontWeight: 700,
+              border: 'none',
+              cursor: selectedOvhDomains.size === 0 || loadingOvhDomains ? 'not-allowed' : 'pointer',
+              fontSize: '0.875rem',
+              transition: 'all 0.2s ease',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }} onMouseEnter={e => {
+              if (selectedOvhDomains.size > 0 && !loadingOvhDomains) {
+                e.currentTarget.style.backgroundColor = '#13ba8e';
+                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(21, 209, 160, 0.3)';
+              }
+            }} onMouseLeave={e => {
+              if (selectedOvhDomains.size > 0 && !loadingOvhDomains) {
+                e.currentTarget.style.backgroundColor = '#15d1a0';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }
+            }}>
                     <Icon icon="mdi:download" width={16} height={16} />
-                    Importer ({selectedOvhDomains.size})
+                    Import ({selectedOvhDomains.size})
                   </button>
                 </div>
-              </div>
-            )}
+              </div>}
           </div>
-        </div>
-      )}
-    </motion.div>
-  );
+        </div>}
+    </motion.div>;
 };
-
 export default StepNDD;

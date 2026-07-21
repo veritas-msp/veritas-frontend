@@ -5,21 +5,19 @@ import { getOvhApiGuideCopy } from "../../AdminPage/adminIntegrationModalsI18n";
 import formStyles from "../EnterpriseFormModal.module.css";
 import styles from "../../AdminPage/BitdefenderIntegrationModal.module.css";
 import ovhStyles from "../../AdminPage/OvhIntegrationModal.module.css";
-
 export const OVH_CREATE_APP_URL = "https://eu.api.ovh.com/createApp/";
-export const OVH_TOKEN_URL_DOMAIN =
-  "https://eu.api.ovh.com/createToken/index.cgi?GET=/domain/*";
+export const OVH_TOKEN_URL_DOMAIN = "https://eu.api.ovh.com/createToken/index.cgi?GET=/domain/*";
 export const OVH_TOKEN_URL_ALL = "https://eu.api.ovh.com/createToken/index.cgi?GET=/*";
-
-export default function OvhApiGuide({ variant = "client", locale: localeProp }) {
+export default function OvhApiGuide({
+  variant = "client",
+  locale: localeProp
+}) {
   const appLocale = useAppLocale();
   const locale = localeProp || appLocale;
   const copy = useMemo(() => getOvhApiGuideCopy(locale), [locale]);
   const isAdmin = variant === "admin";
   const steps = copy.steps;
-
-  return (
-    <>
+  return <>
       <div className={formStyles.sectionHead}>
         <h3 className={formStyles.sectionTitle}>{copy.title}</h3>
         <p className={formStyles.sectionDesc}>
@@ -38,12 +36,7 @@ export default function OvhApiGuide({ variant = "client", locale: localeProp }) 
             <p className={styles.guideStepTitle}>{steps[0].title}</p>
             <p className={styles.guideStepDesc}>
               {steps[0].desc.split(steps[0].linkLabel)[0]}
-              <a
-                href={OVH_CREATE_APP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.guideExternalLink}
-              >
+              <a href={OVH_CREATE_APP_URL} target="_blank" rel="noopener noreferrer" className={styles.guideExternalLink}>
                 {steps[0].linkLabel}
                 <Icon icon="mdi:open-in-new" className={styles.guideExternalIcon} aria-hidden />
               </a>
@@ -62,12 +55,7 @@ export default function OvhApiGuide({ variant = "client", locale: localeProp }) 
               <li>
                 <strong>{steps[1].recommended}</strong>
                 <br />
-                <a
-                  href={OVH_TOKEN_URL_DOMAIN}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.guideExternalLink}
-                >
+                <a href={OVH_TOKEN_URL_DOMAIN} target="_blank" rel="noopener noreferrer" className={styles.guideExternalLink}>
                   {steps[1].recommendedLink}
                   <Icon icon="mdi:open-in-new" className={styles.guideExternalIcon} aria-hidden />
                 </a>
@@ -75,12 +63,7 @@ export default function OvhApiGuide({ variant = "client", locale: localeProp }) 
               <li>
                 <strong>{steps[1].alternative}</strong>
                 <br />
-                <a
-                  href={OVH_TOKEN_URL_ALL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.guideExternalLink}
-                >
+                <a href={OVH_TOKEN_URL_ALL} target="_blank" rel="noopener noreferrer" className={styles.guideExternalLink}>
                   {steps[1].alternativeLink}
                   <Icon icon="mdi:open-in-new" className={styles.guideExternalIcon} aria-hidden />
                 </a>
@@ -100,6 +83,5 @@ export default function OvhApiGuide({ variant = "client", locale: localeProp }) 
           </div>
         </li>
       </ol>
-    </>
-  );
+    </>;
 }

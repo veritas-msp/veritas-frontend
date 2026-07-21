@@ -29,15 +29,7 @@ body.dark {
   background-color: #0f0f23 !important;
 }
 
-/* ──────────────────────────────
-   🎨 Structure principale : ContentWrapper
-   ──────────────────────────────
-   Structure :
-   - Sidebar (fixe à gauche)
-   - TabsBar (fixe en haut, sous la sidebar)
-   - ContentWrapper (conteneur principal, positionné sous la TabsBar)
-     → Pas de scroll par défaut : chaque page gère son propre scroll interne
-*/
+
 
 .contentWrapper {
   margin-left: 240px;
@@ -51,21 +43,21 @@ body.dark {
   background-color: var(--bg-primary);
   height: 100vh;
   overflow-x: hidden;
-  /* Pas de scroll par défaut : chaque page gère son propre scroll si nécessaire */
+  
   overflow-y: hidden;
 }
 
 .contentWrapper.withTabs {
   top: var(--tabs-bar-height, 34px);
   height: calc(100vh - var(--tabs-bar-height, 34px));
-  /* Pas de scroll par défaut : chaque page gère son propre scroll interne */
+  
   overflow-y: hidden;
-  /* Permettre aux pages enfants de prendre toute la hauteur disponible */
+  
   display: flex;
   flex-direction: column;
 }
 
-/* Chaque page directe prend toute la hauteur disponible et gère son propre scroll */
+
 .contentWrapper > * {
   height: 100%;
   min-height: 0;
@@ -94,7 +86,7 @@ body.dark {
 }
 
 .main-content {
-  margin-left: 240px; /* Aligns with the new sidebar width */
+  margin-left: 240px; 
   padding: 2rem;
   background-color: var(--bg-primary);
   color: var(--text-primary);
@@ -110,7 +102,7 @@ body.dark {
   .main-content {
     margin-left: 0;
     padding: 1rem;
-    padding-top: 60px; /* Add padding to avoid content being hidden by the burger menu */
+    padding-top: 60px; 
   }
 }
 

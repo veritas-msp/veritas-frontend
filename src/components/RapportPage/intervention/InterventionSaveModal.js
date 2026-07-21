@@ -6,7 +6,6 @@ import { useAppLocale } from "../../../hooks/useAppGeneralSettings";
 import { getReportSaveVisibilityCopy } from "../../shared/reportSaveVisibilityI18n";
 import formStyles from "../../EnterprisesPage/EnterpriseFormModal.module.css";
 import styles from "./InterventionSaveModal.module.css";
-
 export default function InterventionSaveModal({
   open,
   copy,
@@ -16,30 +15,16 @@ export default function InterventionSaveModal({
   onVisibleToClientChange,
   saving = false,
   onClose,
-  onConfirm,
+  onConfirm
 }) {
   const locale = useAppLocale();
   const visibilityCopy = useMemo(() => getReportSaveVisibilityCopy(locale), [locale]);
-
   if (!open) return null;
-
   const canSave = Boolean(String(documentName || "").trim()) && !saving;
-
-  return createPortal(
-    <div
-      className={formStyles.overlay}
-      onClick={(e) => {
-        if (e.target === e.currentTarget && !saving) onClose?.();
-      }}
-      role="presentation"
-    >
-      <div
-        className={`${formStyles.shell} ${styles.shell}`}
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="intervention-save-modal-title"
-      >
+  return createPortal(<div className={formStyles.overlay} onClick={e => {
+    if (e.target === e.currentTarget && !saving) onClose?.();
+  }} role="presentation">
+      <div className={`${formStyles.shell} ${styles.shell}`} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="intervention-save-modal-title">
         <div className={formStyles.accentBar} aria-hidden />
 
         <header className={formStyles.header}>
@@ -55,13 +40,7 @@ export default function InterventionSaveModal({
               <p className={formStyles.subtitle}>{copy.subtitle}</p>
             </div>
           </div>
-          <button
-            type="button"
-            className={formStyles.closeBtn}
-            onClick={onClose}
-            disabled={saving}
-            aria-label={copy.cancel}
-          >
+          <button type="button" className={formStyles.closeBtn} onClick={onClose} disabled={saving} aria-label={copy.cancel}>
             <FaTimes />
           </button>
         </header>
@@ -88,15 +67,7 @@ export default function InterventionSaveModal({
               <span className={styles.visibilityLabel}>{visibilityCopy.label}</span>
               <p className={styles.visibilityHint}>{visibilityCopy.hint}</p>
             </div>
-            <button
-              type="button"
-              role="switch"
-              aria-checked={visibleToClient}
-              aria-label={visibilityCopy.label}
-              className={`${styles.switch} ${visibleToClient ? styles.switchOn : ""}`.trim()}
-              onClick={() => onVisibleToClientChange?.(!visibleToClient)}
-              disabled={saving}
-            >
+            <button type="button" role="switch" aria-checked={visibleToClient} aria-label={visibilityCopy.label} className={`${styles.switch} ${visibleToClient ? styles.switchOn : ""}`.trim()} onClick={() => onVisibleToClientChange?.(!visibleToClient)} disabled={saving}>
               <span className={styles.switchTrack}>
                 <span className={styles.switchThumb} />
               </span>
@@ -110,36 +81,20 @@ export default function InterventionSaveModal({
         <footer className={formStyles.footer}>
           <span className={formStyles.footerHint}>{copy.footerHint}</span>
           <div className={formStyles.footerActions}>
-            <button
-              type="button"
-              className={formStyles.ghostBtn}
-              onClick={onClose}
-              disabled={saving}
-            >
+            <button type="button" className={formStyles.ghostBtn} onClick={onClose} disabled={saving}>
               {copy.cancel}
             </button>
-            <button
-              type="button"
-              className={formStyles.primaryBtn}
-              onClick={onConfirm}
-              disabled={!canSave}
-            >
-              {saving ? (
-                <>
+            <button type="button" className={formStyles.primaryBtn} onClick={onConfirm} disabled={!canSave}>
+              {saving ? <>
                   <Icon icon="mdi:loading" className={styles.spinning} aria-hidden />
                   {copy.saving}
-                </>
-              ) : (
-                <>
+                </> : <>
                   <Icon icon="mdi:content-save-outline" aria-hidden />
                   {copy.confirm}
-                </>
-              )}
+                </>}
             </button>
           </div>
         </footer>
       </div>
-    </div>,
-    document.getElementById("modal-root") || document.body
-  );
+    </div>, document.getElementById("modal-root") || document.body);
 }

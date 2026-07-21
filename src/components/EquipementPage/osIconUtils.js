@@ -1,8 +1,9 @@
-export function getOsIconName(osLabel, { withFallback = false } = {}) {
+export function getOsIconName(osLabel, {
+  withFallback = false
+} = {}) {
   if (!osLabel || osLabel === "-") return null;
   const osRaw = String(osLabel).toLowerCase();
   if (!osRaw) return null;
-
   if (osRaw.includes("windows") || osRaw.includes("win ") || osRaw.startsWith("win")) {
     return "mdi:microsoft-windows";
   }
@@ -24,6 +25,5 @@ export function getOsIconName(osLabel, { withFallback = false } = {}) {
   if (osRaw.includes("hyper-v")) return "mdi:microsoft-windows";
   if (osRaw.includes("esxi") || osRaw.includes("vmware")) return "logos:vmware";
   if (osRaw.includes("linux")) return "logos:linux-tux";
-
   return withFallback ? "mdi:desktop-classic" : null;
 }

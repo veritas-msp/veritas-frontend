@@ -1,8 +1,6 @@
 import { getLocalizedEquipmentTypeLabel } from "../../i18n/equipmentFamilyLabels";
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 const STATUS_FILTER_IDS = ["all", "issues", "todo", "unmapped"];
-
 const EQUIPMENT_MSP_PANEL_COPY = {
   fr: {
     fleetTable: {
@@ -12,24 +10,24 @@ const EQUIPMENT_MSP_PANEL_COPY = {
       locations: "Lieux",
       supervision: "Supervision",
       lastSync: "Dernière synchro",
-      actionsAria: "Actions",
+      actionsAria: "Actions"
     },
     filters: {
       aria: "Filtrer les périphériques",
       all: "Tous",
       issues: "Alertes",
       todo: "À traiter",
-      unmapped: "Non mappés",
+      unmapped: "Non mappés"
     },
     toolbar: {
       typeTabsAria: "Types de périphériques",
       deviceCount: "{count} périph.",
       todoCount: "{count} à traiter",
-      okCount: "{count} OK",
+      okCount: "{count} OK"
     },
     row: {
       noName: "Sans nom",
-      lastCollection: "Dernière collecte {source}",
+      lastCollection: "Dernière collecte {source}"
     },
     storage: "Stockage",
     empty: {
@@ -40,7 +38,7 @@ const EQUIPMENT_MSP_PANEL_COPY = {
       noFilterMatchTitle: "Aucun résultat",
       noFilterMatchText: "Aucun périphérique ne correspond à ce filtre.",
       showAll: "Afficher tous les périphériques",
-      noEquipment: "Aucun équipement.",
+      noEquipment: "Aucun équipement."
     },
     mkBar: {
       label: "Monitoring",
@@ -50,8 +48,8 @@ const EQUIPMENT_MSP_PANEL_COPY = {
       clear: "Effacer",
       sync: "Synchroniser",
       alertCountOne: "{count} alerte",
-      alertCountMany: "{count} alertes",
-    },
+      alertCountMany: "{count} alertes"
+    }
   },
   en: {
     fleetTable: {
@@ -59,26 +57,26 @@ const EQUIPMENT_MSP_PANEL_COPY = {
       name: "Name",
       company: "Company",
       locations: "Sites",
-      supervision: "Supervision",
+      supervision: "Monitoring",
       lastSync: "Last sync",
-      actionsAria: "Actions",
+      actionsAria: "Actions"
     },
     filters: {
       aria: "Filter devices",
       all: "All",
       issues: "Alerts",
       todo: "To do",
-      unmapped: "Unmapped",
+      unmapped: "Unmapped"
     },
     toolbar: {
       typeTabsAria: "Device types",
       deviceCount: "{count} devices",
       todoCount: "{count} to do",
-      okCount: "{count} OK",
+      okCount: "{count} OK"
     },
     row: {
       noName: "Unnamed",
-      lastCollection: "Last collection {source}",
+      lastCollection: "Last collection {source}"
     },
     storage: "Storage",
     empty: {
@@ -89,7 +87,7 @@ const EQUIPMENT_MSP_PANEL_COPY = {
       noFilterMatchTitle: "No results",
       noFilterMatchText: "No devices match this filter.",
       showAll: "Show all devices",
-      noEquipment: "No equipment.",
+      noEquipment: "No equipment."
     },
     mkBar: {
       label: "Monitoring",
@@ -99,8 +97,8 @@ const EQUIPMENT_MSP_PANEL_COPY = {
       clear: "Clear",
       sync: "Sync",
       alertCountOne: "{count} alert",
-      alertCountMany: "{count} alerts",
-    },
+      alertCountMany: "{count} alerts"
+    }
   },
   de: {
     fleetTable: {
@@ -110,24 +108,24 @@ const EQUIPMENT_MSP_PANEL_COPY = {
       locations: "Standorte",
       supervision: "Überwachung",
       lastSync: "Letzte Synchronisation",
-      actionsAria: "Aktionen",
+      actionsAria: "Aktionen"
     },
     filters: {
       aria: "Geräte filtern",
       all: "Alle",
       issues: "Alarme",
       todo: "Zu erledigen",
-      unmapped: "Nicht zugeordnet",
+      unmapped: "Nicht zugeordnet"
     },
     toolbar: {
       typeTabsAria: "Gerätetypen",
       deviceCount: "{count} Ger.",
       todoCount: "{count} zu erledigen",
-      okCount: "{count} OK",
+      okCount: "{count} OK"
     },
     row: {
       noName: "Ohne Name",
-      lastCollection: "Letzte Erfassung {source}",
+      lastCollection: "Letzte Erfassung {source}"
     },
     storage: "Speicher",
     empty: {
@@ -138,7 +136,7 @@ const EQUIPMENT_MSP_PANEL_COPY = {
       noFilterMatchTitle: "Keine Ergebnisse",
       noFilterMatchText: "Kein Gerät entspricht diesem Filter.",
       showAll: "Alle Geräte anzeigen",
-      noEquipment: "Keine Geräte.",
+      noEquipment: "Keine Geräte."
     },
     mkBar: {
       label: "Monitoring",
@@ -148,8 +146,8 @@ const EQUIPMENT_MSP_PANEL_COPY = {
       clear: "Löschen",
       sync: "Synchronisieren",
       alertCountOne: "{count} Alarm",
-      alertCountMany: "{count} Alarme",
-    },
+      alertCountMany: "{count} Alarme"
+    }
   },
   it: {
     fleetTable: {
@@ -159,24 +157,24 @@ const EQUIPMENT_MSP_PANEL_COPY = {
       locations: "Sedi",
       supervision: "Supervisione",
       lastSync: "Ultima sincronizzazione",
-      actionsAria: "Azioni",
+      actionsAria: "Azioni"
     },
     filters: {
       aria: "Filtra dispositivi",
       all: "Tutti",
       issues: "Avvisi",
       todo: "Da trattare",
-      unmapped: "Non mappati",
+      unmapped: "Non mappati"
     },
     toolbar: {
       typeTabsAria: "Tipi di dispositivo",
       deviceCount: "{count} disp.",
       todoCount: "{count} da trattare",
-      okCount: "{count} OK",
+      okCount: "{count} OK"
     },
     row: {
       noName: "Senza nome",
-      lastCollection: "Ultima raccolta {source}",
+      lastCollection: "Ultima raccolta {source}"
     },
     storage: "Storage",
     empty: {
@@ -187,7 +185,7 @@ const EQUIPMENT_MSP_PANEL_COPY = {
       noFilterMatchTitle: "Nessun risultato",
       noFilterMatchText: "Nessun dispositivo corrisponde a questo filtro.",
       showAll: "Mostra tutti i dispositivi",
-      noEquipment: "Nessun dispositivo.",
+      noEquipment: "Nessun dispositivo."
     },
     mkBar: {
       label: "Monitoraggio",
@@ -197,8 +195,8 @@ const EQUIPMENT_MSP_PANEL_COPY = {
       clear: "Cancella",
       sync: "Sincronizza",
       alertCountOne: "{count} avviso",
-      alertCountMany: "{count} avvisi",
-    },
+      alertCountMany: "{count} avvisi"
+    }
   },
   es: {
     fleetTable: {
@@ -208,24 +206,24 @@ const EQUIPMENT_MSP_PANEL_COPY = {
       locations: "Ubicaciones",
       supervision: "Supervisión",
       lastSync: "Última sincronización",
-      actionsAria: "Acciones",
+      actionsAria: "Acciones"
     },
     filters: {
       aria: "Filtrar dispositivos",
       all: "Todos",
       issues: "Alertas",
       todo: "Por tratar",
-      unmapped: "Sin mapear",
+      unmapped: "Sin mapear"
     },
     toolbar: {
       typeTabsAria: "Tipos de dispositivo",
       deviceCount: "{count} disp.",
       todoCount: "{count} por tratar",
-      okCount: "{count} OK",
+      okCount: "{count} OK"
     },
     row: {
       noName: "Sin nombre",
-      lastCollection: "Última recopilación {source}",
+      lastCollection: "Última recopilación {source}"
     },
     storage: "Almacenamiento",
     empty: {
@@ -236,7 +234,7 @@ const EQUIPMENT_MSP_PANEL_COPY = {
       noFilterMatchTitle: "Sin resultados",
       noFilterMatchText: "Ningún dispositivo coincide con este filtro.",
       showAll: "Mostrar todos los dispositivos",
-      noEquipment: "Sin equipos.",
+      noEquipment: "Sin equipos."
     },
     mkBar: {
       label: "Monitorización",
@@ -246,33 +244,39 @@ const EQUIPMENT_MSP_PANEL_COPY = {
       clear: "Borrar",
       sync: "Sincronizar",
       alertCountOne: "{count} alerta",
-      alertCountMany: "{count} alertas",
-    },
-  },
+      alertCountMany: "{count} alertas"
+    }
+  }
 };
-
 export function getEquipmentMspPanelCopy(locale) {
   const t = pickLocaleMessages(EQUIPMENT_MSP_PANEL_COPY, locale);
-
-  const getTypeLabel = (type) => getLocalizedEquipmentTypeLabel(type, locale, type);
-
+  const getTypeLabel = type => getLocalizedEquipmentTypeLabel(type, locale, type);
   return {
     ...t,
-    statusFilters: STATUS_FILTER_IDS.map((id) => ({
+    statusFilters: STATUS_FILTER_IDS.map(id => ({
       id,
-      label: t.filters[id],
+      label: t.filters[id]
     })),
     getTypeLabel,
     formatTypeTitle: (type, count) => `${getTypeLabel(type)} (${count})`,
-    formatLastCollectionTitle: (source) =>
-      interpolate(t.row.lastCollection, { source: source || "-" }),
-    formatDeviceCount: (count) => interpolate(t.toolbar.deviceCount, { count: String(count) }),
-    formatTodoCount: (count) => interpolate(t.toolbar.todoCount, { count: String(count) }),
-    formatOkCount: (count) => interpolate(t.toolbar.okCount, { count: String(count) }),
-    formatMkAlertSub: (count) => {
+    formatLastCollectionTitle: source => interpolate(t.row.lastCollection, {
+      source: source || "-"
+    }),
+    formatDeviceCount: count => interpolate(t.toolbar.deviceCount, {
+      count: String(count)
+    }),
+    formatTodoCount: count => interpolate(t.toolbar.todoCount, {
+      count: String(count)
+    }),
+    formatOkCount: count => interpolate(t.toolbar.okCount, {
+      count: String(count)
+    }),
+    formatMkAlertSub: count => {
       const n = Number(count) || 0;
       const template = n === 1 ? t.mkBar.alertCountOne : t.mkBar.alertCountMany;
-      return interpolate(template, { count: String(n) });
-    },
+      return interpolate(template, {
+        count: String(n)
+      });
+    }
   };
 }

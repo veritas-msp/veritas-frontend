@@ -16,7 +16,7 @@
   color: #e5e7eb;
 }
 
-/* ───────────── CARTE MODULE ───────────── */
+
 .moduleCard {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -40,7 +40,7 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 }
 
-/* ───────────── EN-TÊTE DU MODULE ───────────── */
+
 .moduleHeader {
   display: flex;
   align-items: center;
@@ -173,31 +173,31 @@
   font-size: 8px;
 }
 
-/* Statut Excellent */
+
 .statusDot.excellent {
   background-color: #10b981;
   color: #10b981;
 }
 
-/* Statut Good */
+
 .statusDot.good {
   background-color: #22c55e;
   color: #22c55e;
 }
 
-/* Statut Warning */
+
 .statusDot.warning {
   background-color: #f59e0b;
   color: #f59e0b;
 }
 
-/* Statut Critical */
+
 .statusDot.critical {
   background-color: #ef4444;
   color: #ef4444;
 }
 
-/* Statut Unknown */
+
 .statusDot.unknown {
   background-color: #6b7280;
   color: #6b7280;
@@ -225,7 +225,7 @@
   color: #f9fafb;
 }
 
-/* Section des sous-titres */
+
 .subtitleSection {
   margin-bottom: 0.5rem;
 }
@@ -243,7 +243,7 @@
   color: #9ca3af;
 }
 
-/* Section d'affichage du nombre d'endpoints */
+
 .jobsCountSection {
   display: flex;
   justify-content: center;
@@ -305,7 +305,7 @@
   color: white;
 }
 
-/* Séparateur */
+
 .separator {
   border: none;
   height: 1px;
@@ -317,7 +317,7 @@
   background-color: #374151;
 }
 
-/* Informations des endpoints avec icônes */
+
 .flowInfo {
   display: flex;
   flex-direction: column;
@@ -395,7 +395,7 @@
   background-color: #064e3b;
 }
 
-/* Métriques de sécurité */
+
 .metricsSection {
   margin-top: 1rem;
   display: flex;
@@ -513,7 +513,7 @@
   color: #ef4444;
 }
 
-/* Détails des menaces */
+
 .threatDetails {
   margin-top: 1rem;
 }
@@ -576,19 +576,19 @@
   color: #fca5a5;
 }
 
-/* Responsive */
+
 @media (max-width: 1200px) {
   .backupGrid {
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   }
 }
 
-/* Carte des statistiques en pleine largeur */
+
 .fullWidthCard {
   margin-top: 1rem;
 }
 
-/* Contenu antispam dans la carte principale */
+
 .antivirusContent {
   display: flex;
   flex-direction: column;
@@ -598,7 +598,7 @@
   box-sizing: border-box;
 }
 
-/* Carte des informations antispam - Style uniforme avec SauvegardeSummary */
+
 .antivirusCard {
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
@@ -627,7 +627,7 @@
   transform: translateY(-1px);
 }
 
-/* Informations antispam */
+
 .antivirusInfo {
   display: flex;
   flex-direction: column;
@@ -663,7 +663,7 @@
   color: #9ca3af;
 }
 
-/* Label antispam */
+
 .antivirusLabel {
   font-size: 10px;
   font-weight: 600;
@@ -677,7 +677,7 @@
   letter-spacing: 0.5px;
 }
 
-/* Conteneur des détails avec bordure (style uniforme avec FirewallsSummary) */
+
 .firewallDetailsContainer {
   width: 100%;
   padding-bottom: 0.5rem;
@@ -698,7 +698,7 @@
   color: #9ca3af;
 }
 
-/* Séparateur dans la carte */
+
 .cardSeparator {
   border: none;
   height: 1px;
@@ -710,7 +710,7 @@
   background-color: #4a4a6a;
 }
 
-/* Section des statistiques dans la carte */
+
 .statsSection {
   margin-top: 1rem;
 }
@@ -800,12 +800,12 @@
   color: #9ca3af;
 }
 
-/* Détails des menaces - Layout refait */
+
 .threatDetails {
   margin-top: 1.5rem;
 }
 
-/* Conteneur principal 50/50 strict */
+
 .threatContainer {
   display: flex;
   gap: 1.5rem;
@@ -816,7 +816,7 @@
   overflow: hidden;
 }
 
-/* Sections uniformes - Style uniforme avec SauvegardeSummary */
+
 .chartSection,
 .endpointsSection {
   flex: 1;
@@ -855,7 +855,7 @@
   transform: translateY(-1px);
 }
 
-/* Titres des sections */
+
 .sectionTitle {
   font-size: 1rem;
   font-weight: 600;
@@ -868,7 +868,7 @@
   color: #e5e7eb;
 }
 
-/* Boîte du graphique */
+
 .chartBox {
   flex: 1;
   display: flex;
@@ -878,7 +878,7 @@
   position: relative;
 }
 
-/* Message quand pas de données */
+
 .noDataMessage {
   display: flex;
   flex-direction: column;
@@ -903,7 +903,7 @@
   color: #9ca3af;
 }
 
-/* Conteneur des endpoints */
+
 .endpointsContainer {
   display: flex;
   flex-direction: column;
@@ -988,7 +988,7 @@
   color: #9ca3af;
 }
 
-/* Total des mails traités dans la section répartition */
+
 .totalMailsSection {
   display: flex;
   justify-content: center;
@@ -1027,7 +1027,7 @@
   color: #9ca3af;
 }
 
-/* Grille des statistiques des mails */
+
 .mailStatsGrid {
   display: flex;
   flex-direction: column;
@@ -1082,7 +1082,7 @@
   color: #e2e8f0;
 }
 
-/* Responsive design refait */
+
 @media (max-width: 1024px) {
   .threatContainer {
     gap: 1rem;
@@ -1205,7 +1205,7 @@
   }
 }
 
-/* ───────────── SECTION DE COMMENTAIRE ───────────── */
+
 .commentSection {
   display: flex;
   flex-direction: column;
@@ -1305,9 +1305,9 @@
   }
 }
 
-/* ───────────── STYLES POUR LES GRAPHIQUES RECCHARTS ───────────── */
 
-/* Tooltip personnalisé pour les graphiques */
+
+
 .customTooltip {
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
@@ -1349,7 +1349,7 @@
   color: #9ca3af;
 }
 
-/* Responsive des graphiques */
+
 @media (max-width: 768px) {
   .customTooltip {
     padding: 8px 12px;
@@ -1382,7 +1382,7 @@
   }
 }
 
-/* ───────────── STYLES POUR ANTISPAM SUMMARY ───────────── */
+
 .antispamGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
@@ -1460,7 +1460,7 @@
   min-width: 0;
 }
 
-/* ───────────── MÉTRIQUES ───────────── */
+
 .metricsRow {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -1510,7 +1510,7 @@
   color: #e5e7eb;
 }
 
-/* ───────────── GRAPHIQUES ───────────── */
+
 .chartsContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -1552,7 +1552,7 @@
   color: #e5e7eb;
 }
 
-/* ───────────── SECTIONS ───────────── */
+
 .endpointsTableSection {
   width: 100%;
 }
@@ -1576,13 +1576,13 @@
   width: 100%;
   overflow-x: auto;
   margin-top: 1rem;
-  /* Masquer la scrollbar horizontale */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
 
 .endpointsTableContainer::-webkit-scrollbar {
-  height: 0; /* Masquer la scrollbar horizontale */
+  height: 0; 
   display: none;
 }
 
@@ -1649,7 +1649,7 @@
   color: #d1d5db;
 }
 
-/* ───────────── INFORMATIONS DE LICENCE ───────────── */
+
 .licenseSection {
   width: 100%;
 }

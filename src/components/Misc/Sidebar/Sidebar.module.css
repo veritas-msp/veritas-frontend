@@ -1,9 +1,7 @@
 
 
 
-/* ──────────────────────────────
-   🎨 Sidebar avec style de la page de login
-   ────────────────────────────── */
+
 
 .sidebar {
   display: flex;
@@ -52,7 +50,7 @@
   height: 100%;
 }
 
-/* Logo Section */
+
 .logoHeader {
   position: relative;
   margin-bottom: 12px;
@@ -61,7 +59,7 @@
   gap: 8px;
 }
 
-/* Hôte tooltip portail (logo) : wrapper pleine largeur */
+
 .sidebarTooltipHost {
   display: block;
   width: 100%;
@@ -127,8 +125,8 @@
   margin: 4px 0;
 }
 
-/* Section Container */
-/* Section Titles */
+
+
 .sectionTitleButton {
   display: flex;
   align-items: center;
@@ -169,7 +167,7 @@
   color: #2b5fab;
 }
 
-/* Navigation Lists */
+
 .navList {
   list-style: none;
   padding: 0;
@@ -196,7 +194,7 @@
   margin-bottom: 0;
 }
 
-/* Navigation Items */
+
 .navItem {
   padding: 10px 14px;
   margin-bottom: 4px;
@@ -237,7 +235,7 @@
   justify-content: center;
 }
 
-/* Couleurs par entrée (état normal) · au survol / actif, la couleur suit le texte du navItem */
+
 .itemIconInfra {
   color: #2563eb;
 }
@@ -330,8 +328,8 @@
   font-size: 1.15rem;
 }
 
-/* User Section · menu compte (avatar) */
-/* ── Utilitaires sidebar (? · thème · notifications) ── */
+
+
 .utilitiesSection {
   margin-top: auto;
   padding-top: 8px;
@@ -396,7 +394,7 @@
   width: auto;
 }
 
-/* Legacy theme styles (unused) */
+
 .themeSection {
   margin-top: auto;
   padding-top: 8px;
@@ -635,7 +633,7 @@
   border: none;
 }
 
-/* Mobile Styles */
+
 .mobileSidebar {
   width: 300px;
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35);
@@ -712,7 +710,7 @@
   color: #fca5a5;
 }
 
-/* Styles pour le mode réduit */
+
 .sidebarCollapsed .sectionTitle,
 .sidebarCollapsed .sectionTitleButton,
 .sidebarCollapsed .sectionChevron {
@@ -723,7 +721,7 @@
   margin: 4px 0;
 }
 
-/* Séparateurs entre sections (sidebar repliée · rendus uniquement si isCollapsed && !isMobile) */
+
 .sectionDividerCollapsed {
   border: none;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -740,7 +738,7 @@
   margin: 0;
 }
 
-/* Masquer les libellés texte en mode replié, pas les icônes */
+
 .sidebarCollapsed .navItem .accessNavLabel {
   display: none;
 }
@@ -761,7 +759,7 @@
   display: none;
 }
 
-/* Draft Dot */
+
 .draftDot {
   color: #f59e0b;
   margin-left: 8px;
@@ -769,14 +767,14 @@
   vertical-align: middle;
 }
 
-/* Label with dot */
+
 .labelWithDot {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* Responsive */
+
 @media (max-width: 1024px) {
   .sidebar:not(.mobileSidebar) {
     width: 0;

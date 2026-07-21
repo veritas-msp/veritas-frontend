@@ -1,127 +1,115 @@
-export const ANTIVIRUS_OVERVIEW_GROUPS = [
-  { id: "core", label: "Vue d'ensemble" },
-  { id: "exploited", label: "Exploitées dans Veritas" },
-  { id: "preview", label: "APIs disponibles (aperçu)" },
-];
-
-export const ANTIVIRUS_OVERVIEW_SECTIONS = [
-  {
-    id: "overview",
-    group: "core",
-    label: "Synthèse",
-    description: "KPIs et statut des APIs",
-    icon: "mdi:view-dashboard-outline",
-  },
-  {
-    id: "endpoints",
-    group: "exploited",
-    label: "Postes & réseau",
-    description: "Inventaire network",
-    icon: "mdi:desktop-classic",
-    sectionKey: "endpoints",
-  },
-  {
-    id: "license",
-    group: "exploited",
-    label: "Licences",
-    description: "Quotas GravityZone",
-    icon: "mdi:license",
-    sectionKey: "license",
-  },
-  {
-    id: "policies",
-    group: "exploited",
-    label: "Politiques",
-    description: "Policies de sécurité",
-    icon: "mdi:shield-cog-outline",
-    sectionKey: "policies",
-  },
-  {
-    id: "reports",
-    group: "exploited",
-    label: "Rapports",
-    description: "Rapports planifiés",
-    icon: "mdi:file-chart-outline",
-    sectionKey: "reports",
-  },
-  {
-    id: "incidents",
-    group: "preview",
-    label: "Incidents",
-    description: "EDR & détections",
-    icon: "mdi:alert-octagon-outline",
-    sectionKey: "incidents",
-  },
-  {
-    id: "quarantine",
-    group: "preview",
-    label: "Quarantaine",
-    description: "Fichiers isolés",
-    icon: "mdi:archive-lock-outline",
-    sectionKey: "quarantine",
-  },
-  {
-    id: "patch",
-    group: "preview",
-    label: "Patch Management",
-    description: "Patches manquants / installés",
-    icon: "mdi:package-variant-closed",
-    sectionKey: "patchManagement",
-  },
-  {
-    id: "phasr",
-    group: "preview",
-    label: "PHASR",
-    description: "Recommandations",
-    icon: "mdi:shield-search",
-    sectionKey: "phasr",
-  },
-  {
-    id: "investigation",
-    group: "preview",
-    label: "Enquête",
-    description: "Investigation API",
-    icon: "mdi:magnify-scan",
-    sectionKey: "investigation",
-  },
-  {
-    id: "push",
-    group: "preview",
-    label: "Event Push",
-    description: "Webhooks temps réel",
-    icon: "mdi:webhook",
-    sectionKey: "push",
-  },
-  {
-    id: "packages",
-    group: "preview",
-    label: "Packages",
-    description: "Agents & déploiement",
-    icon: "mdi:package-down",
-    sectionKey: "packages",
-  },
-  {
-    id: "integrations",
-    group: "preview",
-    label: "Intégrations",
-    description: "Connecteurs tiers",
-    icon: "mdi:connection",
-    sectionKey: "integrations",
-  },
-  {
-    id: "maintenance",
-    group: "preview",
-    label: "Maintenance",
-    description: "Fenêtres planifiées",
-    icon: "mdi:calendar-clock",
-    sectionKey: "maintenance",
-  },
-  {
-    id: "blocklist",
-    group: "preview",
-    label: "Blocklist",
-    description: "Hashes bloqués EDR",
-    icon: "mdi:block-helper",
-    sectionKey: "blocklist",
-  },
-];
+export const ANTIVIRUS_OVERVIEW_GROUPS = [{
+  id: "core",
+  label: "Overview"
+}, {
+  id: "exploited",
+  label: "Integrated with Veritas"
+}, {
+  id: "preview",
+  label: "Available APIs (preview)"
+}];
+export const ANTIVIRUS_OVERVIEW_SECTIONS = [{
+  id: "overview",
+  group: "core",
+  label: "Summary",
+  description: "KPIs and API status",
+  icon: "mdi:view-dashboard-outline"
+}, {
+  id: "endpoints",
+  group: "exploited",
+  label: "Workstations & network",
+  description: "Network inventory",
+  icon: "mdi:desktop-classic",
+  sectionKey: "endpoints"
+}, {
+  id: "license",
+  group: "exploited",
+  label: "Licenses",
+  description: "Quotas GravityZone",
+  icon: "mdi:license",
+  sectionKey: "license"
+}, {
+  id: "policies",
+  group: "exploited",
+  label: "Policies",
+  description: "Security policies",
+  icon: "mdi:shield-cog-outline",
+  sectionKey: "policies"
+}, {
+  id: "reports",
+  group: "exploited",
+  label: "Reports",
+  description: "Scheduled reports",
+  icon: "mdi:file-chart-outline",
+  sectionKey: "reports"
+}, {
+  id: "incidents",
+  group: "preview",
+  label: "Incidents",
+  description: "EDR & detections",
+  icon: "mdi:alert-octagon-outline",
+  sectionKey: "incidents"
+}, {
+  id: "quarantine",
+  group: "preview",
+  label: "Quarantine",
+  description: "Isolated files",
+  icon: "mdi:archive-lock-outline",
+  sectionKey: "quarantine"
+}, {
+  id: "patch",
+  group: "preview",
+  label: "Patch Management",
+  description: "Missing / installed patches",
+  icon: "mdi:package-variant-closed",
+  sectionKey: "patchManagement"
+}, {
+  id: "phasr",
+  group: "preview",
+  label: "PHASR",
+  description: "Recommendations",
+  icon: "mdi:shield-search",
+  sectionKey: "phasr"
+}, {
+  id: "investigation",
+  group: "preview",
+  label: "Investigation",
+  description: "Investigation API",
+  icon: "mdi:magnify-scan",
+  sectionKey: "investigation"
+}, {
+  id: "push",
+  group: "preview",
+  label: "Event Push",
+  description: "Real-time webhooks",
+  icon: "mdi:webhook",
+  sectionKey: "push"
+}, {
+  id: "packages",
+  group: "preview",
+  label: "Packages",
+  description: "Agents & deployment",
+  icon: "mdi:package-down",
+  sectionKey: "packages"
+}, {
+  id: "integrations",
+  group: "preview",
+  label: "Integrations",
+  description: "Third-party connectors",
+  icon: "mdi:connection",
+  sectionKey: "integrations"
+}, {
+  id: "maintenance",
+  group: "preview",
+  label: "Maintenance",
+  description: "Scheduled windows",
+  icon: "mdi:calendar-clock",
+  sectionKey: "maintenance"
+}, {
+  id: "blocklist",
+  group: "preview",
+  label: "Blocklist",
+  description: "Blocked EDR hashes",
+  icon: "mdi:block-helper",
+  sectionKey: "blocklist"
+}];

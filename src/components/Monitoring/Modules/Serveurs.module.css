@@ -1,6 +1,6 @@
-/* ───────────── CLASSES SPÉCIFIQUES AUX SERVEURS ───────────── */
 
-/* ───────────── CONTAINER PRINCIPAL ───────────── */
+
+
 .container {
   max-width: 1400px;
   margin: 0 auto;
@@ -12,7 +12,7 @@
   transition: all 0.3s ease;
 }
 
-/* ───────────── GROUPES PAR SITE ───────────── */
+
 .siteGroup {
   display: flex;
   flex-direction: column;
@@ -49,7 +49,7 @@
   margin-left: 2rem;
 }
 
-/* ───────────── GRILLE DES CARTES ───────────── */
+
 .serverGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -59,7 +59,7 @@
   margin: 0 auto;
 }
 
-/* ───────────── CARTE SERVEUR ───────────── */
+
 .serverCard {
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
@@ -80,7 +80,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* ───────────── EN-TÊTE DE CARTE ───────────── */
+
 .cardHeader {
   display: flex;
   justify-content: space-between;
@@ -177,7 +177,7 @@
   color: var(--text-secondary);
 }
 
-/* Séparation Physique / Virtuel */
+
 .categorySeparator {
   grid-column: 1 / -1;
   margin: 0.5rem 0 0.25rem;
@@ -364,7 +364,7 @@
   color: #6b7280;
 }
 
-/* Style discret pour les boutons d'action (comme testButton) */
+
 .commentHeader :global(button) {
   padding: 10px 24px !important;
   background: #f3f4f6 !important;
@@ -398,7 +398,7 @@
   min-height: 300px;
 }
 
-/* Alignement avec Firewalls.module.css */
+
 .serverMeta {
   font-size: 0.7rem;
   font-weight: inherit;
@@ -441,7 +441,7 @@
 }
 
 
-/* Responsive Design */
+
 @media (max-width: 1200px) {
   .serverGrid {
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -481,7 +481,7 @@
   }
 }
 
-/* ───────────── STYLES POUR LES CARTES ───────────── */
+
 .iconWrapper {
   margin-right: 0.5rem;
 }
@@ -611,7 +611,7 @@
   padding: 0.75rem 0.5rem;
 }
 
-/* ───────────── STYLES POUR LES STATS ───────────── */
+
 .statsWrapper {
   display: flex;
   flex-direction: column;
@@ -879,7 +879,7 @@
   border-color: #fca5a5;
 }
 
-/* ───────────── STYLES POUR LES TOOLTIPS ───────────── */
+
 .tooltipContainer {
   position: fixed;
   background: var(--bg-primary);
@@ -1111,7 +1111,7 @@
   gap: 2rem;
 }
 
-/* ───────────── STYLES POUR LES BOUTONS (aligné EnterpriseDetailPage) ───────────── */
+
 .syncButton {
   display: inline-flex;
   align-items: center;
@@ -1248,7 +1248,7 @@
   }
 }
 
-/* ───────────── MODAL D'ÉDITION ───────────── */
+
 .editModalOverlay {
   position: fixed;
   inset: 0;

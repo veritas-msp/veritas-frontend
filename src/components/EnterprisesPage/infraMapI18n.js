@@ -1,42 +1,15 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
-const HONEYCOMB_TYPE_KEYS = [
-  "Internet",
-  "Firewalls",
-  "Serveurs",
-  "Stockage",
-  "Switch",
-  "BorneWifi",
-  "Routeur",
-  "Alimentation",
-  "TOIP",
-  "Ordinateurs",
-];
-
+const HONEYCOMB_TYPE_KEYS = ["Internet", "Firewalls", "Serveurs", "Stockage", "Switch", "BorneWifi", "Routeur", "Alimentation", "TOIP", "Ordinateurs"];
 const BRICK_GROUP_KEYS = ["cybersecurity", "services", "licensing", "campaign"];
-
-const BRICK_TYPE_KEYS = [
-  "Antivirus",
-  "Antispam",
-  "Sauvegarde",
-  "TenantMicrosoft",
-  "GoogleWorkspace",
-  "NDD",
-  "CertificatsSSL",
-  "LicencesAbonnements",
-  "Campagne",
-];
-
+const BRICK_TYPE_KEYS = ["Antivirus", "Antispam", "Sauvegarde", "TenantMicrosoft", "GoogleWorkspace", "NDD", "CertificatsSSL", "LicencesAbonnements", "Campagne"];
 const STATUS_KEYS = ["critical", "warning", "ok", "neutral", "unmonitored", "no_data"];
-
 const INFRA_MAP_COPY = {
   fr: {
     loadingAria: "Chargement de la cartographie",
     legendAria: "Légende des statuts",
     loadError: "Impossible de charger la cartographie",
     emptyTitle: "Aucun élément d'infrastructure à cartographier pour ce client",
-    emptyHint:
-      "Les hexagones illustrent la structure attendue. Ajoutez des périphériques ou une sauvegarde pour alimenter la cartographie.",
+    emptyHint: "Les hexagones illustrent la structure attendue. Ajoutez des périphériques ou une sauvegarde pour alimenter la cartographie.",
     criticalCategoriesOne: "1 rubrique critique",
     criticalCategoriesMany: "{count} rubriques critiques",
     warningCategoriesOne: "1 rubrique en warning",
@@ -52,7 +25,7 @@ const INFRA_MAP_COPY = {
       ok: "OK",
       neutral: "Actif",
       unmonitored: "Non monitoré",
-      no_data: "Sans données",
+      no_data: "Sans données"
     },
     statusBreakdown: {
       criticalOne: "{count} critique",
@@ -61,7 +34,7 @@ const INFRA_MAP_COPY = {
       warningMany: "{count} warnings",
       ok: "{count} OK",
       unmonitoredOne: "{count} non monitoré",
-      unmonitoredMany: "{count} non monitorés",
+      unmonitoredMany: "{count} non monitorés"
     },
     honeycombTypes: {
       Internet: "Internet",
@@ -73,13 +46,13 @@ const INFRA_MAP_COPY = {
       Routeur: "Routeur",
       Alimentation: "Alim.",
       TOIP: "TOIP",
-      Ordinateurs: "Ordinateurs",
+      Ordinateurs: "Ordinateurs"
     },
     brickGroups: {
       cybersecurity: "Cybersécurité",
       services: "Services",
       licensing: "Licences & abonnements",
-      campaign: "Campagne",
+      campaign: "Campagne"
     },
     brickTypes: {
       Antivirus: "Antivirus",
@@ -90,7 +63,7 @@ const INFRA_MAP_COPY = {
       NDD: "Nom de domaine",
       CertificatsSSL: "Certificats SSL",
       LicencesAbonnements: "Licences & abonnements",
-      Campagne: "Campagne",
+      Campagne: "Campagne"
     },
     brick: {
       comingSoon: "Bientôt",
@@ -104,17 +77,16 @@ const INFRA_MAP_COPY = {
       proFeatureLabels: {
         Campagne: "Campagnes cybersécurité",
         TenantMicrosoft: "Tenant Microsoft",
-        GoogleWorkspace: "Google Workspace",
-      },
-    },
+        GoogleWorkspace: "Google Workspace"
+      }
+    }
   },
   en: {
     loadingAria: "Loading infrastructure map",
     legendAria: "Status legend",
     loadError: "Unable to load infrastructure map",
     emptyTitle: "No infrastructure items to map for this client",
-    emptyHint:
-      "The hexagons show the expected structure. Add devices or a backup to populate the map.",
+    emptyHint: "The hexagons show the expected structure. Add devices or a backup to populate the map.",
     criticalCategoriesOne: "1 critical category",
     criticalCategoriesMany: "{count} critical categories",
     warningCategoriesOne: "1 category in warning",
@@ -130,7 +102,7 @@ const INFRA_MAP_COPY = {
       ok: "OK",
       neutral: "Active",
       unmonitored: "Not monitored",
-      no_data: "No data",
+      no_data: "No data"
     },
     statusBreakdown: {
       criticalOne: "{count} critical",
@@ -139,36 +111,36 @@ const INFRA_MAP_COPY = {
       warningMany: "{count} warnings",
       ok: "{count} OK",
       unmonitoredOne: "{count} not monitored",
-      unmonitoredMany: "{count} not monitored",
+      unmonitoredMany: "{count} not monitored"
     },
     honeycombTypes: {
       Internet: "Internet",
       Firewalls: "Firewall",
-      Serveurs: "Servers",
-      Stockage: "Storage",
+      Servers: "Servers",
+      Storage: "Storage",
       Switch: "Switch",
       BorneWifi: "WiFi",
       Routeur: "Router",
       Alimentation: "Power",
       TOIP: "VoIP",
-      Ordinateurs: "Computers",
+      Ordinateurs: "Computers"
     },
     brickGroups: {
       cybersecurity: "Cybersecurity",
       services: "Services",
       licensing: "Licenses & subscriptions",
-      campaign: "Campaign",
+      campaign: "Campaign"
     },
     brickTypes: {
       Antivirus: "Antivirus",
       Antispam: "Antispam",
-      Sauvegarde: "Backup",
+      Backup: "Backup",
       TenantMicrosoft: "Microsoft tenant",
       GoogleWorkspace: "Google Workspace",
       NDD: "Domain name",
       CertificatsSSL: "SSL certificates",
-      LicencesAbonnements: "Licenses & subscriptions",
-      Campagne: "Campaign",
+      LicensesAbonnements: "Licenses & subscriptions",
+      Campagne: "Campaign"
     },
     brick: {
       comingSoon: "Soon",
@@ -182,17 +154,16 @@ const INFRA_MAP_COPY = {
       proFeatureLabels: {
         Campagne: "Cybersecurity campaigns",
         TenantMicrosoft: "Microsoft tenant",
-        GoogleWorkspace: "Google Workspace",
-      },
-    },
+        GoogleWorkspace: "Google Workspace"
+      }
+    }
   },
   de: {
     loadingAria: "Infrastrukturkarte wird geladen",
     legendAria: "Status-Legende",
     loadError: "Infrastrukturkarte konnte nicht geladen werden",
     emptyTitle: "Keine Infrastrukturelemente für diesen Kunden zu kartieren",
-    emptyHint:
-      "Die Hexagone zeigen die erwartete Struktur. Fügen Sie Geräte oder ein Backup hinzu, um die Karte zu füllen.",
+    emptyHint: "Die Hexagone zeigen die erwartete Struktur. Fügen Sie Geräte oder ein Backup hinzu, um die Karte zu füllen.",
     criticalCategoriesOne: "1 kritische Rubrik",
     criticalCategoriesMany: "{count} kritische Rubriken",
     warningCategoriesOne: "1 Rubrik mit Warning",
@@ -208,7 +179,7 @@ const INFRA_MAP_COPY = {
       ok: "OK",
       neutral: "Aktiv",
       unmonitored: "Nicht überwacht",
-      no_data: "Keine Daten",
+      no_data: "Keine Daten"
     },
     statusBreakdown: {
       criticalOne: "{count} kritisch",
@@ -217,7 +188,7 @@ const INFRA_MAP_COPY = {
       warningMany: "{count} warnings",
       ok: "{count} OK",
       unmonitoredOne: "{count} nicht überwacht",
-      unmonitoredMany: "{count} nicht überwacht",
+      unmonitoredMany: "{count} nicht überwacht"
     },
     honeycombTypes: {
       Internet: "Internet",
@@ -229,13 +200,13 @@ const INFRA_MAP_COPY = {
       Routeur: "Router",
       Alimentation: "Strom",
       TOIP: "VoIP",
-      Ordinateurs: "Computer",
+      Ordinateurs: "Computer"
     },
     brickGroups: {
       cybersecurity: "Cybersicherheit",
       services: "Services",
       licensing: "Lizenzen & Abonnements",
-      campaign: "Kampagne",
+      campaign: "Kampagne"
     },
     brickTypes: {
       Antivirus: "Antivirus",
@@ -246,7 +217,7 @@ const INFRA_MAP_COPY = {
       NDD: "Domainname",
       CertificatsSSL: "SSL-Zertifikate",
       LicencesAbonnements: "Lizenzen & Abonnements",
-      Campagne: "Kampagne",
+      Campagne: "Kampagne"
     },
     brick: {
       comingSoon: "Bald",
@@ -260,17 +231,16 @@ const INFRA_MAP_COPY = {
       proFeatureLabels: {
         Campagne: "Cybersicherheits-Kampagnen",
         TenantMicrosoft: "Microsoft-Tenant",
-        GoogleWorkspace: "Google Workspace",
-      },
-    },
+        GoogleWorkspace: "Google Workspace"
+      }
+    }
   },
   it: {
     loadingAria: "Caricamento mappa infrastruttura",
     legendAria: "Legenda stati",
     loadError: "Impossibile caricare la mappa infrastruttura",
     emptyTitle: "Nessun elemento infrastruttura da mappare per questo cliente",
-    emptyHint:
-      "Gli esagoni illustrano la struttura prevista. Aggiungete dispositivi o un backup per alimentare la mappa.",
+    emptyHint: "Gli esagoni illustrano la struttura prevista. Aggiungete dispositivi o un backup per alimentare la mappa.",
     criticalCategoriesOne: "1 voce critica",
     criticalCategoriesMany: "{count} voci critiche",
     warningCategoriesOne: "1 voce in warning",
@@ -286,7 +256,7 @@ const INFRA_MAP_COPY = {
       ok: "OK",
       neutral: "Attivo",
       unmonitored: "Non monitorato",
-      no_data: "Nessun dato",
+      no_data: "Nessun dato"
     },
     statusBreakdown: {
       criticalOne: "{count} critico",
@@ -295,7 +265,7 @@ const INFRA_MAP_COPY = {
       warningMany: "{count} warning",
       ok: "{count} OK",
       unmonitoredOne: "{count} non monitorato",
-      unmonitoredMany: "{count} non monitorati",
+      unmonitoredMany: "{count} non monitorati"
     },
     honeycombTypes: {
       Internet: "Internet",
@@ -307,13 +277,13 @@ const INFRA_MAP_COPY = {
       Routeur: "Router",
       Alimentation: "Alim.",
       TOIP: "VoIP",
-      Ordinateurs: "Computer",
+      Ordinateurs: "Computer"
     },
     brickGroups: {
       cybersecurity: "Cybersicurezza",
       services: "Servizi",
       licensing: "Licenze e abbonamenti",
-      campaign: "Campagna",
+      campaign: "Campagna"
     },
     brickTypes: {
       Antivirus: "Antivirus",
@@ -324,7 +294,7 @@ const INFRA_MAP_COPY = {
       NDD: "Nome di dominio",
       CertificatsSSL: "Certificati SSL",
       LicencesAbonnements: "Licenze e abbonamenti",
-      Campagne: "Campagna",
+      Campagne: "Campagna"
     },
     brick: {
       comingSoon: "Presto",
@@ -338,17 +308,16 @@ const INFRA_MAP_COPY = {
       proFeatureLabels: {
         Campagne: "Campagne di cybersicurezza",
         TenantMicrosoft: "Tenant Microsoft",
-        GoogleWorkspace: "Google Workspace",
-      },
-    },
+        GoogleWorkspace: "Google Workspace"
+      }
+    }
   },
   es: {
     loadingAria: "Cargando mapa de infraestructura",
     legendAria: "Leyenda de estados",
     loadError: "No se pudo cargar el mapa de infraestructura",
     emptyTitle: "No hay elementos de infraestructura para mapear en este cliente",
-    emptyHint:
-      "Los hexágonos muestran la estructura esperada. Añada dispositivos o una copia de seguridad para completar el mapa.",
+    emptyHint: "Los hexágonos muestran la estructura esperada. Añada dispositivos o una copia de seguridad para completar el mapa.",
     criticalCategoriesOne: "1 categoría crítica",
     criticalCategoriesMany: "{count} categorías críticas",
     warningCategoriesOne: "1 categoría en warning",
@@ -364,7 +333,7 @@ const INFRA_MAP_COPY = {
       ok: "OK",
       neutral: "Activo",
       unmonitored: "No monitorizado",
-      no_data: "Sin datos",
+      no_data: "Sin datos"
     },
     statusBreakdown: {
       criticalOne: "{count} crítico",
@@ -373,7 +342,7 @@ const INFRA_MAP_COPY = {
       warningMany: "{count} warnings",
       ok: "{count} OK",
       unmonitoredOne: "{count} no monitorizado",
-      unmonitoredMany: "{count} no monitorizados",
+      unmonitoredMany: "{count} no monitorizados"
     },
     honeycombTypes: {
       Internet: "Internet",
@@ -385,13 +354,13 @@ const INFRA_MAP_COPY = {
       Routeur: "Router",
       Alimentation: "Alim.",
       TOIP: "VoIP",
-      Ordinateurs: "Ordenadores",
+      Ordinateurs: "Ordenadores"
     },
     brickGroups: {
       cybersecurity: "Ciberseguridad",
       services: "Servicios",
       licensing: "Licencias y suscripciones",
-      campaign: "Campaña",
+      campaign: "Campaña"
     },
     brickTypes: {
       Antivirus: "Antivirus",
@@ -402,7 +371,7 @@ const INFRA_MAP_COPY = {
       NDD: "Nombre de dominio",
       CertificatsSSL: "Certificados SSL",
       LicencesAbonnements: "Licencias y suscripciones",
-      Campagne: "Campaña",
+      Campagne: "Campaña"
     },
     brick: {
       comingSoon: "Pronto",
@@ -416,21 +385,20 @@ const INFRA_MAP_COPY = {
       proFeatureLabels: {
         Campagne: "Campañas de ciberseguridad",
         TenantMicrosoft: "Tenant Microsoft",
-        GoogleWorkspace: "Google Workspace",
-      },
-    },
-  },
+        GoogleWorkspace: "Google Workspace"
+      }
+    }
+  }
 };
-
 function formatCountLabel(count, oneKey, manyKey, t) {
   const n = Number(count) || 0;
   const template = n > 1 ? t[manyKey] : t[oneKey];
-  return interpolate(template, { count: String(n) });
+  return interpolate(template, {
+    count: String(n)
+  });
 }
-
 export function getInfraMapCopy(locale) {
   const t = pickLocaleMessages(INFRA_MAP_COPY, locale);
-
   return {
     ...t,
     getHoneycombTypeLabel: (type, fallback = null) => {
@@ -438,68 +406,78 @@ export function getInfraMapCopy(locale) {
       if (type?.startsWith("Custom:")) return type.slice(7);
       return t.honeycombTypes[type] || type || "";
     },
-    getBrickGroupLabel: (groupId) => t.brickGroups[groupId] || groupId,
-    getBrickTypeLabel: (type) => t.brickTypes[type] || type || "",
-    getStatusLabel: (status) => {
+    getBrickGroupLabel: groupId => t.brickGroups[groupId] || groupId,
+    getBrickTypeLabel: type => t.brickTypes[type] || type || "",
+    getStatusLabel: status => {
       if (status === "unmonitored" || status === "no_data") return null;
       return t.status[status] || null;
     },
-    getStatusMeta: (status) => {
+    getStatusMeta: status => {
       const key = status === "no_data" ? "no_data" : status;
       const label = t.status[key] || t.status.unmonitored;
       const colors = {
-        critical: { color: "#dc2626", soft: "rgba(239, 68, 68, 0.48)" },
-        warning: { color: "#d97706", soft: "rgba(245, 158, 11, 0.46)" },
-        ok: { color: "#15803d", soft: "rgba(34, 197, 94, 0.44)" },
-        neutral: { color: "#1d4f9e", soft: "rgba(43, 95, 171, 0.28)" },
-        unmonitored: { color: "#64748b", soft: "rgba(100, 116, 139, 0.38)" },
-        no_data: { color: "#64748b", soft: "rgba(100, 116, 139, 0.38)" },
+        critical: {
+          color: "#dc2626",
+          soft: "rgba(239, 68, 68, 0.48)"
+        },
+        warning: {
+          color: "#d97706",
+          soft: "rgba(245, 158, 11, 0.46)"
+        },
+        ok: {
+          color: "#15803d",
+          soft: "rgba(34, 197, 94, 0.44)"
+        },
+        neutral: {
+          color: "#1d4f9e",
+          soft: "rgba(43, 95, 171, 0.28)"
+        },
+        unmonitored: {
+          color: "#64748b",
+          soft: "rgba(100, 116, 139, 0.38)"
+        },
+        no_data: {
+          color: "#64748b",
+          soft: "rgba(100, 116, 139, 0.38)"
+        }
       };
       const palette = colors[key] || colors.unmonitored;
-      return { label, ...palette };
+      return {
+        label,
+        ...palette
+      };
     },
-    formatEquipmentCount: (count) =>
-      formatCountLabel(count, "equipmentOne", "equipmentMany", t),
-    formatElementCount: (count) => formatCountLabel(count, "elementOne", "elementMany", t),
-    formatCriticalCategories: (count) =>
-      formatCountLabel(count, "criticalCategoriesOne", "criticalCategoriesMany", t),
-    formatWarningCategories: (count) =>
-      formatCountLabel(count, "warningCategoriesOne", "warningCategoriesMany", t),
+    formatEquipmentCount: count => formatCountLabel(count, "equipmentOne", "equipmentMany", t),
+    formatElementCount: count => formatCountLabel(count, "elementOne", "elementMany", t),
+    formatCriticalCategories: count => formatCountLabel(count, "criticalCategoriesOne", "criticalCategoriesMany", t),
+    formatWarningCategories: count => formatCountLabel(count, "warningCategoriesOne", "warningCategoriesMany", t),
     formatStatusBreakdown: (counts = {}) => {
       const sb = t.statusBreakdown;
       const parts = [];
       if (counts.critical > 0) {
-        parts.push(
-          formatCountLabel(
-            counts.critical,
-            "criticalOne",
-            "criticalMany",
-            sb
-          )
-        );
+        parts.push(formatCountLabel(counts.critical, "criticalOne", "criticalMany", sb));
       }
       if (counts.warning > 0) {
-        parts.push(
-          formatCountLabel(counts.warning, "warningOne", "warningMany", sb)
-        );
+        parts.push(formatCountLabel(counts.warning, "warningOne", "warningMany", sb));
       }
       if (counts.ok > 0) {
-        parts.push(interpolate(sb.ok, { count: String(counts.ok) }));
+        parts.push(interpolate(sb.ok, {
+          count: String(counts.ok)
+        }));
       }
       if (counts.unmonitored > 0) {
-        parts.push(
-          formatCountLabel(counts.unmonitored, "unmonitoredOne", "unmonitoredMany", sb)
-        );
+        parts.push(formatCountLabel(counts.unmonitored, "unmonitoredOne", "unmonitoredMany", sb));
       }
       return parts.join(" · ");
     },
-    formatComingSoonToast: (label) => interpolate(t.brick.comingSoonToast, { label }),
-    getProFeatureLabel: (type, fallback) =>
-      t.brick.proFeatureLabels[type] || fallback || t.brick.proFeatureFallback,
+    formatComingSoonToast: label => interpolate(t.brick.comingSoonToast, {
+      label
+    }),
+    getProFeatureLabel: (type, fallback) => t.brick.proFeatureLabels[type] || fallback || t.brick.proFeatureFallback,
     legendStatusKeys: ["critical", "warning", "ok", "unmonitored"],
     honeycombTypeKeys: HONEYCOMB_TYPE_KEYS,
     brickGroupKeys: BRICK_GROUP_KEYS,
     brickTypeKeys: BRICK_TYPE_KEYS,
-    statusKeys: STATUS_KEYS,
+    statusKeys: STATUS_KEYS
   };
 }

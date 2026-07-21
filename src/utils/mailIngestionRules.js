@@ -1,34 +1,63 @@
-import {
-  normalizeFilterRoot,
-  ticketMatchesFilterRoot,
-  validateFilterRoot,
-} from "./ticketViewFilterTree";
-
-export const MAIL_CRITERION_FIELD_OPTIONS = [
-  { value: "subject", label: "Objet" },
-  { value: "body", label: "Contenu" },
-  { value: "fromAddress", label: "Email expéditeur" },
-  { value: "fromName", label: "Nom expéditeur" },
-  { value: "fromDomain", label: "Domaine expéditeur" },
-  { value: "toAddresses", label: "Destinataires (À)" },
-  { value: "ccAddresses", label: "Copie (Cc)" },
-  { value: "replyToAddress", label: "Reply-To" },
-  { value: "isReply", label: "Réponse / transfert (RE/FW)" },
-];
-
-export const MAIL_CRITERION_OPERATOR_OPTIONS = [
-  { value: "contains", label: "contient" },
-  { value: "not_contains", label: "ne contient pas" },
-  { value: "equals", label: "est égal à" },
-  { value: "not_equals", label: "n'est pas égal à" },
-  { value: "starts_with", label: "commence par" },
-  { value: "ends_with", label: "se termine par" },
-  { value: "is_empty", label: "est vide" },
-  { value: "is_not_empty", label: "n'est pas vide" },
-  { value: "in", label: "contient une des valeurs (liste)" },
-  { value: "not_in", label: "ne contient aucune des valeurs" },
-];
-
+import { normalizeFilterRoot, ticketMatchesFilterRoot, validateFilterRoot } from "./ticketViewFilterTree";
+export const MAIL_CRITERION_FIELD_OPTIONS = [{
+  value: "subject",
+  label: "Subject"
+}, {
+  value: "body",
+  label: "Body"
+}, {
+  value: "fromAddress",
+  label: "Sender email"
+}, {
+  value: "fromName",
+  label: "Sender name"
+}, {
+  value: "fromDomain",
+  label: "Sender domain"
+}, {
+  value: "toAddresses",
+  label: "Recipients (To)"
+}, {
+  value: "ccAddresses",
+  label: "Cc"
+}, {
+  value: "replyToAddress",
+  label: "Reply-To"
+}, {
+  value: "isReply",
+  label: "Reply / forward (RE/FW)"
+}];
+export const MAIL_CRITERION_OPERATOR_OPTIONS = [{
+  value: "contains",
+  label: "contains"
+}, {
+  value: "not_contains",
+  label: "does not contain"
+}, {
+  value: "equals",
+  label: "equals"
+}, {
+  value: "not_equals",
+  label: "is not equal to"
+}, {
+  value: "starts_with",
+  label: "starts with"
+}, {
+  value: "ends_with",
+  label: "ends with"
+}, {
+  value: "is_empty",
+  label: "is empty"
+}, {
+  value: "is_not_empty",
+  label: "is not empty"
+}, {
+  value: "in",
+  label: "contains one of the values (list)"
+}, {
+  value: "not_in",
+  label: "contains none of the values"
+}];
 export const MAIL_CRITERION_FIELD_ICONS = {
   subject: "mdi:text-short",
   body: "mdi:text-long",
@@ -38,9 +67,8 @@ export const MAIL_CRITERION_FIELD_ICONS = {
   toAddresses: "mdi:email-multiple-outline",
   ccAddresses: "mdi:email-arrow-right-outline",
   replyToAddress: "mdi:reply-outline",
-  isReply: "mdi:reply-all-outline",
+  isReply: "mdi:reply-all-outline"
 };
-
 export function normalizeIngestionAction(action = "") {
   const key = String(action || "create_ticket_support").trim();
   if (key === "create_ticket") return "create_ticket_support";
@@ -49,14 +77,12 @@ export function normalizeIngestionAction(action = "") {
   if (key === "create_ticket_services") return "create_ticket_services";
   return "create_ticket_support";
 }
-
 export function evaluateMailCriterion(criterion = {}, context = {}) {
   const field = String(criterion?.field || "subject");
   const operator = String(criterion?.operator || "contains");
   const rawExpected = criterion?.value ?? "";
   const expected = String(rawExpected).trim().toLowerCase();
   const actual = String(context?.[field] ?? "").toLowerCase();
-
   if (operator === "is_empty") return actual.length === 0;
   if (operator === "is_not_empty") return actual.length > 0;
   if (operator === "equals") return actual === expected;
@@ -65,48 +91,35 @@ export function evaluateMailCriterion(criterion = {}, context = {}) {
   if (operator === "ends_with") return expected ? actual.endsWith(expected) : false;
   if (operator === "not_contains") return expected ? !actual.includes(expected) : false;
   if (operator === "in") {
-    const list = String(rawExpected)
-      .split(",")
-      .map((item) => item.trim().toLowerCase())
-      .filter(Boolean);
-    return list.length > 0 && list.some((item) => actual.includes(item));
+    const list = String(rawExpected).split(",").map(item => item.trim().toLowerCase()).filter(Boolean);
+    return list.length > 0 && list.some(item => actual.includes(item));
   }
   if (operator === "not_in") {
-    const list = String(rawExpected)
-      .split(",")
-      .map((item) => item.trim().toLowerCase())
-      .filter(Boolean);
-    return list.length === 0 || !list.some((item) => actual.includes(item));
+    const list = String(rawExpected).split(",").map(item => item.trim().toLowerCase()).filter(Boolean);
+    return list.length === 0 || !list.some(item => actual.includes(item));
   }
   if (!expected) return false;
   return actual.includes(expected);
 }
-
 export function mailMatchesFilterRoot(filterRoot, context = {}) {
-  return ticketMatchesFilterRoot(filterRoot, context, context, (criterion, _mail, ctx) =>
-    evaluateMailCriterion(criterion, ctx || _mail)
-  );
+  return ticketMatchesFilterRoot(filterRoot, context, context, (criterion, _mail, ctx) => evaluateMailCriterion(criterion, ctx || _mail));
 }
-
 export function normalizeExclusionFilterRoot(rule = {}) {
   if (rule?.filterRoot?.type === "group") {
     return normalizeFilterRoot(rule.filterRoot);
   }
   return normalizeFilterRoot(null, {
     criteria: Array.isArray(rule?.criteria) ? rule.criteria : [],
-    matchMode: rule?.matchMode,
+    matchMode: rule?.matchMode
   });
 }
-
 export function validateMailFilterRoot(filterRoot) {
   const root = normalizeFilterRoot(filterRoot);
   if (!root.children?.length) return null;
   return validateFilterRoot(root);
 }
-
-const FIELD_LABELS = Object.fromEntries(MAIL_CRITERION_FIELD_OPTIONS.map((o) => [o.value, o.label]));
-const OPERATOR_LABELS = Object.fromEntries(MAIL_CRITERION_OPERATOR_OPTIONS.map((o) => [o.value, o.label]));
-
+const FIELD_LABELS = Object.fromEntries(MAIL_CRITERION_FIELD_OPTIONS.map(o => [o.value, o.label]));
+const OPERATOR_LABELS = Object.fromEntries(MAIL_CRITERION_OPERATOR_OPTIONS.map(o => [o.value, o.label]));
 export function describeMailCriterionBrief(criterion = {}) {
   const field = FIELD_LABELS[criterion.field] || criterion.field;
   const operator = OPERATOR_LABELS[criterion.operator] || criterion.operator;
@@ -116,10 +129,9 @@ export function describeMailCriterionBrief(criterion = {}) {
   const value = String(criterion.value || "").trim();
   return value ? `${field} ${operator} « ${value} »` : `${field} ${operator}…`;
 }
-
 export function describeExclusionRuleFilters(rule = {}) {
   const root = normalizeExclusionFilterRoot(rule);
-  if (!root.children?.length) return "Tous les emails (aucun critère)";
+  if (!root.children?.length) return "All emails (no criteria)";
   const parts = [];
   const walk = (group, depth = 0) => {
     (group.children || []).forEach((child, index) => {
@@ -136,5 +148,5 @@ export function describeExclusionRuleFilters(rule = {}) {
     });
   };
   walk(root);
-  return parts.join("") || "Tous les emails";
+  return parts.join("") || "All emails";
 }

@@ -1,14 +1,11 @@
-// ──────────────────────────────
-// 📦 Dépendances externes
-// ──────────────────────────────
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify"; // Notifications utilisateur
-import "react-toastify/dist/ReactToastify.css";  // Styles par défaut de react-toastify
-
-import './App.css'; // Styles principaux
-import "./styles/common/toastifyOverrides.css"; // Personnalisation des toasts
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import './App.css';
+import "./styles/common/toastifyOverrides.css";
 import { AuthProvider } from "./contexts/AuthContext";
+import { PermissionsProvider } from "./contexts/PermissionsContext";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { getMaintenanceStatus } from "./api/maintenance";
 import MainApp from "./components/MainApp";
@@ -29,57 +26,38 @@ import SetupPage from "./components/Setup/SetupPage";
 import SetupGate from "./components/Setup/SetupGate";
 import { AppGeneralSettingsProvider } from "./hooks/useAppGeneralSettings";
 import { useCommonCopy } from "./hooks/useCommonCopy";
-
-function GlobalMaintenanceTicker({ maintenanceStatus, isTickerHoverZone }) {
+function GlobalMaintenanceTicker({
+  maintenanceStatus,
+  isTickerHoverZone
+}) {
   const copy = useCommonCopy();
-  const maintenanceMessage =
-    maintenanceStatus?.message?.trim() || copy.maintenanceDefault;
-  const tickerDuration = Number.isFinite(Number(maintenanceStatus?.tickerSpeed))
-    ? Math.max(5, Math.min(60, Number(maintenanceStatus.tickerSpeed)))
-    : 22;
+  const maintenanceMessage = maintenanceStatus?.message?.trim() || copy.maintenanceDefault;
+  const tickerDuration = Number.isFinite(Number(maintenanceStatus?.tickerSpeed)) ? Math.max(5, Math.min(60, Number(maintenanceStatus.tickerSpeed))) : 22;
   const tickerDirection = maintenanceStatus?.tickerDirection === "right" ? "right" : "left";
-  const tickerColor =
-    /^#([0-9a-fA-F]{6})$/.test(maintenanceStatus?.tickerColor || "")
-      ? maintenanceStatus.tickerColor
-      : "#d97706";
+  const tickerColor = /^#([0-9a-fA-F]{6})$/.test(maintenanceStatus?.tickerColor || "") ? maintenanceStatus.tickerColor : "#d97706";
   const tickerText = `${copy.maintenancePrefix} - ${maintenanceMessage}`;
-
-  return (
-    <div
-      className={`globalMaintenanceTicker ${isTickerHoverZone ? "hoverTransparent" : ""}`}
-      role="status"
-      aria-live="polite"
-      style={{ "--maintenance-ticker-color": tickerColor }}
-    >
-      <div
-        className={`globalMaintenanceTickerTrack ${
-          tickerDirection === "right" ? "reverseDirection" : ""
-        } ${isTickerHoverZone ? "paused" : ""}`}
-        style={{ animationDuration: `${tickerDuration}s` }}
-      >
+  return <div className={`globalMaintenanceTicker ${isTickerHoverZone ? "hoverTransparent" : ""}`} role="status" aria-live="polite" style={{
+    "--maintenance-ticker-color": tickerColor
+  }}>
+      <div className={`globalMaintenanceTickerTrack ${tickerDirection === "right" ? "reverseDirection" : ""} ${isTickerHoverZone ? "paused" : ""}`} style={{
+      animationDuration: `${tickerDuration}s`
+    }}>
         <span>{tickerText}</span>
         <span>{tickerText}</span>
       </div>
-    </div>
-  );
+    </div>;
 }
-
-// ──────────────────────────────
-// 🚀 Point d'entrée de l'application React
-// ──────────────────────────────
 export default function App() {
   const [maintenanceStatus, setMaintenanceStatus] = useState({
     enabled: false,
     message: "",
     tickerSpeed: 22,
     tickerDirection: "left",
-    tickerColor: "#d97706",
+    tickerColor: "#d97706"
   });
   const [isTickerHoverZone, setIsTickerHoverZone] = useState(false);
-
   useEffect(() => {
     let mounted = true;
-
     const loadStatus = async () => {
       try {
         const status = await getMaintenanceStatus();
@@ -89,74 +67,56 @@ export default function App() {
           message: status?.message || "",
           tickerSpeed: Number.isFinite(Number(status?.tickerSpeed)) ? Number(status.tickerSpeed) : 22,
           tickerDirection: status?.tickerDirection === "right" ? "right" : "left",
-          tickerColor:
-            /^#([0-9a-fA-F]{6})$/.test(status?.tickerColor || "") ? status.tickerColor : "#d97706",
+          tickerColor: /^#([0-9a-fA-F]{6})$/.test(status?.tickerColor || "") ? status.tickerColor : "#d97706"
         });
       } catch {
         if (!mounted) return;
-        setMaintenanceStatus((prev) => ({ ...prev, enabled: false }));
+        setMaintenanceStatus(prev => ({
+          ...prev,
+          enabled: false
+        }));
       }
     };
-
     loadStatus();
     const intervalId = setInterval(loadStatus, 15000);
-
-    const handleMaintenanceStatusUpdated = (event) => {
+    const handleMaintenanceStatusUpdated = event => {
       const payload = event?.detail || {};
       setMaintenanceStatus({
         enabled: Boolean(payload?.enabled),
         message: payload?.message || "",
-        tickerSpeed: Number.isFinite(Number(payload?.tickerSpeed))
-          ? Number(payload.tickerSpeed)
-          : 22,
+        tickerSpeed: Number.isFinite(Number(payload?.tickerSpeed)) ? Number(payload.tickerSpeed) : 22,
         tickerDirection: payload?.tickerDirection === "right" ? "right" : "left",
-        tickerColor:
-          /^#([0-9a-fA-F]{6})$/.test(payload?.tickerColor || "") ? payload.tickerColor : "#d97706",
+        tickerColor: /^#([0-9a-fA-F]{6})$/.test(payload?.tickerColor || "") ? payload.tickerColor : "#d97706"
       });
     };
-
     window.addEventListener("maintenanceStatusUpdated", handleMaintenanceStatusUpdated);
-
     return () => {
       mounted = false;
       clearInterval(intervalId);
       window.removeEventListener("maintenanceStatusUpdated", handleMaintenanceStatusUpdated);
     };
   }, []);
-
   useEffect(() => {
-    const handleMouseMove = (event) => {
+    const handleMouseMove = event => {
       setIsTickerHoverZone(event.clientY <= 34);
     };
-
     window.addEventListener("mousemove", handleMouseMove);
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
-
-  return (
-    <ThemeProvider>
+  return <ThemeProvider>
       <AppGeneralSettingsProvider>
       <AuthProvider>
-        {maintenanceStatus?.enabled && (
-          <GlobalMaintenanceTicker
-            maintenanceStatus={maintenanceStatus}
-            isTickerHoverZone={isTickerHoverZone}
-          />
-        )}
+        <PermissionsProvider>
+        {maintenanceStatus?.enabled && <GlobalMaintenanceTicker maintenanceStatus={maintenanceStatus} isTickerHoverZone={isTickerHoverZone} />}
         <Router>
           <SetupGate>
             <Routes>
               <Route path="/setup" element={<SetupPage />} />
-              <Route
-                path="/client"
-                element={
-                  <ProtectedRoute requiredRole="client">
+              <Route path="/client" element={<ProtectedRoute requiredRole="client">
                     <ClientPortalLayout />
-                  </ProtectedRoute>
-                }
-              >
+                  </ProtectedRoute>}>
                 <Route index element={<ClientDashboard />} />
                 <Route path="tickets" element={<ClientTicketListPage />} />
                 <Route path="tickets/new" element={<ClientTicketCreatePage />} />
@@ -173,20 +133,11 @@ export default function App() {
             </Routes>
           </SetupGate>
         </Router>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={4000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          style={{ zIndex: "var(--toast-z-index, 15000000)" }}
-        />
+        <ToastContainer position="bottom-right" autoClose={4000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover style={{
+          zIndex: "var(--toast-z-index, 15000000)"
+        }} />
+        </PermissionsProvider>
       </AuthProvider>
       </AppGeneralSettingsProvider>
-    </ThemeProvider>
-  );
+    </ThemeProvider>;
 }

@@ -1,5 +1,4 @@
 import { createLocaleGetter, interpolate } from "./translate";
-
 const COMMON_COPY = {
   fr: {
     searchPlaceholder: "Rechercher…",
@@ -26,7 +25,7 @@ const COMMON_COPY = {
       service: "Services",
       monitoring: "Rapports",
       documents: "Documents",
-      other: "Autres",
+      other: "Autres"
     },
     tabFolderOpen: "Ouvrir {label} ({count})",
     tabFolderMore: "+{count}",
@@ -44,15 +43,13 @@ const COMMON_COPY = {
       account: "Compte",
       admin: "Administrateur",
       superviseur: "Superviseur",
-      utilisateur: "Utilisateur",
+      utilisateur: "Utilisateur"
     },
     maintenancePrefix: "Maintenance en cours",
-    maintenanceDefault:
-      "Maintenance en cours. Certaines fonctionnalités peuvent être temporairement indisponibles.",
+    maintenanceDefault: "Maintenance en cours. Certaines fonctionnalités peuvent être temporairement indisponibles.",
     discardCloseTitle: "Fermer sans enregistrer ?",
-    discardCloseMessage:
-      "Des modifications non enregistrées seront perdues. Voulez-vous vraiment fermer ce formulaire ?",
-    discardCloseConfirm: "Fermer sans enregistrer",
+    discardCloseMessage: "Des modifications non enregistrées seront perdues. Voulez-vous vraiment fermer ce formulaire ?",
+    discardCloseConfirm: "Fermer sans enregistrer"
   },
   en: {
     searchPlaceholder: "Search…",
@@ -79,7 +76,7 @@ const COMMON_COPY = {
       service: "Services",
       monitoring: "Reports",
       documents: "Documents",
-      other: "Other",
+      other: "Other"
     },
     tabFolderOpen: "Open {label} ({count})",
     tabFolderMore: "+{count}",
@@ -97,15 +94,13 @@ const COMMON_COPY = {
       account: "Account",
       admin: "Administrator",
       superviseur: "Supervisor",
-      utilisateur: "User",
+      utilisateur: "User"
     },
     maintenancePrefix: "Maintenance in progress",
-    maintenanceDefault:
-      "Maintenance in progress. Some features may be temporarily unavailable.",
+    maintenanceDefault: "Maintenance in progress. Some features may be temporarily unavailable.",
     discardCloseTitle: "Close without saving?",
-    discardCloseMessage:
-      "Unsaved changes will be lost. Do you really want to close this form?",
-    discardCloseConfirm: "Close without saving",
+    discardCloseMessage: "Unsaved changes will be lost. Do you really want to close this form?",
+    discardCloseConfirm: "Close without saving"
   },
   de: {
     searchPlaceholder: "Suchen…",
@@ -132,7 +127,7 @@ const COMMON_COPY = {
       service: "Dienste",
       monitoring: "Berichte",
       documents: "Dokumente",
-      other: "Sonstige",
+      other: "Sonstige"
     },
     tabFolderOpen: "{label} öffnen ({count})",
     tabFolderMore: "+{count}",
@@ -150,15 +145,13 @@ const COMMON_COPY = {
       account: "Konto",
       admin: "Administrator",
       superviseur: "Supervisor",
-      utilisateur: "Benutzer",
+      utilisateur: "Benutzer"
     },
     maintenancePrefix: "Wartung läuft",
-    maintenanceDefault:
-      "Wartung läuft. Einige Funktionen sind vorübergehend nicht verfügbar.",
+    maintenanceDefault: "Wartung läuft. Einige Funktionen sind vorübergehend nicht verfügbar.",
     discardCloseTitle: "Ohne Speichern schließen?",
-    discardCloseMessage:
-      "Nicht gespeicherte Änderungen gehen verloren. Möchten Sie dieses Formular wirklich schließen?",
-    discardCloseConfirm: "Ohne Speichern schließen",
+    discardCloseMessage: "Nicht gespeicherte Änderungen gehen verloren. Möchten Sie dieses Formular wirklich schließen?",
+    discardCloseConfirm: "Ohne Speichern schließen"
   },
   it: {
     searchPlaceholder: "Cerca…",
@@ -185,7 +178,7 @@ const COMMON_COPY = {
       service: "Servizi",
       monitoring: "Report",
       documents: "Documenti",
-      other: "Altro",
+      other: "Altro"
     },
     tabFolderOpen: "Apri {label} ({count})",
     tabFolderMore: "+{count}",
@@ -203,15 +196,13 @@ const COMMON_COPY = {
       account: "Account",
       admin: "Amministratore",
       superviseur: "Supervisore",
-      utilisateur: "Utente",
+      utilisateur: "Utente"
     },
     maintenancePrefix: "Manutenzione in corso",
-    maintenanceDefault:
-      "Manutenzione in corso. Alcune funzionalità potrebbero essere temporaneamente non disponibili.",
+    maintenanceDefault: "Manutenzione in corso. Alcune funzionalità potrebbero essere temporaneamente non disponibili.",
     discardCloseTitle: "Chiudere senza salvare?",
-    discardCloseMessage:
-      "Le modifiche non salvate andranno perse. Vuoi davvero chiudere questo modulo?",
-    discardCloseConfirm: "Chiudi senza salvare",
+    discardCloseMessage: "Le modifiche non salvate andranno perse. Vuoi davvero chiudere questo modulo?",
+    discardCloseConfirm: "Chiudi senza salvare"
   },
   es: {
     searchPlaceholder: "Buscar…",
@@ -238,7 +229,7 @@ const COMMON_COPY = {
       service: "Servicios",
       monitoring: "Informes",
       documents: "Documentos",
-      other: "Otros",
+      other: "Otros"
     },
     tabFolderOpen: "Abrir {label} ({count})",
     tabFolderMore: "+{count}",
@@ -256,27 +247,25 @@ const COMMON_COPY = {
       account: "Cuenta",
       admin: "Administrador",
       superviseur: "Supervisor",
-      utilisateur: "Usuario",
+      utilisateur: "Usuario"
     },
     maintenancePrefix: "Mantenimiento en curso",
-    maintenanceDefault:
-      "Mantenimiento en curso. Algunas funciones pueden no estar disponibles temporalmente.",
+    maintenanceDefault: "Mantenimiento en curso. Algunas funciones pueden no estar disponibles temporalmente.",
     discardCloseTitle: "¿Cerrar sin guardar?",
-    discardCloseMessage:
-      "Se perderán los cambios no guardados. ¿Desea cerrar este formulario?",
-    discardCloseConfirm: "Cerrar sin guardar",
-  },
+    discardCloseMessage: "Se perderán los cambios no guardados. ¿Desea cerrar este formulario?",
+    discardCloseConfirm: "Cerrar sin guardar"
+  }
 };
-
 export const getCommonCopy = createLocaleGetter(COMMON_COPY);
-
 export function getRoleLabel(role, locale) {
   const copy = getCommonCopy(locale);
   if (!role) return copy.roles.account;
   const key = String(role).toLowerCase();
-  return copy.roles[key] || String(role).replace(/^./, (c) => c.toUpperCase());
+  return copy.roles[key] || String(role).replace(/^./, c => c.toUpperCase());
 }
-
 export function formatPageInfo(locale, page, totalPages) {
-  return interpolate(getCommonCopy(locale).pageInfo, { page, totalPages });
+  return interpolate(getCommonCopy(locale).pageInfo, {
+    page,
+    totalPages
+  });
 }

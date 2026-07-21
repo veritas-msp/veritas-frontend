@@ -1,4 +1,4 @@
-/* ───────────── CONTAINER PRINCIPAL ───────────── */
+
 .container {
   max-width: 1400px;
   margin: 0 auto;
@@ -85,37 +85,37 @@
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
 }
 
-/* Statut Excellent */
+
 .statusDot.excellent {
   background-color: #10b981;
   color: #10b981;
 }
 
-/* Statut Good */
+
 .statusDot.good {
   background-color: #22c55e;
   color: #22c55e;
 }
 
-/* Statut Poor */
+
 .statusDot.poor {
   background-color: #eab308;
   color: #eab308;
 }
 
-/* Statut Warning */
+
 .statusDot.warning {
   background-color: #f59e0b;
   color: #f59e0b;
 }
 
-/* Statut Critical */
+
 .statusDot.critical {
   background-color: #ef4444;
   color: #ef4444;
 }
 
-/* Statut Unknown */
+
 .statusDot.unknown {
   background-color: #9ca3af;
   color: #9ca3af;
@@ -265,7 +265,7 @@
   background-color: #4b5563;
 }
 
-/* ───────────── LABELS DE RÔLE ───────────── */
+
 .roleLabel {
   font-size: 10px;
   font-weight: 600;
@@ -281,7 +281,7 @@
   letter-spacing: 0.3px;
 }
 
-/* Couleurs des rôles */
+
 .roleLabel.primary {
   background-color: #3b82f6;
 }
@@ -371,7 +371,7 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Section des disques */
+
 .diskSection {
 }
 
@@ -442,13 +442,13 @@
   height: 8px;
 }
 
-/* Section espace de stockage */
+
 .storageSpaceSection {
   margin-top: 0.5rem;
   width: 100%;
 }
 
-/* Barre de progression */
+
 .storageProgress {
   margin-top: 1rem;
   width: 100%;
@@ -607,7 +607,7 @@
   color: #f9fafb;
 }
 
-/* Styles pour les valeurs des métriques en mode lecture seule */
+
 .metricValue {
   display: inline-block;
   padding: 4px 8px;
@@ -730,7 +730,7 @@
   border-bottom-color: #374151;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1200px) {
   .storageGrid {
     grid-template-columns: repeat(2, 1fr);

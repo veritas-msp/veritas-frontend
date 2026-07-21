@@ -1,17 +1,13 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 const SECTION_IDS = ["identity", "coordinates", "enterprise", "status"];
-
 const CIVILITY_ICONS = {
   monsieur: "mdi:account-tie-outline",
-  madame: "mdi:account-outline",
+  madame: "mdi:account-outline"
 };
-
 const COMM_ICONS = {
   email: "mdi:email-outline",
-  telephone: "mdi:phone-outline",
+  telephone: "mdi:phone-outline"
 };
-
 const SHARED_FORM_KEYS = {
   eyebrow: "",
   firstNamePlaceholder: "",
@@ -22,7 +18,10 @@ const SHARED_FORM_KEYS = {
   enterpriseHint: "",
   currentClient: "",
   statusInactiveHint: "",
-  civilityOptions: { monsieur: "", madame: "" },
+  civilityOptions: {
+    monsieur: "",
+    madame: ""
+  },
   communications: {
     groupEmails: "",
     groupPhones: "",
@@ -32,18 +31,23 @@ const SHARED_FORM_KEYS = {
     setFavorite: "",
     removeAria: "",
     types: {
-      email: { label: "", placeholder: "" },
-      telephone: { label: "", placeholder: "" },
+      email: {
+        label: "",
+        placeholder: ""
+      },
+      telephone: {
+        label: "",
+        placeholder: ""
+      }
     },
     validation: {
       phoneRequired: "",
       emailRequired: "",
       genericRequired: "",
-      invalidEmail: "",
-    },
-  },
+      invalidEmail: ""
+    }
+  }
 };
-
 const CONTACT_FORM_COPY = {
   fr: {
     ...SHARED_FORM_KEYS,
@@ -54,10 +58,22 @@ const CONTACT_FORM_COPY = {
     navAria: "Sections du formulaire",
     eyebrow: "Fiche contact",
     sections: {
-      identity: { label: "Identité", description: "Civilité, prénom et nom du contact" },
-      coordinates: { label: "Coordonnées", description: "E-mails, téléphones et moyens de communication" },
-      enterprise: { label: "Entreprise", description: "Entreprise rattachée et fonction" },
-      status: { label: "Statut", description: "Disponibilité et visibilité du contact" },
+      identity: {
+        label: "Identité",
+        description: "Civilité, prénom et nom du contact"
+      },
+      coordinates: {
+        label: "Coordonnées",
+        description: "E-mails, téléphones et moyens de communication"
+      },
+      enterprise: {
+        label: "Entreprise",
+        description: "Entreprise rattachée et fonction"
+      },
+      status: {
+        label: "Statut",
+        description: "Disponibilité et visibilité du contact"
+      }
     },
     clientPrefix: "Client #",
     searchEnterprise: "Rechercher une entreprise…",
@@ -79,7 +95,7 @@ const CONTACT_FORM_COPY = {
     stay: "Rester",
     validation: {
       nameRequired: "Le nom est obligatoire",
-      enterpriseRequired: "L'entreprise est obligatoire",
+      enterpriseRequired: "L'entreprise est obligatoire"
     },
     portalEmailSuccess: "Contact modifié. Le compte portail utilisera l'e-mail favori.",
     draftPrimaryTitle: "Contact principal",
@@ -96,12 +112,13 @@ const CONTACT_FORM_COPY = {
     enterpriseLabel: "Entreprise",
     enterpriseLockedHint: "Ce contact sera rattaché à la fiche client en cours.",
     enterprisePendingName: "Entreprise en cours de création",
-    enterpriseHint:
-      "Associez le contact à une entreprise cliente pour faciliter la navigation et le partage de fiches.",
+    enterpriseHint: "Associez le contact à une entreprise cliente pour faciliter la navigation et le partage de fiches.",
     currentClient: "Client actuel",
-    statusInactiveHint:
-      "Les contacts inactifs restent consultables mais sont exclus des compteurs dans Veritas.",
-    civilityOptions: { monsieur: "Monsieur", madame: "Madame" },
+    statusInactiveHint: "Les contacts inactifs restent consultables mais sont exclus des compteurs dans Veritas.",
+    civilityOptions: {
+      monsieur: "Monsieur",
+      madame: "Madame"
+    },
     notSpecified: "Non renseigné",
     communications: {
       groupEmails: "E-mails",
@@ -112,16 +129,22 @@ const CONTACT_FORM_COPY = {
       setFavorite: "Définir comme favori",
       removeAria: "Supprimer {label}",
       types: {
-        email: { label: "E-mail", placeholder: "jean.dupont@entreprise.fr" },
-        telephone: { label: "Téléphone", placeholder: "06 12 34 56 78" },
+        email: {
+          label: "E-mail",
+          placeholder: "jean.dupont@entreprise.fr"
+        },
+        telephone: {
+          label: "Téléphone",
+          placeholder: "06 12 34 56 78"
+        }
       },
       validation: {
         phoneRequired: "Renseignez le numéro de téléphone ajouté ou supprimez-le.",
         emailRequired: "Renseignez l'adresse e-mail ajoutée ou supprimez-la.",
         genericRequired: "Renseignez le moyen de communication ajouté ou supprimez-le.",
-        invalidEmail: "L'adresse e-mail n'est pas valide",
-      },
-    },
+        invalidEmail: "L'adresse e-mail n'est pas valide"
+      }
+    }
   },
   en: {
     ...SHARED_FORM_KEYS,
@@ -132,10 +155,22 @@ const CONTACT_FORM_COPY = {
     navAria: "Form sections",
     eyebrow: "Contact record",
     sections: {
-      identity: { label: "Identity", description: "Title, first and last name" },
-      coordinates: { label: "Contact details", description: "Emails, phones and communication channels" },
-      enterprise: { label: "Company", description: "Linked company and job title" },
-      status: { label: "Status", description: "Availability and visibility" },
+      identity: {
+        label: "Identity",
+        description: "Title, first and last name"
+      },
+      coordinates: {
+        label: "Contact details",
+        description: "Emails, phones and communication channels"
+      },
+      enterprise: {
+        label: "Company",
+        description: "Linked company and job title"
+      },
+      status: {
+        label: "Status",
+        description: "Availability and visibility"
+      }
     },
     clientPrefix: "Client #",
     searchEnterprise: "Search for a company…",
@@ -157,7 +192,7 @@ const CONTACT_FORM_COPY = {
     stay: "Stay",
     validation: {
       nameRequired: "Last name is required",
-      enterpriseRequired: "Company is required",
+      enterpriseRequired: "Company is required"
     },
     portalEmailSuccess: "Contact updated. The portal account will use the preferred email.",
     draftPrimaryTitle: "Primary contact",
@@ -177,7 +212,10 @@ const CONTACT_FORM_COPY = {
     enterpriseHint: "Link the contact to a client company to simplify navigation and record sharing.",
     currentClient: "Current client",
     statusInactiveHint: "Inactive contacts remain viewable but are excluded from Veritas counters.",
-    civilityOptions: { monsieur: "Mr", madame: "Ms" },
+    civilityOptions: {
+      monsieur: "Mr",
+      madame: "Ms"
+    },
     notSpecified: "Not specified",
     communications: {
       groupEmails: "Emails",
@@ -188,16 +226,22 @@ const CONTACT_FORM_COPY = {
       setFavorite: "Set as preferred",
       removeAria: "Remove {label}",
       types: {
-        email: { label: "Email", placeholder: "john.smith@company.com" },
-        telephone: { label: "Phone", placeholder: "+1 555 123 4567" },
+        email: {
+          label: "Email",
+          placeholder: "john.smith@company.com"
+        },
+        telephone: {
+          label: "Phone",
+          placeholder: "+1 555 123 4567"
+        }
       },
       validation: {
         phoneRequired: "Enter the phone number or remove it.",
         emailRequired: "Enter the email address or remove it.",
         genericRequired: "Complete the communication entry or remove it.",
-        invalidEmail: "The email address is not valid",
-      },
-    },
+        invalidEmail: "The email address is not valid"
+      }
+    }
   },
   de: {
     ...SHARED_FORM_KEYS,
@@ -208,10 +252,22 @@ const CONTACT_FORM_COPY = {
     navAria: "Formularabschnitte",
     eyebrow: "Kontaktdatensatz",
     sections: {
-      identity: { label: "Identität", description: "Anrede, Vor- und Nachname" },
-      coordinates: { label: "Kontaktdaten", description: "E-Mails, Telefone und Kommunikationswege" },
-      enterprise: { label: "Unternehmen", description: "Verknüpftes Unternehmen und Funktion" },
-      status: { label: "Status", description: "Verfügbarkeit und Sichtbarkeit" },
+      identity: {
+        label: "Identität",
+        description: "Anrede, Vor- und Nachname"
+      },
+      coordinates: {
+        label: "Kontaktdaten",
+        description: "E-Mails, Telefone und Kommunikationswege"
+      },
+      enterprise: {
+        label: "Unternehmen",
+        description: "Verknüpftes Unternehmen und Funktion"
+      },
+      status: {
+        label: "Status",
+        description: "Verfügbarkeit und Sichtbarkeit"
+      }
     },
     clientPrefix: "Kunde #",
     searchEnterprise: "Unternehmen suchen…",
@@ -233,7 +289,7 @@ const CONTACT_FORM_COPY = {
     stay: "Bleiben",
     validation: {
       nameRequired: "Nachname ist erforderlich",
-      enterpriseRequired: "Unternehmen ist erforderlich",
+      enterpriseRequired: "Unternehmen ist erforderlich"
     },
     portalEmailSuccess: "Kontakt aktualisiert. Das Portal-Konto verwendet die bevorzugte E-Mail.",
     draftPrimaryTitle: "Hauptkontakt",
@@ -253,7 +309,10 @@ const CONTACT_FORM_COPY = {
     enterpriseHint: "Verknüpfen Sie den Kontakt mit einem Kundenunternehmen für einfachere Navigation.",
     currentClient: "Aktueller Kunde",
     statusInactiveHint: "Inaktive Kontakte bleiben sichtbar, zählen aber nicht in Veritas-Zählern.",
-    civilityOptions: { monsieur: "Herr", madame: "Frau" },
+    civilityOptions: {
+      monsieur: "Herr",
+      madame: "Frau"
+    },
     notSpecified: "Nicht angegeben",
     communications: {
       groupEmails: "E-Mails",
@@ -264,16 +323,22 @@ const CONTACT_FORM_COPY = {
       setFavorite: "Als bevorzugt festlegen",
       removeAria: "{label} entfernen",
       types: {
-        email: { label: "E-Mail", placeholder: "max.mustermann@firma.de" },
-        telephone: { label: "Telefon", placeholder: "+49 170 1234567" },
+        email: {
+          label: "E-Mail",
+          placeholder: "max.mustermann@firma.de"
+        },
+        telephone: {
+          label: "Telefon",
+          placeholder: "+49 170 1234567"
+        }
       },
       validation: {
         phoneRequired: "Telefonnummer eingeben oder Eintrag entfernen.",
         emailRequired: "E-Mail-Adresse eingeben oder Eintrag entfernen.",
         genericRequired: "Kommunikationseintrag ausfüllen oder entfernen.",
-        invalidEmail: "Die E-Mail-Adresse ist ungültig",
-      },
-    },
+        invalidEmail: "Die E-Mail-Adresse ist ungültig"
+      }
+    }
   },
   it: {
     ...SHARED_FORM_KEYS,
@@ -284,10 +349,22 @@ const CONTACT_FORM_COPY = {
     navAria: "Sezioni del modulo",
     eyebrow: "Scheda contatto",
     sections: {
-      identity: { label: "Identità", description: "Titolo, nome e cognome" },
-      coordinates: { label: "Contatti", description: "Email, telefoni e canali di comunicazione" },
-      enterprise: { label: "Azienda", description: "Azienda collegata e ruolo" },
-      status: { label: "Stato", description: "Disponibilità e visibilità" },
+      identity: {
+        label: "Identità",
+        description: "Titolo, nome e cognome"
+      },
+      coordinates: {
+        label: "Contatti",
+        description: "Email, telefoni e canali di comunicazione"
+      },
+      enterprise: {
+        label: "Azienda",
+        description: "Azienda collegata e ruolo"
+      },
+      status: {
+        label: "Stato",
+        description: "Disponibilità e visibilità"
+      }
     },
     clientPrefix: "Cliente #",
     searchEnterprise: "Cerca un'azienda…",
@@ -309,7 +386,7 @@ const CONTACT_FORM_COPY = {
     stay: "Resta",
     validation: {
       nameRequired: "Il cognome è obbligatorio",
-      enterpriseRequired: "L'azienda è obbligatoria",
+      enterpriseRequired: "L'azienda è obbligatoria"
     },
     portalEmailSuccess: "Contatto aggiornato. L'account portale userà l'email preferita.",
     draftPrimaryTitle: "Contatto principale",
@@ -329,7 +406,10 @@ const CONTACT_FORM_COPY = {
     enterpriseHint: "Collega il contatto a un'azienda cliente per semplificare navigazione e condivisione.",
     currentClient: "Cliente attuale",
     statusInactiveHint: "I contatti inattivi restano consultabili ma sono esclusi dai contatori Veritas.",
-    civilityOptions: { monsieur: "Sig.", madame: "Sig.ra" },
+    civilityOptions: {
+      monsieur: "Sig.",
+      madame: "Sig.ra"
+    },
     notSpecified: "Non specificato",
     communications: {
       groupEmails: "Email",
@@ -340,16 +420,22 @@ const CONTACT_FORM_COPY = {
       setFavorite: "Imposta come preferita",
       removeAria: "Rimuovi {label}",
       types: {
-        email: { label: "Email", placeholder: "mario.rossi@azienda.it" },
-        telephone: { label: "Telefono", placeholder: "+39 333 1234567" },
+        email: {
+          label: "Email",
+          placeholder: "mario.rossi@azienda.it"
+        },
+        telephone: {
+          label: "Telefono",
+          placeholder: "+39 333 1234567"
+        }
       },
       validation: {
         phoneRequired: "Inserisci il numero di telefono o rimuovilo.",
         emailRequired: "Inserisci l'indirizzo email o rimuovilo.",
         genericRequired: "Completa il mezzo di comunicazione o rimuovilo.",
-        invalidEmail: "L'indirizzo email non è valido",
-      },
-    },
+        invalidEmail: "L'indirizzo email non è valido"
+      }
+    }
   },
   es: {
     ...SHARED_FORM_KEYS,
@@ -360,10 +446,22 @@ const CONTACT_FORM_COPY = {
     navAria: "Secciones del formulario",
     eyebrow: "Ficha de contacto",
     sections: {
-      identity: { label: "Identidad", description: "Tratamiento, nombre y apellidos" },
-      coordinates: { label: "Datos de contacto", description: "Emails, teléfonos y medios de comunicación" },
-      enterprise: { label: "Empresa", description: "Empresa vinculada y puesto" },
-      status: { label: "Estado", description: "Disponibilidad y visibilidad" },
+      identity: {
+        label: "Identidad",
+        description: "Tratamiento, nombre y apellidos"
+      },
+      coordinates: {
+        label: "Datos de contacto",
+        description: "Emails, teléfonos y medios de comunicación"
+      },
+      enterprise: {
+        label: "Empresa",
+        description: "Empresa vinculada y puesto"
+      },
+      status: {
+        label: "Estado",
+        description: "Disponibilidad y visibilidad"
+      }
     },
     clientPrefix: "Cliente #",
     searchEnterprise: "Buscar una empresa…",
@@ -385,7 +483,7 @@ const CONTACT_FORM_COPY = {
     stay: "Quedarse",
     validation: {
       nameRequired: "El apellido es obligatorio",
-      enterpriseRequired: "La empresa es obligatoria",
+      enterpriseRequired: "La empresa es obligatoria"
     },
     portalEmailSuccess: "Contacto actualizado. La cuenta del portal usará el email preferido.",
     draftPrimaryTitle: "Contacto principal",
@@ -405,7 +503,10 @@ const CONTACT_FORM_COPY = {
     enterpriseHint: "Vincule el contacto a una empresa cliente para facilitar la navegación y el intercambio.",
     currentClient: "Cliente actual",
     statusInactiveHint: "Los contactos inactivos siguen siendo consultables pero se excluyen de los contadores.",
-    civilityOptions: { monsieur: "Sr.", madame: "Sra." },
+    civilityOptions: {
+      monsieur: "Sr.",
+      madame: "Sra."
+    },
     notSpecified: "No especificado",
     communications: {
       groupEmails: "Emails",
@@ -416,90 +517,86 @@ const CONTACT_FORM_COPY = {
       setFavorite: "Definir como preferida",
       removeAria: "Eliminar {label}",
       types: {
-        email: { label: "Email", placeholder: "juan.garcia@empresa.es" },
-        telephone: { label: "Teléfono", placeholder: "+34 612 345 678" },
+        email: {
+          label: "Email",
+          placeholder: "juan.garcia@empresa.es"
+        },
+        telephone: {
+          label: "Teléfono",
+          placeholder: "+34 612 345 678"
+        }
       },
       validation: {
         phoneRequired: "Introduzca el teléfono o elimínelo.",
         emailRequired: "Introduzca el email o elimínelo.",
         genericRequired: "Complete el medio de comunicación o elimínelo.",
-        invalidEmail: "La dirección de email no es válida",
-      },
-    },
-  },
+        invalidEmail: "La dirección de email no es válida"
+      }
+    }
+  }
 };
-
 const SECTION_ICONS = {
   identity: "mdi:account-outline",
   coordinates: "mdi:card-account-mail-outline",
   enterprise: "mdi:domain",
-  status: "mdi:toggle-switch-outline",
+  status: "mdi:toggle-switch-outline"
 };
-
-const COMM_INPUT_TYPES = { email: "email", telephone: "tel" };
-
+const COMM_INPUT_TYPES = {
+  email: "email",
+  telephone: "tel"
+};
 function getFormRoot(locale) {
   return pickLocaleMessages(CONTACT_FORM_COPY, locale);
 }
-
 export function getContactFormModalCopy(locale) {
   const t = getFormRoot(locale);
   return {
     ...t,
-    sections: SECTION_IDS.map((id) => ({
+    sections: SECTION_IDS.map(id => ({
       id,
       label: t.sections[id].label,
       description: t.sections[id].description,
-      icon: SECTION_ICONS[id],
+      icon: SECTION_ICONS[id]
     })),
     getClientLabel: (clientId, clientName) => {
       if (clientName) return clientName;
       return clientId ? `${t.clientPrefix}${clientId}` : "";
     },
-    modalTitle: (editing) => (editing ? t.editTitle : t.createTitle),
-    modalSubtitle: (editing) => (editing ? t.editSubtitle : t.createSubtitle),
-    successMessage: (editing) => (editing ? t.successUpdate : t.successCreate),
+    modalTitle: editing => editing ? t.editTitle : t.createTitle,
+    modalSubtitle: editing => editing ? t.editSubtitle : t.createSubtitle,
+    successMessage: editing => editing ? t.successUpdate : t.successCreate
   };
 }
-
 export function getContactFormSections(locale) {
   return getContactFormModalCopy(locale).sections;
 }
-
 export function getContactCivilityCards(locale) {
   const options = getFormRoot(locale).civilityOptions || {};
-  return ["monsieur", "madame"].map((value) => ({
+  return ["monsieur", "madame"].map(value => ({
     value,
     label: options[value] || value,
-    icon: CIVILITY_ICONS[value],
+    icon: CIVILITY_ICONS[value]
   }));
 }
-
 export function getContactSexeLabelLocalized(value, locale) {
   const t = getFormRoot(locale);
   const key = String(value || "").toLowerCase();
   if (t.civilityOptions?.[key]) return t.civilityOptions[key];
   return t.notSpecified || "-";
 }
-
 export function getContactCommunicationTypes(locale) {
   const types = getFormRoot(locale).communications?.types || {};
-  return ["email", "telephone"].map((id) => ({
+  return ["email", "telephone"].map(id => ({
     id,
     label: types[id]?.label || id,
     icon: COMM_ICONS[id],
     inputType: COMM_INPUT_TYPES[id],
-    placeholder: types[id]?.placeholder || "",
+    placeholder: types[id]?.placeholder || ""
   }));
 }
-
 export function getCommunicationTypeDefLocalized(typeId, locale) {
-  return (
-    getContactCommunicationTypes(locale).find((t) => t.id === typeId) ||
-    getContactCommunicationTypes(locale)[0]
-  );
+  return getContactCommunicationTypes(locale).find(t => t.id === typeId) || getContactCommunicationTypes(locale)[0];
 }
-
 export function validateContactCommunicationsLocalized(entries, locale) {
   const validation = getFormRoot(locale).communications?.validation || {};
   const list = Array.isArray(entries) ? entries : [];
@@ -516,5 +613,4 @@ export function validateContactCommunicationsLocalized(entries, locale) {
   }
   return null;
 }
-
 export { interpolate };

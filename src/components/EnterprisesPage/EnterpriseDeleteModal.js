@@ -5,31 +5,20 @@ import { useAppLocale } from "../../hooks/useAppGeneralSettings";
 import { useCommonCopy } from "../../hooks/useCommonCopy";
 import { getEnterpriseConfigModalsCopy } from "./enterpriseConfigModalsI18n";
 import styles from "./EnterpriseDeleteModal.module.css";
-
 export default function EnterpriseDeleteModal({
   open,
   clientName,
   saving = false,
   onClose,
-  onConfirm,
+  onConfirm
 }) {
   const locale = useAppLocale();
   const copy = getEnterpriseConfigModalsCopy(locale).enterpriseDelete;
   const common = useCommonCopy();
   const resolvedClientName = clientName || copy.defaultClientName;
-
   if (!open) return null;
-
-  return createPortal(
-    <div className={styles.overlay} onClick={onClose} role="presentation">
-      <div
-        className={styles.shell}
-        onClick={(e) => e.stopPropagation()}
-        role="alertdialog"
-        aria-modal="true"
-        aria-labelledby="enterprise-delete-modal-title"
-        aria-describedby="enterprise-delete-modal-desc"
-      >
+  return createPortal(<div className={styles.overlay} onClick={onClose} role="presentation">
+      <div className={styles.shell} onClick={e => e.stopPropagation()} role="alertdialog" aria-modal="true" aria-labelledby="enterprise-delete-modal-title" aria-describedby="enterprise-delete-modal-desc">
         <div className={styles.accentBar} aria-hidden />
         <header className={styles.header}>
           <div className={styles.headerMain}>
@@ -45,13 +34,7 @@ export default function EnterpriseDeleteModal({
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            className={styles.closeBtn}
-            onClick={onClose}
-            disabled={saving}
-            aria-label={copy.closeAria}
-          >
+          <button type="button" className={styles.closeBtn} onClick={onClose} disabled={saving} aria-label={copy.closeAria}>
             <FaTimes />
           </button>
         </header>
@@ -69,35 +52,19 @@ export default function EnterpriseDeleteModal({
         </div>
 
         <footer className={styles.footer}>
-          <button
-            type="button"
-            className={styles.ghostBtn}
-            onClick={onClose}
-            disabled={saving}
-          >
+          <button type="button" className={styles.ghostBtn} onClick={onClose} disabled={saving}>
             {common.cancel}
           </button>
-          <button
-            type="button"
-            className={styles.dangerBtn}
-            onClick={onConfirm}
-            disabled={saving}
-          >
-            {saving ? (
-              <>
+          <button type="button" className={styles.dangerBtn} onClick={onConfirm} disabled={saving}>
+            {saving ? <>
                 <Icon icon="mdi:loading" className={styles.spinning} aria-hidden />
                 {common.deleting}
-              </>
-            ) : (
-              <>
+              </> : <>
                 <Icon icon="mdi:trash-can-outline" aria-hidden />
                 {common.deletePermanently}
-              </>
-            )}
+              </>}
           </button>
         </footer>
       </div>
-    </div>,
-    document.getElementById("modal-root") || document.body
-  );
+    </div>, document.getElementById("modal-root") || document.body);
 }

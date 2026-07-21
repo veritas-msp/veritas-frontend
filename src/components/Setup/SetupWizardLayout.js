@@ -15,12 +15,10 @@ export default function SetupWizardLayout({
   themeAriaLabel,
   wideCard = false,
   layoutText,
-  children,
+  children
 }) {
   const items = stepMeta || [];
-
-  return (
-    <div className={styles.wrapper} data-wizard-theme={theme}>
+  return <div className={styles.wrapper} data-wizard-theme={theme}>
       <aside className={styles.left}>
         <div className={styles.leftTop}>
           <div className={styles.brandRow}>
@@ -30,13 +28,7 @@ export default function SetupWizardLayout({
               <AppVersion variant="dark" />
             </div>
             <div className={styles.brandTools}>
-              {onThemeChange ? (
-                <SetupThemeSwitcher
-                  theme={theme}
-                  onChange={onThemeChange}
-                  ariaLabel={themeAriaLabel}
-                />
-              ) : null}
+              {onThemeChange ? <SetupThemeSwitcher theme={theme} onChange={onThemeChange} ariaLabel={themeAriaLabel} /> : null}
               <SetupLanguageSwitcher locale={locale} onChange={onLocaleChange} />
             </div>
           </div>
@@ -45,26 +37,17 @@ export default function SetupWizardLayout({
         </div>
 
         <ol className={styles.stepList}>
-          {items.map((s) => {
-            const done = steps?.[s.key] ?? false;
-            const active = step === s.id;
-            const clickable =
-              done || s.id <= step || (s.key === "mfa" && steps?.admin && !steps?.mfa);
-
-            return (
-              <li key={s.id}>
-                <button
-                  type="button"
-                  className={`${styles.stepItem} ${active ? styles.stepActive : ""} ${done ? styles.stepDone : ""}`}
-                  disabled={!clickable}
-                  onClick={() => clickable && onStepClick?.(s.id)}
-                >
+          {items.map(s => {
+          const done = steps?.[s.key] ?? false;
+          const active = step === s.id;
+          const clickable = done || s.id <= step || s.key === "mfa" && steps?.admin && !steps?.mfa;
+          return <li key={s.id}>
+                <button type="button" className={`${styles.stepItem} ${active ? styles.stepActive : ""} ${done ? styles.stepDone : ""}`} disabled={!clickable} onClick={() => clickable && onStepClick?.(s.id)}>
                   <span className={styles.stepNumber}>{done ? "✓" : s.id}</span>
                   <span>{s.label}</span>
                 </button>
-              </li>
-            );
-          })}
+              </li>;
+        })}
         </ol>
 
         <div className={styles.leftFooter}>
@@ -74,6 +57,5 @@ export default function SetupWizardLayout({
       <main className={styles.right}>
         <div className={`${styles.card} ${wideCard ? styles.cardWide : ""}`}>{children}</div>
       </main>
-    </div>
-  );
+    </div>;
 }

@@ -2,39 +2,61 @@ import { Icon } from "@iconify/react";
 import layout from "../EnterprisesPage/EnterpriseFormModal.module.css";
 import modalStyles from "./SalesFormModal.module.css";
 import MultiSuggestPicker from "./MultiSuggestPicker";
-
-const PRIORITY_OPTIONS = [
-  { value: "", label: "Choix de l'agent" },
-  { value: "low", label: "Basse" },
-  { value: "normal", label: "Normale" },
-  { value: "high", label: "Haute" },
-  { value: "urgent", label: "Urgente" },
-];
-
-const STATUS_OPTIONS = [
-  { value: "", label: "Nouveau (défaut)" },
-  { value: "new", label: "Nouveau" },
-  { value: "open", label: "Ouvert" },
-  { value: "in_progress", label: "En cours" },
-  { value: "pending", label: "En attente" },
-];
-
-const OPERATOR_OPTIONS = [
-  { value: "equals", label: "Égal à" },
-  { value: "not_equals", label: "Différent de" },
-  { value: "contains", label: "Contient" },
-  { value: "checked", label: "Coché (oui)" },
-  { value: "not_checked", label: "Non coché" },
-];
-
+const PRIORITY_OPTIONS = [{
+  value: "",
+  label: "Agent's choice"
+}, {
+  value: "low",
+  label: "Low"
+}, {
+  value: "normal",
+  label: "Normal"
+}, {
+  value: "high",
+  label: "High"
+}, {
+  value: "urgent",
+  label: "Urgent"
+}];
+const STATUS_OPTIONS = [{
+  value: "",
+  label: "New (default)"
+}, {
+  value: "new",
+  label: "New"
+}, {
+  value: "open",
+  label: "Open"
+}, {
+  value: "in_progress",
+  label: "In progress"
+}, {
+  value: "pending",
+  label: "Pending"
+}];
+const OPERATOR_OPTIONS = [{
+  value: "equals",
+  label: "Equals"
+}, {
+  value: "not_equals",
+  label: "Not equal to"
+}, {
+  value: "contains",
+  label: "Contains"
+}, {
+  value: "checked",
+  label: "Checked (yes)"
+}, {
+  value: "not_checked",
+  label: "Not checked"
+}];
 function createRuleId() {
   return `rule-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
 }
-
 export function createEmptyTargetRule(index = 0) {
   return {
     id: createRuleId(),
-    label: index === 0 ? "Ticket principal" : `Ticket ${index + 1}`,
+    label: index === 0 ? "Primary ticket" : `Ticket ${index + 1}`,
     enabled: true,
     always: index === 0,
     matchMode: "all",
@@ -46,73 +68,59 @@ export function createEmptyTargetRule(index = 0) {
       watcherUserIds: [],
       teamIds: [],
       titleSuffix: "",
-      categorySlug: "",
-    },
+      categorySlug: ""
+    }
   };
 }
-
-function FieldHint({ children }) {
+function FieldHint({
+  children
+}) {
   return <p className={modalStyles.hint}>{children}</p>;
 }
-
 function getOperatorsForField(field) {
   if (!field) return OPERATOR_OPTIONS;
   if (field.fieldType === "checkbox") {
-    return OPERATOR_OPTIONS.filter((opt) => opt.value === "checked" || opt.value === "not_checked");
+    return OPERATOR_OPTIONS.filter(opt => opt.value === "checked" || opt.value === "not_checked");
   }
   if (field.fieldType === "select") {
-    return OPERATOR_OPTIONS.filter((opt) => opt.value === "equals" || opt.value === "not_equals");
+    return OPERATOR_OPTIONS.filter(opt => opt.value === "equals" || opt.value === "not_equals");
   }
-  return OPERATOR_OPTIONS.filter((opt) => opt.value !== "checked" && opt.value !== "not_checked");
+  return OPERATOR_OPTIONS.filter(opt => opt.value !== "checked" && opt.value !== "not_checked");
 }
-
-function ConditionValueInput({ condition, field, onChange }) {
+function ConditionValueInput({
+  condition,
+  field,
+  onChange
+}) {
   if (!field) {
-    return (
-      <input
-        className={layout.input}
-        value={condition.value || ""}
-        placeholder="Valeur"
-        onChange={(e) => onChange({ ...condition, value: e.target.value })}
-      />
-    );
+    return <input className={layout.input} value={condition.value || ""} placeholder="Value" onChange={e => onChange({
+      ...condition,
+      value: e.target.value
+    })} />;
   }
-
   if (field.fieldType === "checkbox") {
-    return <span className={modalStyles.conditionHint}>Aucune valeur requise</span>;
+    return <span className={modalStyles.conditionHint}>No value required</span>;
   }
-
   if (field.fieldType === "select" && Array.isArray(field.options) && field.options.length > 0) {
-    return (
-      <select
-        className={layout.input}
-        value={condition.value || ""}
-        onChange={(e) => onChange({ ...condition, value: e.target.value })}
-      >
-        <option value="">- Choisir -</option>
-        {field.options.map((option) => {
-          const value = typeof option === "object" ? option.value || option.label : option;
-          const label = typeof option === "object" ? option.label || option.value : option;
-          return (
-            <option key={String(value)} value={String(value)}>
+    return <select className={layout.input} value={condition.value || ""} onChange={e => onChange({
+      ...condition,
+      value: e.target.value
+    })}>
+        <option value="">- Choose -</option>
+        {field.options.map(option => {
+        const value = typeof option === "object" ? option.value || option.label : option;
+        const label = typeof option === "object" ? option.label || option.value : option;
+        return <option key={String(value)} value={String(value)}>
               {label}
-            </option>
-          );
-        })}
-      </select>
-    );
+            </option>;
+      })}
+      </select>;
   }
-
-  return (
-    <input
-      className={layout.input}
-      value={condition.value || ""}
-      placeholder="Valeur attendue"
-      onChange={(e) => onChange({ ...condition, value: e.target.value })}
-    />
-  );
+  return <input className={layout.input} value={condition.value || ""} placeholder="Expected value" onChange={e => onChange({
+    ...condition,
+    value: e.target.value
+  })} />;
 }
-
 function TargetRuleEditor({
   rule,
   index,
@@ -121,63 +129,66 @@ function TargetRuleEditor({
   teamOptions,
   onChange,
   onRemove,
-  canRemove,
+  canRemove
 }) {
-  const fieldOptions = formFields
-    .filter((field) => field?.fieldKey)
-    .map((field) => ({ id: field.fieldKey, label: field.label || field.fieldKey }));
-
-  const updateRule = (patch) => onChange({ ...rule, ...patch });
-  const updateTargets = (patch) => updateRule({ targets: { ...rule.targets, ...patch } });
-
+  const fieldOptions = formFields.filter(field => field?.fieldKey).map(field => ({
+    id: field.fieldKey,
+    label: field.label || field.fieldKey
+  }));
+  const updateRule = patch => onChange({
+    ...rule,
+    ...patch
+  });
+  const updateTargets = patch => updateRule({
+    targets: {
+      ...rule.targets,
+      ...patch
+    }
+  });
   const addCondition = () => {
-    const firstField = formFields.find((field) => field?.fieldKey);
+    const firstField = formFields.find(field => field?.fieldKey);
     updateRule({
       always: false,
-      conditions: [
-        ...(rule.conditions || []),
-        { fieldKey: firstField?.fieldKey || "", operator: "equals", value: "" },
-      ],
+      conditions: [...(rule.conditions || []), {
+        fieldKey: firstField?.fieldKey || "",
+        operator: "equals",
+        value: ""
+      }]
     });
   };
-
   const updateCondition = (conditionIndex, nextCondition) => {
     const conditions = [...(rule.conditions || [])];
     conditions[conditionIndex] = nextCondition;
-    updateRule({ always: conditions.length === 0, conditions });
+    updateRule({
+      always: conditions.length === 0,
+      conditions
+    });
   };
-
-  const removeCondition = (conditionIndex) => {
+  const removeCondition = conditionIndex => {
     const conditions = (rule.conditions || []).filter((_, idx) => idx !== conditionIndex);
-    updateRule({ always: conditions.length === 0, conditions });
+    updateRule({
+      always: conditions.length === 0,
+      conditions
+    });
   };
-
-  return (
-    <article className={modalStyles.targetRuleCard}>
+  return <article className={modalStyles.targetRuleCard}>
       <header className={modalStyles.targetRuleHead}>
         <div className={modalStyles.targetRuleTitleRow}>
           <span className={modalStyles.targetRuleIndex}>#{index + 1}</span>
-          <input
-            className={layout.input}
-            value={rule.label || ""}
-            placeholder="Nom de la cible (ex. Ticket réseau)"
-            onChange={(e) => updateRule({ label: e.target.value })}
-          />
+          <input className={layout.input} value={rule.label || ""} placeholder="Target name (e.g. Network ticket)" onChange={e => updateRule({
+          label: e.target.value
+        })} />
         </div>
         <div className={modalStyles.targetRuleActions}>
           <label className={modalStyles.inlineCheck}>
-            <input
-              type="checkbox"
-              checked={rule.enabled !== false}
-              onChange={(e) => updateRule({ enabled: e.target.checked })}
-            />
+            <input type="checkbox" checked={rule.enabled !== false} onChange={e => updateRule({
+            enabled: e.target.checked
+          })} />
             Active
           </label>
-          {canRemove && (
-            <button type="button" className={modalStyles.iconBtnDanger} onClick={onRemove} title="Supprimer la cible">
+          {canRemove && <button type="button" className={modalStyles.iconBtnDanger} onClick={onRemove} title="Delete target">
               <Icon icon="mdi:delete-outline" />
-            </button>
-          )}
+            </button>}
         </div>
       </header>
 
@@ -185,284 +196,191 @@ function TargetRuleEditor({
         <div className={modalStyles.targetRuleSectionHead}>
           <strong>Conditions</strong>
           <FieldHint>
-            {rule.always
-              ? "Aucune condition · ce ticket est toujours créé."
-              : "Toutes les conditions doivent être vraies pour créer ce ticket."}
+            {rule.always ? "No conditions · this ticket is always created." : "All conditions must be true to create this ticket."}
           </FieldHint>
         </div>
 
-        {fieldOptions.length === 0 ? (
-          <p className={modalStyles.emptyRuleHint}>
-            Ajoutez des champs dans l&apos;onglet <strong>Champs</strong> pour définir des conditions.
-          </p>
-        ) : (
-          <>
+        {fieldOptions.length === 0 ? <p className={modalStyles.emptyRuleHint}>
+            Add fields in the <strong>Fields</strong> tab to define conditions.
+          </p> : <>
             {(rule.conditions || []).map((condition, conditionIndex) => {
-              const field = formFields.find((item) => item.fieldKey === condition.fieldKey);
-              const operators = getOperatorsForField(field);
-              return (
-                <div key={`${rule.id}-cond-${conditionIndex}`} className={modalStyles.conditionRow}>
-                  <select
-                    className={layout.input}
-                    value={condition.fieldKey || ""}
-                    onChange={(e) =>
-                      updateCondition(conditionIndex, {
-                        ...condition,
-                        fieldKey: e.target.value,
-                        operator: "equals",
-                        value: "",
-                      })
-                    }
-                  >
-                    <option value="">- Champ -</option>
-                    {fieldOptions.map((option) => (
-                      <option key={option.id} value={option.id}>
+          const field = formFields.find(item => item.fieldKey === condition.fieldKey);
+          const operators = getOperatorsForField(field);
+          return <div key={`${rule.id}-cond-${conditionIndex}`} className={modalStyles.conditionRow}>
+                  <select className={layout.input} value={condition.fieldKey || ""} onChange={e => updateCondition(conditionIndex, {
+              ...condition,
+              fieldKey: e.target.value,
+              operator: "equals",
+              value: ""
+            })}>
+                    <option value="">- Field -</option>
+                    {fieldOptions.map(option => <option key={option.id} value={option.id}>
                         {option.label}
-                      </option>
-                    ))}
+                      </option>)}
                   </select>
-                  <select
-                    className={layout.input}
-                    value={condition.operator || "equals"}
-                    onChange={(e) =>
-                      updateCondition(conditionIndex, { ...condition, operator: e.target.value })
-                    }
-                  >
-                    {operators.map((option) => (
-                      <option key={option.value} value={option.value}>
+                  <select className={layout.input} value={condition.operator || "equals"} onChange={e => updateCondition(conditionIndex, {
+              ...condition,
+              operator: e.target.value
+            })}>
+                    {operators.map(option => <option key={option.value} value={option.value}>
                         {option.label}
-                      </option>
-                    ))}
+                      </option>)}
                   </select>
-                  <ConditionValueInput
-                    condition={condition}
-                    field={field}
-                    onChange={(next) => updateCondition(conditionIndex, next)}
-                  />
-                  <button
-                    type="button"
-                    className={modalStyles.iconBtnDanger}
-                    onClick={() => removeCondition(conditionIndex)}
-                    title="Retirer la condition"
-                  >
+                  <ConditionValueInput condition={condition} field={field} onChange={next => updateCondition(conditionIndex, next)} />
+                  <button type="button" className={modalStyles.iconBtnDanger} onClick={() => removeCondition(conditionIndex)} title="Remove condition">
                     <Icon icon="mdi:close" />
                   </button>
-                </div>
-              );
-            })}
+                </div>;
+        })}
             <button type="button" className={modalStyles.linkBtn} onClick={addCondition}>
-              <Icon icon="mdi:plus" /> Ajouter une condition
+              <Icon icon="mdi:plus" /> Add a condition
             </button>
-          </>
-        )}
+          </>}
       </div>
 
       <div className={modalStyles.targetRuleSection}>
-        <strong>Propriétés du ticket créé</strong>
+        <strong>Created ticket properties</strong>
         <div className={`${layout.fieldGrid2} ${modalStyles.targetPropsGrid}`}>
           <div className={layout.field}>
-            <label className={layout.label}>Priorité</label>
-            <select
-              className={layout.input}
-              value={rule.targets?.priority || ""}
-              onChange={(e) => updateTargets({ priority: e.target.value })}
-            >
-              {PRIORITY_OPTIONS.map((opt) => (
-                <option key={opt.value || "agent"} value={opt.value}>
+            <label className={layout.label}>Priority</label>
+            <select className={layout.input} value={rule.targets?.priority || ""} onChange={e => updateTargets({
+            priority: e.target.value
+          })}>
+              {PRIORITY_OPTIONS.map(opt => <option key={opt.value || "agent"} value={opt.value}>
                   {opt.label}
-                </option>
-              ))}
+                </option>)}
             </select>
           </div>
           <div className={layout.field}>
-            <label className={layout.label}>Statut initial</label>
-            <select
-              className={layout.input}
-              value={rule.targets?.status || ""}
-              onChange={(e) => updateTargets({ status: e.target.value })}
-            >
-              {STATUS_OPTIONS.map((opt) => (
-                <option key={opt.value || "default"} value={opt.value}>
+            <label className={layout.label}>Initial status</label>
+            <select className={layout.input} value={rule.targets?.status || ""} onChange={e => updateTargets({
+            status: e.target.value
+          })}>
+              {STATUS_OPTIONS.map(opt => <option key={opt.value || "default"} value={opt.value}>
                   {opt.label}
-                </option>
-              ))}
+                </option>)}
             </select>
           </div>
           <div className={layout.field}>
-            <label className={layout.label}>Suffixe du titre</label>
-            <input
-              className={layout.input}
-              value={rule.targets?.titleSuffix || ""}
-              placeholder={rule.label || "Ticket réseau"}
-              onChange={(e) => updateTargets({ titleSuffix: e.target.value })}
-            />
+            <label className={layout.label}>Title suffix</label>
+            <input className={layout.input} value={rule.targets?.titleSuffix || ""} placeholder={rule.label || "Network ticket"} onChange={e => updateTargets({
+            titleSuffix: e.target.value
+          })} />
           </div>
           <div className={layout.field}>
-            <label className={layout.label}>Catégorie (optionnel)</label>
-            <input
-              className={layout.input}
-              value={rule.targets?.categorySlug || ""}
-              placeholder="Slug catégorie ticket"
-              onChange={(e) => updateTargets({ categorySlug: e.target.value })}
-            />
+            <label className={layout.label}>Category (optional)</label>
+            <input className={layout.input} value={rule.targets?.categorySlug || ""} placeholder="Ticket category slug" onChange={e => updateTargets({
+            categorySlug: e.target.value
+          })} />
           </div>
         </div>
 
         <div className={modalStyles.suggestGrid}>
-          <MultiSuggestPicker
-            inputId={`sales-form-rule-${rule.id}-assignees`}
-            label="Agents assignés"
-            placeholder="Rechercher un agent…"
-            options={userOptions}
-            selectedIds={rule.targets?.assigneeUserIds || []}
-            emptyHint="Aucun assigné"
-            onChange={(assigneeUserIds) => updateTargets({ assigneeUserIds })}
-          />
-          <MultiSuggestPicker
-            inputId={`sales-form-rule-${rule.id}-teams`}
-            label="Équipes assignées"
-            placeholder="Rechercher une équipe…"
-            options={teamOptions}
-            selectedIds={rule.targets?.teamIds || []}
-            emptyHint="Aucune équipe"
-            onChange={(teamIds) => updateTargets({ teamIds })}
-          />
+          <MultiSuggestPicker inputId={`sales-form-rule-${rule.id}-assignees`} label="Assigned agents" placeholder="Search for an agent…" options={userOptions} selectedIds={rule.targets?.assigneeUserIds || []} emptyHint="None assigned" onChange={assigneeUserIds => updateTargets({
+          assigneeUserIds
+        })} />
+          <MultiSuggestPicker inputId={`sales-form-rule-${rule.id}-teams`} label="Assigned teams" placeholder="Search for a team…" options={teamOptions} selectedIds={rule.targets?.teamIds || []} emptyHint="No team" onChange={teamIds => updateTargets({
+          teamIds
+        })} />
         </div>
 
-        <MultiSuggestPicker
-          inputId={`sales-form-rule-${rule.id}-watchers`}
-          label="Suiveurs"
-          placeholder="Rechercher un agent…"
-          options={userOptions}
-          selectedIds={rule.targets?.watcherUserIds || []}
-          emptyHint="Aucun suiveur"
-          onChange={(watcherUserIds) => updateTargets({ watcherUserIds })}
-        />
+        <MultiSuggestPicker inputId={`sales-form-rule-${rule.id}-watchers`} label="Watchers" placeholder="Search for an agent…" options={userOptions} selectedIds={rule.targets?.watcherUserIds || []} emptyHint="No watchers" onChange={watcherUserIds => updateTargets({
+        watcherUserIds
+      })} />
       </div>
-    </article>
-  );
+    </article>;
 }
-
 export default function SalesFormTargetRulesEditor({
   rules = [],
   formFields = [],
   userOptions = [],
   teamOptions = [],
-  onChange,
+  onChange
 }) {
   const updateRule = (index, nextRule) => {
     const nextRules = [...rules];
     nextRules[index] = nextRule;
     onChange(nextRules);
   };
-
-  const removeRule = (index) => {
+  const removeRule = index => {
     onChange(rules.filter((_, idx) => idx !== index));
   };
-
   const addRule = () => {
     onChange([...rules, createEmptyTargetRule(rules.length)]);
   };
-
-  return (
-    <div className={modalStyles.targetRulesWrap}>
-      {rules.map((rule, index) => (
-        <TargetRuleEditor
-          key={rule.id || `rule-${index}`}
-          rule={rule}
-          index={index}
-          formFields={formFields}
-          userOptions={userOptions}
-          teamOptions={teamOptions}
-          canRemove={rules.length > 1}
-          onChange={(nextRule) => updateRule(index, nextRule)}
-          onRemove={() => removeRule(index)}
-        />
-      ))}
+  return <div className={modalStyles.targetRulesWrap}>
+      {rules.map((rule, index) => <TargetRuleEditor key={rule.id || `rule-${index}`} rule={rule} index={index} formFields={formFields} userOptions={userOptions} teamOptions={teamOptions} canRemove={rules.length > 1} onChange={nextRule => updateRule(index, nextRule)} onRemove={() => removeRule(index)} />)}
       <button type="button" className={modalStyles.addRuleBtn} onClick={addRule}>
         <Icon icon="mdi:plus-circle-outline" />
-        Ajouter une cible ticket
+        Add ticket target
       </button>
-    </div>
-  );
+    </div>;
 }
-
 export function normalizeTicketTargetsDraft(raw) {
   if (!raw || typeof raw !== "object") {
-    return { version: 2, rules: [createEmptyTargetRule(0)] };
+    return {
+      version: 2,
+      rules: [createEmptyTargetRule(0)]
+    };
   }
   if (Array.isArray(raw.rules)) {
     return {
       version: 2,
-      rules: raw.rules.length
-        ? raw.rules.map((rule, index) => ({
-            id: rule.id || createRuleId(),
-            label: rule.label || `Ticket ${index + 1}`,
-            enabled: rule.enabled !== false,
-            always: rule.always === true || !(rule.conditions || []).length,
-            matchMode: rule.matchMode === "any" ? "any" : "all",
-            conditions: Array.isArray(rule.conditions)
-              ? rule.conditions.map((condition) => ({
-                  fieldKey: condition.fieldKey || "",
-                  operator: condition.operator || "equals",
-                  value: condition.value ?? "",
-                }))
-              : [],
-            targets: {
-              priority: rule.targets?.priority || "",
-              status: rule.targets?.status || "",
-              assigneeUserIds: Array.isArray(rule.targets?.assigneeUserIds)
-                ? rule.targets.assigneeUserIds.map(String)
-                : [],
-              watcherUserIds: Array.isArray(rule.targets?.watcherUserIds)
-                ? rule.targets.watcherUserIds.map(String)
-                : [],
-              teamIds: Array.isArray(rule.targets?.teamIds) ? rule.targets.teamIds.map(String) : [],
-              titleSuffix: rule.targets?.titleSuffix || "",
-              categorySlug: rule.targets?.categorySlug || "",
-            },
-          }))
-        : [createEmptyTargetRule(0)],
+      rules: raw.rules.length ? raw.rules.map((rule, index) => ({
+        id: rule.id || createRuleId(),
+        label: rule.label || `Ticket ${index + 1}`,
+        enabled: rule.enabled !== false,
+        always: rule.always === true || !(rule.conditions || []).length,
+        matchMode: rule.matchMode === "any" ? "any" : "all",
+        conditions: Array.isArray(rule.conditions) ? rule.conditions.map(condition => ({
+          fieldKey: condition.fieldKey || "",
+          operator: condition.operator || "equals",
+          value: condition.value ?? ""
+        })) : [],
+        targets: {
+          priority: rule.targets?.priority || "",
+          status: rule.targets?.status || "",
+          assigneeUserIds: Array.isArray(rule.targets?.assigneeUserIds) ? rule.targets.assigneeUserIds.map(String) : [],
+          watcherUserIds: Array.isArray(rule.targets?.watcherUserIds) ? rule.targets.watcherUserIds.map(String) : [],
+          teamIds: Array.isArray(rule.targets?.teamIds) ? rule.targets.teamIds.map(String) : [],
+          titleSuffix: rule.targets?.titleSuffix || "",
+          categorySlug: rule.targets?.categorySlug || ""
+        }
+      })) : [createEmptyTargetRule(0)]
     };
   }
-
   return {
     version: 2,
-    rules: [
-      {
-        ...createEmptyTargetRule(0),
-        always: true,
-        targets: {
-          priority: raw.priority || "",
-          status: raw.status || "",
-          assigneeUserIds: Array.isArray(raw.assigneeUserIds) ? raw.assigneeUserIds.map(String) : [],
-          watcherUserIds: Array.isArray(raw.watcherUserIds) ? raw.watcherUserIds.map(String) : [],
-          teamIds: Array.isArray(raw.teamIds) ? raw.teamIds.map(String) : [],
-          titleSuffix: "",
-          categorySlug: "",
-        },
-      },
-    ],
+    rules: [{
+      ...createEmptyTargetRule(0),
+      always: true,
+      targets: {
+        priority: raw.priority || "",
+        status: raw.status || "",
+        assigneeUserIds: Array.isArray(raw.assigneeUserIds) ? raw.assigneeUserIds.map(String) : [],
+        watcherUserIds: Array.isArray(raw.watcherUserIds) ? raw.watcherUserIds.map(String) : [],
+        teamIds: Array.isArray(raw.teamIds) ? raw.teamIds.map(String) : [],
+        titleSuffix: "",
+        categorySlug: ""
+      }
+    }]
   };
 }
-
 export function serializeTicketTargetsDraft(draft) {
   const normalized = normalizeTicketTargetsDraft(draft);
   return {
     version: 2,
-    rules: normalized.rules.map((rule) => ({
+    rules: normalized.rules.map(rule => ({
       id: rule.id,
       label: String(rule.label || "").trim() || "Ticket",
       enabled: rule.enabled !== false,
       always: rule.always === true || !(rule.conditions || []).length,
       matchMode: rule.matchMode === "any" ? "any" : "all",
-      conditions: (rule.conditions || [])
-        .filter((condition) => condition.fieldKey)
-        .map((condition) => ({
-          fieldKey: condition.fieldKey,
-          operator: condition.operator || "equals",
-          value: condition.value ?? "",
-        })),
+      conditions: (rule.conditions || []).filter(condition => condition.fieldKey).map(condition => ({
+        fieldKey: condition.fieldKey,
+        operator: condition.operator || "equals",
+        value: condition.value ?? ""
+      })),
       targets: {
         priority: rule.targets?.priority || null,
         status: rule.targets?.status || null,
@@ -470,8 +388,8 @@ export function serializeTicketTargetsDraft(draft) {
         watcherUserIds: rule.targets?.watcherUserIds || [],
         teamIds: rule.targets?.teamIds || [],
         titleSuffix: String(rule.targets?.titleSuffix || "").trim() || null,
-        categorySlug: String(rule.targets?.categorySlug || "").trim() || null,
-      },
-    })),
+        categorySlug: String(rule.targets?.categorySlug || "").trim() || null
+      }
+    }))
   };
 }

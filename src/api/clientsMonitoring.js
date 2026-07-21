@@ -1,42 +1,41 @@
-import API_BASE_URL from "../config"; // adapte le chemin si besoin
-
+import API_BASE_URL from "../config";
 const BASE_URL = `${API_BASE_URL}/clients/general`;
-
 export async function fetchClients() {
   const res = await fetch(BASE_URL, {
-    credentials: 'include' // Auth via cookie HttpOnly
+    credentials: 'include'
   });
-  if (!res.ok) throw new Error("Erreur lors du fetch des clients");
+  if (!res.ok) throw new Error("Error fetching clients");
   return await res.json();
 }
-
 export async function addClient(client) {
   const res = await fetch(BASE_URL, {
     method: "POST",
-    credentials: 'include', // Auth via cookie HttpOnly
-    headers: { "Content-Type": "application/json" },
+    credentials: 'include',
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify(client)
   });
-  if (!res.ok) throw new Error("Erreur lors de l'ajout d'un client");
+  if (!res.ok) throw new Error("Error adding client");
   return await res.json();
 }
-
 export async function deleteClient(id) {
   const res = await fetch(`${BASE_URL}/${id}`, {
     method: "DELETE",
-    credentials: 'include' // Auth via cookie HttpOnly
+    credentials: 'include'
   });
-  if (!res.ok) throw new Error("Erreur lors de la suppression du client");
+  if (!res.ok) throw new Error("Error deleting client");
   return await res.json();
 }
-
 export async function updateClient(id, updates) {
   const res = await fetch(`${BASE_URL}/${id}`, {
     method: "PUT",
-    credentials: 'include', // Auth via cookie HttpOnly
-    headers: { "Content-Type": "application/json" },
+    credentials: 'include',
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify(updates)
   });
-  if (!res.ok) throw new Error("Erreur lors de la mise à jour du client");
+  if (!res.ok) throw new Error("Error updating client");
   return await res.json();
 }

@@ -1,4 +1,4 @@
-/* TicketCreatePage · extensions MSP (base : EnterprisesPage + AccountPage) */
+
 
 .typeGrid {
   display: grid;
@@ -3335,7 +3335,7 @@ button.switch:disabled {
   color: var(--msp-text, #e8edf5);
 }
 
-/* Modal récap ticket · dark mode */
+
 :global(html.dark) .confirmOverlay {
   background: rgba(4, 10, 20, 0.72);
 }
@@ -3479,7 +3479,7 @@ button.switch:disabled {
   color: #fca5a5;
 }
 
-/* Validation errors · must override global dark input rules (e.g. AdminPanel) */
+
 :global(html.dark) .input.inputError,
 :global(html.dark) .select.inputError,
 :global(html.dark) .textarea.inputError,

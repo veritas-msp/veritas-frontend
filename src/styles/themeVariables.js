@@ -23,7 +23,7 @@ export const THEME_VARIABLES = {
     "--msp-muted": "#5c6b82",
     "--msp-muted-light": "#8b9bb5",
     "--msp-accent": "#2b5fab",
-    "--msp-accent-soft": "rgba(43, 95, 171, 0.1)",
+    "--msp-accent-soft": "rgba(43, 95, 171, 0.1)"
   },
   dark: {
     "--bg-primary": "#0f0f23",
@@ -49,21 +49,17 @@ export const THEME_VARIABLES = {
     "--msp-muted": "#8fa8c4",
     "--msp-muted-light": "#6a88a8",
     "--msp-accent": "#4a8fd4",
-    "--msp-accent-soft": "rgba(74, 143, 212, 0.15)",
-  },
+    "--msp-accent-soft": "rgba(74, 143, 212, 0.15)"
+  }
 };
-
 export function applyThemeToRoot(theme) {
   const root = document.documentElement;
   const palette = THEME_VARIABLES[theme] || THEME_VARIABLES.light;
-
   root.classList.remove("light", "dark");
   root.classList.add(theme === "dark" ? "dark" : "light");
-
   Object.entries(palette).forEach(([property, value]) => {
     root.style.setProperty(property, value);
   });
-
   const metaThemeColor = document.querySelector('meta[name="theme-color"]');
   if (metaThemeColor) {
     metaThemeColor.setAttribute("content", theme === "dark" ? "#0f0f23" : "#ffffff");

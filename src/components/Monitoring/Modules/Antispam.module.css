@@ -114,7 +114,7 @@
   border: 2px dashed #d1d5db;
 }
 
-/* Zone d'upload compacte */
+
 .headerUploadZone {
   border: 1px dashed #d1d5db;
   border-radius: 6px;
@@ -193,7 +193,7 @@
   display: block;
 }
 
-/* Boutons de navigation */
+
 .navButtons {
   display: flex;
   align-items: center;
@@ -233,7 +233,7 @@
   color: #374151;
 }
 
-/* Tooltip pour la note globale */
+
 .scoreTooltipContainer {
   position: relative;
   display: inline-flex;
@@ -338,7 +338,7 @@
   flex-shrink: 0;
 }
 
-/* Métriques principales compactes - style Antivirus */
+
 .metricsRow {
   display: flex;
   gap: 1rem;
@@ -385,7 +385,7 @@
   color: #f9fafb;
 }
 
-/* Boutons d'action - même style que Firewalls */
+
 .buttonGroup {
   display: flex;
   align-items: center;
@@ -415,7 +415,7 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Aligné sur le style des boutons du header EnterpriseDetailPage */
+
 .syncButton {
   display: inline-flex;
   align-items: center;
@@ -459,7 +459,7 @@
   margin-top: 0.25rem;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1200px) {
   .antispamGrid {
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -490,7 +490,7 @@
   }
 }
 
-/* Styles pour les modals */
+
 .editModalOverlay {
   position: fixed;
   inset: 0;

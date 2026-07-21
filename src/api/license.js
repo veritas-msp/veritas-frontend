@@ -1,7 +1,5 @@
 import API_BASE_URL from "../config";
-
 const BASE_URL = `${API_BASE_URL}/license`;
-
 async function parseError(res, fallbackCode) {
   const data = await res.json().catch(() => ({}));
   const error = new Error(fallbackCode);
@@ -9,9 +7,10 @@ async function parseError(res, fallbackCode) {
   error.payload = data;
   throw error;
 }
-
 export async function getLicenseStatus() {
-  const res = await fetch(BASE_URL, { credentials: "include" });
+  const res = await fetch(BASE_URL, {
+    credentials: "include"
+  });
   if (!res.ok) {
     if (res.status === 401) {
       const error = new Error("SESSION_EXPIRED");
@@ -22,13 +21,16 @@ export async function getLicenseStatus() {
   }
   return res.json();
 }
-
 export async function activateLicense(licenseKey) {
   const res = await fetch(BASE_URL, {
     method: "POST",
     credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ licenseKey }),
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      licenseKey
+    })
   });
   if (!res.ok) {
     if (res.status === 401) {
@@ -40,11 +42,10 @@ export async function activateLicense(licenseKey) {
   }
   return res.json();
 }
-
 export async function refreshLicenseStatus() {
   const res = await fetch(`${BASE_URL}/refresh`, {
     method: "POST",
-    credentials: "include",
+    credentials: "include"
   });
   if (!res.ok) {
     if (res.status === 401) {

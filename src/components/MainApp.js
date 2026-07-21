@@ -1,18 +1,12 @@
-// ──────────────────────────────
-// 📦 Imports externes et composants
-// ──────────────────────────────
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-
-// ──────────────────────────────
-// 🗂 Pages principales de l'application
-// ──────────────────────────────
+import { AnimatePresence } from "framer-motion";
 import Sidebar from "../components/Misc/Sidebar/Sidebar";
 import TabsBar from "../components/Misc/TabsBar/TabsBar";
 import HomePage from "../components/HomePage/HomePage";
 import EquipmentPage from "../components/EquipementPage/EquipmentPage";
 import EquipmentDetailPage from "../components/EquipementPage/EquipmentDetailPage";
+import JobDetailPage from "../components/EquipementPage/JobDetailPage";
 import CybersecuritePage from "../components/CybersecuritePage/CybersecuritePage";
 import CampaignDetailPage from "../components/CybersecuritePage/CampaignDetailPage";
 import AntivirusDetailPage from "../components/CybersecuritePage/AntivirusDetailPage";
@@ -41,15 +35,7 @@ import DashboardPage from "../components/DashboardPage/DashboardPage";
 import DocumentsHubPage from "../components/DocumentsHubPage/DocumentsHubPage";
 import TabLauncherPage from "../components/TabLauncher/TabLauncherPage";
 import { createListTabData, isListTabDocType } from "../navigation/tabTypes";
-
-// ──────────────────────────────
-// 🧾 Rendus de contenu des documents (Synthèse, Monitoring)
-// ──────────────────────────────
 import MonitoringRenderContent from "../components/Monitoring/MonitoringRenderContent";
-
-// ──────────────────────────────
-// 🧠 Context Providers (logique globale par type de doc)
-// ──────────────────────────────
 import { EphemeralMonitoringProvider } from "../contexts/MonitoringContext";
 import { useAuthContext } from "../contexts/AuthContext";
 import { useTheme } from "../hooks/useTheme";
@@ -58,39 +44,34 @@ import { useProfileAccess } from "../hooks/useProfileAccess";
 import { useVeritasEdition } from "../hooks/useVeritasEdition";
 import { filterAccessForEdition, isProOnlyDocType } from "../config/edition";
 import { useAppLocale } from "../hooks/useAppGeneralSettings";
-
 import API_BASE_URL from "../config";
 import { confirmLeaveMonitoringReport } from "../utils/monitoringReportGuard";
 import { useOnboarding } from "../hooks/useOnboarding";
 import OnboardingWizard from "../components/Onboarding/OnboardingWizard";
 import OnboardingResumeFab from "../components/Onboarding/OnboardingResumeFab";
-import {
-  buildAgentPath,
-  parseAgentPath,
-  routeToMainAppState,
-  isAgentPathAllowed,
-} from "../navigation/agentRoutes";
+import { buildAgentPath, parseAgentPath, routeToMainAppState, isAgentPathAllowed } from "../navigation/agentRoutes";
 import { getEquipmentListKey } from "../utils/equipmentIdentity";
-
-// ──────────────────────────────
-// 🧩 Composant principal MainApp
-// ──────────────────────────────
 export default function MainApp() {
-  const { user, userRole, loading, handleLogout } = useAuthContext();
-  const { theme } = useTheme();
+  const {
+    user,
+    userRole,
+    loading,
+    handleLogout
+  } = useAuthContext();
+  const {
+    theme
+  } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const urlSyncRef = useRef(false);
   const [profile, setProfile] = useState(null);
-  const [refreshTrigger, setRefreshTrigger] = useState(0); // <-- Déclencheur de refresh
-  const { isCommunity } = useVeritasEdition();
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const {
+    isCommunity
+  } = useVeritasEdition();
   const appLocale = useAppLocale();
   const rawAccess = useProfileAccess(profile, refreshTrigger);
-  const access = useMemo(
-    () => filterAccessForEdition(rawAccess, isCommunity ? "community" : "pro"),
-    [rawAccess, isCommunity]
-  );
-
+  const access = useMemo(() => filterAccessForEdition(rawAccess, isCommunity ? "community" : "pro"), [rawAccess, isCommunity]);
   const {
     showWizard: showOnboardingWizard,
     showResumeFab: showOnboardingResumeFab,
@@ -98,11 +79,12 @@ export default function MainApp() {
     setStep: setOnboardingStep,
     complete: completeOnboarding,
     pauseAtStep: pauseOnboarding,
-    resume: resumeOnboarding,
+    resume: resumeOnboarding
   } = useOnboarding(user, userRole);
-
-  // 📌 États globaux de navigation
-  const { drafts, refreshDraftStatus } = useDrafts();
+  const {
+    drafts,
+    refreshDraftStatus
+  } = useDrafts();
   const [currentDocType, setCurrentDocType] = useState("Home");
   const [contratDetailData, setContratDetailData] = useState(null);
   const [contratPageParams, setContratPageParams] = useState(null);
@@ -117,6 +99,7 @@ export default function MainApp() {
   const [contactDetailData, setContactDetailData] = useState(null);
   const [equipmentFilterParams, setEquipmentFilterParams] = useState(null);
   const [equipmentDetailData, setEquipmentDetailData] = useState(null);
+  const [jobDetailData, setJobDetailData] = useState(null);
   const [computerFleetStatsData, setComputerFleetStatsData] = useState(null);
   const [cybersecuriteParams, setCybersecuriteParams] = useState(null);
   const [serviceParams, setServiceParams] = useState(null);
@@ -124,21 +107,15 @@ export default function MainApp() {
   const [adminTab, setAdminTab] = useState(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [monitoringReportGuardActive, setMonitoringReportGuardActive] = useState(false);
-
-  const handleMonitoringReportGuardChange = useCallback((active) => {
+  const handleMonitoringReportGuardChange = useCallback(active => {
     setMonitoringReportGuardActive(Boolean(active));
   }, []);
-
-  const shouldBlockMonitoringReportLeave = useCallback(
-    (nextDocType) => {
-      if (!monitoringReportGuardActive) return false;
-      if (currentDocType === "Rapport" && nextDocType !== "Rapport") return true;
-      if (currentDocType === "MonitoringDetail" && nextDocType !== "MonitoringDetail") return true;
-      return false;
-    },
-    [monitoringReportGuardActive, currentDocType]
-  );
-
+  const shouldBlockMonitoringReportLeave = useCallback(nextDocType => {
+    if (!monitoringReportGuardActive) return false;
+    if (currentDocType === "Report" && nextDocType !== "Report") return true;
+    if (currentDocType === "MonitoringDetail" && nextDocType !== "MonitoringDetail") return true;
+    return false;
+  }, [monitoringReportGuardActive, currentDocType]);
   const confirmLeaveActiveMonitoringReport = useCallback(() => {
     if (!monitoringReportGuardActive) return true;
     const confirmed = confirmLeaveMonitoringReport();
@@ -147,43 +124,35 @@ export default function MainApp() {
     }
     return confirmed;
   }, [monitoringReportGuardActive]);
-
-  // 📑 États pour la gestion des onglets
   const [tabs, setTabs] = useState(() => {
-    // Restaurer les onglets depuis localStorage au chargement
     try {
       const savedTabs = localStorage.getItem('veritas_tabs');
       if (savedTabs) {
         const parsed = JSON.parse(savedTabs);
-        return Array.isArray(parsed) ? parsed.filter((tab) => tab.type !== "Mon") : [];
+        return Array.isArray(parsed) ? parsed.filter(tab => tab.type !== "Mon") : [];
       }
     } catch (error) {
-      console.error('Erreur lors de la restauration des onglets:', error);
+      console.error('Error lors de la restauration des onglets:', error);
     }
     return [];
   });
   const [activeTabId, setActiveTabId] = useState(() => {
-    // Restaurer l'onglet actif depuis localStorage au chargement
     try {
       const savedActiveTabId = localStorage.getItem('veritas_activeTabId');
       const savedTabs = localStorage.getItem('veritas_tabs');
       if (savedActiveTabId && savedTabs) {
         const parsed = JSON.parse(savedTabs);
-        const activeTab = Array.isArray(parsed)
-          ? parsed.find((tab) => tab.id === savedActiveTabId)
-          : null;
+        const activeTab = Array.isArray(parsed) ? parsed.find(tab => tab.id === savedActiveTabId) : null;
         if (activeTab && activeTab.type !== "Mon") {
           return savedActiveTabId;
         }
       }
     } catch (error) {
-      console.error('Erreur lors de la restauration de l\'onglet actif:', error);
+      console.error('Error lors de la restauration de l\'onglet actif:', error);
       return null;
     }
     return null;
   });
-
-  // 🔑 Fonction pour générer un ID unique pour un onglet
   const generateTabId = useCallback((type, data) => {
     if (data?.tabInstanceId) {
       return String(data.tabInstanceId);
@@ -204,7 +173,6 @@ export default function MainApp() {
       return `equipment-${data.clientId}-${data.equipmentType}`;
     }
     if (type === "CampaignDetail") {
-      // Les données peuvent avoir 'id' ou 'campaignId'
       const campaignId = data?.campaignId || data?.id;
       if (campaignId) {
         return `campaign-${campaignId}`;
@@ -239,15 +207,12 @@ export default function MainApp() {
       }
     }
     if (type === "TenantDetail") {
-      // Utiliser en priorité le clientId (1 tenant Microsoft par client dans Veritas)
       if (data?.clientId) {
         return `tenant-${data.clientId}`;
       }
-      // Fallback sur tenantId si jamais il est disponible sans clientId
       if (data?.tenantId) {
         return `tenant-${data.tenantId}`;
       }
-      // Dernier recours : ID stable générique pour éviter la création d'onglets dupliqués
       return "tenant-unknown";
     }
     if (type === "EquipmentDetail" && data) {
@@ -256,12 +221,16 @@ export default function MainApp() {
         return `equipment-detail-${data.clientId}-${data.type}-${String(data.name).replace(/\s+/g, '-')}`;
       }
     }
+    if (type === "JobDetail" && data) {
+      if (data.id && data.clientId) return `job-detail-${data.clientId}-${data.id}`;
+      if (data.id) return `job-detail-${data.id}`;
+      if (data.clientId && (data.nom || data.name)) {
+        return `job-detail-${data.clientId}-${String(data.nom || data.name).replace(/\s+/g, "-")}`;
+      }
+    }
     if (type === "ComputerFleetStats" && data?.clientId) {
       const equipmentType = data.equipmentType || "Ordinateurs";
-      const siteKey = String(data.siteFilter || "all")
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, "-");
+      const siteKey = String(data.siteFilter || "all").trim().toLowerCase().replace(/\s+/g, "-");
       return `computer-fleet-${data.clientId}-${equipmentType}-${siteKey}`;
     }
     if (type === "TicketDetail" && data) {
@@ -269,28 +238,22 @@ export default function MainApp() {
       if (data.id) return `ticket-${data.id}`;
     }
     if (type === "MonitoringDetail") {
-      // Un seul onglet de rapport par client
       const clientId = data?.client?.id || data?.clientId;
       if (clientId) {
         return `monitoring-${clientId}`;
       }
-      // Fallback : utiliser le nom si pas d'id (cas extrême)
       const clientName = data?.client?.name || data?.client?.nom || 'CLIENT';
       return `monitoring-${clientName}`.replace(/\s+/g, '-');
     }
     return `${type}-${Date.now()}`;
   }, []);
-
-  // 🔄 Fonction pour mettre à jour le titre d'un onglet
   const updateTabTitle = (tabId, newTitle) => {
-    setTabs(prevTabs => 
-      prevTabs.map(tab => 
-        tab.id === tabId ? { ...tab, title: newTitle } : tab
-      )
-    );
+    setTabs(prevTabs => prevTabs.map(tab => tab.id === tabId ? {
+      ...tab,
+      title: newTitle
+    } : tab));
   };
-
-  const hydrateDetailStateFromTab = useCallback((tab) => {
+  const hydrateDetailStateFromTab = useCallback(tab => {
     if (!tab) return;
     if (tab.type === "Equipment" || tab.type === "Hardware") {
       setEquipmentFilterParams(tab.data || null);
@@ -300,6 +263,10 @@ export default function MainApp() {
     if (tab.type === "EquipmentDetail" && tab.data) {
       setEquipmentDetailData(tab.data);
       setEquipmentFilterParams(null);
+      return;
+    }
+    if (tab.type === "JobDetail" && tab.data) {
+      setJobDetailData(tab.data);
       return;
     }
     if (tab.type === "ComputerFleetStats" && tab.data) {
@@ -334,159 +301,136 @@ export default function MainApp() {
       setTicketDetailData(tab.data);
     }
   }, []);
-
-  const applyRouteState = useCallback(
-    (pathname, search) => {
-      const parsed = parseAgentPath(pathname, search);
-      if (!parsed) {
-        setCurrentDocType("Home");
-        setAdminTab(null);
-        if (`${pathname}${search}` !== "/") {
-          navigate("/", { replace: true });
-        }
-        return;
-      }
-
-      const accessLoaded = Object.keys(rawAccess || {}).length > 0;
-      if (
-        accessLoaded &&
-        !isAgentPathAllowed(parsed.docType, { userRole, access, isCommunity })
-      ) {
-        navigate("/", { replace: true });
-        return;
-      }
-
-      const routeState = routeToMainAppState(parsed);
-      setCurrentDocType(routeState.docType);
-      setAdminTab(routeState.adminTab);
-      setContratDetailData(routeState.contratDetailData);
-      setContratPageParams(routeState.contratPageParams);
-      setContactPageParams(routeState.contactPageParams);
-      setCampaignDetailData(routeState.campaignDetailData);
-      setAntivirusDetailData(routeState.antivirusDetailData);
-      setAntispamDetailData(routeState.antispamDetailData);
-      setTenantDetailData(routeState.tenantDetailData);
-      setTicketDetailData(routeState.ticketDetailData);
-      setTicketCreateData(routeState.ticketCreateData);
-      setTicketSalesCreateData(routeState.ticketSalesCreateData);
-      setContactDetailData(routeState.contactDetailData);
-      setEquipmentFilterParams(routeState.equipmentFilterParams);
-      setEquipmentDetailData(routeState.equipmentDetailData);
-      setComputerFleetStatsData(routeState.computerFleetStatsData);
-      setCybersecuriteParams(routeState.cybersecuriteParams);
-      setServiceParams(routeState.serviceParams);
-      setPlanningParams(routeState.planningParams);
-
-      const tabTypes = [
-        "ContratDetail",
-        "ContactDetail",
-        "Equipment",
-        "EquipmentDetail",
-        "ComputerFleetStats",
-        "MonitoringDetail",
-        "CampaignDetail",
-        "AntivirusDetail",
-        "AntispamDetail",
-        "TenantDetail",
-        "TicketDetail",
-      ];
-      if (tabTypes.includes(routeState.docType) && parsed.data) {
-        const tabId = generateTabId(routeState.docType, parsed.data);
-        setTabs((prevTabs) => {
-          const existing = prevTabs.find((t) => t.id === tabId);
-          if (existing) {
-            setActiveTabId(tabId);
-            hydrateDetailStateFromTab(existing);
-            return prevTabs;
-          }
-
-          const newTab = {
-            id: tabId,
-            type: routeState.docType,
-            title: generateTabTitle(routeState.docType, parsed.data, appLocale),
-            data: parsed.data,
-          };
-          setActiveTabId(tabId);
-          const newTabs = [...prevTabs, newTab];
-          try {
-            localStorage.setItem("veritas_tabs", JSON.stringify(newTabs));
-            localStorage.setItem("veritas_activeTabId", tabId);
-          } catch (error) {
-            console.error("Erreur lors de la sauvegarde des onglets:", error);
-          }
-          return newTabs;
+  const applyRouteState = useCallback((pathname, search) => {
+    const parsed = parseAgentPath(pathname, search);
+    if (!parsed) {
+      setCurrentDocType("Home");
+      setAdminTab(null);
+      if (`${pathname}${search}` !== "/") {
+        navigate("/", {
+          replace: true
         });
-      } else if (!tabTypes.includes(routeState.docType)) {
-        setActiveTabId(null);
       }
-    },
-    [userRole, access, rawAccess, isCommunity, navigate, generateTabId, hydrateDetailStateFromTab, appLocale]
-  );
-
-  const pushAgentUrl = useCallback(
-    (type, data, options = {}) => {
-      if (options.background) return;
-      const path = buildAgentPath(type, data, {
-        adminTab: options.adminTab || data?.adminTab || data?.tab,
+      return;
+    }
+    const accessLoaded = Object.keys(rawAccess || {}).length > 0;
+    if (accessLoaded && !isAgentPathAllowed(parsed.docType, {
+      userRole,
+      access,
+      isCommunity
+    })) {
+      navigate("/", {
+        replace: true
       });
-      if (!path) return;
-      const current = `${location.pathname}${location.search}`;
-      if (current === path) return;
-      urlSyncRef.current = true;
-      navigate(path, { replace: Boolean(options.replaceUrl) });
-    },
-    [location.pathname, location.search, navigate]
-  );
-
-  // 🧭 Navigation via la sidebar
-  // options.background: ajoute l'onglet sans activer (reste sur la page en cours)
+      return;
+    }
+    const routeState = routeToMainAppState(parsed);
+    setCurrentDocType(routeState.docType);
+    setAdminTab(routeState.adminTab);
+    setContratDetailData(routeState.contratDetailData);
+    setContratPageParams(routeState.contratPageParams);
+    setContactPageParams(routeState.contactPageParams);
+    setCampaignDetailData(routeState.campaignDetailData);
+    setAntivirusDetailData(routeState.antivirusDetailData);
+    setAntispamDetailData(routeState.antispamDetailData);
+    setTenantDetailData(routeState.tenantDetailData);
+    setTicketDetailData(routeState.ticketDetailData);
+    setTicketCreateData(routeState.ticketCreateData);
+    setTicketSalesCreateData(routeState.ticketSalesCreateData);
+    setContactDetailData(routeState.contactDetailData);
+    setEquipmentFilterParams(routeState.equipmentFilterParams);
+    setEquipmentDetailData(routeState.equipmentDetailData);
+    setJobDetailData(routeState.jobDetailData);
+    setComputerFleetStatsData(routeState.computerFleetStatsData);
+    setCybersecuriteParams(routeState.cybersecuriteParams);
+    setServiceParams(routeState.serviceParams);
+    setPlanningParams(routeState.planningParams);
+    const tabTypes = ["ContratDetail", "ContactDetail", "Equipment", "EquipmentDetail", "JobDetail", "ComputerFleetStats", "MonitoringDetail", "CampaignDetail", "AntivirusDetail", "AntispamDetail", "TenantDetail", "TicketDetail"];
+    if (tabTypes.includes(routeState.docType) && parsed.data) {
+      const tabId = generateTabId(routeState.docType, parsed.data);
+      setTabs(prevTabs => {
+        const existing = prevTabs.find(t => t.id === tabId);
+        if (existing) {
+          setActiveTabId(tabId);
+          hydrateDetailStateFromTab(existing);
+          return prevTabs;
+        }
+        const newTab = {
+          id: tabId,
+          type: routeState.docType,
+          title: generateTabTitle(routeState.docType, parsed.data, appLocale),
+          data: parsed.data
+        };
+        setActiveTabId(tabId);
+        const newTabs = [...prevTabs, newTab];
+        try {
+          localStorage.setItem("veritas_tabs", JSON.stringify(newTabs));
+          localStorage.setItem("veritas_activeTabId", tabId);
+        } catch (error) {
+          console.error("Error lors de la sauvegarde des onglets:", error);
+        }
+        return newTabs;
+      });
+    } else if (!tabTypes.includes(routeState.docType)) {
+      setActiveTabId(null);
+    }
+  }, [userRole, access, rawAccess, isCommunity, navigate, generateTabId, hydrateDetailStateFromTab, appLocale]);
+  const pushAgentUrl = useCallback((type, data, options = {}) => {
+    if (options.background) return;
+    const path = buildAgentPath(type, data, {
+      adminTab: options.adminTab || data?.adminTab || data?.tab
+    });
+    if (!path) return;
+    const current = `${location.pathname}${location.search}`;
+    if (current === path) return;
+    urlSyncRef.current = true;
+    navigate(path, {
+      replace: Boolean(options.replaceUrl)
+    });
+  }, [location.pathname, location.search, navigate]);
   const handleDocSelect = (type, data, options = {}) => {
     if (type === "Admin" && userRole !== "admin") {
       return;
     }
-
     if (type === "Mon") {
-      type = "Rapport";
+      type = "Report";
     }
-
     if (shouldBlockMonitoringReportLeave(type) && !options.background) {
       if (!confirmLeaveActiveMonitoringReport()) {
         return;
       }
     }
-
     if (!options.background) {
       setCurrentDocType(type);
     }
-
-    // Onglet « liste » depuis le lanceur (+)
     if (options.openAsTab && isListTabDocType(type)) {
-      const normalizedData = data?._listTab ? { ...data } : createListTabData(type);
+      const normalizedData = data?._listTab ? {
+        ...data
+      } : createListTabData(type);
       const tabId = generateTabId(type, normalizedData);
       const tabTitle = generateTabTitle(type, normalizedData, appLocale);
-
-      setTabs((prevTabs) => {
+      setTabs(prevTabs => {
         const newTab = {
           id: tabId,
           type,
           title: tabTitle,
-          data: normalizedData,
+          data: normalizedData
         };
         const newTabs = [...prevTabs, newTab];
         try {
           localStorage.setItem("veritas_tabs", JSON.stringify(newTabs));
           localStorage.setItem("veritas_activeTabId", tabId);
         } catch (error) {
-          console.error("Erreur lors de la sauvegarde des onglets:", error);
+          console.error("Error lors de la sauvegarde des onglets:", error);
         }
         return newTabs;
       });
       setActiveTabId(tabId);
-
       setContratDetailData(null);
       setContactDetailData(null);
       setTicketDetailData(null);
       setEquipmentDetailData(null);
+      setJobDetailData(null);
       if (type === "Contrat") {
         setContratPageParams(null);
       } else if (type === "Contact") {
@@ -494,23 +438,19 @@ export default function MainApp() {
       } else if (type === "Hardware") {
         setEquipmentFilterParams(null);
       }
-
       pushAgentUrl(type, normalizedData, options);
       return;
     }
-
-    // Fermer l'onglet actif à la demande (ex: suppression depuis une page détail),
-    // puis naviguer vers la destination.
     if (options.closeCurrent && activeTabId) {
-      setTabs((prevTabs) => {
-        const newTabs = prevTabs.filter((t) => t.id !== activeTabId);
+      setTabs(prevTabs => {
+        const newTabs = prevTabs.filter(t => t.id !== activeTabId);
         try {
           localStorage.setItem("veritas_tabs", JSON.stringify(newTabs));
           if (newTabs.length === 0) {
             localStorage.removeItem("veritas_tabs");
           }
         } catch (error) {
-          console.error("Erreur lors de la sauvegarde des onglets:", error);
+          console.error("Error lors de la sauvegarde des onglets:", error);
         }
         return newTabs;
       });
@@ -518,47 +458,34 @@ export default function MainApp() {
       try {
         localStorage.removeItem("veritas_activeTabId");
       } catch (error) {
-        console.error("Erreur lors de la suppression de l'onglet actif:", error);
+        console.error("Error while deleting de l'onglet actif:", error);
       }
     }
-    
-    // Types de pages qui doivent créer des onglets
-    const tabTypes = ["ContratDetail", "ContactDetail", "Equipment", "EquipmentDetail", "ComputerFleetStats", "MonitoringDetail", "CampaignDetail", "AntivirusDetail", "AntispamDetail", "TenantDetail", "TicketDetail"];
-    
+    const tabTypes = ["ContratDetail", "ContactDetail", "Equipment", "EquipmentDetail", "JobDetail", "ComputerFleetStats", "MonitoringDetail", "CampaignDetail", "AntivirusDetail", "AntispamDetail", "TenantDetail", "TicketDetail"];
     if (tabTypes.includes(type) && data) {
-      // Normaliser les données pour garantir la cohérence de l'ID
-      const normalizedData = { ...data };
-      // Pour CampaignDetail, s'assurer que campaignId existe (utiliser id si campaignId n'existe pas)
+      const normalizedData = {
+        ...data
+      };
       if (type === "CampaignDetail" && normalizedData.id && !normalizedData.campaignId) {
         normalizedData.campaignId = normalizedData.id;
       }
-
-      // ⛔ Politique : un seul onglet de rapport de monitoring à la fois
-      // On ne bloque que si on tente d'ouvrir un rapport *différent* de celui déjà ouvert.
       let tabId = generateTabId(type, normalizedData);
       if (type === "MonitoringDetail") {
-        const existingMonitoringTab = tabs.find((t) => t.type === "MonitoringDetail");
+        const existingMonitoringTab = tabs.find(t => t.type === "MonitoringDetail");
         if (existingMonitoringTab && existingMonitoringTab.id !== tabId) {
-          // Si un autre rapport de monitoring est déjà ouvert, on prévient et on active l'existant.
-          window.alert(
-            "Un rapport de monitoring est déjà en cours. " +
-            "Veuillez fermer l'onglet de rapport actuel avant d'en créer un nouveau."
-          );
+          window.alert("A monitoring report is already in progress. " + "Please close the current report tab before creating a new one.");
           setActiveTabId(existingMonitoringTab.id);
           setCurrentDocType("MonitoringDetail");
           try {
             localStorage.setItem("veritas_activeTabId", existingMonitoringTab.id);
           } catch (error) {
-            console.error("Erreur lors de la sauvegarde de l'onglet actif:", error);
+            console.error("Error lors de la sauvegarde de l'onglet actif:", error);
           }
           pushAgentUrl("MonitoringDetail", existingMonitoringTab.data, options);
           return;
         }
       }
-      
       const tabTitle = generateTabTitle(type, normalizedData, appLocale);
-      
-      // Vérifier si l'onglet existe déjà
       const inBackground = options.background;
       setTabs(prevTabs => {
         const existingTab = prevTabs.find(t => t.id === tabId);
@@ -567,9 +494,13 @@ export default function MainApp() {
           if (!inBackground) {
             setActiveTabId(tabId);
           }
-          newTabs = prevTabs.map(t => 
-            t.id === tabId ? { ...t, data: { ...t.data, ...normalizedData } } : t
-          );
+          newTabs = prevTabs.map(t => t.id === tabId ? {
+            ...t,
+            data: {
+              ...t.data,
+              ...normalizedData
+            }
+          } : t);
         } else {
           const newTab = {
             id: tabId,
@@ -588,20 +519,16 @@ export default function MainApp() {
             localStorage.setItem('veritas_activeTabId', tabId);
           }
         } catch (error) {
-          console.error('Erreur lors de la sauvegarde des onglets:', error);
+          console.error('Error lors de la sauvegarde des onglets:', error);
         }
         return newTabs;
       });
     } else if (!options.background) {
       setActiveTabId(null);
     }
-
-    // Gestion des données (uniquement si on active l'onglet)
     if (!options.background && type === "ContratDetail" && data) {
       setContratDetailData(data);
     } else if (!options.background && type === "CampaignDetail" && data) {
-      // Si data contient une propriété 'campaign', extraire la campagne
-      // Sinon, utiliser data directement comme campagne
       setCampaignDetailData(data.campaign || data);
     } else if (!options.background && type === "AntivirusDetail" && data) {
       setAntivirusDetailData(data);
@@ -625,6 +552,8 @@ export default function MainApp() {
       setEquipmentFilterParams(data);
     } else if (!options.background && type === "EquipmentDetail" && data) {
       setEquipmentDetailData(data);
+    } else if (!options.background && type === "JobDetail" && data) {
+      setJobDetailData(data);
     } else if (!options.background && type === "ComputerFleetStats" && data) {
       setComputerFleetStatsData(data);
     } else if (!options.background && type === "Cybersecurite" && data) {
@@ -633,11 +562,12 @@ export default function MainApp() {
       setServiceParams(data);
     } else if (!options.background && type === "Planning" && data) {
       setPlanningParams(data);
-    } else if (type !== "ContratDetail" && type !== "ContactDetail" && type !== "Equipment" && type !== "EquipmentDetail" && type !== "ComputerFleetStats" && type !== "MonitoringDetail" && type !== "Cybersecurite" && type !== "Service" && type !== "Planning") {
+    } else if (type !== "ContratDetail" && type !== "ContactDetail" && type !== "Equipment" && type !== "EquipmentDetail" && type !== "JobDetail" && type !== "ComputerFleetStats" && type !== "MonitoringDetail" && type !== "Cybersecurite" && type !== "Service" && type !== "Planning") {
       setContratDetailData(null);
       setContactDetailData(null);
       setEquipmentFilterParams(null);
       setEquipmentDetailData(null);
+      setJobDetailData(null);
       setComputerFleetStatsData(null);
       setCybersecuriteParams(null);
     }
@@ -674,10 +604,12 @@ export default function MainApp() {
     if (type !== "EquipmentDetail") {
       setEquipmentDetailData(null);
     }
+    if (type !== "JobDetail") {
+      setJobDetailData(null);
+    }
     if (type !== "ComputerFleetStats") {
       setComputerFleetStatsData(null);
     }
-    // Pas de reset global pour MonitoringDetail : chaque onglet garde son propre état
     if (type !== "Cybersecurite") {
       setCybersecuriteParams(null);
     }
@@ -687,60 +619,23 @@ export default function MainApp() {
     if (type !== "Planning") {
       setPlanningParams(null);
     }
-
-    const urlData =
-      type === "ContratDetail" ? data
-      : type === "ContactDetail" ? data
-      : type === "TicketDetail" ? data
-      : type === "CampaignDetail" ? (data?.campaign || data)
-      : type === "MonitoringDetail" ? data
-      : type === "Equipment" || type === "Hardware" ? data
-      : type === "EquipmentDetail" ? data
-      : type === "ComputerFleetStats" ? data
-      : type === "AntivirusDetail" ? data
-      : type === "AntispamDetail" ? data
-      : type === "TenantDetail" ? data
-      : type === "TicketCreate" ? (data || ticketCreateData)
-      : type === "TicketSalesCreate" ? (data || ticketSalesCreateData)
-      : type === "Contrat" ? (data || contratPageParams)
-      : type === "Contact" ? (data || contactPageParams)
-      : type === "Cybersecurite" ? (data || cybersecuriteParams)
-      : type === "Service" ? (data || serviceParams)
-      : type === "Planning" ? (data || planningParams)
-      : data;
-
+    const urlData = type === "ContratDetail" ? data : type === "ContactDetail" ? data : type === "TicketDetail" ? data : type === "CampaignDetail" ? data?.campaign || data : type === "MonitoringDetail" ? data : type === "Equipment" || type === "Hardware" ? data : type === "EquipmentDetail" ? data : type === "JobDetail" ? data : type === "ComputerFleetStats" ? data : type === "AntivirusDetail" ? data : type === "AntispamDetail" ? data : type === "TenantDetail" ? data : type === "TicketCreate" ? data || ticketCreateData : type === "TicketSalesCreate" ? data || ticketSalesCreateData : type === "Contrat" ? data || contratPageParams : type === "Contact" ? data || contactPageParams : type === "Cybersecurite" ? data || cybersecuriteParams : type === "Service" ? data || serviceParams : type === "Planning" ? data || planningParams : data;
     pushAgentUrl(type, urlData, options);
   };
-
-  // 🖱️ Gestion du clic sur un onglet
-  const handleTabClick = (tab) => {
-    if (
-      monitoringReportGuardActive &&
-      currentDocType === "Rapport" &&
-      tab.type !== "Rapport"
-    ) {
+  const handleTabClick = tab => {
+    if (monitoringReportGuardActive && currentDocType === "Report" && tab.type !== "Report") {
       if (!confirmLeaveActiveMonitoringReport()) {
         return;
       }
     }
-
-    if (
-      monitoringReportGuardActive &&
-      currentDocType === "MonitoringDetail" &&
-      tab.id !== activeTabId
-    ) {
+    if (monitoringReportGuardActive && currentDocType === "MonitoringDetail" && tab.id !== activeTabId) {
       if (!confirmLeaveActiveMonitoringReport()) {
         return;
       }
     }
-
-    const resolvedTab = tabs.find((entry) => entry.id === tab.id) || tab;
-
-    // Activer directement l'onglet sans recalculer l'ID
+    const resolvedTab = tabs.find(entry => entry.id === tab.id) || tab;
     setActiveTabId(resolvedTab.id);
     setCurrentDocType(resolvedTab.type);
-
-    // 🧩 Re-hydrater les états détaillés en fonction du type d'onglet
     if (resolvedTab.type === "Contrat") {
       setContratPageParams(resolvedTab.data || null);
       setContratDetailData(null);
@@ -752,18 +647,13 @@ export default function MainApp() {
     } else {
       hydrateDetailStateFromTab(resolvedTab);
     }
-
-    // Sauvegarder l'onglet actif
     try {
       localStorage.setItem("veritas_activeTabId", resolvedTab.id);
     } catch (error) {
-      console.error("Erreur lors de la sauvegarde de l'onglet actif:", error);
+      console.error("Error lors de la sauvegarde de l'onglet actif:", error);
     }
-
     pushAgentUrl(resolvedTab.type, resolvedTab.data);
   };
-
-  // 🖱️ Ouvrir le sélecteur de nouvel onglet
   const handleOpenTabLauncher = useCallback(() => {
     if (shouldBlockMonitoringReportLeave("TabLauncher")) {
       if (!confirmLeaveActiveMonitoringReport()) {
@@ -774,25 +664,15 @@ export default function MainApp() {
     setActiveTabId(null);
     pushAgentUrl("TabLauncher", null);
   }, [shouldBlockMonitoringReportLeave, confirmLeaveActiveMonitoringReport, pushAgentUrl]);
-
-  // ❌ Gestion de la fermeture d'un onglet
-  const handleTabClose = (tabId) => {
+  const handleTabClose = tabId => {
     const isClosingActiveTab = tabId === activeTabId;
-
-    if (
-      monitoringReportGuardActive &&
-      isClosingActiveTab &&
-      (currentDocType === "Rapport" || currentDocType === "MonitoringDetail")
-    ) {
+    if (monitoringReportGuardActive && isClosingActiveTab && (currentDocType === "Report" || currentDocType === "MonitoringDetail")) {
       if (!confirmLeaveActiveMonitoringReport()) {
         return;
       }
     }
-
     setTabs(prevTabs => {
       const newTabs = prevTabs.filter(t => t.id !== tabId);
-      
-      // Si on ferme l'onglet actif, on active le dernier onglet ou on revient à Home
       if (tabId === activeTabId) {
         if (newTabs.length > 0) {
           const lastTab = newTabs[newTabs.length - 1];
@@ -800,7 +680,7 @@ export default function MainApp() {
           try {
             localStorage.setItem('veritas_activeTabId', lastTab.id);
           } catch (error) {
-            console.error('Erreur lors de la sauvegarde de l\'onglet actif:', error);
+            console.error('Error lors de la sauvegarde de l\'onglet actif:', error);
           }
           handleDocSelect(lastTab.type, lastTab.data);
         } else {
@@ -812,63 +692,52 @@ export default function MainApp() {
           try {
             localStorage.removeItem('veritas_activeTabId');
           } catch (error) {
-            console.error('Erreur lors de la suppression de l\'onglet actif:', error);
+            console.error('Error while deleting de l\'onglet actif:', error);
           }
         }
       }
-      
-      // Sauvegarder les onglets mis à jour
       try {
         localStorage.setItem('veritas_tabs', JSON.stringify(newTabs));
         if (newTabs.length === 0) {
           localStorage.removeItem('veritas_tabs');
         }
       } catch (error) {
-        console.error('Erreur lors de la sauvegarde des onglets:', error);
+        console.error('Error lors de la sauvegarde des onglets:', error);
       }
-      
       return newTabs;
     });
   };
-
-  // 🔄 Gestion de la réorganisation des onglets
-  const handleTabReorder = (newTabs) => {
+  const handleTabReorder = newTabs => {
     setTabs(newTabs);
-    // Sauvegarder l'ordre des onglets
     try {
       localStorage.setItem('veritas_tabs', JSON.stringify(newTabs));
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde des onglets:', error);
+      console.error('Error lors de la sauvegarde des onglets:', error);
     }
   };
-
   const handleTabSort = useCallback(() => {
-    setTabs((prevTabs) => {
+    setTabs(prevTabs => {
       const sorted = sortTabsByType(prevTabs, appLocale);
       try {
         localStorage.setItem("veritas_tabs", JSON.stringify(sorted));
       } catch (error) {
-        console.error("Erreur lors de la sauvegarde des onglets:", error);
+        console.error("Error lors de la sauvegarde des onglets:", error);
       }
       return sorted;
     });
   }, [appLocale]);
-
   useEffect(() => {
     window.refreshDraftStatus = refreshDraftStatus;
   }, [refreshDraftStatus]);
-
   useEffect(() => {
     if (!monitoringReportGuardActive) return undefined;
-    const handleBeforeUnload = (event) => {
+    const handleBeforeUnload = event => {
       event.preventDefault();
       event.returnValue = "";
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [monitoringReportGuardActive]);
-
-  // Écoute l'événement pour mettre à jour le déclencheur
   useEffect(() => {
     const triggerRefresh = () => setRefreshTrigger(c => c + 1);
     window.addEventListener("refreshProfileAccess", triggerRefresh);
@@ -876,8 +745,6 @@ export default function MainApp() {
       window.removeEventListener("refreshProfileAccess", triggerRefresh);
     };
   }, []);
-
-  // Synchroniser l'état de l'app avec l'URL (F5, bouton précédent, liens directs)
   useEffect(() => {
     if (loading || !user) return;
     if (urlSyncRef.current) {
@@ -886,380 +753,223 @@ export default function MainApp() {
     }
     applyRouteState(location.pathname, location.search);
   }, [location.pathname, location.search, loading, user, applyRouteState, access, rawAccess]);
-
   const fetchProfile = () => {
-    // Évite l'appel API si l'utilisateur n'est pas connecté
     if (!user) return;
-    
-    fetch(`${API_BASE_URL}/users/me`, { credentials: "include" })
-      .then(res => res.ok ? res.json() : null)
-      .then(data => {
-        if (!data?.profile) return;
-
-        // 🔥 Astuce : forcer le changement même si la valeur est identique
-        setProfile(data.profile);
-        setRefreshTrigger((c) => c + 1);
-      })
-      .catch(error => {
-        console.log("Erreur lors de la récupération du profil");
-      });
+    fetch(`${API_BASE_URL}/users/me`, {
+      credentials: "include"
+    }).then(res => res.ok ? res.json() : null).then(data => {
+      if (!data?.profile) return;
+      setProfile(data.profile);
+      setRefreshTrigger(c => c + 1);
+    }).catch(error => {
+      console.log("Error lors de la récupération du profil");
+    });
   };
-
   useEffect(() => {
-    // Ne récupère le profil que si l'utilisateur est connecté
     if (user) {
       fetchProfile();
       window.refreshProfile = fetchProfile;
     }
   }, [user]);
-
-  // 🔄 Exposer la fonction de mise à jour des onglets globalement
   useEffect(() => {
     window.updateTabTitle = (type, data, title) => {
       const tabId = generateTabId(type, data);
-      const mergedData = title ? { ...data, name: title } : data;
+      const mergedData = title ? {
+        ...data,
+        name: title
+      } : data;
       updateTabTitle(tabId, generateTabTitle(type, mergedData || {}, appLocale));
     };
-    
     return () => {
       delete window.updateTabTitle;
     };
   }, []);
-
-  // 🔄 Mise à jour des titres d'onglets quand les données sont chargées
   useEffect(() => {
-    // Mettre à jour le titre de l'onglet ContratDetail si le nom du client est chargé
     if (currentDocType === "ContratDetail" && contratDetailData?.name) {
       const tabId = generateTabId("ContratDetail", contratDetailData);
       const newTitle = generateTabTitle("ContratDetail", contratDetailData, appLocale);
       updateTabTitle(tabId, newTitle);
     }
   }, [contratDetailData]);
-
   useEffect(() => {
-    // Mettre à jour le titre de l'onglet ContactDetail si les données du contact sont chargées
     if (currentDocType === "ContactDetail" && contactDetailData) {
       const tabId = generateTabId("ContactDetail", contactDetailData);
       const newTitle = generateTabTitle("ContactDetail", contactDetailData, appLocale);
       updateTabTitle(tabId, newTitle);
     }
   }, [contactDetailData]);
-
-
-
-  // ──────────────────────────────
-  // 🔀 Rendu dynamique selon le type de document
-  // ──────────────────────────────
   const renderCurrentPage = () => {
     if (isCommunity && isProOnlyDocType(currentDocType)) {
-      return (
-        <ComingSoonPage
-          title="Veritas Pro"
-          description="Ce module est réservé à l'édition Pro. Consultez les tarifs pour débloquer l'ensemble des fonctionnalités."
-          showProPricing
-        />
-      );
+      return <ComingSoonPage title="Veritas Pro" description="This module is reserved for the Pro edition. See pricing to unlock all features." showProPricing />;
     }
-
     switch (currentDocType) {
       case "Home":
         return <HomePage onNavigate={handleDocSelect} isCommunity={isCommunity} />;
-
-
       case "Hardware":
-        return (
-          <EquipmentPage
-            equipmentFilterParams={equipmentFilterParams}
-            onNavigate={handleDocSelect}
-            onFilterParamsConsumed={() => setEquipmentFilterParams(null)}
-          />
-        );
-
+        return <EquipmentPage equipmentFilterParams={equipmentFilterParams} onNavigate={handleDocSelect} onFilterParamsConsumed={() => setEquipmentFilterParams(null)} />;
       case "Equipment":
-        return (
-          <EquipmentPage
-            equipmentFilterParams={equipmentFilterParams}
-            onNavigate={handleDocSelect}
-            onFilterParamsConsumed={() => setEquipmentFilterParams(null)}
-          />
-        );
-
-      case "EquipmentDetail": {
-        const activeEquipmentTab = tabs.find(
-          (tab) => tab.id === activeTabId && tab.type === "EquipmentDetail"
-        );
-        const equipmentForDetail = activeEquipmentTab?.data ?? equipmentDetailData;
-        const equipmentDetailKey =
-          activeEquipmentTab?.id || getEquipmentListKey(equipmentForDetail) || "equipment-detail";
-
-        return (
-          <EquipmentDetailPage
-            key={equipmentDetailKey}
-            equipment={equipmentForDetail}
-            onNavigate={handleDocSelect}
-            onBack={() => {
-              // Depuis un onglet EquipmentDetail, revenir simplement à la page Équipements
-              // sans fermer l'onglet (l'onglet reste accessible dans la barre)
+        return <EquipmentPage equipmentFilterParams={equipmentFilterParams} onNavigate={handleDocSelect} onFilterParamsConsumed={() => setEquipmentFilterParams(null)} />;
+      case "EquipmentDetail":
+        {
+          const activeEquipmentTab = tabs.find(tab => tab.id === activeTabId && tab.type === "EquipmentDetail");
+          const equipmentForDetail = activeEquipmentTab?.data ?? equipmentDetailData;
+          const equipmentDetailKey = activeEquipmentTab?.id || getEquipmentListKey(equipmentForDetail) || "equipment-detail";
+          return <EquipmentDetailPage key={equipmentDetailKey} equipment={equipmentForDetail} onNavigate={handleDocSelect} onBack={() => {
+            setCurrentDocType("Equipment");
+            setActiveTabId(null);
+          }} onUpdate={async updatedEquipment => {
+            if (!updatedEquipment) {
+              const tabIdToClose = activeEquipmentTab?.id || generateTabId("EquipmentDetail", equipmentForDetail);
+              handleTabClose(tabIdToClose);
               setCurrentDocType("Equipment");
               setActiveTabId(null);
-            }}
-            onUpdate={async (updatedEquipment) => {
-              // Si l'équipement a été supprimé, fermer l'onglet et revenir à la page Équipements
-              if (!updatedEquipment) {
-                const tabIdToClose =
-                  activeEquipmentTab?.id || generateTabId("EquipmentDetail", equipmentForDetail);
-                handleTabClose(tabIdToClose);
-                setCurrentDocType("Equipment");
-                setActiveTabId(null);
-                return;
+              return;
+            }
+            setEquipmentDetailData(updatedEquipment);
+            const tabId = generateTabId("EquipmentDetail", updatedEquipment);
+            const newTitle = generateTabTitle("EquipmentDetail", updatedEquipment, appLocale);
+            updateTabTitle(tabId, newTitle);
+            setTabs(prevTabs => {
+              const newTabs = prevTabs.map(tab => tab.id === tabId ? {
+                ...tab,
+                data: updatedEquipment,
+                title: newTitle
+              } : tab);
+              try {
+                localStorage.setItem("veritas_tabs", JSON.stringify(newTabs));
+              } catch (error) {
+                console.error("Error lors de la sauvegarde des onglets:", error);
               }
-
-              // Mettre à jour les données de l'équipement dans l'onglet
-              setEquipmentDetailData(updatedEquipment);
-              const tabId = generateTabId("EquipmentDetail", updatedEquipment);
-              const newTitle = generateTabTitle("EquipmentDetail", updatedEquipment, appLocale);
-              updateTabTitle(tabId, newTitle);
-              setTabs((prevTabs) => {
-                const newTabs = prevTabs.map((tab) =>
-                  tab.id === tabId ? { ...tab, data: updatedEquipment, title: newTitle } : tab
-                );
+              return newTabs;
+            });
+          }} />;
+        }
+      case "JobDetail":
+        {
+          const activeJobTab = tabs.find(tab => tab.id === activeTabId && tab.type === "JobDetail");
+          const jobForDetail = activeJobTab?.data ?? jobDetailData;
+          const jobDetailKey = activeJobTab?.id || jobForDetail?.id || "job-detail";
+          return <JobDetailPage key={jobDetailKey} jobData={jobForDetail} onNavigate={handleDocSelect} onUpdate={updatedJob => {
+            if (!updatedJob) return;
+            setJobDetailData(updatedJob);
+            const tabId = generateTabId("JobDetail", updatedJob);
+            const newTitle = generateTabTitle("JobDetail", updatedJob, appLocale);
+            updateTabTitle(tabId, newTitle);
+            setTabs(prevTabs => {
+              const newTabs = prevTabs.map(tab => tab.id === tabId ? {
+                ...tab,
+                data: updatedJob,
+                title: newTitle
+              } : tab);
+              try {
+                localStorage.setItem("veritas_tabs", JSON.stringify(newTabs));
+              } catch (error) {
+                console.error("Error lors de la sauvegarde des onglets:", error);
+              }
+              return newTabs;
+            });
+          }} />;
+        }
+      case "Cybersecurite":
+        return <CybersecuritePage onNavigate={handleDocSelect} cybersecuriteParams={cybersecuriteParams} />;
+      case "CampaignDetail":
+        return <CampaignDetailPage onNavigate={handleDocSelect} campaignData={campaignDetailData} />;
+      case "AntivirusDetail":
+        return <AntivirusDetailPage onNavigate={handleDocSelect} antivirusData={antivirusDetailData} />;
+      case "AntispamDetail":
+        return <AntispamDetailPage onNavigate={handleDocSelect} antispamData={antispamDetailData} />;
+      case "TenantDetail":
+        return <TenantDetailPage onNavigate={handleDocSelect} tenantData={tenantDetailData} />;
+      case "Service":
+        return <ServicePage onNavigate={handleDocSelect} serviceParams={serviceParams} />;
+      case "Planning":
+        return <PlanningPage onNavigate={handleDocSelect} planningParams={planningParams} />;
+      case "Dashboard":
+        return <DashboardPage />;
+      case "Ticket":
+        return <TicketPage onNavigate={handleDocSelect} />;
+      case "TicketCreate":
+        return <TicketCreatePage onNavigate={handleDocSelect} initialData={ticketCreateData} />;
+      case "TicketSales":
+        return <TicketSalesPage onNavigate={handleDocSelect} />;
+      case "TicketSalesCreate":
+        return <TicketSalesCreatePage onNavigate={handleDocSelect} initialData={ticketSalesCreateData} />;
+      case "TicketDetail":
+        return <TicketDetailPage onNavigate={handleDocSelect} ticketData={ticketDetailData} />;
+      case "Contrat":
+        return <EnterprisesPage onNavigate={handleDocSelect} pageParams={contratPageParams} onPageParamsConsumed={() => setContratPageParams(null)} />;
+      case "ContratDetail":
+        return <EnterpriseDetailPage onNavigate={handleDocSelect} clientData={contratDetailData} />;
+      case "ComputerFleetStats":
+        return <ComputerFleetStatsPage onNavigate={handleDocSelect} statsData={computerFleetStatsData} />;
+      case "Contact":
+        return <ContactPage onNavigate={handleDocSelect} pageParams={contactPageParams} onPageParamsConsumed={() => setContactPageParams(null)} />;
+      case "ContactDetail":
+        return <ContactDetailPage onNavigate={handleDocSelect} contactData={contactDetailData} />;
+      case "Report":
+        return <RapportPage onNavigate={handleDocSelect} hasTabsBar={tabs.length > 0} onMonitoringReportGuardChange={handleMonitoringReportGuardChange} />;
+      case "DocumentsHub":
+        return <DocumentsHubPage />;
+      case "MonitoringDetail":
+        {
+          const activeMonitoringTab = tabs.find(tab => tab.id === activeTabId && tab.type === "MonitoringDetail");
+          const monitoringTabData = activeMonitoringTab?.data || null;
+          const initialStep = monitoringTabData?.step ?? 0;
+          const initialScrollY = typeof monitoringTabData?.scrollY === "number" ? monitoringTabData.scrollY : 0;
+          const initialConfig = monitoringTabData?.client ? {
+            client: monitoringTabData.client,
+            documentName: monitoringTabData.documentName
+          } : null;
+          const initialData = monitoringTabData?.data || {};
+          return <EphemeralMonitoringProvider initialConfig={initialConfig} initialData={initialData} refreshDraftStatus={refreshDraftStatus}>
+            <MonitoringRenderContent onNavigate={handleDocSelect} isFullscreen={false} initialGatePassed={monitoringTabData?.gatePassed || false} initialGoToSummary={monitoringTabData?.goToSummary || false} initialScrollY={initialScrollY} initialStep={initialStep} onMonitoringReportGuardChange={handleMonitoringReportGuardChange} onStateChange={state => {
+              setTabs(prevTabs => {
+                const newTabs = prevTabs.map(tab => tab.id === activeTabId && tab.type === "MonitoringDetail" ? {
+                  ...tab,
+                  data: {
+                    ...tab.data,
+                    ...state
+                  }
+                } : tab);
                 try {
-                  localStorage.setItem("veritas_tabs", JSON.stringify(newTabs));
+                  localStorage.setItem('veritas_tabs', JSON.stringify(newTabs));
                 } catch (error) {
-                  console.error("Erreur lors de la sauvegarde des onglets:", error);
+                  console.error('Error lors de la sauvegarde des onglets (MonitoringDetail):', error);
                 }
                 return newTabs;
               });
-            }}
-          />
-        );
-      }
-
-      case "Cybersecurite":
-        return <CybersecuritePage onNavigate={handleDocSelect} cybersecuriteParams={cybersecuriteParams} />;
-
-      case "CampaignDetail":
-        return <CampaignDetailPage onNavigate={handleDocSelect} campaignData={campaignDetailData} />;
-
-      case "AntivirusDetail":
-        return <AntivirusDetailPage onNavigate={handleDocSelect} antivirusData={antivirusDetailData} />;
-
-      case "AntispamDetail":
-        return <AntispamDetailPage onNavigate={handleDocSelect} antispamData={antispamDetailData} />;
-
-      case "TenantDetail":
-        return <TenantDetailPage onNavigate={handleDocSelect} tenantData={tenantDetailData} />;
-
-      case "Service":
-        return <ServicePage onNavigate={handleDocSelect} serviceParams={serviceParams} />;
-
-      case "Planning":
-        return <PlanningPage onNavigate={handleDocSelect} planningParams={planningParams} />;
-
-      case "Dashboard":
-        return <DashboardPage />;
-
-      case "Ticket":
-        return <TicketPage onNavigate={handleDocSelect} />;
-
-      case "TicketCreate":
-        return <TicketCreatePage onNavigate={handleDocSelect} initialData={ticketCreateData} />;
-
-      case "TicketSales":
-        return <TicketSalesPage onNavigate={handleDocSelect} />;
-
-      case "TicketSalesCreate":
-        return (
-          <TicketSalesCreatePage onNavigate={handleDocSelect} initialData={ticketSalesCreateData} />
-        );
-
-      case "TicketDetail":
-        return <TicketDetailPage onNavigate={handleDocSelect} ticketData={ticketDetailData} />;
-
-      case "Contrat":
-        return (
-          <EnterprisesPage
-            onNavigate={handleDocSelect}
-            pageParams={contratPageParams}
-            onPageParamsConsumed={() => setContratPageParams(null)}
-          />
-        );
-      case "ContratDetail":
-        return <EnterpriseDetailPage onNavigate={handleDocSelect} clientData={contratDetailData} />;
-
-      case "ComputerFleetStats":
-        return (
-          <ComputerFleetStatsPage
-            onNavigate={handleDocSelect}
-            statsData={computerFleetStatsData}
-          />
-        );
-
-      case "Contact":
-        return (
-          <ContactPage
-            onNavigate={handleDocSelect}
-            pageParams={contactPageParams}
-            onPageParamsConsumed={() => setContactPageParams(null)}
-          />
-        );
-      case "ContactDetail":
-        return <ContactDetailPage onNavigate={handleDocSelect} contactData={contactDetailData} />;
-
-      case "Rapport":
-        return (
-          <RapportPage
-            onNavigate={handleDocSelect}
-            hasTabsBar={tabs.length > 0}
-            onMonitoringReportGuardChange={handleMonitoringReportGuardChange}
-          />
-        );
-
-      case "DocumentsHub":
-        return <DocumentsHubPage />;
-
-      case "MonitoringDetail": {
-        // Récupérer les données spécifiques à l'onglet de monitoring actif
-        const activeMonitoringTab = tabs.find(
-          (tab) => tab.id === activeTabId && tab.type === "MonitoringDetail"
-        );
-        const monitoringTabData = activeMonitoringTab?.data || null;
-
-        const initialStep = monitoringTabData?.step ?? 0;
-        const initialScrollY =
-          typeof monitoringTabData?.scrollY === "number"
-            ? monitoringTabData.scrollY
-            : 0;
-
-        // Préparer les props initiales pour ce rapport
-        const initialConfig = monitoringTabData?.client ? {
-          client: monitoringTabData.client,
-          documentName: monitoringTabData.documentName
-        } : null;
-
-        const initialData = monitoringTabData?.data || {};
-
-        return (
-          <EphemeralMonitoringProvider
-            initialConfig={initialConfig}
-            initialData={initialData}
-            refreshDraftStatus={refreshDraftStatus}
-          >
-            <MonitoringRenderContent 
-              onNavigate={handleDocSelect}
-              isFullscreen={false}
-              initialGatePassed={monitoringTabData?.gatePassed || false}
-              initialGoToSummary={monitoringTabData?.goToSummary || false}
-              initialScrollY={initialScrollY}
-              initialStep={initialStep}
-              onMonitoringReportGuardChange={handleMonitoringReportGuardChange}
-              onStateChange={(state) => {
-                // Mettre à jour uniquement l'onglet MonitoringDetail courant
-                setTabs(prevTabs => {
-                  const newTabs = prevTabs.map(tab =>
-                    tab.id === activeTabId && tab.type === "MonitoringDetail"
-                      ? { ...tab, data: { ...tab.data, ...state } }
-                      : tab
-                  );
-
-                  // 🔄 Persister l'état complet du rapport (config, data, commentaires, step, scroll, etc.)
-                  // dans localStorage pour pouvoir le restaurer après un F5.
-                  try {
-                    localStorage.setItem('veritas_tabs', JSON.stringify(newTabs));
-                  } catch (error) {
-                    console.error('Erreur lors de la sauvegarde des onglets (MonitoringDetail):', error);
-                  }
-
-                  return newTabs;
-                });
-              }}
-            />
-          </EphemeralMonitoringProvider>
-        );
-      }
-
-
+            }} />
+          </EphemeralMonitoringProvider>;
+        }
       case "Admin":
-        return (
-          <AdminPanel
-            isCommunity={isCommunity}
-            routeTab={adminTab}
-            onRouteTabChange={(tab) => pushAgentUrl("Admin", null, { adminTab: tab, replaceUrl: true })}
-          />
-        );
-
+        return <AdminPanel isCommunity={isCommunity} routeTab={adminTab} onRouteTabChange={tab => pushAgentUrl("Admin", null, {
+          adminTab: tab,
+          replaceUrl: true
+        })} />;
       case "ReportBug":
         return <ReportBugForm />;
-
       case "User":
         return <UserProfile user={user} />;
-
       case "TabLauncher":
-        return (
-          <TabLauncherPage
-            onNavigate={handleDocSelect}
-            access={access}
-            isCommunity={isCommunity}
-            userRole={userRole}
-          />
-        );
-
+        return <TabLauncherPage onNavigate={handleDocSelect} access={access} isCommunity={isCommunity} userRole={userRole} />;
       default:
         return null;
     }
   };
-
-  // ──────────────────────────────────────────────────────────────
-  // 🧱 Structure principale : Sidebar + barre d'onglets + contenu dynamique
-  // ──────────────────────────────────────────────────────────────
   const showTabsBar = tabs.length > 0 || currentDocType === "TabLauncher";
-
-  return (
-    <div className={theme === "dark" ? "dark" : "light"}>
+  return <div className={theme === "dark" ? "dark" : "light"}>
       <AnimatePresence>
-        {showOnboardingWizard && !loading && user && (
-          <OnboardingWizard
-            key="onboarding-wizard"
-            step={onboardingStep}
-            onStepChange={setOnboardingStep}
-            onNavigate={handleDocSelect}
-            onComplete={completeOnboarding}
-            onPause={pauseOnboarding}
-          />
-        )}
+        {showOnboardingWizard && !loading && user && <OnboardingWizard key="onboarding-wizard" step={onboardingStep} onStepChange={setOnboardingStep} onNavigate={handleDocSelect} onComplete={completeOnboarding} onPause={pauseOnboarding} />}
       </AnimatePresence>
 
-      {showOnboardingResumeFab && !loading && user && (
-        <OnboardingResumeFab onClick={resumeOnboarding} />
-      )}
+      {showOnboardingResumeFab && !loading && user && <OnboardingResumeFab onClick={resumeOnboarding} />}
 
-      <Sidebar
-        current={currentDocType}
-        onSelect={handleDocSelect}
-        onNavigate={handleDocSelect}
-        onLogout={handleLogout}
-        user={user}
-        userRole={userRole}
-        profile={profile}
-        drafts={drafts}
-        access={access}
-        onCollapseChange={setSidebarCollapsed} />
+      <Sidebar current={currentDocType} onSelect={handleDocSelect} onNavigate={handleDocSelect} onLogout={handleLogout} user={user} userRole={userRole} profile={profile} drafts={drafts} access={access} onCollapseChange={setSidebarCollapsed} />
 
-      <TabsBar
-        tabs={tabs}
-        activeTabId={activeTabId}
-        onTabClick={handleTabClick}
-        onTabClose={handleTabClose}
-        onTabReorder={handleTabReorder}
-        onSortTabs={tabs.length > 1 ? handleTabSort : undefined}
-        onNewTab={showTabsBar ? handleOpenTabLauncher : undefined}
-        launcherActive={currentDocType === "TabLauncher"}
-        sidebarCollapsed={sidebarCollapsed}
-      />
+      <TabsBar tabs={tabs} activeTabId={activeTabId} onTabClick={handleTabClick} onTabClose={handleTabClose} onTabReorder={handleTabReorder} onSortTabs={tabs.length > 1 ? handleTabSort : undefined} onNewTab={showTabsBar ? handleOpenTabLauncher : undefined} launcherActive={currentDocType === "TabLauncher"} sidebarCollapsed={sidebarCollapsed} />
 
       <div className={`contentWrapper ${showTabsBar ? 'withTabs' : ''} ${sidebarCollapsed ? 'sidebarCollapsed' : ''}`}>
         {currentDocType !== "Synth" && renderCurrentPage()}
       </div>
-    </div>
-  );
+    </div>;
 }

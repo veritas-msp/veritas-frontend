@@ -1,14 +1,14 @@
-/* ───────────── MASQUER LES SCROLLBARS HORIZONTALES SUR TOUTES LES TABLES ───────────── */
-/* Règle globale pour masquer les scrollbars horizontales sur tous les conteneurs de tables */
+
+
 [class*="TableContainer"],
 [class*="tableContainer"],
 [class*="TableWrapper"],
 [class*="tableWrapper"],
 [class*="table-container"],
 [class*="table-wrapper"] {
-  /* Masquer la scrollbar horizontale tout en gardant le scroll fonctionnel */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
 
 [class*="TableContainer"]::-webkit-scrollbar,
@@ -17,11 +17,11 @@
 [class*="tableWrapper"]::-webkit-scrollbar,
 [class*="table-container"]::-webkit-scrollbar,
 [class*="table-wrapper"]::-webkit-scrollbar {
-  height: 0; /* Masquer la scrollbar horizontale */
+  height: 0; 
   display: none;
 }
 
-/* ───────────── CONTAINER PRINCIPAL ───────────── */
+
 .container {
   max-width: 1400px;
   margin: 0 auto;
@@ -33,7 +33,7 @@
   transition: all 0.3s ease;
 }
 
-/* ───────────── GROUPES PAR SITE ───────────── */
+
 .siteGroup {
   display: flex;
   flex-direction: column;
@@ -75,7 +75,7 @@
   opacity: 0.6;
 }
 
-/* ───────────── GRILLE DES CARTES ───────────── */
+
 .moduleGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -85,7 +85,7 @@
   margin: 0 auto;
 }
 
-/* ───────────── CARTES ───────────── */
+
 .moduleCard {
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
@@ -146,7 +146,7 @@
   margin-top: auto;
 }
 
-/* ───────────── EN-TÊTE DE CARTE ───────────── */
+
 .cardHeader {
   display: flex;
   justify-content: space-between;
@@ -170,7 +170,7 @@
   flex-shrink: 0;
 }
 
-/* ───────────── STATUS DOT ───────────── */
+
 .statusDot {
   flex-shrink: 0;
   width: 10px;
@@ -218,7 +218,7 @@
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.3);
 }
 
-/* ───────────── META / DETAILS ───────────── */
+
 .moduleMeta {
   font-size: 0.7rem;
   font-weight: inherit;
@@ -273,7 +273,7 @@
   color: #6b7280;
 }
 
-/* ───────────── BOUTONS ───────────── */
+
 .commentToggleButton {
   background: var(--bg-primary);
   border: 2px solid var(--border-secondary);
@@ -293,7 +293,7 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Aligné sur le style des boutons du header EnterpriseDetailPage */
+
 .editButton {
   display: inline-flex;
   align-items: center;
@@ -362,7 +362,7 @@
   cursor: not-allowed;
 }
 
-/* ───────────── SECTION COMMENTAIRE ───────────── */
+
 .commentSection {
   display: flex;
   flex-direction: column;
@@ -423,7 +423,7 @@
   color: #6b7280;
 }
 
-/* ───────────── SERVICE TABLE ───────────── */
+
 .serviceTable {
   width: 100%;
   border-collapse: collapse;
@@ -492,7 +492,7 @@
   color: #f9fafb;
 }
 
-/* ───────────── METRIC INPUTS ───────────── */
+
 .metricInput {
   width: 65px;
   padding: 8px 8px;
@@ -572,7 +572,7 @@
   background-color: #1e1e3f;
 }
 
-/* ───────────── ERROR INDICATOR ───────────── */
+
 .errorIndicator {
   background-color: #fef2f2;
   border: 1px solid #fecaca;
@@ -595,7 +595,7 @@
   color: #fca5a5;
 }
 
-/* ───────────── TOOLTIP NOTE GLOBALE ───────────── */
+
 .scoreTooltipContainer {
   position: relative;
   display: inline-flex;
@@ -770,7 +770,7 @@
   color: #ef4444;
 }
 
-/* ───────────── NA CARD ───────────── */
+
 .naCard {
   width: 100%;
   padding: 1rem;
@@ -790,7 +790,7 @@
   opacity: 0.8;
 }
 
-/* ───────────── ÉTAT VIDE ───────────── */
+
 .emptyState {
   text-align: center;
   padding: 3rem 1rem;
@@ -808,7 +808,7 @@
   border-color: #4a4a6a;
 }
 
-/* ───────────── MODAL D'ÉDITION ───────────── */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -859,7 +859,7 @@
   animation: fadeInScale 0.3s ease-out;
 }
 
-/* ───────────── RESPONSIVE DESIGN ───────────── */
+
 @media (max-width: 1200px) {
   .moduleGrid {
     grid-template-columns: repeat(2, 1fr);

@@ -1,56 +1,48 @@
-import {
-  applyInternetPatchToEquipements,
-  isSameInternetEquipmentItem,
-  normalizeInternetFormData,
-  patchInternetEquipmentItem,
-} from "./internetIpUtils";
-
+import { applyInternetPatchToEquipements, isSameInternetEquipmentItem, normalizeInternetFormData, patchInternetEquipmentItem } from "./internetIpUtils";
 const MODULE_LIST_KEYS = {
   Internet: ["Internet"],
   Firewall: ["Firewalls"],
   Firewalls: ["Firewalls"],
-  Serveurs: ["Serveurs"],
-  Stockage: ["NAS", "SAN"],
+  Servers: ["Servers"],
+  Storage: ["NAS", "SAN"],
   Switch: ["Switch"],
-  BorneWifi: ["BorneWifi"],
+  BorneWifi: ["BorneWifi"]
 };
-
 export function getEquipmentListKeysForModule(moduleKey) {
   return MODULE_LIST_KEYS[moduleKey] || [moduleKey];
 }
-
 export function isSameEquipmentItem(item, reference, moduleKey) {
   if (!item || !reference) return false;
   if (moduleKey === "Internet") return isSameInternetEquipmentItem(item, reference);
-
   if (reference.id != null && item.id != null && String(item.id) === String(reference.id)) {
     return true;
   }
-
   const refName = (reference.nom || reference.name || "").trim();
   const itemName = (item.nom || item.name || "").trim();
   if (refName && itemName && refName === itemName) return true;
-
   const refSerial = (reference.numeroSerie || reference.serial || reference.sn || "").trim();
   const itemSerial = (item.numeroSerie || item.serial || item.sn || "").trim();
   if (refSerial && itemSerial && refSerial === itemSerial) return true;
-
   return false;
 }
-
 export function findEquipmentLocation(client, moduleKey, item) {
   const buckets = getEquipmentListKeysForModule(moduleKey);
   for (const listKey of buckets) {
     const list = client?.equipements?.[listKey];
     if (!Array.isArray(list)) continue;
-    const equipmentIndex = list.findIndex((eq) => isSameEquipmentItem(eq, item, moduleKey));
+    const equipmentIndex = list.findIndex(eq => isSameEquipmentItem(eq, item, moduleKey));
     if (equipmentIndex >= 0) {
-      return { equipmentListKey: listKey, equipmentIndex };
+      return {
+        equipmentListKey: listKey,
+        equipmentIndex
+      };
     }
   }
-  return { equipmentListKey: buckets[0] || null, equipmentIndex: -1 };
+  return {
+    equipmentListKey: buckets[0] || null,
+    equipmentIndex: -1
+  };
 }
-
 function buildDataPatch(formData, moduleKey) {
   if (moduleKey === "Internet") {
     const normalized = normalizeInternetFormData(formData);
@@ -62,10 +54,9 @@ function buildDataPatch(formData, moduleKey) {
       type: normalized.internetType,
       debit: normalized.debit,
       categorie: normalized.categorie,
-      ipNonFixe: normalized.ipNonFixe,
+      ipNonFixe: normalized.ipNonFixe
     };
   }
-
   const patch = {
     nom: formData.name,
     site: formData.location,
@@ -81,9 +72,7 @@ function buildDataPatch(formData, moduleKey) {
     memoire: formData.memoire,
     stockage: formData.stockage,
     systeme: formData.systeme,
-    anydeskId: formData.remoteAccessSolution === "anydesk" || !formData.remoteAccessSolution
-      ? (formData.remoteAccessId ?? formData.anydeskId)
-      : undefined,
+    anydeskId: formData.remoteAccessSolution === "anydesk" || !formData.remoteAccessSolution ? formData.remoteAccessId ?? formData.anydeskId : undefined,
     remoteAccessSolution: formData.remoteAccessSolution,
     remoteAccessId: formData.remoteAccessId,
     adresseMac: formData.adresseMac,
@@ -98,19 +87,16 @@ function buildDataPatch(formData, moduleKey) {
     licences: formData.licences,
     modeHA: formData.modeHA,
     roleHA: formData.roleHA,
-    firewallHAName: formData.firewallHAName,
+    firewallHAName: formData.firewallHAName
   };
-
-  Object.keys(patch).forEach((key) => {
+  Object.keys(patch).forEach(key => {
     if (patch[key] === undefined) delete patch[key];
   });
   return patch;
 }
-
 export function patchEquipmentItem(item, formData, moduleKey) {
   if (!item || !formData) return item;
   if (moduleKey === "Internet") return patchInternetEquipmentItem(item, formData);
-
   const dataPatch = buildDataPatch(formData, moduleKey);
   const displayPatch = {
     nom: formData.name ?? item.nom,
@@ -133,10 +119,7 @@ export function patchEquipmentItem(item, formData, moduleKey) {
     stockage: formData.stockage ?? item.stockage,
     systeme: formData.systeme ?? item.systeme,
     os: formData.systeme ?? item.os,
-    anydeskId:
-      formData.remoteAccessSolution === "anydesk" || !formData.remoteAccessSolution
-        ? (formData.remoteAccessId ?? formData.anydeskId ?? item.anydeskId)
-        : "",
+    anydeskId: formData.remoteAccessSolution === "anydesk" || !formData.remoteAccessSolution ? formData.remoteAccessId ?? formData.anydeskId ?? item.anydeskId : "",
     remoteAccessSolution: formData.remoteAccessSolution ?? item.remoteAccessSolution,
     remoteAccessId: formData.remoteAccessId ?? item.remoteAccessId,
     adresseMac: formData.adresseMac ?? item.adresseMac ?? item.mac,
@@ -153,64 +136,37 @@ export function patchEquipmentItem(item, formData, moduleKey) {
     licences: formData.licences ?? item.licences,
     modeHA: formData.modeHA ?? item.modeHA,
     roleHA: formData.roleHA ?? item.roleHA,
-    firewallHAName: formData.firewallHAName ?? item.firewallHAName,
+    firewallHAName: formData.firewallHAName ?? item.firewallHAName
   };
-
-  const patched = { ...item, ...displayPatch };
+  const patched = {
+    ...item,
+    ...displayPatch
+  };
   if (item.data && typeof item.data === "object") {
-    patched.data = { ...item.data, ...dataPatch };
+    patched.data = {
+      ...item.data,
+      ...dataPatch
+    };
   }
   return patched;
 }
-
 function patchEquipmentList(list, formData, moduleKey, reference, equipmentIndex = -1) {
   if (!Array.isArray(list) || !formData) return list;
-
   if (equipmentIndex >= 0 && equipmentIndex < list.length) {
-    return list.map((item, index) =>
-      index === equipmentIndex ? patchEquipmentItem(item, formData, moduleKey) : item
-    );
+    return list.map((item, index) => index === equipmentIndex ? patchEquipmentItem(item, formData, moduleKey) : item);
   }
-
   if (!reference) return list;
-  return list.map((item) =>
-    isSameEquipmentItem(item, reference, moduleKey)
-      ? patchEquipmentItem(item, formData, moduleKey)
-      : item
-  );
+  return list.map(item => isSameEquipmentItem(item, reference, moduleKey) ? patchEquipmentItem(item, formData, moduleKey) : item);
 }
-
-export function applyEquipmentPatchToEquipements(
-  equipements,
-  moduleKey,
-  formData,
-  reference,
-  equipmentListKey = null,
-  equipmentIndex = -1
-) {
+export function applyEquipmentPatchToEquipements(equipements, moduleKey, formData, reference, equipmentListKey = null, equipmentIndex = -1) {
   if (!equipements || !formData) return equipements;
-
   if (moduleKey === "Internet") {
-    return applyInternetPatchToEquipements(
-      equipements,
-      normalizeInternetFormData(formData),
-      reference,
-      equipmentIndex
-    );
+    return applyInternetPatchToEquipements(equipements, normalizeInternetFormData(formData), reference, equipmentIndex);
   }
-
-  const listKey =
-    equipmentListKey || getEquipmentListKeysForModule(moduleKey)[0];
+  const listKey = equipmentListKey || getEquipmentListKeysForModule(moduleKey)[0];
   if (!listKey || !Array.isArray(equipements[listKey])) return equipements;
-
   return {
     ...equipements,
-    [listKey]: patchEquipmentList(
-      equipements[listKey],
-      formData,
-      moduleKey,
-      reference,
-      equipmentIndex
-    ),
+    [listKey]: patchEquipmentList(equipements[listKey], formData, moduleKey, reference, equipmentIndex)
   };
 }

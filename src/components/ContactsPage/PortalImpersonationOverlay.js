@@ -3,21 +3,15 @@ import { useMemo } from "react";
 import { useAppLocale } from "../../hooks/useAppGeneralSettings";
 import { getContactDetailCopy } from "./contactDetailI18n";
 import styles from "./PortalImpersonationOverlay.module.css";
-
-export default function PortalImpersonationOverlay({ open, contactLabel, onCancel }) {
+export default function PortalImpersonationOverlay({
+  open,
+  contactLabel,
+  onCancel
+}) {
   const locale = useAppLocale();
   const copy = useMemo(() => getContactDetailCopy(locale).portal.impersonation, [locale]);
-
   if (!open) return null;
-
-  return createPortal(
-    <div
-      className={styles.overlay}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="portal-impersonation-loading-title"
-      aria-busy="true"
-    >
+  return createPortal(<div className={styles.overlay} role="dialog" aria-modal="true" aria-labelledby="portal-impersonation-loading-title" aria-busy="true">
       <div className={styles.panel}>
         <div className={styles.spinnerWrap}>
           <span className={styles.spinner} aria-hidden />
@@ -32,7 +26,5 @@ export default function PortalImpersonationOverlay({ open, contactLabel, onCance
           {copy.cancel}
         </button>
       </div>
-    </div>,
-    document.body
-  );
+    </div>, document.body);
 }

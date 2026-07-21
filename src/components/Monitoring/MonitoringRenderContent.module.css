@@ -108,7 +108,7 @@
   background-color: #472ac9;
 }
 
-/* Dark mode styles */
+
 :global(.dark) .modalContent {
   background: #1e1e3f;
   color: #e5e7eb;
@@ -141,34 +141,33 @@
   background-color: #4b5563;
 }
 
-/* Contenu principal avec volets latéraux */
+
 .renderContainer {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  /* Laisse le header fixe au‑dessus : on réserve une marge sous le header,
-     la TabsBar étant déjà gérée par .contentWrapper.withTabs (48px) */
-  padding: 120px 2rem 0 2rem; /* ~hauteur du header + 1rem d'espace visuel */
+  
+  padding: 120px 2rem 0 2rem; 
 }
 
-/* Conteneur scrollable pour les modules (steps) */
+
 .moduleScrollContainer {
-  /* Hauteur fixe : hauteur de la fenêtre moins le header (48px tabs + ~120px header) */
+  
   height: calc(100vh - 168px);
   overflow-y: auto;
   overflow-x: hidden;
-  /* Masquer la scrollbar tout en gardant le scroll fonctionnel */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
 
 .moduleScrollContainer::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
+  display: none; 
   width: 0;
   height: 0;
 }
 
-/* Responsive */
+
 @media (max-width: 1024px) {
   .renderContainer {
     padding-top: 120px;

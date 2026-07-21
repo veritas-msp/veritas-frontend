@@ -64,7 +64,7 @@
   gap: 0.65rem;
 }
 
-/* ── Filtres intégrés (fiche client) ── */
+
 .embeddedFilterBar {
   display: flex;
   align-items: center;
@@ -587,7 +587,7 @@
   height: 1rem;
 }
 
-/* Sidebar */
+
 .sidebar {
   width: 220px;
   flex-shrink: 0;
@@ -751,7 +751,7 @@
   flex-shrink: 0;
 }
 
-/* Search Box */
+
 .searchBox {
   position: relative;
   width: 100%;
@@ -798,7 +798,7 @@
   color: var(--text-primary, #f9fafb);
 }
 
-/* Action Buttons */
+
 .actionButton {
   display: flex;
   align-items: center;
@@ -825,7 +825,7 @@
   color: #ffffff;
 }
 
-/* Main Content */
+
 .mainContent {
   flex: 1;
   display: flex;
@@ -904,7 +904,7 @@
   border-color: #15D1A0;
 }
 
-/* Tables Container */
+
 .tablesContainer {
   flex: 1;
   overflow-y: auto;
@@ -914,7 +914,7 @@
   gap: 1.5rem;
 }
 
-/* Filtres rapides CheckMK · bandeau clair opaque */
+
 .mkAlertBar {
   display: flex;
   flex-wrap: nowrap;
@@ -1126,7 +1126,7 @@
   font-size: 0.7rem;
 }
 
-/* Cartes statistiques */
+
 .statsCards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -1191,7 +1191,7 @@
   line-height: 1.2;
 }
 
-/* Equipment Table Section */
+
 .equipmentTableSection {
   display: flex;
   flex-direction: column;
@@ -1358,7 +1358,7 @@
   border-color: #12b388;
 }
 
-/* Table */
+
 .tableWrapper {
   overflow: auto;
   border: 1px solid var(--border-primary, #2a2a4a);
@@ -1450,7 +1450,7 @@
   background-color: var(--bg-tertiary, #1e1e3f);
 }
 
-/* Mode intégré (fiche client) · annule le thème sombre page Matériel */
+
 .hardwarePageEmbedded .tableWrapper,
 .hardwarePageEmbedded .tableWrapperEmbedded {
   background: var(--eq-surface, var(--msp-surface, #ffffff));
@@ -1635,7 +1635,7 @@
   min-width: 4.5rem;
 }
 
-/* Gras pour fournisseur et type dans la table Internet */
+
 .internetCellBold {
   font-weight: bold;
 }
@@ -1831,7 +1831,7 @@
   justify-content: center;
 }
 
-/* Icône CheckMK carrée dans la colonne Mapping */
+
 .mappingIconSquare {
   width: 1.5rem;
   height: 1.5rem;
@@ -1895,7 +1895,7 @@
   color: var(--text-muted, #9ca3af);
 }
 
-/* Pagination */
+
 .pagination {
   display: flex;
   justify-content: flex-end;
@@ -1932,7 +1932,7 @@
   font-size: 0.875rem;
 }
 
-/* Loading & Error */
+
 .loading,
 .error {
   padding: 3rem;
@@ -1944,7 +1944,7 @@
   color: var(--text-muted, #9ca3af);
 }
 
-/* Column Settings Modal */
+
 .columnSettingsModal {
   position: fixed;
   top: 0;
@@ -1991,7 +1991,7 @@
   color: #ffffff;
 }
 
-/* Modal Styles */
+
 .modalOverlay {
   position: fixed;
   inset: 0;
@@ -2123,7 +2123,7 @@
   flex: 1;
 }
 
-/* Coming Soon Modal Styles */
+
 .comingSoonMessage {
   text-align: center;
   padding: 1rem 0;
@@ -2179,7 +2179,7 @@
   font-size: 0.875rem !important;
 }
 
-/* Bouton global AnyDesk dans la barre d'action principale */
+
 .anydeskGlobalButton {
   margin-left: 1rem;
   padding: 0.4rem 0.7rem;
@@ -2217,7 +2217,7 @@
   opacity: 0.6;
 }
 
-/* Boutons AnyDesk dans les lignes du tableau */
+
 .anydeskActionButton {
   width: 2rem;
   height: 2rem;
@@ -2251,7 +2251,7 @@
   opacity: 0.5;
 }
 
-/* Scrollbar */
+
 .sidebar::-webkit-scrollbar,
 .tableWrapper::-webkit-scrollbar {
   width: 8px;
@@ -2274,7 +2274,7 @@
   background: #15D1A0;
 }
 
-/* Grid View */
+
 .gridWrapper {
   border: 1px solid var(--border-primary, #2a2a4a);
   border-radius: 0.5rem;
@@ -2381,7 +2381,7 @@
   font-weight: 500;
 }
 
-/* Bouton retour en haut de page */
+
 .backToTopButton {
   position: fixed;
   bottom: 15px;
@@ -2408,7 +2408,7 @@
   transform: translateY(-2px);
 }
 
-/* Mode sombre · page entreprise (équipements intégrés) */
+
 :global(html.dark) .hardwarePageEmbedded .embeddedTypeIconBtn {
   background: var(--msp-surface-2, #152035);
   border-color: var(--msp-border, #2a3a55);
@@ -2534,7 +2534,7 @@
   color: var(--msp-muted, #8fa8c4);
 }
 
-/* Legacy dark overrides (page équipements standalone) */
+
 :global(html.dark) .hardwarePageEmbedded .mkAlertBar {
   background-color: var(--msp-surface-2, var(--bg-secondary));
   border-color: var(--msp-border, var(--border-primary));

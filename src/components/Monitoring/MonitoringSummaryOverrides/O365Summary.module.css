@@ -1,4 +1,4 @@
-/* ───────────── CONTAINER PRINCIPAL ───────────── */
+
 .container {
   display: flex;
   flex-direction: column;
@@ -15,7 +15,7 @@
   color: #e5e7eb;
 }
 
-/* ───────────── CARTE MODULE ───────────── */
+
 .moduleCard {
   background: transparent;
   border: none;
@@ -33,7 +33,7 @@
   box-shadow: none;
 }
 
-/* ───────────── EN-TÊTE DU MODULE ───────────── */
+
 .moduleHeader {
   display: flex;
   align-items: center;
@@ -92,7 +92,7 @@
   margin: 1rem 0 1.5rem 0;
 }
 
-/* ───────────── TITRES DE SECTION ───────────── */
+
 .sectionTitle {
   font-size: 1.5rem;
   font-weight: 600;
@@ -112,7 +112,7 @@
   background-color: #4a4a6a;
 }
 
-/* ───────────── SECTION DES STATISTIQUES ───────────── */
+
 .statsSection {
   margin-top: 0;
   margin-bottom: 0;
@@ -137,7 +137,7 @@
   color: #f9fafb;
 }
 
-/* ───────────── CARTES DE STATISTIQUES ───────────── */
+
 .statCard {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -228,7 +228,7 @@
   color: #9ca3af;
 }
 
-/* ───────────── SECTION DES DOMAINES ───────────── */
+
 .domainStatsSection {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -313,7 +313,7 @@
   color: #9ca3af;
 }
 
-/* ───────────── SECTION DES INSIGHTS ───────────── */
+
 .insightsGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -324,7 +324,7 @@
   grid-column: 1 / -1;
 }
 
-/* ───────────── SECTION ONEDRIVE ───────────── */
+
 .oneDriveSection {
   margin-top: 2rem;
 }
@@ -357,7 +357,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* En-tête de la carte */
+
 .cardHeader {
   display: flex;
   justify-content: space-between;
@@ -413,7 +413,7 @@
   white-space: nowrap;
 }
 
-/* Conteneur des détails avec bordure */
+
 .oneDriveDetailsContainer {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -427,7 +427,7 @@
   border-color: #4a4a6a;
 }
 
-/* Séparateur horizontal */
+
 .cardSeparator {
   border: none;
   height: 1px;
@@ -439,7 +439,7 @@
   background-color: #4a4a6a;
 }
 
-/* ───────────── SECTION DES LICENCES ───────────── */
+
 .licensesSection {
   margin-top: 1rem;
 }
@@ -594,7 +594,7 @@
   color: #f9fafb;
 }
 
-/* Message d'export complet */
+
 .exportMessage {
   background: #f0f9ff;
   border: 1px solid #0ea5e9;
@@ -620,7 +620,7 @@
   color: #7dd3fc;
 }
 
-/* ───────────── SECTION DES GRAPHIQUES ───────────── */
+
 .graphsSection {
   margin-top: 2rem;
 }
@@ -698,7 +698,7 @@
   gap: 2rem;
 }
 
-/* ───────────── SECTION COMMENTAIRE ───────────── */
+
 .commentSection {
   display: flex;
   flex-direction: column;
@@ -735,7 +735,7 @@
   color: #6b7280;
 }
 
-/* ───────────── SECTION DES STATISTIQUES ET INSIGHTS ───────────── */
+
 .statsSection {
   margin-top: 0;
   margin-bottom: 0;
@@ -760,7 +760,7 @@
   gap: 1rem;
 }
 
-/* ───────────── CARTES DE STATISTIQUES ───────────── */
+
 .statCard {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -928,28 +928,28 @@
   color: #9ca3af;
 }
 
-/* Styles pour les positions du podium */
+
 .firstPlace {
-  border-left: 4px solid #fbbf24; /* Or */
+  border-left: 4px solid #fbbf24; 
 }
 
 .secondPlace {
-  border-left: 4px solid #9ca3af; /* Argent */
+  border-left: 4px solid #9ca3af; 
 }
 
 .thirdPlace {
-  border-left: 4px solid #d97706; /* Bronze */
+  border-left: 4px solid #d97706; 
 }
 
 .otherPlace {
-  border-left: 4px solid #e5e7eb; /* Gris */
+  border-left: 4px solid #e5e7eb; 
 }
 
 .dark .otherPlace {
   border-left-color: #4a4a6a;
 }
 
-/* ───────────── RESPONSIVE ───────────── */
+
 @media (max-width: 768px) {
   .moduleCard {
     padding: 1rem;

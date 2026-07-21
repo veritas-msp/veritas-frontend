@@ -1,6 +1,4 @@
-/* ──────────────────────────────
-   Barre d'onglets · style MSP
-   ────────────────────────────── */
+
 
 .tabsBar {
   position: fixed;
@@ -389,9 +387,7 @@
   gap: 4px;
 }
 
-/* ──────────────────────────────
-   Mode sombre
-   ────────────────────────────── */
+
 
 :global(html.dark) .tabsBar {
   background: var(--msp-surface-2, #152035);

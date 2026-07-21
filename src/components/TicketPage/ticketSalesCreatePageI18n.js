@@ -1,21 +1,17 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 const SALES_KIND_KEYS = ["prestation", "installation"];
 const PRIORITY_KEYS = ["low", "normal", "high", "urgent"];
-
 const KIND_ICONS = {
   prestation: "mdi:briefcase-edit-outline",
-  installation: "mdi:tools",
+  installation: "mdi:tools"
 };
-
 const LOCALE_BCP47 = {
   fr: "fr-FR",
   en: "en-GB",
   de: "de-DE",
   it: "it-IT",
-  es: "es-ES",
+  es: "es-ES"
 };
-
 const TICKET_SALES_CREATE_COPY = {
   fr: {
     eyebrow: "Exploitation",
@@ -27,14 +23,20 @@ const TICKET_SALES_CREATE_COPY = {
     loadingData: "Chargement des données…",
     agentFallback: "Agent",
     kinds: {
-      prestation: { label: "Prestation", hint: "Services et ventes" },
-      installation: { label: "Installation", hint: "Déploiement client" },
+      prestation: {
+        label: "Prestation",
+        hint: "Services et ventes"
+      },
+      installation: {
+        label: "Installation",
+        hint: "Déploiement client"
+      }
     },
     priority: {
       low: "Basse",
       normal: "Normale",
       high: "Haute",
-      urgent: "Urgente",
+      urgent: "Urgente"
     },
     sections: {
       nature: "Nature de la demande",
@@ -42,7 +44,7 @@ const TICKET_SALES_CREATE_COPY = {
       details: "Détails de la demande",
       context: "Contexte",
       commercial: "Informations commerciales",
-      settings: "Paramètres",
+      settings: "Paramètres"
     },
     loadingForms: "Chargement des natures de demande…",
     noForms: "Aucune nature configurée pour ce type. Contactez un administrateur.",
@@ -58,7 +60,7 @@ const TICKET_SALES_CREATE_COPY = {
       requester: "Demandeur",
       purchaseOrder: "Bon de commande",
       commercial: "Commercial",
-      projectManager: "Chef de projet",
+      projectManager: "Chef de projet"
     },
     purchaseOrder: "Bon de commande",
     purchaseOrderPlaceholder: "Ex: BC-2026-0142",
@@ -89,11 +91,11 @@ const TICKET_SALES_CREATE_COPY = {
       purchaseOrder: "Bon de commande",
       commercial: "Commercial",
       projectManager: "Chef de projet",
-      comment: "Commentaire",
+      comment: "Commentaire"
     },
     kindsShort: {
       prestation: "Prestation",
-      installation: "Installation",
+      installation: "Installation"
     },
     body: {
       purchaseOrder: "Bon de commande",
@@ -103,16 +105,16 @@ const TICKET_SALES_CREATE_COPY = {
       form: "Formulaire",
       requester: "Demandeur",
       company: "Entreprise",
-      comment: "Commentaire",
+      comment: "Commentaire"
     },
     toasts: {
       createdInstallation: "Demande d'installation créée",
       createdPrestation: "Demande de prestation créée",
       createdMultiple: "{count} tickets créés ({form})",
-      createError: "Erreur lors de la création",
+      createError: "Erreur lors de la création"
     },
     userFallback: "Utilisateur #{id}",
-    contactFallback: "Contact #{id}",
+    contactFallback: "Contact #{id}"
   },
   en: {
     eyebrow: "Operations",
@@ -124,14 +126,20 @@ const TICKET_SALES_CREATE_COPY = {
     loadingData: "Loading data…",
     agentFallback: "Agent",
     kinds: {
-      prestation: { label: "Service", hint: "Services and sales" },
-      installation: { label: "Installation", hint: "Client deployment" },
+      prestation: {
+        label: "Service",
+        hint: "Services and sales"
+      },
+      installation: {
+        label: "Installation",
+        hint: "Client deployment"
+      }
     },
     priority: {
       low: "Low",
       normal: "Normal",
       high: "High",
-      urgent: "Urgent",
+      urgent: "Urgent"
     },
     sections: {
       nature: "Request type",
@@ -139,7 +147,7 @@ const TICKET_SALES_CREATE_COPY = {
       details: "Request details",
       context: "Context",
       commercial: "Commercial information",
-      settings: "Settings",
+      settings: "Settings"
     },
     loadingForms: "Loading request types…",
     noForms: "No type configured for this category. Contact an administrator.",
@@ -155,7 +163,7 @@ const TICKET_SALES_CREATE_COPY = {
       requester: "Requester",
       purchaseOrder: "Purchase order",
       commercial: "Sales rep",
-      projectManager: "Project manager",
+      projectManager: "Project manager"
     },
     purchaseOrder: "Purchase order",
     purchaseOrderPlaceholder: "e.g. PO-2026-0142",
@@ -186,11 +194,11 @@ const TICKET_SALES_CREATE_COPY = {
       purchaseOrder: "Purchase order",
       commercial: "Sales rep",
       projectManager: "Project manager",
-      comment: "Comment",
+      comment: "Comment"
     },
     kindsShort: {
       prestation: "Service",
-      installation: "Installation",
+      installation: "Installation"
     },
     body: {
       purchaseOrder: "Purchase order",
@@ -200,16 +208,16 @@ const TICKET_SALES_CREATE_COPY = {
       form: "Form",
       requester: "Requester",
       company: "Company",
-      comment: "Comment",
+      comment: "Comment"
     },
     toasts: {
       createdInstallation: "Installation request created",
       createdPrestation: "Service request created",
       createdMultiple: "{count} tickets created ({form})",
-      createError: "Error creating request",
+      createError: "Error creating request"
     },
     userFallback: "User #{id}",
-    contactFallback: "Contact #{id}",
+    contactFallback: "Contact #{id}"
   },
   de: {
     eyebrow: "Betrieb",
@@ -221,14 +229,20 @@ const TICKET_SALES_CREATE_COPY = {
     loadingData: "Daten werden geladen…",
     agentFallback: "Agent",
     kinds: {
-      prestation: { label: "Leistung", hint: "Dienstleistungen und Vertrieb" },
-      installation: { label: "Installation", hint: "Kundenbereitstellung" },
+      prestation: {
+        label: "Leistung",
+        hint: "Dienstleistungen und Vertrieb"
+      },
+      installation: {
+        label: "Installation",
+        hint: "Kundenbereitstellung"
+      }
     },
     priority: {
       low: "Niedrig",
       normal: "Normal",
       high: "Hoch",
-      urgent: "Dringend",
+      urgent: "Dringend"
     },
     sections: {
       nature: "Art der Anfrage",
@@ -236,7 +250,7 @@ const TICKET_SALES_CREATE_COPY = {
       details: "Anfragedetails",
       context: "Kontext",
       commercial: "Kaufmännische Informationen",
-      settings: "Einstellungen",
+      settings: "Einstellungen"
     },
     loadingForms: "Anfragearten werden geladen…",
     noForms: "Keine Art für diesen Typ konfiguriert. Administrator kontaktieren.",
@@ -252,7 +266,7 @@ const TICKET_SALES_CREATE_COPY = {
       requester: "Anfragender",
       purchaseOrder: "Bestellung",
       commercial: "Vertrieb",
-      projectManager: "Projektleiter",
+      projectManager: "Projektleiter"
     },
     purchaseOrder: "Bestellung",
     purchaseOrderPlaceholder: "z. B. BC-2026-0142",
@@ -283,11 +297,11 @@ const TICKET_SALES_CREATE_COPY = {
       purchaseOrder: "Bestellung",
       commercial: "Vertrieb",
       projectManager: "Projektleiter",
-      comment: "Kommentar",
+      comment: "Kommentar"
     },
     kindsShort: {
       prestation: "Leistung",
-      installation: "Installation",
+      installation: "Installation"
     },
     body: {
       purchaseOrder: "Bestellung",
@@ -297,16 +311,16 @@ const TICKET_SALES_CREATE_COPY = {
       form: "Formular",
       requester: "Anfragender",
       company: "Unternehmen",
-      comment: "Kommentar",
+      comment: "Kommentar"
     },
     toasts: {
       createdInstallation: "Installationsanfrage erstellt",
       createdPrestation: "Leistungsanfrage erstellt",
       createdMultiple: "{count} Tickets erstellt ({form})",
-      createError: "Fehler beim Erstellen",
+      createError: "Fehler beim Erstellen"
     },
     userFallback: "Benutzer #{id}",
-    contactFallback: "Kontakt #{id}",
+    contactFallback: "Kontakt #{id}"
   },
   it: {
     eyebrow: "Operazioni",
@@ -318,14 +332,20 @@ const TICKET_SALES_CREATE_COPY = {
     loadingData: "Caricamento dati…",
     agentFallback: "Agent",
     kinds: {
-      prestation: { label: "Prestazione", hint: "Servizi e vendite" },
-      installation: { label: "Installazione", hint: "Distribuzione cliente" },
+      prestation: {
+        label: "Prestazione",
+        hint: "Servizi e vendite"
+      },
+      installation: {
+        label: "Installazione",
+        hint: "Distribuzione cliente"
+      }
     },
     priority: {
       low: "Bassa",
       normal: "Normale",
       high: "Alta",
-      urgent: "Urgente",
+      urgent: "Urgente"
     },
     sections: {
       nature: "Natura della richiesta",
@@ -333,7 +353,7 @@ const TICKET_SALES_CREATE_COPY = {
       details: "Dettagli della richiesta",
       context: "Contesto",
       commercial: "Informazioni commerciali",
-      settings: "Impostazioni",
+      settings: "Impostazioni"
     },
     loadingForms: "Caricamento nature di richiesta…",
     noForms: "Nessuna natura configurata per questo tipo. Contattare un amministratore.",
@@ -349,7 +369,7 @@ const TICKET_SALES_CREATE_COPY = {
       requester: "Richiedente",
       purchaseOrder: "Ordine d'acquisto",
       commercial: "Commerciale",
-      projectManager: "Responsabile progetto",
+      projectManager: "Responsabile progetto"
     },
     purchaseOrder: "Ordine d'acquisto",
     purchaseOrderPlaceholder: "Es: BC-2026-0142",
@@ -380,11 +400,11 @@ const TICKET_SALES_CREATE_COPY = {
       purchaseOrder: "Ordine d'acquisto",
       commercial: "Commerciale",
       projectManager: "Responsabile progetto",
-      comment: "Commento",
+      comment: "Commento"
     },
     kindsShort: {
       prestation: "Prestazione",
-      installation: "Installazione",
+      installation: "Installazione"
     },
     body: {
       purchaseOrder: "Ordine d'acquisto",
@@ -394,16 +414,16 @@ const TICKET_SALES_CREATE_COPY = {
       form: "Modulo",
       requester: "Richiedente",
       company: "Azienda",
-      comment: "Commento",
+      comment: "Commento"
     },
     toasts: {
       createdInstallation: "Richiesta di installazione creata",
       createdPrestation: "Richiesta di prestazione creata",
       createdMultiple: "{count} ticket creati ({form})",
-      createError: "Errore durante la creazione",
+      createError: "Errore durante la creazione"
     },
     userFallback: "Utente #{id}",
-    contactFallback: "Contatto #{id}",
+    contactFallback: "Contatto #{id}"
   },
   es: {
     eyebrow: "Operaciones",
@@ -415,14 +435,20 @@ const TICKET_SALES_CREATE_COPY = {
     loadingData: "Cargando datos…",
     agentFallback: "Agent",
     kinds: {
-      prestation: { label: "Prestación", hint: "Servicios y ventas" },
-      installation: { label: "Instalación", hint: "Despliegue cliente" },
+      prestation: {
+        label: "Prestación",
+        hint: "Servicios y ventas"
+      },
+      installation: {
+        label: "Instalación",
+        hint: "Despliegue cliente"
+      }
     },
     priority: {
       low: "Baja",
       normal: "Normal",
       high: "Alta",
-      urgent: "Urgente",
+      urgent: "Urgente"
     },
     sections: {
       nature: "Naturaleza de la solicitud",
@@ -430,7 +456,7 @@ const TICKET_SALES_CREATE_COPY = {
       details: "Detalles de la solicitud",
       context: "Contexto",
       commercial: "Información comercial",
-      settings: "Ajustes",
+      settings: "Ajustes"
     },
     loadingForms: "Cargando tipos de solicitud…",
     noForms: "Ningún tipo configurado para esta categoría. Contacte a un administrador.",
@@ -446,7 +472,7 @@ const TICKET_SALES_CREATE_COPY = {
       requester: "Solicitante",
       purchaseOrder: "Pedido",
       commercial: "Comercial",
-      projectManager: "Jefe de proyecto",
+      projectManager: "Jefe de proyecto"
     },
     purchaseOrder: "Pedido",
     purchaseOrderPlaceholder: "Ej: BC-2026-0142",
@@ -477,11 +503,11 @@ const TICKET_SALES_CREATE_COPY = {
       purchaseOrder: "Pedido",
       commercial: "Comercial",
       projectManager: "Jefe de proyecto",
-      comment: "Comentario",
+      comment: "Comentario"
     },
     kindsShort: {
       prestation: "Prestación",
-      installation: "Instalación",
+      installation: "Instalación"
     },
     body: {
       purchaseOrder: "Pedido",
@@ -491,45 +517,59 @@ const TICKET_SALES_CREATE_COPY = {
       form: "Formulario",
       requester: "Solicitante",
       company: "Empresa",
-      comment: "Comentario",
+      comment: "Comentario"
     },
     toasts: {
       createdInstallation: "Solicitud de instalación creada",
       createdPrestation: "Solicitud de prestación creada",
       createdMultiple: "{count} tickets creados ({form})",
-      createError: "Error al crear la solicitud",
+      createError: "Error al crear la solicitud"
     },
     userFallback: "Usuario #{id}",
-    contactFallback: "Contacto #{id}",
-  },
+    contactFallback: "Contacto #{id}"
+  }
 };
-
 export function getTicketSalesCreatePageCopy(locale) {
   const t = pickLocaleMessages(TICKET_SALES_CREATE_COPY, locale);
   return {
     ...t,
     locale,
     localeTag: LOCALE_BCP47[locale] || "fr-FR",
-    salesKinds: SALES_KIND_KEYS.map((key) => ({
+    salesKinds: SALES_KIND_KEYS.map(key => ({
       key,
       icon: KIND_ICONS[key],
       label: t.kinds[key].label,
-      hint: t.kinds[key].hint,
+      hint: t.kinds[key].hint
     })),
-    priorityOptions: PRIORITY_KEYS.map((key) => ({
+    priorityOptions: PRIORITY_KEYS.map(key => ({
       key,
-      label: t.priority[key],
+      label: t.priority[key]
     })),
-    formatPageSubtitle: (agent) => interpolate(t.pageSubtitle, { agent }),
-    formatUserFallback: (id) => interpolate(t.userFallback, { id: String(id) }),
-    formatContactFallback: (id) => interpolate(t.contactFallback, { id: String(id) }),
-    formatRulePriority: (priority) => interpolate(t.rulePriority, { priority }),
-    formatRuleStatus: (status) => interpolate(t.ruleStatus, { status }),
-    formatRuleAssignees: (count) => interpolate(t.ruleAssignees, { count: String(count) }),
-    formatRuleTeams: (count) => interpolate(t.ruleTeams, { count: String(count) }),
-    formatCreatedMultiple: (count, form) =>
-      interpolate(t.toasts.createdMultiple, { count: String(count), form }),
-    getKindShortLabel: (kind) =>
-      kind === "installation" ? t.kindsShort.installation : t.kindsShort.prestation,
+    formatPageSubtitle: agent => interpolate(t.pageSubtitle, {
+      agent
+    }),
+    formatUserFallback: id => interpolate(t.userFallback, {
+      id: String(id)
+    }),
+    formatContactFallback: id => interpolate(t.contactFallback, {
+      id: String(id)
+    }),
+    formatRulePriority: priority => interpolate(t.rulePriority, {
+      priority
+    }),
+    formatRuleStatus: status => interpolate(t.ruleStatus, {
+      status
+    }),
+    formatRuleAssignees: count => interpolate(t.ruleAssignees, {
+      count: String(count)
+    }),
+    formatRuleTeams: count => interpolate(t.ruleTeams, {
+      count: String(count)
+    }),
+    formatCreatedMultiple: (count, form) => interpolate(t.toasts.createdMultiple, {
+      count: String(count),
+      form
+    }),
+    getKindShortLabel: kind => kind === "installation" ? t.kindsShort.installation : t.kindsShort.prestation
   };
 }

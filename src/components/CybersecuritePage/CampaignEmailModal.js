@@ -1,7 +1,4 @@
-// ──────────────────────────────
-// 📦 Dépendances
-// ──────────────────────────────
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import React from "react";
 import { Icon } from "@iconify/react";
 import { FaTimes, FaPaperPlane, FaEnvelope } from "react-icons/fa";
@@ -9,36 +6,32 @@ import { toast } from 'react-toastify';
 import API_BASE_URL from "../../config";
 import { updateCampaignStep } from "../../api/campaigns";
 import styles from "./CampaignEmailModal.module.css";
-
-// ──────────────────────────────
-// 🧩 Composant : CampaignEmailModal
-// ──────────────────────────────
-export default function CampaignEmailModal({ step, campaign, clientId, campaignId, onClose, onEmailSent }) {
+import { useAppLocale } from "../../hooks/useAppGeneralSettings";
+import { getCampaignDetailCopy } from "./campaignDetailI18n";
+export default function CampaignEmailModal({
+  step,
+  campaign,
+  clientId,
+  campaignId,
+  onClose,
+  onEmailSent,
+  copy
+}) {
+  const locale = useAppLocale();
+  const localCopy = useMemo(() => getCampaignDetailCopy(locale), [locale]);
+  const detailCopy = copy || localCopy;
+  const emailCopy = detailCopy.email;
   const [emailTo, setEmailTo] = useState("");
   const [emailSubject, setEmailSubject] = useState("");
   const [emailContent, setEmailContent] = useState("");
   const [sending, setSending] = useState(false);
-
   const handleSend = async () => {
-    if (!emailTo || !emailTo.includes('@')) {
-      toast.error('Veuillez renseigner une adresse email valide');
+    if (!emailTo || !emailTo.includes('@') || !emailSubject.trim() || !emailContent.trim()) {
+      toast.error(emailCopy.toastMissing);
       return;
     }
-
-    if (!emailSubject.trim()) {
-      toast.error('Veuillez renseigner un sujet');
-      return;
-    }
-
-    if (!emailContent.trim()) {
-      toast.error('Veuillez rédiger le contenu de l\'email');
-      return;
-    }
-
     try {
       setSending(true);
-
-      // Envoyer l'email
       const response = await fetch(`${API_BASE_URL}/email/send-campaign-email`, {
         method: 'POST',
         headers: {
@@ -54,44 +47,32 @@ export default function CampaignEmailModal({ step, campaign, clientId, campaignI
           clientId: clientId
         })
       });
-
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Erreur lors de l\'envoi de l\'email');
+        throw new Error(errorData.error || emailCopy.toastError);
       }
-
-      // Mettre à jour le step : cocher et sauvegarder la date d'envoi
       await updateCampaignStep(clientId, campaignId, step.id, {
         completed: true
       });
-
-      toast.success('Email envoyé avec succès et étape marquée comme terminée');
-      
-      // Notifier le parent
+      toast.success(emailCopy.toastSent);
       if (onEmailSent) {
         onEmailSent();
       }
     } catch (error) {
-      console.error('Erreur lors de l\'envoi de l\'email:', error);
-      toast.error(error.message || 'Erreur lors de l\'envoi de l\'email');
+      console.error('Error lors de l\'envoi de l\'email:', error);
+      toast.error(error.message || emailCopy.toastError);
     } finally {
       setSending(false);
     }
   };
-
-  return (
-    <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+  return <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
         <div className={styles.modalHeader}>
           <div className={styles.modalTitle}>
             <FaEnvelope className={styles.modalIcon} />
-            <h3>Envoyer un email</h3>
+            <h3>{emailCopy.title}</h3>
           </div>
-          <button
-            className={styles.closeButton}
-            onClick={onClose}
-            title="Fermer"
-          >
+          <button className={styles.closeButton} onClick={onClose} title={emailCopy.close}>
             <FaTimes />
           </button>
         </div>
@@ -99,76 +80,41 @@ export default function CampaignEmailModal({ step, campaign, clientId, campaignI
         <div className={styles.modalBody}>
           <div className={styles.formField}>
             <label className={styles.fieldLabel}>
-              Destinataire <span className={styles.required}>*</span>
+              {emailCopy.recipient} <span className={styles.required}>*</span>
             </label>
-            <input
-              type="email"
-              value={emailTo}
-              onChange={(e) => setEmailTo(e.target.value)}
-              placeholder="exemple@domaine.com"
-              className={styles.fieldInput}
-              required
-            />
+            <input type="email" value={emailTo} onChange={e => setEmailTo(e.target.value)} placeholder={emailCopy.recipientPlaceholder} className={styles.fieldInput} required />
           </div>
 
           <div className={styles.formField}>
             <label className={styles.fieldLabel}>
-              Sujet <span className={styles.required}>*</span>
+              {emailCopy.subject} <span className={styles.required}>*</span>
             </label>
-            <input
-              type="text"
-              value={emailSubject}
-              onChange={(e) => setEmailSubject(e.target.value)}
-              placeholder="Sujet de l'email"
-              className={styles.fieldInput}
-              required
-            />
+            <input type="text" value={emailSubject} onChange={e => setEmailSubject(e.target.value)} placeholder={emailCopy.subjectPlaceholder} className={styles.fieldInput} required />
           </div>
 
           <div className={styles.formField}>
             <label className={styles.fieldLabel}>
-              Contenu <span className={styles.required}>*</span>
+              {emailCopy.body} <span className={styles.required}>*</span>
             </label>
-            <textarea
-              value={emailContent}
-              onChange={(e) => setEmailContent(e.target.value)}
-              placeholder="Rédigez votre message ici..."
-              className={styles.fieldTextarea}
-              rows={12}
-              required
-            />
+            <textarea value={emailContent} onChange={e => setEmailContent(e.target.value)} placeholder={emailCopy.bodyPlaceholder} className={styles.fieldTextarea} rows={12} required />
           </div>
         </div>
 
         <div className={styles.modalFooter}>
-          <button
-            className={styles.cancelButton}
-            onClick={onClose}
-            disabled={sending}
-          >
+          <button className={styles.cancelButton} onClick={onClose} disabled={sending}>
             <FaTimes />
-            Annuler
+            {emailCopy.cancel}
           </button>
-          <button
-            className={styles.sendButton}
-            onClick={handleSend}
-            disabled={sending || !emailTo || !emailSubject.trim() || !emailContent.trim()}
-          >
-            {sending ? (
-              <>
+          <button className={styles.sendButton} onClick={handleSend} disabled={sending || !emailTo || !emailSubject.trim() || !emailContent.trim()}>
+            {sending ? <>
                 <Icon icon="mdi:loading" className={styles.spinner} />
-                Envoi en cours...
-              </>
-            ) : (
-              <>
+                {emailCopy.sending}
+              </> : <>
                 <FaPaperPlane />
-                Envoyer
-              </>
-            )}
+                {emailCopy.send}
+              </>}
           </button>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
-

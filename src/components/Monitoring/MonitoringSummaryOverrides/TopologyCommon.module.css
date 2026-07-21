@@ -1,4 +1,4 @@
-/* Container principal pour les topologies */
+
 .topologyContainer {
   width: 100%;
   max-width: 1600px;
@@ -14,20 +14,20 @@
   color: #e5e7eb;
 }
 
-/* Viewport pour le SVG */
+
 .topologyViewport {
   width: 100%;
   overflow-x: auto;
   overflow-y: visible;
   padding: 1rem 0;
   margin-bottom: 1.5rem;
-  /* Masquer la scrollbar horizontale */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
 
 .topologyViewport::-webkit-scrollbar {
-  height: 0; /* Masquer la scrollbar horizontale */
+  height: 0; 
   display: none;
 }
 
@@ -36,13 +36,13 @@
   height: 0;
 }
 
-/* SVG de la topologie */
+
 .topologySvg {
   display: block;
   margin: 0 auto;
 }
 
-/* État vide */
+
 .emptyState {
   text-align: center;
   padding: 3rem 1rem;
@@ -54,7 +54,7 @@
   color: #9ca3af;
 }
 
-/* Container de la légende */
+
 .topologyLegendContainer {
   display: flex;
   flex-wrap: wrap;
@@ -72,7 +72,7 @@
   border-color: #374151;
 }
 
-/* Élément de légende */
+
 .legendItem {
   display: flex;
   align-items: center;
@@ -85,7 +85,7 @@
   color: #d1d5db;
 }
 
-/* Wrapper pour l'icône de légende */
+
 .legendIconWrapper {
   display: flex;
   align-items: center;
@@ -94,7 +94,7 @@
   height: 2rem;
 }
 
-/* Label de légende */
+
 .legendLabel {
   font-weight: 500;
   white-space: nowrap;

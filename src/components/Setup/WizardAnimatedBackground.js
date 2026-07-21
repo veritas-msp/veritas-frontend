@@ -1,8 +1,8 @@
 import styles from "./WizardAnimatedBackground.module.css";
-
-export default function WizardAnimatedBackground({ theme = "light" }) {
-  return (
-    <div className={styles.root} data-theme={theme} aria-hidden>
+export default function WizardAnimatedBackground({
+  theme = "light"
+}) {
+  return <div className={styles.root} data-theme={theme} aria-hidden>
       <div className={styles.baseGradient} />
       <div className={styles.grid} />
       <div className={styles.hexMesh} />
@@ -24,6 +24,5 @@ export default function WizardAnimatedBackground({ theme = "light" }) {
       </div>
       <div className={styles.scanline} />
       <div className={styles.vignette} />
-    </div>
-  );
+    </div>;
 }

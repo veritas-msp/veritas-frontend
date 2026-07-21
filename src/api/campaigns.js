@@ -1,17 +1,10 @@
-// ──────────────────────────────
-// 📦 API Campagnes Cybersécurité
-// ──────────────────────────────
 import API_BASE_URL from "../config";
-
 const BASE_URL = `${API_BASE_URL}/clients`;
-
-// Récupérer les campagnes d'un client
 export async function getClientCampaigns(clientId, filters = {}, options = {}) {
   try {
     const params = new URLSearchParams();
     if (filters.status) params.append('status', filters.status);
     if (filters.type) params.append('type', filters.type);
-
     const response = await fetch(`${BASE_URL}/${clientId}/campaigns?${params}`, {
       method: 'GET',
       credentials: 'include',
@@ -20,27 +13,22 @@ export async function getClientCampaigns(clientId, filters = {}, options = {}) {
         'Content-Type': 'application/json'
       }
     });
-
     if (!response.ok) {
-      throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
     if (error?.name === 'AbortError') throw error;
-    console.error('Erreur lors de la récupération des campagnes:', error);
+    console.error('Error fetching campaigns:', error);
     return [];
   }
 }
-
-// Récupérer toutes les campagnes (pour la page cybersécurité)
 export async function getAllCampaigns(filters = {}, options = {}) {
   try {
     const params = new URLSearchParams();
     if (filters.status) params.append('status', filters.status);
     if (filters.type) params.append('type', filters.type);
     if (filters.client_id) params.append('client_id', filters.client_id);
-
     const response = await fetch(`${BASE_URL}/all-campaigns?${params}`, {
       method: 'GET',
       credentials: 'include',
@@ -49,20 +37,16 @@ export async function getAllCampaigns(filters = {}, options = {}) {
         'Content-Type': 'application/json'
       }
     });
-
     if (!response.ok) {
-      throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
     if (error?.name === 'AbortError') throw error;
-    console.error('Erreur lors de la récupération des campagnes:', error);
+    console.error('Error fetching campaigns:', error);
     return [];
   }
 }
-
-// Créer une campagne
 export async function createClientCampaign(clientId, campaignData) {
   try {
     const response = await fetch(`${BASE_URL}/${clientId}/campaigns`, {
@@ -73,19 +57,15 @@ export async function createClientCampaign(clientId, campaignData) {
       },
       body: JSON.stringify(campaignData)
     });
-
     if (!response.ok) {
-      throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
-    console.error('Erreur lors de la création de la campagne:', error);
+    console.error('Error creating campaign:', error);
     throw error;
   }
 }
-
-// Modifier une campagne
 export async function updateClientCampaign(clientId, campaignId, campaignData) {
   try {
     const response = await fetch(`${BASE_URL}/${clientId}/campaigns/${campaignId}`, {
@@ -96,19 +76,15 @@ export async function updateClientCampaign(clientId, campaignId, campaignData) {
       },
       body: JSON.stringify(campaignData)
     });
-
     if (!response.ok) {
-      throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
-    console.error('Erreur lors de la modification de la campagne:', error);
+    console.error('Error updating campaign:', error);
     throw error;
   }
 }
-
-// Supprimer une campagne par ID seul (nouveau)
 export async function deleteCampaign(campaignId) {
   try {
     const response = await fetch(`${BASE_URL}/campaigns/${campaignId}`, {
@@ -118,19 +94,15 @@ export async function deleteCampaign(campaignId) {
         'Content-Type': 'application/json'
       }
     });
-
     if (!response.ok) {
-      throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
-    console.error('Erreur lors de la suppression de la campagne:', error);
+    console.error('Error deleting campaign:', error);
     throw error;
   }
 }
-
-// Supprimer une campagne (legacy - nécessite clientId)
 export async function deleteClientCampaign(clientId, campaignId) {
   try {
     const response = await fetch(`${BASE_URL}/${clientId}/campaigns/${campaignId}`, {
@@ -140,19 +112,15 @@ export async function deleteClientCampaign(clientId, campaignId) {
         'Content-Type': 'application/json'
       }
     });
-
     if (!response.ok) {
-      throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
-    console.error('Erreur lors de la suppression de la campagne:', error);
+    console.error('Error deleting campaign:', error);
     throw error;
   }
 }
-
-// Lancer une campagne Microsoft Security
 export async function launchCampaign(clientId, campaignId) {
   try {
     const response = await fetch(`${BASE_URL}/${clientId}/campaigns/${campaignId}/launch`, {
@@ -162,20 +130,60 @@ export async function launchCampaign(clientId, campaignId) {
         'Content-Type': 'application/json'
       }
     });
-
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: response.statusText }));
-      throw new Error(errorData.error || `Erreur ${response.status}: ${response.statusText}`);
+      const errorData = await response.json().catch(() => ({
+        error: response.statusText
+      }));
+      throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
-    console.error('Erreur lors du lancement de la campagne:', error);
+    console.error('Error launching campaign:', error);
     throw error;
   }
 }
-
-// Terminer une campagne Microsoft Security
+export async function pauseCampaign(clientId, campaignId) {
+  try {
+    const response = await fetch(`${BASE_URL}/${clientId}/campaigns/${campaignId}/pause`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({
+        error: response.statusText
+      }));
+      throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error pausing:', error);
+    throw error;
+  }
+}
+export async function resumeCampaign(clientId, campaignId) {
+  try {
+    const response = await fetch(`${BASE_URL}/${clientId}/campaigns/${campaignId}/resume`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({
+        error: response.statusText
+      }));
+      throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error resuming:', error);
+    throw error;
+  }
+}
 export async function finishCampaign(clientId, campaignId) {
   try {
     const response = await fetch(`${BASE_URL}/${clientId}/campaigns/${campaignId}/finish`, {
@@ -185,20 +193,18 @@ export async function finishCampaign(clientId, campaignId) {
         'Content-Type': 'application/json'
       }
     });
-
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: response.statusText }));
-      throw new Error(errorData.error || `Erreur ${response.status}: ${response.statusText}`);
+      const errorData = await response.json().catch(() => ({
+        error: response.statusText
+      }));
+      throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
-    console.error('Erreur lors de la fin de la campagne:', error);
+    console.error('Error ending campaign:', error);
     throw error;
   }
 }
-
-// Remettre la campagne à zéro (supprimer snapshots + statut en préparation)
 export async function resetCampaign(clientId, campaignId) {
   try {
     const response = await fetch(`${BASE_URL}/${clientId}/campaigns/${campaignId}/reset`, {
@@ -208,20 +214,18 @@ export async function resetCampaign(clientId, campaignId) {
         'Content-Type': 'application/json'
       }
     });
-
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: response.statusText }));
-      throw new Error(errorData.error || `Erreur ${response.status}: ${response.statusText}`);
+      const errorData = await response.json().catch(() => ({
+        error: response.statusText
+      }));
+      throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
-    console.error('Erreur lors de la remise à zéro de la campagne:', error);
+    console.error('Error resetting campaign:', error);
     throw error;
   }
 }
-
-// Récupérer les statistiques d'une campagne
 export async function getCampaignStats(clientId, campaignId, options = {}) {
   try {
     const response = await fetch(`${BASE_URL}/${clientId}/campaigns/${campaignId}/stats?includeCurrent=true`, {
@@ -232,29 +236,64 @@ export async function getCampaignStats(clientId, campaignId, options = {}) {
         'Content-Type': 'application/json'
       }
     });
-
     if (!response.ok) {
-      throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
     if (error?.name === 'AbortError') throw error;
-    console.error('Erreur lors de la récupération des statistiques:', error);
+    console.error('Error fetching statistics:', error);
     throw error;
   }
 }
-
-// Télécharger le rapport PDF
 export function getCampaignReportUrl(clientId, campaignId) {
   return `${BASE_URL}/${clientId}/campaigns/${campaignId}/report.pdf`;
 }
-
-// ───────────────────────────────────────────────
-// 📋 API pour les Steps (Étapes) des campagnes
-// ───────────────────────────────────────────────
-
-// Récupérer toutes les étapes d'une campagne
+export async function downloadCampaignReport(clientId, campaignId, fileName) {
+  const response = await fetch(getCampaignReportUrl(clientId, campaignId), {
+    method: 'GET',
+    credentials: 'include'
+  });
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({
+      error: response.statusText
+    }));
+    throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
+  }
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName || `rapport_campagne_${campaignId}.pdf`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  return true;
+}
+export async function publishCampaignReport(clientId, campaignId, {
+  visibleToClient = false,
+  description = ''
+} = {}) {
+  const response = await fetch(`${BASE_URL}/${clientId}/campaigns/${campaignId}/publish-report`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      visibleToClient: Boolean(visibleToClient),
+      description
+    })
+  });
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({
+      error: response.statusText
+    }));
+    throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
+  }
+  return response.json();
+}
 export async function getCampaignSteps(clientId, campaignId) {
   try {
     const response = await fetch(`${BASE_URL}/${clientId}/campaigns/${campaignId}/steps`, {
@@ -264,19 +303,15 @@ export async function getCampaignSteps(clientId, campaignId) {
         'Content-Type': 'application/json'
       }
     });
-
     if (!response.ok) {
-      throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
-    console.error('Erreur lors de la récupération des étapes:', error);
+    console.error('Error fetching steps:', error);
     throw error;
   }
 }
-
-// Créer une nouvelle étape
 export async function createCampaignStep(clientId, campaignId, stepData) {
   try {
     const response = await fetch(`${BASE_URL}/${clientId}/campaigns/${campaignId}/steps`, {
@@ -287,20 +322,18 @@ export async function createCampaignStep(clientId, campaignId, stepData) {
       },
       body: JSON.stringify(stepData)
     });
-
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: response.statusText }));
-      throw new Error(errorData.error || `Erreur ${response.status}: ${response.statusText}`);
+      const errorData = await response.json().catch(() => ({
+        error: response.statusText
+      }));
+      throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
-    console.error('Erreur lors de la création de l\'étape:', error);
+    console.error('Error creating step:', error);
     throw error;
   }
 }
-
-// Mettre à jour une étape
 export async function updateCampaignStep(clientId, campaignId, stepId, stepData) {
   try {
     const response = await fetch(`${BASE_URL}/${clientId}/campaigns/${campaignId}/steps/${stepId}`, {
@@ -311,20 +344,18 @@ export async function updateCampaignStep(clientId, campaignId, stepId, stepData)
       },
       body: JSON.stringify(stepData)
     });
-
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: response.statusText }));
-      throw new Error(errorData.error || `Erreur ${response.status}: ${response.statusText}`);
+      const errorData = await response.json().catch(() => ({
+        error: response.statusText
+      }));
+      throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
-    console.error('Erreur lors de la mise à jour de l\'étape:', error);
+    console.error('Error updating step:', error);
     throw error;
   }
 }
-
-// Réorganiser l'ordre des étapes
 export async function reorderCampaignSteps(clientId, campaignId, stepOrders) {
   try {
     const response = await fetch(`${BASE_URL}/${clientId}/campaigns/${campaignId}/steps/reorder`, {
@@ -333,22 +364,22 @@ export async function reorderCampaignSteps(clientId, campaignId, stepOrders) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ stepOrders })
+      body: JSON.stringify({
+        stepOrders
+      })
     });
-
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: response.statusText }));
-      throw new Error(errorData.error || `Erreur ${response.status}: ${response.statusText}`);
+      const errorData = await response.json().catch(() => ({
+        error: response.statusText
+      }));
+      throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
-    console.error('Erreur lors de la réorganisation des étapes:', error);
+    console.error('Error reordering steps:', error);
     throw error;
   }
 }
-
-// Supprimer une étape
 export async function deleteCampaignStep(clientId, campaignId, stepId) {
   try {
     const response = await fetch(`${BASE_URL}/${clientId}/campaigns/${campaignId}/steps/${stepId}`, {
@@ -358,15 +389,15 @@ export async function deleteCampaignStep(clientId, campaignId, stepId) {
         'Content-Type': 'application/json'
       }
     });
-
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: response.statusText }));
-      throw new Error(errorData.error || `Erreur ${response.status}: ${response.statusText}`);
+      const errorData = await response.json().catch(() => ({
+        error: response.statusText
+      }));
+      throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
     }
-
     return await response.json();
   } catch (error) {
-    console.error('Erreur lors de la suppression de l\'étape:', error);
+    console.error('Error deleting step:', error);
     throw error;
   }
 }

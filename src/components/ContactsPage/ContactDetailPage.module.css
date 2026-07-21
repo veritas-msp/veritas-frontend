@@ -211,7 +211,7 @@
   color: var(--msp-text, #e8edf5);
 }
 
-/* ── Activité MSP ── */
+
 .mspKpiRow {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

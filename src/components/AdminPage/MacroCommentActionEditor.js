@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import styles from "./MacroFormModal.module.css";
-
 export default function MacroCommentActionEditor({
   actionId,
   comment = "",
@@ -8,11 +7,10 @@ export default function MacroCommentActionEditor({
   isInternal = false,
   templates = [],
   selectClassName = "",
-  onChange,
+  onChange
 }) {
   const editorRef = useRef(null);
   const lastSyncedComment = useRef(comment);
-
   useEffect(() => {
     const editor = editorRef.current;
     if (!editor) return;
@@ -26,54 +24,40 @@ export default function MacroCommentActionEditor({
       lastSyncedComment.current = nextHtml;
     }
   }, [actionId, comment]);
-
-  const handleTemplateChange = (event) => {
+  const handleTemplateChange = event => {
     const templateId = event.target.value;
     if (!templateId) return;
-    const template = templates.find((row) => String(row.id) === String(templateId));
+    const template = templates.find(row => String(row.id) === String(templateId));
     if (!template) return;
     const html = String(template.content || "");
     if (editorRef.current) {
       editorRef.current.innerHTML = html;
     }
     lastSyncedComment.current = html;
-    onChange?.({ comment: html, commentTemplateId: templateId });
+    onChange?.({
+      comment: html,
+      commentTemplateId: templateId
+    });
   };
-
-  return (
-    <div className={styles.commentActionWrap}>
-      <select
-        className={selectClassName}
-        value={commentTemplateId || ""}
-        onChange={handleTemplateChange}
-      >
-        <option value="">Message libre (sans template)</option>
-        {templates.map((template) => (
-          <option key={template.id} value={template.id}>
+  return <div className={styles.commentActionWrap}>
+      <select className={selectClassName} value={commentTemplateId || ""} onChange={handleTemplateChange}>
+        <option value="">Free-form message (no template)</option>
+        {templates.map(template => <option key={template.id} value={template.id}>
             {template.name}
-          </option>
-        ))}
+          </option>)}
       </select>
       <label className={styles.internalToggle}>
-        <input
-          type="checkbox"
-          checked={Boolean(isInternal)}
-          onChange={(event) => onChange?.({ isInternal: event.target.checked })}
-        />
-        <span>Note interne (non visible par le client)</span>
+        <input type="checkbox" checked={Boolean(isInternal)} onChange={event => onChange?.({
+        isInternal: event.target.checked
+      })} />
+        <span>Internal note (not visible to the client)</span>
       </label>
-      <div
-        ref={editorRef}
-        className={styles.commentEditor}
-        contentEditable
-        suppressContentEditableWarning
-        onInput={(event) => {
-          const html = String(event.currentTarget?.innerHTML || "");
-          lastSyncedComment.current = html;
-          onChange?.({ comment: html });
-        }}
-        data-placeholder="Commentaire à ajouter"
-      />
-    </div>
-  );
+      <div ref={editorRef} className={styles.commentEditor} contentEditable suppressContentEditableWarning onInput={event => {
+      const html = String(event.currentTarget?.innerHTML || "");
+      lastSyncedComment.current = html;
+      onChange?.({
+        comment: html
+      });
+    }} data-placeholder="Comment to add" />
+    </div>;
 }

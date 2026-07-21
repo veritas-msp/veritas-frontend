@@ -2,152 +2,121 @@ import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { Icon } from "@iconify/react";
 import { FaTimes } from "react-icons/fa";
-import {
-  buildDefaultExclusionCriterion,
-  CRITERION_FIELD_OPTIONS,
-  CRITERION_OPERATOR_OPTIONS,
-} from "../AdminPage/ingestionRuleConstants";
+import { buildDefaultExclusionCriterion, CRITERION_FIELD_OPTIONS, CRITERION_OPERATOR_OPTIONS } from "../AdminPage/ingestionRuleConstants";
 import layout from "../EnterprisesPage/EnterpriseFormModal.module.css";
 import styles from "./TicketExclusionModal.module.css";
-
 export function buildExclusionDraftFromTicket(ticket, requesterEmail = "") {
   const ticketNumber = ticket?.ticket_number || ticket?.id || "-";
   const title = String(ticket?.title || "").trim();
   return {
     id: `exclude-${Date.now()}`,
     name: title ? `Exclusion · ${title}`.slice(0, 80) : `Exclusion ticket #${ticketNumber}`,
-    criteria: [
-      {
-        ...buildDefaultExclusionCriterion(),
-        field: "subject",
-        operator: "contains",
-        value: title,
-      },
-    ],
+    criteria: [{
+      ...buildDefaultExclusionCriterion(),
+      field: "subject",
+      operator: "contains",
+      value: title
+    }],
     action: "ignore_mail",
     actionTemplate: "",
     archiveOnMatch: true,
     enabled: true,
-    _requesterEmail: String(requesterEmail || "").trim(),
+    _requesterEmail: String(requesterEmail || "").trim()
   };
 }
-
 export default function TicketExclusionModal({
   open,
   ticket,
   requesterEmail = "",
   saving = false,
   onClose,
-  onConfirm,
+  onConfirm
 }) {
   const [draft, setDraft] = useState(() => buildExclusionDraftFromTicket(ticket, requesterEmail));
   const [activePreset, setActivePreset] = useState("title");
-
   useEffect(() => {
     if (!open) return;
     setDraft(buildExclusionDraftFromTicket(ticket, requesterEmail));
     setActivePreset("title");
   }, [open, ticket, requesterEmail]);
-
   const criterion = draft?.criteria?.[0] || buildDefaultExclusionCriterion();
-
   const presetKey = useMemo(() => {
     if (criterion.field === "fromAddress") return "email";
     if (criterion.field === "body") return "body";
     return "title";
   }, [criterion.field]);
-
   useEffect(() => {
     setActivePreset(presetKey);
   }, [presetKey]);
-
   if (!open || !ticket) return null;
-
   const ticketNumber = ticket.ticket_number || ticket.id || "-";
   const ticketTitle = ticket.title || "Sans titre";
-
-  const applyPreset = (preset) => {
+  const applyPreset = preset => {
     setActivePreset(preset);
     if (preset === "title") {
-      setDraft((prev) => ({
+      setDraft(prev => ({
         ...prev,
-        criteria: [
-          {
-            ...(prev.criteria?.[0] || buildDefaultExclusionCriterion()),
-            field: "subject",
-            operator: "contains",
-            value: String(ticket.title || "").trim(),
-          },
-        ],
+        criteria: [{
+          ...(prev.criteria?.[0] || buildDefaultExclusionCriterion()),
+          field: "subject",
+          operator: "contains",
+          value: String(ticket.title || "").trim()
+        }]
       }));
       return;
     }
     if (preset === "email") {
       const email = String(requesterEmail || draft._requesterEmail || "").trim();
-      setDraft((prev) => ({
+      setDraft(prev => ({
         ...prev,
-        criteria: [
-          {
-            ...(prev.criteria?.[0] || buildDefaultExclusionCriterion()),
-            field: "fromAddress",
-            operator: "contains",
-            value: email,
-          },
-        ],
+        criteria: [{
+          ...(prev.criteria?.[0] || buildDefaultExclusionCriterion()),
+          field: "fromAddress",
+          operator: "contains",
+          value: email
+        }]
       }));
       return;
     }
-    setDraft((prev) => ({
+    setDraft(prev => ({
       ...prev,
-      criteria: [
-        {
-          ...(prev.criteria?.[0] || buildDefaultExclusionCriterion()),
-          field: "body",
-          operator: "contains",
-          value: String(ticket.title || "").trim(),
-        },
-      ],
+      criteria: [{
+        ...(prev.criteria?.[0] || buildDefaultExclusionCriterion()),
+        field: "body",
+        operator: "contains",
+        value: String(ticket.title || "").trim()
+      }]
     }));
   };
-
-  const updateCriterion = (patch) => {
-    setDraft((prev) => ({
+  const updateCriterion = patch => {
+    setDraft(prev => ({
       ...prev,
-      criteria: [
-        {
-          ...(prev.criteria?.[0] || buildDefaultExclusionCriterion()),
-          ...patch,
-        },
-      ],
+      criteria: [{
+        ...(prev.criteria?.[0] || buildDefaultExclusionCriterion()),
+        ...patch
+      }]
     }));
   };
-
   const handleConfirm = () => {
     const value = String(criterion.value || "").trim();
     if (!value) return;
-    const { _requesterEmail, ...rule } = draft;
+    const {
+      _requesterEmail,
+      ...rule
+    } = draft;
     onConfirm?.({
       ...rule,
       name: String(draft.name || "").trim() || `Exclusion ticket #${ticketNumber}`,
-      criteria: [
-        {
-          ...criterion,
-          value,
-        },
-      ],
+      criteria: [{
+        ...criterion,
+        value
+      }]
     });
   };
-
-  return createPortal(
-    <div className={layout.overlay} onClick={onClose} role="presentation">
-      <div
-        className={layout.shell}
-        style={{ maxWidth: "min(560px, 100%)" }}
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="ticket-exclusion-modal-title"
-      >
+  return createPortal(<div className={layout.overlay} onClick={onClose} role="presentation">
+      <div className={layout.shell} style={{
+      maxWidth: "min(560px, 100%)"
+    }} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="ticket-exclusion-modal-title">
         <div className={layout.accentBar} aria-hidden />
         <header className={layout.header}>
           <div className={layout.headerMain}>
@@ -157,20 +126,14 @@ export default function TicketExclusionModal({
             <div className={layout.headerText}>
               <p className={layout.eyebrow}>Collecte email</p>
               <h2 className={layout.title} id="ticket-exclusion-modal-title">
-                Ajouter aux exclusions
+                Add aux exclusions
               </h2>
               <p className={layout.subtitle}>
-                Crée une règle pour ignorer les futurs emails similaires à ce ticket.
+                Creates a rule to ignore future emails similar to this ticket.
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            className={layout.closeBtn}
-            onClick={onClose}
-            disabled={saving}
-            aria-label="Fermer"
-          >
+          <button type="button" className={layout.closeBtn} onClick={onClose} disabled={saving} aria-label="Close">
             <FaTimes />
           </button>
         </header>
@@ -185,35 +148,20 @@ export default function TicketExclusionModal({
               <div className={styles.ticketContextTitle}>
                 #{ticketNumber} · {ticketTitle}
               </div>
-              {requesterEmail ? (
-                <div className={styles.ticketContextMeta}>{requesterEmail}</div>
-              ) : null}
+              {requesterEmail ? <div className={styles.ticketContextMeta}>{requesterEmail}</div> : null}
             </div>
           </div>
 
-          <div className={styles.presetRow} aria-label="Préréglages de critère">
-            <button
-              type="button"
-              className={`${styles.presetBtn} ${activePreset === "title" ? styles.presetBtnActive : ""}`}
-              onClick={() => applyPreset("title")}
-            >
+          <div className={styles.presetRow} aria-label="Criteria presets">
+            <button type="button" className={`${styles.presetBtn} ${activePreset === "title" ? styles.presetBtnActive : ""}`} onClick={() => applyPreset("title")}>
               <Icon icon="mdi:format-title" aria-hidden />
               Titre du ticket
             </button>
-            <button
-              type="button"
-              className={`${styles.presetBtn} ${activePreset === "email" ? styles.presetBtnActive : ""}`}
-              onClick={() => applyPreset("email")}
-              disabled={!requesterEmail && !draft._requesterEmail}
-            >
+            <button type="button" className={`${styles.presetBtn} ${activePreset === "email" ? styles.presetBtnActive : ""}`} onClick={() => applyPreset("email")} disabled={!requesterEmail && !draft._requesterEmail}>
               <Icon icon="mdi:email-outline" aria-hidden />
               Email demandeur
             </button>
-            <button
-              type="button"
-              className={`${styles.presetBtn} ${activePreset === "body" ? styles.presetBtnActive : ""}`}
-              onClick={() => applyPreset("body")}
-            >
+            <button type="button" className={`${styles.presetBtn} ${activePreset === "body" ? styles.presetBtnActive : ""}`} onClick={() => applyPreset("body")}>
               <Icon icon="mdi:text-box-outline" aria-hidden />
               Contenu
             </button>
@@ -221,16 +169,12 @@ export default function TicketExclusionModal({
 
           <div className={layout.field}>
             <label className={layout.label} htmlFor="ticket-exclusion-name">
-              Nom de la règle
+              Rule name
             </label>
-            <input
-              id="ticket-exclusion-name"
-              type="text"
-              className={layout.input}
-              value={draft.name || ""}
-              onChange={(e) => setDraft((prev) => ({ ...prev, name: e.target.value }))}
-              placeholder="Ex. Ignorer les alertes monitoring"
-            />
+            <input id="ticket-exclusion-name" type="text" className={layout.input} value={draft.name || ""} onChange={e => setDraft(prev => ({
+            ...prev,
+            name: e.target.value
+          }))} placeholder="Ex. Ignorer les alertes monitoring" />
           </div>
 
           <div className={layout.fieldGrid2}>
@@ -238,34 +182,24 @@ export default function TicketExclusionModal({
               <label className={layout.label} htmlFor="ticket-exclusion-field">
                 Champ
               </label>
-              <select
-                id="ticket-exclusion-field"
-                className={layout.input}
-                value={criterion.field}
-                onChange={(e) => updateCriterion({ field: e.target.value })}
-              >
-                {CRITERION_FIELD_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
+              <select id="ticket-exclusion-field" className={layout.input} value={criterion.field} onChange={e => updateCriterion({
+              field: e.target.value
+            })}>
+                {CRITERION_FIELD_OPTIONS.map(option => <option key={option.value} value={option.value}>
                     {option.label}
-                  </option>
-                ))}
+                  </option>)}
               </select>
             </div>
             <div className={layout.field}>
               <label className={layout.label} htmlFor="ticket-exclusion-operator">
-                Opérateur
+                Operator
               </label>
-              <select
-                id="ticket-exclusion-operator"
-                className={layout.input}
-                value={criterion.operator}
-                onChange={(e) => updateCriterion({ operator: e.target.value })}
-              >
-                {CRITERION_OPERATOR_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
+              <select id="ticket-exclusion-operator" className={layout.input} value={criterion.operator} onChange={e => updateCriterion({
+              operator: e.target.value
+            })}>
+                {CRITERION_OPERATOR_OPTIONS.map(option => <option key={option.value} value={option.value}>
                     {option.label}
-                  </option>
-                ))}
+                  </option>)}
               </select>
             </div>
           </div>
@@ -274,21 +208,16 @@ export default function TicketExclusionModal({
             <label className={`${layout.label} ${layout.labelRequired}`} htmlFor="ticket-exclusion-value">
               Valeur
             </label>
-            <input
-              id="ticket-exclusion-value"
-              type="text"
-              className={layout.input}
-              value={criterion.value || ""}
-              onChange={(e) => updateCriterion({ value: e.target.value })}
-              placeholder="Texte à détecter dans les emails entrants"
-            />
+            <input id="ticket-exclusion-value" type="text" className={layout.input} value={criterion.value || ""} onChange={e => updateCriterion({
+            value: e.target.value
+          })} placeholder="Text to detect in incoming emails" />
           </div>
 
           <div className={styles.infoCallout}>
             <Icon icon="mdi:information-outline" className={styles.infoCalloutIcon} aria-hidden />
             <span>
-              Les emails correspondants seront ignorés par la collecte (aucun nouveau ticket créé).
-              La règle est ajoutée dans Administration → Tickets → Règles de collecte.
+              Matching emails will be ignored by collection (no new ticket created).
+              The rule is added in Administration → Tickets → Collection rules.
             </span>
           </div>
         </div>
@@ -297,30 +226,19 @@ export default function TicketExclusionModal({
           <span className={layout.footerHint}>Action : ignorer le message</span>
           <div className={layout.footerActions}>
             <button type="button" className={layout.ghostBtn} onClick={onClose} disabled={saving}>
-              Annuler
+              Cancel
             </button>
-            <button
-              type="button"
-              className={layout.primaryBtn}
-              onClick={handleConfirm}
-              disabled={saving || !String(criterion.value || "").trim()}
-            >
-              {saving ? (
-                <>
+            <button type="button" className={layout.primaryBtn} onClick={handleConfirm} disabled={saving || !String(criterion.value || "").trim()}>
+              {saving ? <>
                   <Icon icon="mdi:loading" className={layout.spinning} aria-hidden />
-                  Enregistrement…
-                </>
-              ) : (
-                <>
+                  Saving…
+                </> : <>
                   <Icon icon="mdi:check" aria-hidden />
-                  Ajouter l&apos;exclusion
-                </>
-              )}
+                  Add l&apos;exclusion
+                </>}
             </button>
           </div>
         </footer>
       </div>
-    </div>,
-    document.getElementById("modal-root") || document.body
-  );
+    </div>, document.getElementById("modal-root") || document.body);
 }

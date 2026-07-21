@@ -1,9 +1,7 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 function pluralPick(count, one, many) {
   return Number(count) > 1 ? many : one;
 }
-
 const BACKUP_MSP_DASHBOARD_COPY = {
   fr: {
     healthLabel: "Santé jobs",
@@ -16,21 +14,21 @@ const BACKUP_MSP_DASHBOARD_COPY = {
       jobs: "Jobs",
       clients: "Entreprises",
       ok: "OK",
-      toReview: "À traiter",
+      toReview: "À traiter"
     },
     statusFilters: {
       all: "Tous",
       ok: "OK",
       warning: "Retard",
       critical: "En erreur",
-      unmapped: "Non mappés",
+      unmapped: "Non mappés"
     },
     statusMeta: {
       ok: "OK",
       warning: "Retard",
       critical: "En erreur",
       unmapped: "Non mappé",
-      hycu: "HYCU",
+      hycu: "HYCU"
     },
     statusFilterAria: "Filtre statut",
     providerFilterAria: "Filtre solution",
@@ -59,8 +57,8 @@ const BACKUP_MSP_DASHBOARD_COPY = {
       status: "Statut",
       solution: "Solution",
       server: "Serveur",
-      lastBackup: "Dernière sauvegarde",
-    },
+      lastBackup: "Dernière sauvegarde"
+    }
   },
   en: {
     healthLabel: "Job health",
@@ -73,21 +71,21 @@ const BACKUP_MSP_DASHBOARD_COPY = {
       jobs: "Jobs",
       clients: "Companies",
       ok: "OK",
-      toReview: "To review",
+      toReview: "To review"
     },
     statusFilters: {
       all: "All",
       ok: "OK",
       warning: "Delayed",
       critical: "Failed",
-      unmapped: "Unmapped",
+      unmapped: "Unmapped"
     },
     statusMeta: {
       ok: "OK",
       warning: "Delayed",
       critical: "Failed",
       unmapped: "Unmapped",
-      hycu: "HYCU",
+      hycu: "HYCU"
     },
     statusFilterAria: "Status filter",
     providerFilterAria: "Solution filter",
@@ -116,58 +114,55 @@ const BACKUP_MSP_DASHBOARD_COPY = {
       status: "Status",
       solution: "Solution",
       server: "Server",
-      lastBackup: "Last backup",
-    },
-  },
+      lastBackup: "Last backup"
+    }
+  }
 };
-
 export function getBackupMspDashboardCopy(locale) {
   const t = pickLocaleMessages(BACKUP_MSP_DASHBOARD_COPY, locale);
   const code = locale?.slice?.(0, 2) || "fr";
-
   return {
     ...t,
     locale: code,
-    formatHeroDesc: (count) =>
-      count > 0
-        ? interpolate(
-            pluralPick(count, t.heroDescIssues, t.heroDescIssuesPlural),
-            { count: String(count) }
-          )
-        : t.heroDescOk,
-    formatAlertCount: (count) =>
-      interpolate(pluralPick(count, t.alertCount, t.alertCountPlural), {
-        count: String(count),
-      }),
+    formatHeroDesc: count => count > 0 ? interpolate(pluralPick(count, t.heroDescIssues, t.heroDescIssuesPlural), {
+      count: String(count)
+    }) : t.heroDescOk,
+    formatAlertCount: count => interpolate(pluralPick(count, t.alertCount, t.alertCountPlural), {
+      count: String(count)
+    }),
     formatCount: (key, count) => {
       const n = Number(count) || 0;
       if (key === "jobCount") {
-        return interpolate(pluralPick(n, t.jobCount, t.jobCountPlural), { count: String(n) });
+        return interpolate(pluralPick(n, t.jobCount, t.jobCountPlural), {
+          count: String(n)
+        });
       }
       if (key === "providerCount") {
         return interpolate(pluralPick(n, t.providerCount, t.providerCountPlural), {
-          count: String(n),
+          count: String(n)
         });
       }
       return String(n);
     },
-    getStatusMeta: (status) => ({
+    getStatusMeta: status => ({
       label: t.statusMeta[status] || t.statusMeta.unmapped,
-      tone:
-        status === "critical"
-          ? "bad"
-          : status === "warning"
-            ? "warn"
-            : status === "ok"
-              ? "good"
-              : "neutral",
+      tone: status === "critical" ? "bad" : status === "warning" ? "warn" : status === "ok" ? "good" : "neutral"
     }),
-    statusFilters: [
-      { id: "all", label: t.statusFilters.all },
-      { id: "ok", label: t.statusFilters.ok },
-      { id: "warning", label: t.statusFilters.warning },
-      { id: "critical", label: t.statusFilters.critical },
-      { id: "unmapped", label: t.statusFilters.unmapped },
-    ],
+    statusFilters: [{
+      id: "all",
+      label: t.statusFilters.all
+    }, {
+      id: "ok",
+      label: t.statusFilters.ok
+    }, {
+      id: "warning",
+      label: t.statusFilters.warning
+    }, {
+      id: "critical",
+      label: t.statusFilters.critical
+    }, {
+      id: "unmapped",
+      label: t.statusFilters.unmapped
+    }]
   };
 }

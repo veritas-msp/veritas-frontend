@@ -443,7 +443,7 @@
   }
 }
 
-/* Dark mode · badges catégorie & note partielle */
+
 :global(html.dark) .catCve {
   background: rgba(220, 38, 38, 0.15);
   color: #f87171;

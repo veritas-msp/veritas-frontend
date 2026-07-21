@@ -1,5 +1,4 @@
 import { createLocaleGetter } from "../../../i18n/translate";
-
 const SIDEBAR_COPY = {
   fr: {
     home: "Accueil",
@@ -10,7 +9,7 @@ const SIDEBAR_COPY = {
       pilotage: "Pilotage",
       modules: "Modules",
       appearance: "Apparence",
-      notifications: "Notifications",
+      notifications: "Notifications"
     },
     nav: {
       enterprises: "Entreprises",
@@ -24,18 +23,18 @@ const SIDEBAR_COPY = {
       cloud: "Cloud IT et services",
       reports: "Rapports",
       monitoring: "Monitoring",
-      documents: "Documents",
+      documents: "Documents"
     },
     modules: {
       addModule: "Ajouter un module",
-      addModuleAria: "Ajouter un module · Veritas Pro",
+      addModuleAria: "Ajouter un module · Veritas Pro"
     },
     theme: {
       lightMode: "Passer en mode clair",
       darkMode: "Passer en mode sombre",
       ariaGroup: "Thème d'affichage",
       light: "Clair",
-      dark: "Sombre",
+      dark: "Sombre"
     },
     account: {
       menu: "Compte",
@@ -43,8 +42,8 @@ const SIDEBAR_COPY = {
       myAccount: "Mon compte",
       admin: "Administration",
       support: "Support",
-      logout: "Se déconnecter",
-    },
+      logout: "Se déconnecter"
+    }
   },
   en: {
     home: "Home",
@@ -55,7 +54,7 @@ const SIDEBAR_COPY = {
       pilotage: "Management",
       modules: "Modules",
       appearance: "Appearance",
-      notifications: "Notifications",
+      notifications: "Notifications"
     },
     nav: {
       enterprises: "Companies",
@@ -64,23 +63,23 @@ const SIDEBAR_COPY = {
       sales: "Services & installations",
       planning: "Scheduling",
       dashboard: "KPI Dashboard",
-      supervision: "Supervision center",
+      supervision: "Monitoring center",
       cyber: "Cybersecurity",
       cloud: "Cloud IT & Services",
       reports: "Reports",
       monitoring: "Monitoring",
-      documents: "Documents",
+      documents: "Documents"
     },
     modules: {
       addModule: "Add a module",
-      addModuleAria: "Add a module · Veritas Pro",
+      addModuleAria: "Add a module · Veritas Pro"
     },
     theme: {
       lightMode: "Switch to light mode",
       darkMode: "Switch to dark mode",
       ariaGroup: "Display theme",
       light: "Light",
-      dark: "Dark",
+      dark: "Dark"
     },
     account: {
       menu: "Account",
@@ -88,8 +87,8 @@ const SIDEBAR_COPY = {
       myAccount: "My account",
       admin: "Administration",
       support: "Support",
-      logout: "Sign out",
-    },
+      logout: "Sign out"
+    }
   },
   de: {
     home: "Startseite",
@@ -100,7 +99,7 @@ const SIDEBAR_COPY = {
       pilotage: "Steuerung",
       modules: "Module",
       appearance: "Darstellung",
-      notifications: "Benachrichtigungen",
+      notifications: "Benachrichtigungen"
     },
     nav: {
       enterprises: "Unternehmen",
@@ -114,18 +113,18 @@ const SIDEBAR_COPY = {
       cloud: "Cloud IT & Services",
       reports: "Berichte",
       monitoring: "Monitoring",
-      documents: "Dokumente",
+      documents: "Dokumente"
     },
     modules: {
       addModule: "Modul hinzufügen",
-      addModuleAria: "Modul hinzufügen · Veritas Pro",
+      addModuleAria: "Modul hinzufügen · Veritas Pro"
     },
     theme: {
       lightMode: "Zum hellen Modus wechseln",
       darkMode: "Zum dunklen Modus wechseln",
       ariaGroup: "Anzeigethema",
       light: "Hell",
-      dark: "Dunkel",
+      dark: "Dunkel"
     },
     account: {
       menu: "Konto",
@@ -133,8 +132,8 @@ const SIDEBAR_COPY = {
       myAccount: "Mein Konto",
       admin: "Administration",
       support: "Support",
-      logout: "Abmelden",
-    },
+      logout: "Abmelden"
+    }
   },
   it: {
     home: "Home",
@@ -145,7 +144,7 @@ const SIDEBAR_COPY = {
       pilotage: "Pilotaggio",
       modules: "Moduli",
       appearance: "Aspetto",
-      notifications: "Notifiche",
+      notifications: "Notifiche"
     },
     nav: {
       enterprises: "Aziende",
@@ -159,18 +158,18 @@ const SIDEBAR_COPY = {
       cloud: "Cloud IT e servizi",
       reports: "Report",
       monitoring: "Monitoraggio",
-      documents: "Documenti",
+      documents: "Documenti"
     },
     modules: {
       addModule: "Aggiungi un modulo",
-      addModuleAria: "Aggiungi un modulo · Veritas Pro",
+      addModuleAria: "Aggiungi un modulo · Veritas Pro"
     },
     theme: {
       lightMode: "Passa alla modalità chiara",
       darkMode: "Passa alla modalità scura",
       ariaGroup: "Tema di visualizzazione",
       light: "Chiaro",
-      dark: "Scuro",
+      dark: "Scuro"
     },
     account: {
       menu: "Account",
@@ -178,8 +177,8 @@ const SIDEBAR_COPY = {
       myAccount: "Il mio account",
       admin: "Amministrazione",
       support: "Supporto",
-      logout: "Disconnetti",
-    },
+      logout: "Disconnetti"
+    }
   },
   es: {
     home: "Inicio",
@@ -190,7 +189,7 @@ const SIDEBAR_COPY = {
       pilotage: "Pilotaje",
       modules: "Módulos",
       appearance: "Apariencia",
-      notifications: "Notificaciones",
+      notifications: "Notificaciones"
     },
     nav: {
       enterprises: "Empresas",
@@ -204,18 +203,18 @@ const SIDEBAR_COPY = {
       cloud: "Cloud IT y servicios",
       reports: "Informes",
       monitoring: "Monitorización",
-      documents: "Documentos",
+      documents: "Documentos"
     },
     modules: {
       addModule: "Añadir un módulo",
-      addModuleAria: "Añadir un módulo · Veritas Pro",
+      addModuleAria: "Añadir un módulo · Veritas Pro"
     },
     theme: {
       lightMode: "Cambiar a modo claro",
       darkMode: "Cambiar a modo oscuro",
       ariaGroup: "Tema de visualización",
       light: "Claro",
-      dark: "Oscuro",
+      dark: "Oscuro"
     },
     account: {
       menu: "Cuenta",
@@ -223,13 +222,11 @@ const SIDEBAR_COPY = {
       myAccount: "Mi cuenta",
       admin: "Administración",
       support: "Soporte",
-      logout: "Cerrar sesión",
-    },
-  },
+      logout: "Cerrar sesión"
+    }
+  }
 };
-
 export const getSidebarCopy = createLocaleGetter(SIDEBAR_COPY);
-
 export function localizeDocumentLabel(key, fallbackLabel, locale) {
   const nav = getSidebarCopy(locale).nav;
   if (key === "Mon") return nav.monitoring;

@@ -1,7 +1,4 @@
-/**
- * Fond « insight » MSP · tableau de bord KPI, documents, rapports.
- * Distinct du quadrillage (msp-page-grid) et des orbites (SupportOrbitalBackground).
- */
+
 .msp-page-insight {
   position: relative;
 }

@@ -33,7 +33,7 @@
   width: 100%;
 }
 
-/* ───────────── CARTE MODULE ───────────── */
+
 .moduleCard {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -61,7 +61,7 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 }
 
-/* ───────────── EN-TÊTE DU MODULE ───────────── */
+
 .moduleHeader {
   display: flex;
   align-items: center;
@@ -124,7 +124,7 @@
   background-color: #4a4a6a;
 }
 
-/* Contenu antivirus dans la carte principale */
+
 .antivirusContent {
   display: flex;
   flex-direction: column;
@@ -134,7 +134,7 @@
   box-sizing: border-box;
 }
 
-/* Carte des informations antivirus - Style uniforme avec SauvegardeSummary */
+
 .antivirusCard {
   background-color: transparent;
   border: none;
@@ -163,7 +163,7 @@
   transform: none;
 }
 
-/* Informations antivirus */
+
 .antivirusInfo {
   display: flex;
   flex-direction: column;
@@ -204,7 +204,7 @@
   color: #9ca3af;
 }
 
-/* Label antivirus */
+
 .antivirusLabel {
   font-size: 10px;
   font-weight: 600;
@@ -218,7 +218,7 @@
   letter-spacing: 0.5px;
 }
 
-/* Conteneur des détails avec bordure (style uniforme avec FirewallsSummary) */
+
 .firewallDetailsContainer {
   width: 100%;
   padding-bottom: 0.5rem;
@@ -239,7 +239,7 @@
   color: #9ca3af;
 }
 
-/* Séparateur dans la carte */
+
 .cardSeparator {
   border: none;
   height: 1px;
@@ -251,7 +251,7 @@
   background-color: #4a4a6a;
 }
 
-/* Section des statistiques dans la carte */
+
 .statsSection {
   margin-top: 1rem;
 }
@@ -386,31 +386,31 @@
   font-size: 8px;
 }
 
-/* Statut Excellent */
+
 .statusDot.excellent {
   background-color: #10b981;
   color: #10b981;
 }
 
-/* Statut Good */
+
 .statusDot.good {
   background-color: #22c55e;
   color: #22c55e;
 }
 
-/* Statut Warning */
+
 .statusDot.warning {
   background-color: #f59e0b;
   color: #f59e0b;
 }
 
-/* Statut Critical */
+
 .statusDot.critical {
   background-color: #ef4444;
   color: #ef4444;
 }
 
-/* Statut Unknown */
+
 .statusDot.unknown {
   background-color: #6b7280;
   color: #6b7280;
@@ -438,7 +438,7 @@
   color: #f9fafb;
 }
 
-/* Section des sous-titres */
+
 .subtitleSection {
   margin-bottom: 0.5rem;
 }
@@ -456,7 +456,7 @@
   color: #9ca3af;
 }
 
-/* Section d'affichage du nombre d'endpoints */
+
 .jobsCountSection {
   display: flex;
   justify-content: center;
@@ -518,7 +518,7 @@
   color: white;
 }
 
-/* Séparateur */
+
 .separator {
   border: none;
   height: 1px;
@@ -530,7 +530,7 @@
   background-color: #374151;
 }
 
-/* Informations des endpoints avec icônes */
+
 .flowInfo {
   display: flex;
   flex-direction: column;
@@ -611,7 +611,7 @@
   background-color: #374151;
 }
 
-/* Statistiques globales de l'antivirus */
+
 .globalStats {
   margin-top: 1.5rem;
 }
@@ -623,7 +623,7 @@
   width: 100%;
 }
 
-/* Responsive pour les cartes de statistiques */
+
 @media (max-width: 768px) {
   .globalStats .statsGrid {
     grid-template-columns: 1fr;
@@ -662,7 +662,7 @@
   }
 }
 
-/* Statistiques en pourcentage */
+
 .percentageStats {
   margin-top: 1.5rem;
 }
@@ -743,7 +743,7 @@
   color: #e2e8f0;
 }
 
-/* Métriques de sécurité */
+
 .metricsSection {
   margin-top: 1rem;
   display: flex;
@@ -874,12 +874,12 @@
   color: #ef4444;
 }
 
-/* Détails des menaces - Layout refait */
+
 .threatDetails {
   margin-top: 1.5rem;
 }
 
-/* Conteneur principal 50/50 strict */
+
 .threatContainer {
   display: flex;
   gap: 1.5rem;
@@ -890,7 +890,7 @@
   overflow: hidden;
 }
 
-/* Sections uniformes - Style uniforme avec SauvegardeSummary */
+
 .chartSection,
 .endpointsSection {
   flex: 1;
@@ -929,7 +929,7 @@
   transform: translateY(-1px);
 }
 
-/* Titres des sections */
+
 .sectionTitle {
   font-size: 1.5rem;
   font-weight: 600;
@@ -945,7 +945,7 @@
   color: #9ca3af;
 }
 
-/* Boîte du graphique */
+
 .chartBox {
   flex: 1;
   display: flex;
@@ -955,7 +955,7 @@
   position: relative;
 }
 
-/* Message quand pas de données */
+
 .noDataMessage {
   display: flex;
   flex-direction: column;
@@ -980,7 +980,7 @@
   color: #9ca3af;
 }
 
-/* Conteneur des endpoints */
+
 .endpointsContainer {
   display: flex;
   flex-direction: column;
@@ -1004,7 +1004,7 @@
   border-color: #4a4a6a;
 }
 
-/* Suppression de l'effet hover sur les cartes endpoints */
+
 
 .endpointIcon {
   font-size: 1.25rem;
@@ -1067,7 +1067,7 @@
   color: #9ca3af;
 }
 
-/* Responsive design refait */
+
 @media (max-width: 1024px) {
   .threatContainer {
     gap: 1rem;
@@ -1180,7 +1180,7 @@
   }
 }
 
-/* Responsive pour mobile */
+
 @media (max-width: 768px) {
   .threatLayout {
     grid-template-columns: 1fr;
@@ -1203,7 +1203,7 @@
   }
 }
 
-/* ───────────── GRAPHIQUES ───────────── */
+
 .chartsContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -1245,7 +1245,7 @@
   color: #e5e7eb;
 }
 
-/* ───────────── MÉTRIQUES ───────────── */
+
 .metricsRow {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -1295,7 +1295,7 @@
   color: #e5e7eb;
 }
 
-/* ───────────── LICENCES ───────────── */
+
 .licenseSection {
   width: 100%;
 }
@@ -1357,7 +1357,7 @@
   color: #e5e7eb;
 }
 
-/* ───────────── POLITIQUES ───────────── */
+
 .policiesSection {
   width: 100%;
 }
@@ -1366,13 +1366,13 @@
   width: 100%;
   overflow-x: auto;
   margin-top: 1rem;
-  /* Masquer la scrollbar horizontale */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
 
 .policiesTableContainer::-webkit-scrollbar {
-  height: 0; /* Masquer la scrollbar horizontale */
+  height: 0; 
   display: none;
 }
 
@@ -1439,7 +1439,7 @@
   color: #d1d5db;
 }
 
-/* ───────────── CARTE SCORE ───────────── */
+
 .scoreCard {
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
@@ -1455,7 +1455,7 @@
   border-color: #3a3a5a;
 }
 
-/* ───────────── TABLEAU ENDPOINTS ───────────── */
+
 .endpointsTableSection {
   width: 100%;
 }
@@ -1464,13 +1464,13 @@
   width: 100%;
   overflow-x: auto;
   margin-top: 1rem;
-  /* Masquer la scrollbar horizontale */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
 
 .endpointsTableContainer::-webkit-scrollbar {
-  height: 0; /* Masquer la scrollbar horizontale */
+  height: 0; 
   display: none;
 }
 
@@ -1548,7 +1548,7 @@
   color: #9ca3af;
 }
 
-/* ───────────── ZONE DE COMMENTAIRE ───────────── */
+
 .commentSection {
   display: flex;
   flex-direction: column;
@@ -1575,9 +1575,9 @@
   background-color: #2a2a4a;
 }
 
-/* ───────────── ANCIEN FORMAT ANTIVIRUS ───────────── */
 
-/* Informations de l'antivirus */
+
+
 .antivirusDetailsContainer {
   margin-bottom: 1rem;
 }
@@ -1589,7 +1589,7 @@
   line-height: 1.5;
 }
 
-/* Section des endpoints */
+
 .endpointSection {
   margin-bottom: 1.5rem;
   padding: 1rem;
@@ -1638,7 +1638,7 @@
   color: #d1d5db;
 }
 
-/* Section des menaces */
+
 .threatsSection {
   margin-bottom: 1.5rem;
   padding: 1rem;
@@ -1723,9 +1723,9 @@
   color: #6b7280;
 }
 
-/* ───────────── STYLES POUR LES GRAPHIQUES RECCHARTS ───────────── */
 
-/* Tooltip personnalisé pour les graphiques */
+
+
 .customTooltip {
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
@@ -1767,7 +1767,7 @@
   color: #9ca3af;
 }
 
-/* Responsive des graphiques */
+
 @media (max-width: 768px) {
   .customTooltip {
     padding: 8px 12px;

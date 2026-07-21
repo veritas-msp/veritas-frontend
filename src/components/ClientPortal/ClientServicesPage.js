@@ -6,42 +6,38 @@ import layout from "../EnterprisesPage/EnterprisesPage.module.css";
 import ClientServicesDetailView from "./ClientServicesDetailView";
 import { getClientPortalCopy } from "./clientPortalI18n";
 import { usePortalDashboard } from "./usePortalDashboard";
-
 export default function ClientServicesPage() {
-  const { dashboard: data, loading, error } = usePortalDashboard();
+  const {
+    dashboard: data,
+    loading,
+    error
+  } = usePortalDashboard();
   const locale = useAppLocale();
   const copy = useMemo(() => getClientPortalCopy(locale), [locale]);
   const t = copy.services;
-
   if (loading && !data) {
-    return (
-      <div className={`${styles.mainScrollFill} ${layout.page}`}>
+    return <div className={`${styles.mainScrollFill} ${layout.page}`}>
         <div className={styles.loadingInline}>
           <span className={styles.spinner} />
           <span>{copy.common.loading}</span>
         </div>
-      </div>
-    );
+      </div>;
   }
-
   if (error && !data) {
-    return (
-      <div className={`${styles.mainScrollFill} ${layout.page}`}>
+    return <div className={`${styles.mainScrollFill} ${layout.page}`}>
         <div className={styles.emptyState}>
           <Icon icon="mdi:alert-circle-outline" className={styles.emptyStateIcon} aria-hidden />
           <p className={styles.emptyStateTitle}>{copy.layout.loadError}</p>
         </div>
-      </div>
-    );
+      </div>;
   }
-
   if (!data) return null;
-
-  const { cloudServices, stats } = data;
-  const hasServices = cloudServices?.some((group) => group?.items?.length > 0);
-
-  return (
-    <div className={`${styles.mainScrollFill} ${layout.page}`}>
+  const {
+    cloudServices,
+    stats
+  } = data;
+  const hasServices = cloudServices?.some(group => group?.items?.length > 0);
+  return <div className={`${styles.mainScrollFill} ${layout.page}`}>
       <div className={`${styles.mainContent} ${styles.portalShell}`}>
         <header className={styles.topBar}>
           <div>
@@ -56,18 +52,13 @@ export default function ClientServicesPage() {
           </span>
         </header>
 
-        {hasServices ? (
-          <ClientServicesDetailView cloudServices={cloudServices} />
-        ) : (
-          <section className={styles.panel}>
+        {hasServices ? <ClientServicesDetailView cloudServices={cloudServices} /> : <section className={styles.panel}>
             <div className={styles.emptyState}>
               <Icon icon="mdi:cloud-off-outline" className={styles.emptyStateIcon} aria-hidden />
               <p className={styles.emptyStateTitle}>{t.emptyTitle}</p>
               <p className={styles.empty}>{t.emptyDesc}</p>
             </div>
-          </section>
-        )}
+          </section>}
       </div>
-    </div>
-  );
+    </div>;
 }

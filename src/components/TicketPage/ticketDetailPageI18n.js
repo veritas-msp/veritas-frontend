@@ -1,19 +1,15 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
 import { getTicketCreateCopy, ATTACHMENT_FORMATS_LABEL } from "./ticketCreatePageI18n";
 import { getTicketReminderModalCopy } from "./ticketReminderModalI18n";
-
 const LOCALE_BCP47 = {
   fr: "fr-FR",
   en: "en-GB",
   de: "de-DE",
   it: "it-IT",
-  es: "es-ES",
+  es: "es-ES"
 };
-
 const SUBMIT_ACTION_IDS = ["open", "pending", "on_hold", "solved"];
-
 const SIDE_CONVERSATION_TEAMS = ["commercial", "n2", "cyber", "external"];
-
 const DETAIL_COPY = {
   fr: {
     pageTitle: "Ticket",
@@ -35,19 +31,19 @@ const DETAIL_COPY = {
       open: "Envoyer en Ouvert",
       pending: "Envoyer en En cours",
       on_hold: "Envoyer en En Attente",
-      solved: "Envoyer en Résolu",
+      solved: "Envoyer en Résolu"
     },
     sideConversationTeams: {
       commercial: "Commercial",
       n2: "Technicien niveau 2",
       cyber: "Agent cybersécurité",
-      external: "Prestataire externe",
+      external: "Prestataire externe"
     },
     sidebarExpand: {
       collapseAria: "Réduire la section",
       expandAria: "Développer la section",
       showLess: "Voir moins",
-      showMore: "Voir plus",
+      showMore: "Voir plus"
     },
     formatDuration: {
       lessThanOneMin: "<1 min",
@@ -55,7 +51,7 @@ const DETAIL_COPY = {
       daysOnly: "{days} j",
       hoursMinutes: "{hours} h {minutes} min",
       hoursOnly: "{hours} h",
-      minutesOnly: "{minutes} min",
+      minutesOnly: "{minutes} min"
     },
     resolutionStatus: {
       pending: "En attente validation client",
@@ -63,7 +59,7 @@ const DETAIL_COPY = {
       accepted: "Solution validée par le client",
       autoClosed: "Clos automatiquement (48 h)",
       default: "Validation client",
-      deadline: "Échéance {dateTime}",
+      deadline: "Échéance {dateTime}"
     },
     activity: {
       splitFrom: "Scission reçue depuis le ticket clôturé {number}{titleSuffix}",
@@ -82,8 +78,40 @@ const DETAIL_COPY = {
       internalNote: "Note interne ajoutée",
       publicReply: "Réponse publique",
       deleted: "Ticket envoyé en corbeille",
+      restored: "Ticket restauré",
       attachmentOne: "{count} pièce jointe",
       attachmentMany: "{count} pièces jointes",
+      emptyValue: "—",
+      yes: "Oui",
+      no: "Non",
+      contactFallback: "Contact #{id}",
+      clientFallback: "Entreprise #{id}",
+      fieldChanged: "{field} : {oldValue} → {newValue}",
+      fieldSet: "{field} : {newValue}",
+      fieldCleared: "{field} retiré ({oldValue})",
+      assigneeAdded: "Assigné ajouté : {name}",
+      assigneeRemoved: "Assigné retiré : {name}",
+      watcherAdded: "Follower ajouté : {name}",
+      watcherRemoved: "Follower retiré : {name}",
+      tagAdded: "Étiquette ajoutée : {label}",
+      tagRemoved: "Étiquette retirée : {label}",
+      fields: {
+        title: "Titre",
+        description: "Description",
+        priority: "Priorité",
+        type: "Type",
+        category: "Catégorie",
+        channel: "Canal",
+        client_id: "Entreprise",
+        requester_user_id: "Demandeur (utilisateur)",
+        requester_contact_id: "Demandeur",
+        assigned_user_id: "Assigné principal",
+        is_major_incident: "Incident majeur",
+        assignee: "Assigné",
+        watcher: "Follower",
+        tag: "Étiquette",
+        unknown: "Champ"
+      }
     },
     commentDisplay: {
       splitFrom: "Scission reçue depuis le ticket clôturé ",
@@ -97,7 +125,7 @@ const DETAIL_COPY = {
       sideOpened: "Side conversation ouverte: {subject}",
       sideSubjectFallback: "Side conversation",
       warranty: "Garantie: {value}",
-      licenses: "Licences: {value}",
+      licenses: "Licences: {value}"
     },
     whatsappDeliveryErrorWithDetail: "Commentaire enregistré, mais l'envoi WhatsApp a échoué : {error}",
     whatsappDeliveryError: "Commentaire enregistré, mais l'envoi WhatsApp a échoué.",
@@ -107,7 +135,7 @@ const DETAIL_COPY = {
       firstResponse: "Délai première prise en charge",
       resolution: "Délai résolution",
       closed: "SLA à la clôture",
-      default: "SLA",
+      default: "SLA"
     },
     takeoverTooltipHas: "Premier passage du statut Nouveau vers {status}",
     takeoverTooltipNone: "Aucune prise en charge enregistrée (ticket toujours au statut Nouveau)",
@@ -117,18 +145,18 @@ const DETAIL_COPY = {
       phone: "Via téléphone",
       chat: "Via chat",
       api: "Via API",
-      fallback: "Via {channel}",
+      fallback: "Via {channel}"
     },
     confirms: {
       softDelete: "Envoyer ce ticket à la corbeille ?",
       permanentDelete: "Supprimer définitivement ce ticket ? Cette action est irréversible.",
       deleteComment: "Supprimer ce message ? Cette action est irréversible.",
       reopenTicket: "Rouvrir ce ticket ? Il repassera en statut « En cours ».",
-      deleteReminder: "Supprimer cette alerte du planning ?",
+      deleteReminder: "Supprimer cette alerte du planning ?"
     },
     prompts: {
       linkUrl: "Saisis l'URL du lien :",
-      linkUrlDefault: "https://",
+      linkUrlDefault: "https://"
     },
     header: {
       backAria: "Retour au support",
@@ -151,7 +179,7 @@ const DETAIL_COPY = {
       reminderProAria: "Alerte planning · disponible avec Veritas Pro",
       reminderEditAria: "Modifier l'alerte planning",
       reminderScheduleAria: "Programmer une alerte planning",
-      proBadge: "Pro",
+      proBadge: "Pro"
     },
     empty: {
       noTicketSelected: "Aucun ticket sélectionné.",
@@ -161,7 +189,7 @@ const DETAIL_COPY = {
       noActivity: "Aucune activité enregistrée.",
       noPreviousInteractions: "Aucune interaction précédente.",
       noSatisfaction: "Aucune évaluation client pour ce ticket.",
-      deletedBadge: "Ticket en corbeille",
+      deletedBadge: "Ticket en corbeille"
     },
     leftPane: {
       properties: "Propriétés",
@@ -171,21 +199,23 @@ const DETAIL_COPY = {
       status: "Statut",
       type: "Type",
       category: "Catégorie",
+      more: "Autres",
       tags: "Étiquettes",
       tagsAria: "Étiquettes du ticket",
       tagPlaceholder: "Étiquette…",
       tagAddAria: "Ajouter une étiquette",
       tagConfirmAria: "Confirmer l'étiquette",
       tagAddTooltip: "Ajouter une étiquette",
-      removeTagAria: "Retirer l'étiquette {label}",
+      removeTagAria: "Retirer l'étiquette {label}"
     },
     description: {
-      initial: "Description initiale",
+      initial: "Demande initiale",
+      requesterFallback: "Demandeur",
       placeholder: "Décrivez le problème ou la demande…",
-      editAria: "Description initiale du ticket",
-      editTitle: "Cliquer pour modifier la description",
-      editButtonAria: "Modifier la description initiale",
-      empty: "Cliquez pour ajouter une description…",
+      editAria: "Demande initiale du ticket",
+      editTitle: "Modifier le titre et la description",
+      editButtonAria: "Modifier le titre et la description",
+      empty: "Aucune description"
     },
     comment: {
       editedMark: " · modifié",
@@ -203,11 +233,11 @@ const DETAIL_COPY = {
       editRemoveTitle: "Retirer la pièce jointe",
       editSaving: "Enregistrement…",
       editSave: "Enregistrer",
-      editCancel: "Annuler",
+      editCancel: "Annuler"
     },
     timeline: {
       scrollTopAria: "Remonter en haut de la conversation",
-      scrollTopTitle: "Remonter en haut",
+      scrollTopTitle: "Remonter en haut"
     },
     reply: {
       dropTitle: "Déposez vos fichiers ici",
@@ -218,6 +248,9 @@ const DETAIL_COPY = {
       toolList: "Liste",
       toolLink: "Lien",
       toolEmoji: "Emoji",
+      suggestAi: "Suggérer",
+      suggestAiTitle: "Suggérer une réponse avec l'IA",
+      suggestAiLoading: "Suggestion…",
       addFiles: "Ajouter des fichiers",
       modePrivateTitle: "Réponse privée (visible uniquement en interne)",
       modePublicTitle: "Réponse publique (visible par le demandeur)",
@@ -228,7 +261,7 @@ const DETAIL_COPY = {
       expandSummary: "Rédiger une réponse",
       draftHint: "Brouillon en cours",
       expandAria: "Développer la zone de réponse",
-      expandTooltip: "Développer la zone de réponse",
+      expandTooltip: "Développer la zone de réponse"
     },
     rightPane: {
       channel: "Canal",
@@ -264,13 +297,22 @@ const DETAIL_COPY = {
       historyBackAria: "Revenir au contexte",
       historyToggleAria: "Historique du ticket",
       historyToggleTitle: "Historique du ticket",
+      historyRefreshTitle: "Actualiser l'historique",
+      historyRefreshAria: "Actualiser l'historique du ticket",
       historyBackTitle: "Revenir au contexte",
+      runbookToggleTitle: "Runbook IA",
+      runbookToggleAria: "Afficher le runbook IA",
+      runbookBackTitle: "Revenir au contexte",
+      runbookBackAria: "Revenir au contexte"
     },
     sidebar: {
+      classicViewTitle: "Vue classique",
+      classicViewAria: "Afficher la vue classique",
       kbTitle: "Ouvrir la Knowledge Base",
       kbDisabledTitle: "Knowledge Base non configurée (Administration → Paramètres généraux)",
-      equipmentTitle: "Matériel du client",
       deleteTitle: "Supprimer le ticket",
+      runbookTitle: "Runbook IA de dépannage",
+      runbookBackTitle: "Revenir au contexte"
     },
     reopenModal: {
       eyebrow: "Support",
@@ -283,19 +325,17 @@ const DETAIL_COPY = {
       cancel: "Annuler",
       confirm: "Rouvrir le ticket",
       confirming: "Réouverture…",
-      closeAria: "Fermer",
+      closeAria: "Fermer"
     },
     resolveModal: {
       eyebrow: "Support",
       title: "Résoudre le ticket",
-      subtitle:
-        "Le client pourra valider la solution depuis son portail. Sans réponse sous 48 h, le ticket sera clos automatiquement.",
+      subtitle: "Le client pourra valider la solution depuis son portail. Sans réponse sous 48 h, le ticket sera clos automatiquement.",
       navAria: "Sections de résolution",
       footerHint: "Les champs marqués * sont obligatoires",
       ticketLabel: "Ticket",
       untitledTicket: "Sans titre",
-      infoBanner:
-        "Catégorisez l'intervention pour alimenter vos statistiques de support (type de lieu et action réalisée).",
+      infoBanner: "Catégorisez l'intervention pour alimenter vos statistiques de support (type de lieu et action réalisée).",
       pendingReplyHint: "Votre réponse en cours sera envoyée lors de la confirmation.",
       interventionLabel: "Type d'intervention",
       interventionPlaceholder: "À distance, Sur site, En atelier…",
@@ -321,18 +361,18 @@ const DETAIL_COPY = {
         solution: {
           label: "Solution",
           description: "Classification et description",
-          icon: "mdi:clipboard-check-outline",
+          icon: "mdi:clipboard-check-outline"
         },
         credits: {
           label: "Crédits support",
           description: "Décompte à la résolution",
-          icon: "mdi:ticket-confirmation-outline",
-        },
+          icon: "mdi:ticket-confirmation-outline"
+        }
       },
       cancel: "Annuler",
       confirm: "Résoudre et demander validation",
       confirming: "Résolution…",
-      closeAria: "Fermer",
+      closeAria: "Fermer"
     },
     footer: {
       closedHint: "Ticket clos · consultation uniquement",
@@ -350,14 +390,14 @@ const DETAIL_COPY = {
       resolveTitle: "Résoudre et demander la validation client",
       resolve: "Résoudre",
       sending: "Envoi...",
-      submitStatusAria: "Choisir le statut de soumission",
+      submitStatusAria: "Choisir le statut de soumission"
     },
     macroAttachmentModal: {
       title: "Pièce jointe pour la macro",
       hint: "Cette macro contient une action de pièce jointe. Tu peux ajouter un ou plusieurs fichiers avant l'exécution, ou continuer sans fichier.",
       addFiles: "Ajouter des fichiers",
       cancel: "Annuler",
-      continue: "Continuer",
+      continue: "Continuer"
     },
     sideModal: {
       newTitle: "Nouvelle side conversation",
@@ -380,7 +420,7 @@ const DETAIL_COPY = {
       replyPlaceholder: "Répondre...",
       sendReply: "Envoyer",
       reopen: "Réouvrir",
-      close: "Fermer",
+      close: "Fermer"
     },
     toasts: {
       loadTicketError: "Erreur lors du chargement du ticket",
@@ -468,12 +508,14 @@ const DETAIL_COPY = {
       reminderSaveError: "Impossible d'enregistrer l'alerte",
       reminderDeleted: "Alerte supprimée",
       reminderDeleteError: "Impossible de supprimer l'alerte",
+      aiSuggestOk: "Suggestion IA appliquée",
+      aiSuggestError: "Impossible de suggérer une réponse"
     },
     playMode: {
       banner: "Mode aléatoire",
       tooltip: "Ticket aléatoire · enchaîne après chaque envoi (Maj+clic pour arrêter)",
-      aria: "Ouvrir un ticket aléatoire",
-    },
+      aria: "Ouvrir un ticket aléatoire"
+    }
   },
   en: {
     pageTitle: "Ticket",
@@ -495,19 +537,19 @@ const DETAIL_COPY = {
       open: "Send as Open",
       pending: "Send as In progress",
       on_hold: "Send as Pending",
-      solved: "Send as Resolved",
+      solved: "Send as Resolved"
     },
     sideConversationTeams: {
       commercial: "Sales",
       n2: "Level 2 technician",
       cyber: "Cybersecurity agent",
-      external: "External provider",
+      external: "External provider"
     },
     sidebarExpand: {
       collapseAria: "Collapse section",
       expandAria: "Expand section",
       showLess: "Show less",
-      showMore: "Show more",
+      showMore: "Show more"
     },
     formatDuration: {
       lessThanOneMin: "<1 min",
@@ -515,7 +557,7 @@ const DETAIL_COPY = {
       daysOnly: "{days} d",
       hoursMinutes: "{hours} h {minutes} min",
       hoursOnly: "{hours} h",
-      minutesOnly: "{minutes} min",
+      minutesOnly: "{minutes} min"
     },
     resolutionStatus: {
       pending: "Awaiting client validation",
@@ -523,7 +565,7 @@ const DETAIL_COPY = {
       accepted: "Solution validated by client",
       autoClosed: "Auto-closed (48 h)",
       default: "Client validation",
-      deadline: "Deadline {dateTime}",
+      deadline: "Deadline {dateTime}"
     },
     activity: {
       splitFrom: "Split received from closed ticket {number}{titleSuffix}",
@@ -542,8 +584,40 @@ const DETAIL_COPY = {
       internalNote: "Internal note added",
       publicReply: "Public reply",
       deleted: "Ticket moved to trash",
+      restored: "Ticket restored",
       attachmentOne: "{count} attachment",
       attachmentMany: "{count} attachments",
+      emptyValue: "—",
+      yes: "Yes",
+      no: "No",
+      contactFallback: "Contact #{id}",
+      clientFallback: "Company #{id}",
+      fieldChanged: "{field}: {oldValue} → {newValue}",
+      fieldSet: "{field}: {newValue}",
+      fieldCleared: "{field} cleared ({oldValue})",
+      assigneeAdded: "Assignee added: {name}",
+      assigneeRemoved: "Assignee removed: {name}",
+      watcherAdded: "Follower added: {name}",
+      watcherRemoved: "Follower removed: {name}",
+      tagAdded: "Tag added: {label}",
+      tagRemoved: "Tag removed: {label}",
+      fields: {
+        title: "Title",
+        description: "Description",
+        priority: "Priority",
+        type: "Type",
+        category: "Category",
+        channel: "Channel",
+        client_id: "Company",
+        requester_user_id: "Requester (user)",
+        requester_contact_id: "Requester",
+        assigned_user_id: "Primary assignee",
+        is_major_incident: "Major incident",
+        assignee: "Assignee",
+        watcher: "Follower",
+        tag: "Tag",
+        unknown: "Field"
+      }
     },
     commentDisplay: {
       splitFrom: "Split received from closed ticket ",
@@ -557,7 +631,7 @@ const DETAIL_COPY = {
       sideOpened: "Side conversation opened: {subject}",
       sideSubjectFallback: "Side conversation",
       warranty: "Warranty: {value}",
-      licenses: "Licenses: {value}",
+      licenses: "Licenses: {value}"
     },
     whatsappDeliveryErrorWithDetail: "Comment saved, but WhatsApp delivery failed: {error}",
     whatsappDeliveryError: "Comment saved, but WhatsApp delivery failed.",
@@ -567,7 +641,7 @@ const DETAIL_COPY = {
       firstResponse: "First response deadline",
       resolution: "Resolution deadline",
       closed: "SLA at closure",
-      default: "SLA",
+      default: "SLA"
     },
     takeoverTooltipHas: "First transition from New to {status}",
     takeoverTooltipNone: "No takeover recorded (ticket still at New status)",
@@ -577,18 +651,18 @@ const DETAIL_COPY = {
       phone: "Via phone",
       chat: "Via chat",
       api: "Via API",
-      fallback: "Via {channel}",
+      fallback: "Via {channel}"
     },
     confirms: {
       softDelete: "Move this ticket to trash?",
       permanentDelete: "Permanently delete this ticket? This action cannot be undone.",
       deleteComment: "Delete this message? This action cannot be undone.",
       reopenTicket: "Reopen this ticket? It will return to In progress status.",
-      deleteReminder: "Remove this alert from the schedule?",
+      deleteReminder: "Remove this alert from the schedule?"
     },
     prompts: {
       linkUrl: "Enter the link URL:",
-      linkUrlDefault: "https://",
+      linkUrlDefault: "https://"
     },
     header: {
       backAria: "Back to support",
@@ -611,7 +685,7 @@ const DETAIL_COPY = {
       reminderProAria: "Planning alert · available with Veritas Pro",
       reminderEditAria: "Edit planning alert",
       reminderScheduleAria: "Schedule a planning alert",
-      proBadge: "Pro",
+      proBadge: "Pro"
     },
     empty: {
       noTicketSelected: "No ticket selected.",
@@ -621,7 +695,7 @@ const DETAIL_COPY = {
       noActivity: "No activity recorded.",
       noPreviousInteractions: "No previous interactions.",
       noSatisfaction: "No customer rating for this ticket yet.",
-      deletedBadge: "Ticket in trash",
+      deletedBadge: "Ticket in trash"
     },
     leftPane: {
       properties: "Properties",
@@ -631,21 +705,23 @@ const DETAIL_COPY = {
       status: "Status",
       type: "Type",
       category: "Category",
+      more: "More",
       tags: "Tags",
       tagsAria: "Ticket tags",
       tagPlaceholder: "Tag…",
       tagAddAria: "Add a tag",
       tagConfirmAria: "Confirm tag",
       tagAddTooltip: "Add a tag",
-      removeTagAria: "Remove tag {label}",
+      removeTagAria: "Remove tag {label}"
     },
     description: {
-      initial: "Initial description",
+      initial: "Initial request",
+      requesterFallback: "Requester",
       placeholder: "Describe the issue or request…",
-      editAria: "Initial ticket description",
-      editTitle: "Click to edit description",
-      editButtonAria: "Edit initial description",
-      empty: "Click to add a description…",
+      editAria: "Initial ticket request",
+      editTitle: "Edit title and description",
+      editButtonAria: "Edit title and description",
+      empty: "No description"
     },
     comment: {
       editedMark: " · edited",
@@ -663,11 +739,11 @@ const DETAIL_COPY = {
       editRemoveTitle: "Remove attachment",
       editSaving: "Saving…",
       editSave: "Save",
-      editCancel: "Cancel",
+      editCancel: "Cancel"
     },
     timeline: {
       scrollTopAria: "Scroll to top of conversation",
-      scrollTopTitle: "Scroll to top",
+      scrollTopTitle: "Scroll to top"
     },
     reply: {
       dropTitle: "Drop your files here",
@@ -678,6 +754,9 @@ const DETAIL_COPY = {
       toolList: "List",
       toolLink: "Link",
       toolEmoji: "Emoji",
+      suggestAi: "Suggest",
+      suggestAiTitle: "Suggest a reply with AI",
+      suggestAiLoading: "Suggesting…",
       addFiles: "Add files",
       modePrivateTitle: "Private reply (internal only)",
       modePublicTitle: "Public reply (visible to requester)",
@@ -688,7 +767,7 @@ const DETAIL_COPY = {
       expandSummary: "Write a reply",
       draftHint: "Draft in progress",
       expandAria: "Expand reply area",
-      expandTooltip: "Expand reply area",
+      expandTooltip: "Expand reply area"
     },
     rightPane: {
       channel: "Channel",
@@ -724,13 +803,22 @@ const DETAIL_COPY = {
       historyBackAria: "Back to context",
       historyToggleAria: "Ticket history",
       historyToggleTitle: "Ticket history",
+      historyRefreshTitle: "Refresh history",
+      historyRefreshAria: "Refresh ticket history",
       historyBackTitle: "Back to context",
+      runbookToggleTitle: "AI runbook",
+      runbookToggleAria: "Show AI runbook",
+      runbookBackTitle: "Back to context",
+      runbookBackAria: "Back to context"
     },
     sidebar: {
+      classicViewTitle: "Classic view",
+      classicViewAria: "Show classic view",
       kbTitle: "Open Knowledge Base",
       kbDisabledTitle: "Knowledge Base not configured (Administration → General settings)",
-      equipmentTitle: "Client hardware",
       deleteTitle: "Delete ticket",
+      runbookTitle: "AI troubleshooting runbook",
+      runbookBackTitle: "Back to context"
     },
     reopenModal: {
       eyebrow: "Support",
@@ -743,19 +831,17 @@ const DETAIL_COPY = {
       cancel: "Cancel",
       confirm: "Reopen ticket",
       confirming: "Reopening…",
-      closeAria: "Close",
+      closeAria: "Close"
     },
     resolveModal: {
       eyebrow: "Support",
       title: "Resolve ticket",
-      subtitle:
-        "The client can validate the solution from their portal. Without a response within 48 hours, the ticket will be closed automatically.",
+      subtitle: "The client can validate the solution from their portal. Without a response within 48 hours, the ticket will be closed automatically.",
       navAria: "Resolution sections",
       footerHint: "Fields marked * are required",
       ticketLabel: "Ticket",
       untitledTicket: "Untitled",
-      infoBanner:
-        "Categorise the intervention to feed your support statistics (location type and action performed).",
+      infoBanner: "Categorise the intervention to feed your support statistics (location type and action performed).",
       pendingReplyHint: "Your draft reply will be sent when you confirm.",
       interventionLabel: "Intervention type",
       interventionPlaceholder: "Remote, On-site, Workshop…",
@@ -781,18 +867,18 @@ const DETAIL_COPY = {
         solution: {
           label: "Solution",
           description: "Classification and description",
-          icon: "mdi:clipboard-check-outline",
+          icon: "mdi:clipboard-check-outline"
         },
         credits: {
           label: "Support credits",
           description: "Deduction on resolution",
-          icon: "mdi:ticket-confirmation-outline",
-        },
+          icon: "mdi:ticket-confirmation-outline"
+        }
       },
       cancel: "Cancel",
       confirm: "Resolve and request validation",
       confirming: "Resolving…",
-      closeAria: "Close",
+      closeAria: "Close"
     },
     footer: {
       closedHint: "Ticket closed · read only",
@@ -810,14 +896,14 @@ const DETAIL_COPY = {
       resolveTitle: "Resolve and request client validation",
       resolve: "Resolve",
       sending: "Sending...",
-      submitStatusAria: "Choose submission status",
+      submitStatusAria: "Choose submission status"
     },
     macroAttachmentModal: {
       title: "Attachment for macro",
       hint: "This macro includes an attachment action. You can add one or more files before running it, or continue without files.",
       addFiles: "Add files",
       cancel: "Cancel",
-      continue: "Continue",
+      continue: "Continue"
     },
     sideModal: {
       newTitle: "New side conversation",
@@ -840,7 +926,7 @@ const DETAIL_COPY = {
       replyPlaceholder: "Reply...",
       sendReply: "Send",
       reopen: "Reopen",
-      close: "Close",
+      close: "Close"
     },
     toasts: {
       loadTicketError: "Error loading ticket",
@@ -928,22 +1014,21 @@ const DETAIL_COPY = {
       reminderSaveError: "Unable to save alert",
       reminderDeleted: "Alert deleted",
       reminderDeleteError: "Unable to delete alert",
+      aiSuggestOk: "AI suggestion applied",
+      aiSuggestError: "Unable to suggest a reply"
     },
     playMode: {
       banner: "Random mode",
       tooltip: "Random ticket · continues after each reply (Shift+click to stop)",
-      aria: "Open a random ticket",
-    },
-  },
+      aria: "Open a random ticket"
+    }
+  }
 };
-
-// de, it, es: reuse en structure with translated strings (abbreviated for maintainability - full translations below)
-["de", "it", "es"].forEach((code) => {
+["de", "it", "es"].forEach(code => {
   if (!DETAIL_COPY[code]) {
     DETAIL_COPY[code] = JSON.parse(JSON.stringify(DETAIL_COPY.en));
   }
 });
-
 DETAIL_COPY.de.pageTitle = "Ticket";
 DETAIL_COPY.de.statusClosed = "Geschlossen";
 DETAIL_COPY.de.empty.loading = "Laden...";
@@ -952,18 +1037,14 @@ DETAIL_COPY.de.leftPane.properties = "Eigenschaften";
 DETAIL_COPY.de.footer.resolve = "Lösen";
 DETAIL_COPY.de.footer.reopen = "Ticket wiedereröffnen";
 DETAIL_COPY.de.reopenModal.title = "Ticket wiedereröffnen";
-DETAIL_COPY.de.reopenModal.subtitle =
-  "Das Ticket wird wieder auf « In Bearbeitung » gesetzt. Bitte geben Sie einen Grund an.";
+DETAIL_COPY.de.reopenModal.subtitle = "Das Ticket wird wieder auf « In Bearbeitung » gesetzt. Bitte geben Sie einen Grund an.";
 DETAIL_COPY.de.reopenModal.reasonLabel = "Grund der Wiedereröffnung";
-DETAIL_COPY.de.reopenModal.reasonPlaceholder =
-  "Erklären Sie, warum dieses Ticket wiedereröffnet werden soll…";
+DETAIL_COPY.de.reopenModal.reasonPlaceholder = "Erklären Sie, warum dieses Ticket wiedereröffnet werden soll…";
 DETAIL_COPY.de.reopenModal.confirm = "Ticket wiedereröffnen";
 DETAIL_COPY.de.reopenModal.confirming = "Wird wiedereröffnet…";
 DETAIL_COPY.de.resolveModal.title = "Ticket lösen";
-DETAIL_COPY.de.resolveModal.subtitle =
-  "Der Kunde kann die Lösung im Portal bestätigen. Ohne Antwort innerhalb von 48 Stunden wird das Ticket automatisch geschlossen.";
-DETAIL_COPY.de.resolveModal.infoBanner =
-  "Kategorisieren Sie den Einsatz für Ihre Support-Statistiken (Ortstyp und durchgeführte Aktion).";
+DETAIL_COPY.de.resolveModal.subtitle = "Der Kunde kann die Lösung im Portal bestätigen. Ohne Antwort innerhalb von 48 Stunden wird das Ticket automatisch geschlossen.";
+DETAIL_COPY.de.resolveModal.infoBanner = "Kategorisieren Sie den Einsatz für Ihre Support-Statistiken (Ortstyp und durchgeführte Aktion).";
 DETAIL_COPY.de.resolveModal.interventionLabel = "Einsatztyp";
 DETAIL_COPY.de.resolveModal.interventionPlaceholder = "Remote, Vor Ort, Werkstatt…";
 DETAIL_COPY.de.resolveModal.interventionEmpty = "Kein Einsatztyp";
@@ -971,8 +1052,7 @@ DETAIL_COPY.de.resolveModal.actionLabel = "Aktionstyp";
 DETAIL_COPY.de.resolveModal.actionPlaceholder = "Konfiguration, Update, Reparatur…";
 DETAIL_COPY.de.resolveModal.actionEmpty = "Kein Aktionstyp";
 DETAIL_COPY.de.resolveModal.reasonLabel = "Lösungsgrund";
-DETAIL_COPY.de.resolveModal.reasonPlaceholder =
-  "Beschreiben Sie die Lösung und was für den Kunden erledigt wurde…";
+DETAIL_COPY.de.resolveModal.reasonPlaceholder = "Beschreiben Sie die Lösung und was für den Kunden erledigt wurde…";
 DETAIL_COPY.de.resolveModal.consumeCredit = "Support-Guthaben bei Lösung abziehen";
 DETAIL_COPY.de.resolveModal.consumeCreditLegacy = "Guthaben abziehen";
 DETAIL_COPY.de.resolveModal.creditPerPackLabel = "Guthaben pro Paket";
@@ -992,7 +1072,6 @@ DETAIL_COPY.de.toasts.loadTicketError = "Fehler beim Laden des Tickets";
 DETAIL_COPY.de.toasts.updateError = "Fehler beim Aktualisieren";
 DETAIL_COPY.de.header.menuAddExclusion = "Zu Ausschlüssen hinzufügen";
 DETAIL_COPY.de.header.menuSplit = "In anderes Ticket aufteilen";
-
 DETAIL_COPY.it.pageTitle = "Ticket";
 DETAIL_COPY.it.statusClosed = "Chiuso";
 DETAIL_COPY.it.empty.loading = "Caricamento...";
@@ -1001,18 +1080,14 @@ DETAIL_COPY.it.leftPane.properties = "Proprietà";
 DETAIL_COPY.it.footer.resolve = "Risolvi";
 DETAIL_COPY.it.footer.reopen = "Riapri ticket";
 DETAIL_COPY.it.reopenModal.title = "Riapri ticket";
-DETAIL_COPY.it.reopenModal.subtitle =
-  "Il ticket tornerà allo stato « In corso ». Indica il motivo della riapertura.";
+DETAIL_COPY.it.reopenModal.subtitle = "Il ticket tornerà allo stato « In corso ». Indica il motivo della riapertura.";
 DETAIL_COPY.it.reopenModal.reasonLabel = "Motivo della riapertura";
-DETAIL_COPY.it.reopenModal.reasonPlaceholder =
-  "Spiega perché questo ticket deve essere riaperto…";
+DETAIL_COPY.it.reopenModal.reasonPlaceholder = "Spiega perché questo ticket deve essere riaperto…";
 DETAIL_COPY.it.reopenModal.confirm = "Riapri ticket";
 DETAIL_COPY.it.reopenModal.confirming = "Riapertura…";
 DETAIL_COPY.it.resolveModal.title = "Risolvi ticket";
-DETAIL_COPY.it.resolveModal.subtitle =
-  "Il cliente potrà convalidare la soluzione dal portale. Senza risposta entro 48 ore, il ticket verrà chiuso automaticamente.";
-DETAIL_COPY.it.resolveModal.infoBanner =
-  "Classifica l'intervento per alimentare le statistiche di supporto (tipo di luogo e azione eseguita).";
+DETAIL_COPY.it.resolveModal.subtitle = "Il cliente potrà convalidare la soluzione dal portale. Senza risposta entro 48 ore, il ticket verrà chiuso automaticamente.";
+DETAIL_COPY.it.resolveModal.infoBanner = "Classifica l'intervento per alimentare le statistiche di supporto (tipo di luogo e azione eseguita).";
 DETAIL_COPY.it.resolveModal.interventionLabel = "Tipo di intervento";
 DETAIL_COPY.it.resolveModal.interventionPlaceholder = "Da remoto, In sede, In laboratorio…";
 DETAIL_COPY.it.resolveModal.interventionEmpty = "Nessun tipo di intervento";
@@ -1020,8 +1095,7 @@ DETAIL_COPY.it.resolveModal.actionLabel = "Tipo di azione";
 DETAIL_COPY.it.resolveModal.actionPlaceholder = "Configurazione, Aggiornamento, Riparazione…";
 DETAIL_COPY.it.resolveModal.actionEmpty = "Nessun tipo di azione";
 DETAIL_COPY.it.resolveModal.reasonLabel = "Motivo della risoluzione";
-DETAIL_COPY.it.resolveModal.reasonPlaceholder =
-  "Descrivi la soluzione fornita e cosa è stato fatto per il cliente…";
+DETAIL_COPY.it.resolveModal.reasonPlaceholder = "Descrivi la soluzione fornita e cosa è stato fatto per il cliente…";
 DETAIL_COPY.it.resolveModal.consumeCredit = "Scala crediti supporto alla risoluzione";
 DETAIL_COPY.it.resolveModal.consumeCreditLegacy = "Scala crediti";
 DETAIL_COPY.it.resolveModal.creditPerPackLabel = "Crediti per carnet";
@@ -1041,7 +1115,6 @@ DETAIL_COPY.it.toasts.loadTicketError = "Errore nel caricamento del ticket";
 DETAIL_COPY.it.toasts.updateError = "Errore durante l'aggiornamento";
 DETAIL_COPY.it.header.menuAddExclusion = "Aggiungi alle esclusioni";
 DETAIL_COPY.it.header.menuSplit = "Scindi in un altro ticket";
-
 DETAIL_COPY.es.pageTitle = "Ticket";
 DETAIL_COPY.es.statusClosed = "Cerrado";
 DETAIL_COPY.es.empty.loading = "Cargando...";
@@ -1050,18 +1123,14 @@ DETAIL_COPY.es.leftPane.properties = "Propiedades";
 DETAIL_COPY.es.footer.resolve = "Resolver";
 DETAIL_COPY.es.footer.reopen = "Reabrir ticket";
 DETAIL_COPY.es.reopenModal.title = "Reabrir ticket";
-DETAIL_COPY.es.reopenModal.subtitle =
-  "El ticket volverá al estado « En curso ». Indique el motivo de la reapertura.";
+DETAIL_COPY.es.reopenModal.subtitle = "El ticket volverá al estado « En curso ». Indique el motivo de la reapertura.";
 DETAIL_COPY.es.reopenModal.reasonLabel = "Motivo de la reapertura";
-DETAIL_COPY.es.reopenModal.reasonPlaceholder =
-  "Explique por qué debe reabrirse este ticket…";
+DETAIL_COPY.es.reopenModal.reasonPlaceholder = "Explique por qué debe reabrirse este ticket…";
 DETAIL_COPY.es.reopenModal.confirm = "Reabrir ticket";
 DETAIL_COPY.es.reopenModal.confirming = "Reabriendo…";
 DETAIL_COPY.es.resolveModal.title = "Resolver ticket";
-DETAIL_COPY.es.resolveModal.subtitle =
-  "El cliente podrá validar la solución desde su portal. Sin respuesta en 48 h, el ticket se cerrará automáticamente.";
-DETAIL_COPY.es.resolveModal.infoBanner =
-  "Clasifique la intervención para alimentar sus estadísticas de soporte (tipo de lugar y acción realizada).";
+DETAIL_COPY.es.resolveModal.subtitle = "El cliente podrá validar la solución desde su portal. Sin respuesta en 48 h, el ticket se cerrará automáticamente.";
+DETAIL_COPY.es.resolveModal.infoBanner = "Clasifique la intervención para alimentar sus estadísticas de soporte (tipo de lugar y acción realizada).";
 DETAIL_COPY.es.resolveModal.interventionLabel = "Tipo de intervención";
 DETAIL_COPY.es.resolveModal.interventionPlaceholder = "A distancia, En sitio, En taller…";
 DETAIL_COPY.es.resolveModal.interventionEmpty = "Ningún tipo de intervención";
@@ -1069,8 +1138,7 @@ DETAIL_COPY.es.resolveModal.actionLabel = "Tipo de acción";
 DETAIL_COPY.es.resolveModal.actionPlaceholder = "Configuración, Actualización, Reparación…";
 DETAIL_COPY.es.resolveModal.actionEmpty = "Ningún tipo de acción";
 DETAIL_COPY.es.resolveModal.reasonLabel = "Motivo de la resolución";
-DETAIL_COPY.es.resolveModal.reasonPlaceholder =
-  "Describa la solución aportada y lo realizado para el cliente…";
+DETAIL_COPY.es.resolveModal.reasonPlaceholder = "Describa la solución aportada y lo realizado para el cliente…";
 DETAIL_COPY.es.resolveModal.consumeCredit = "Descontar créditos de soporte al resolver";
 DETAIL_COPY.es.resolveModal.consumeCreditLegacy = "Descontar créditos";
 DETAIL_COPY.es.resolveModal.creditPerPackLabel = "Créditos por carnet";
@@ -1090,35 +1158,38 @@ DETAIL_COPY.es.toasts.loadTicketError = "Error al cargar el ticket";
 DETAIL_COPY.es.toasts.updateError = "Error al actualizar";
 DETAIL_COPY.es.header.menuAddExclusion = "Añadir a exclusiones";
 DETAIL_COPY.es.header.menuSplit = "Dividir en otro ticket";
-
 function titleSuffix(title) {
   return title ? ` · ${title}` : "";
 }
-
 export function getTicketDetailCopy(locale) {
   const base = getTicketCreateCopy(locale);
   const t = pickLocaleMessages(DETAIL_COPY, locale);
   const bcp47 = LOCALE_BCP47[locale] || LOCALE_BCP47.fr;
-
-  const statusOptions = [
-    { value: "new", label: base.getStatusLabel("new") },
-    { value: "pending", label: base.getStatusLabel("pending") },
-    { value: "in_progress", label: base.getStatusLabel("in_progress") },
-    { value: "resolved", label: base.getStatusLabel("resolved") },
-    { value: "closed", label: t.statusClosed },
-  ];
-
-  const submitActions = SUBMIT_ACTION_IDS.map((id) => ({
+  const statusOptions = [{
+    value: "new",
+    label: base.getStatusLabel("new")
+  }, {
+    value: "pending",
+    label: base.getStatusLabel("pending")
+  }, {
+    value: "in_progress",
+    label: base.getStatusLabel("in_progress")
+  }, {
+    value: "resolved",
+    label: base.getStatusLabel("resolved")
+  }, {
+    value: "closed",
+    label: t.statusClosed
+  }];
+  const submitActions = SUBMIT_ACTION_IDS.map(id => ({
     id,
     label: t.submitActions[id],
-    color: id === "open" ? "open" : id === "pending" ? "pending" : id === "on_hold" ? "onHold" : "solved",
+    color: id === "open" ? "open" : id === "pending" ? "pending" : id === "on_hold" ? "onHold" : "solved"
   }));
-
-  const sideConversationTeamOptions = SIDE_CONVERSATION_TEAMS.map((key) => ({
+  const sideConversationTeamOptions = SIDE_CONVERSATION_TEAMS.map(key => ({
     key,
-    label: t.sideConversationTeams[key],
+    label: t.sideConversationTeams[key]
   }));
-
   return {
     ...base,
     ...t,
@@ -1126,7 +1197,7 @@ export function getTicketDetailCopy(locale) {
     statusOptions,
     submitActions,
     sideConversationTeamOptions,
-    formatDateTime: (value) => {
+    formatDateTime: value => {
       if (!value) return t.fallbackDash;
       const d = new Date(value);
       if (Number.isNaN(d.getTime())) return t.fallbackDash;
@@ -1135,83 +1206,129 @@ export function getTicketDetailCopy(locale) {
         month: "2-digit",
         year: "numeric",
         hour: "2-digit",
-        minute: "2-digit",
+        minute: "2-digit"
       });
     },
-    formatDurationMs: (ms) => {
+    formatDurationMs: ms => {
       if (ms == null || Number.isNaN(ms) || ms < 0) return t.fallbackEmDash;
       if (ms < 60000) return t.formatDuration.lessThanOneMin;
       const totalMinutes = Math.floor(ms / 60000);
       const days = Math.floor(totalMinutes / (60 * 24));
-      const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+      const hours = Math.floor(totalMinutes % (60 * 24) / 60);
       const minutes = totalMinutes % 60;
       if (days > 0) {
-        return hours > 0
-          ? interpolate(t.formatDuration.daysHours, { days: String(days), hours: String(hours) })
-          : interpolate(t.formatDuration.daysOnly, { days: String(days) });
+        return hours > 0 ? interpolate(t.formatDuration.daysHours, {
+          days: String(days),
+          hours: String(hours)
+        }) : interpolate(t.formatDuration.daysOnly, {
+          days: String(days)
+        });
       }
       if (hours > 0) {
-        return minutes > 0
-          ? interpolate(t.formatDuration.hoursMinutes, { hours: String(hours), minutes: String(minutes) })
-          : interpolate(t.formatDuration.hoursOnly, { hours: String(hours) });
+        return minutes > 0 ? interpolate(t.formatDuration.hoursMinutes, {
+          hours: String(hours),
+          minutes: String(minutes)
+        }) : interpolate(t.formatDuration.hoursOnly, {
+          hours: String(hours)
+        });
       }
-      return interpolate(t.formatDuration.minutesOnly, { minutes: String(minutes) });
+      return interpolate(t.formatDuration.minutesOnly, {
+        minutes: String(minutes)
+      });
     },
-    getResolutionStatusPresentation: (resolutionValidation) => {
+    getResolutionStatusPresentation: resolutionValidation => {
       if (!resolutionValidation || resolutionValidation.isPending) {
-        return { variant: "pending", icon: "mdi:account-clock-outline", title: t.resolutionStatus.pending };
+        return {
+          variant: "pending",
+          icon: "mdi:account-clock-outline",
+          title: t.resolutionStatus.pending
+        };
       }
       if (resolutionValidation.outcome === "rejected") {
-        return { variant: "rejected", icon: "mdi:close-circle-outline", title: t.resolutionStatus.rejected };
+        return {
+          variant: "rejected",
+          icon: "mdi:close-circle-outline",
+          title: t.resolutionStatus.rejected
+        };
       }
       if (resolutionValidation.outcome === "accepted") {
-        return { variant: "done", icon: "mdi:check-circle-outline", title: t.resolutionStatus.accepted };
+        return {
+          variant: "done",
+          icon: "mdi:check-circle-outline",
+          title: t.resolutionStatus.accepted
+        };
       }
       if (resolutionValidation.outcome === "auto_closed") {
-        return { variant: "done", icon: "mdi:check-circle-outline", title: t.resolutionStatus.autoClosed };
+        return {
+          variant: "done",
+          icon: "mdi:check-circle-outline",
+          title: t.resolutionStatus.autoClosed
+        };
       }
-      return { variant: "pending", icon: "mdi:account-clock-outline", title: t.resolutionStatus.default };
+      return {
+        variant: "pending",
+        icon: "mdi:account-clock-outline",
+        title: t.resolutionStatus.default
+      };
     },
-    formatReopenComment: (reason) =>
-      interpolate(t.reopenComment, { reason: String(reason || "").trim() }),
-    formatResolutionDeadline: (dateTime) => interpolate(t.resolutionStatus.deadline, { dateTime }),
-    formatSatisfactionStarsAria: (rating) =>
-      interpolate(t.satisfactionStarsAria, { rating: String(rating) }),
-    formatTicketNumber: (number) => interpolate(t.ticketNumber, { number: String(number) }),
-    formatTakeoverTooltip: (status) => interpolate(t.takeoverTooltipHas, { status }),
-    formatRemoveTagAria: (label) => interpolate(t.leftPane.removeTagAria, { label }),
-    formatSideConversationChipAria: (subject) =>
-      interpolate(t.header.sideConversationChipAria, { subject }),
-    formatTemplateApplied: (name) => interpolate(t.toasts.templateApplied, { name }),
-    formatSideConversationSent: (teamLabel) => interpolate(t.toasts.sideConversationSent, { teamLabel }),
-    formatSplitSuccess: (closedNumber, targetNumber) =>
-      interpolate(t.toasts.splitSuccess, {
-        closedNumber: String(closedNumber),
-        targetNumber: String(targetNumber),
-      }),
-    formatCreditAvailable: (count) =>
-      interpolate(count === 1 ? t.footer.creditAvailable : t.footer.creditAvailablePlural, {
-        count: String(count),
-      }),
-    formatCreditConsumed: (count) =>
-      interpolate(t.footer.creditConsumed, { count: String(count) }),
-    formatRemoveLinkedTicketAria: (number) =>
-      interpolate(t.rightPane.removeLinkedTicketAria, { number: String(number) }),
-    formatRemoveEquipmentAria: (label) => interpolate(t.rightPane.removeEquipmentAria, { label }),
-    formatWhatsappDeliveryError: (error) =>
+    formatReopenComment: reason => interpolate(t.reopenComment, {
+      reason: String(reason || "").trim()
+    }),
+    formatResolutionDeadline: dateTime => interpolate(t.resolutionStatus.deadline, {
+      dateTime
+    }),
+    formatSatisfactionStarsAria: rating => interpolate(t.satisfactionStarsAria, {
+      rating: String(rating)
+    }),
+    formatTicketNumber: number => interpolate(t.ticketNumber, {
+      number: String(number)
+    }),
+    formatTakeoverTooltip: status => interpolate(t.takeoverTooltipHas, {
+      status
+    }),
+    formatRemoveTagAria: label => interpolate(t.leftPane.removeTagAria, {
+      label
+    }),
+    formatSideConversationChipAria: subject => interpolate(t.header.sideConversationChipAria, {
+      subject
+    }),
+    formatTemplateApplied: name => interpolate(t.toasts.templateApplied, {
+      name
+    }),
+    formatSideConversationSent: teamLabel => interpolate(t.toasts.sideConversationSent, {
+      teamLabel
+    }),
+    formatSplitSuccess: (closedNumber, targetNumber) => interpolate(t.toasts.splitSuccess, {
+      closedNumber: String(closedNumber),
+      targetNumber: String(targetNumber)
+    }),
+    formatCreditAvailable: count => interpolate(count === 1 ? t.footer.creditAvailable : t.footer.creditAvailablePlural, {
+      count: String(count)
+    }),
+    formatCreditConsumed: count => interpolate(t.footer.creditConsumed, {
+      count: String(count)
+    }),
+    formatRemoveLinkedTicketAria: number => interpolate(t.rightPane.removeLinkedTicketAria, {
+      number: String(number)
+    }),
+    formatRemoveEquipmentAria: label => interpolate(t.rightPane.removeEquipmentAria, {
+      label
+    }),
+    formatWhatsappDeliveryError: error => error ? interpolate(t.whatsappDeliveryErrorWithDetail, {
       error
-        ? interpolate(t.whatsappDeliveryErrorWithDetail, { error })
-        : t.whatsappDeliveryError,
-    getChannelViaLabel: (channel) => {
+    }) : t.whatsappDeliveryError,
+    getChannelViaLabel: channel => {
       const key = String(channel || "").toLowerCase();
-      return t.getChannelVia[key] || interpolate(t.getChannelVia.fallback, { channel: key || "?" });
+      return t.getChannelVia[key] || interpolate(t.getChannelVia.fallback, {
+        channel: key || "?"
+      });
     },
-    describeCommentActivity: (content) => {
+    describeCommentActivity: content => {
       const text = String(content || "");
       const splitMatch = text.match(/\[Split ticket\][\s\S]*/);
       if (splitMatch) {
         const payload = {};
-        (text.match(/\[([a-zA-Z_]+):([^\]]+)\]/g) || []).forEach((chunk) => {
+        (text.match(/\[([a-zA-Z_]+):([^\]]+)\]/g) || []).forEach(chunk => {
           const clean = chunk.replace(/^\[/, "").replace(/\]$/, "");
           const [key, ...rest] = clean.split(":");
           payload[key] = rest.join(":");
@@ -1219,32 +1336,36 @@ export function getTicketDetailCopy(locale) {
         if (payload.linked_ticket_id) {
           const number = payload.ticket_number ? `#${payload.ticket_number}` : `#${payload.linked_ticket_id}`;
           const suffix = titleSuffix(payload.title);
-          return payload.direction === "from"
-            ? interpolate(t.activity.splitFrom, { number, titleSuffix: suffix })
-            : interpolate(t.activity.splitTo, { number, titleSuffix: suffix });
+          return payload.direction === "from" ? interpolate(t.activity.splitFrom, {
+            number,
+            titleSuffix: suffix
+          }) : interpolate(t.activity.splitTo, {
+            number,
+            titleSuffix: suffix
+          });
         }
       }
       return null;
     },
-    formatActivityAttachmentDetail: (count) =>
-      interpolate(count === 1 ? t.activity.attachmentOne : t.activity.attachmentMany, {
-        count: String(count),
-      }),
+    formatActivityAttachmentDetail: count => interpolate(count === 1 ? t.activity.attachmentOne : t.activity.attachmentMany, {
+      count: String(count)
+    }),
     validateAttachmentFiles: (files = []) => {
       for (const file of files) {
         const name = String(file?.name || "");
         const ext = name.includes(".") ? `.${name.split(".").pop().toLowerCase()}` : "";
-        const allowed = new Set([
-          ".pdf", ".jpg", ".jpeg", ".png", ".doc", ".docx", ".csv", ".xls", ".xlsx",
-          ".mp4", ".3gp", ".mp3", ".mpeg", ".ogg", ".aac", ".amr", ".m4a",
-        ]);
+        const allowed = new Set([".pdf", ".jpg", ".jpeg", ".png", ".doc", ".docx", ".csv", ".xls", ".xlsx", ".mp4", ".3gp", ".mp3", ".mpeg", ".ogg", ".aac", ".amr", ".m4a"]);
         if (!allowed.has(ext)) {
-          throw new Error(interpolate(base.attachmentTypeError, { formats: ATTACHMENT_FORMATS_LABEL }));
+          throw new Error(interpolate(base.attachmentTypeError, {
+            formats: ATTACHMENT_FORMATS_LABEL
+          }));
         }
         if (Number(file?.size || 0) > 15 * 1024 * 1024) {
-          throw new Error(interpolate(base.attachmentSizeError, { name }));
+          throw new Error(interpolate(base.attachmentSizeError, {
+            name
+          }));
         }
       }
-    },
+    }
   };
 }

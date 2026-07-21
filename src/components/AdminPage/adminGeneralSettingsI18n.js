@@ -1,5 +1,4 @@
 import { createLocaleGetter } from "../../i18n/translate";
-
 const ADMIN_GENERAL_SETTINGS_COPY = {
   fr: {
     loading: "Chargement des paramètres…",
@@ -10,12 +9,11 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
     tabs: {
       general: "Général",
       email: "Email (SMTP)",
-      database: "Base de données",
+      database: "Base de données"
     },
     localeRegion: {
       title: "Langue & région",
-      description:
-        "Langue par défaut de l'interface et formats régionaux pour tous les utilisateurs.",
+      description: "Langue par défaut de l'interface et formats régionaux pour tous les utilisateurs.",
       localeLabel: "Langue de l'application",
       localeHint: "Utilisée par défaut pour les nouveaux utilisateurs et les pages publiques.",
       localeAria: "Langue de l'application",
@@ -23,7 +21,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       timezoneHint: "Référence pour le planning et les horodatages.",
       timezoneAria: "Fuseau horaire",
       dateFormatLabel: "Format de date",
-      dateFormatAria: "Format de date",
+      dateFormatAria: "Format de date"
     },
     email: {
       loadError: "Impossible de charger la configuration email",
@@ -31,8 +29,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       saveError: "Erreur lors de l'enregistrement email",
       saveBtn: "Enregistrer la configuration email",
       title: "Serveur SMTP",
-      description:
-        "Paramètres utilisés pour les notifications, la réinitialisation de mot de passe et les autres emails automatiques Veritas.",
+      description: "Paramètres utilisés pour les notifications, la réinitialisation de mot de passe et les autres emails automatiques Veritas.",
       hostLabel: "Serveur SMTP",
       hostHint: "Nom d'hôte ou adresse IP du relais SMTP.",
       portLabel: "Port SMTP",
@@ -50,7 +47,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       testSuccess: "Email de test envoyé avec succès",
       testFail: "Échec de l'envoi de l'email de test",
       testTo: "Destinataire",
-      testServer: "Serveur SMTP",
+      testServer: "Serveur SMTP"
     },
     database: {
       loadError: "Impossible de charger la configuration base de données",
@@ -72,8 +69,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       versionLabel: "Version PostgreSQL",
       topTablesTitle: "Plus grandes tables",
       connectionTitle: "Connexion PostgreSQL",
-      connectionDescription:
-        "Paramètres de connexion à la base utilisée par Veritas. Un redémarrage du service peut être nécessaire après modification.",
+      connectionDescription: "Paramètres de connexion à la base utilisée par Veritas. Un redémarrage du service peut être nécessaire après modification.",
       hostLabel: "Hôte",
       portLabel: "Port",
       nameLabel: "Base de données",
@@ -81,8 +77,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       passwordLabel: "Mot de passe",
       maintenanceTitle: "Maintenance",
       maintenanceDescription: "Opérations de maintenance sur la base PostgreSQL.",
-      maintenanceHint:
-        "VACUUM ANALYZE met à jour les statistiques du planificateur et peut améliorer les performances. À exécuter en période creuse.",
+      maintenanceHint: "VACUUM ANALYZE met à jour les statistiques du planificateur et peut améliorer les performances. À exécuter en période creuse.",
       maintenanceBtn: "Exécuter VACUUM ANALYZE",
       maintenanceRunning: "Maintenance en cours…",
       maintenanceSuccess: "Maintenance terminée avec succès",
@@ -94,8 +89,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       testSuccess: "Connexion réussie",
       testFail: "Échec de la connexion",
       warningTitle: "Modification sensible",
-      warningText:
-        "Ces paramètres définissent la liaison entre le backend Veritas et PostgreSQL. Une erreur (hôte, port, identifiants ou base incorrecte) rend l'application inutilisable jusqu'à correction. Testez toujours la connexion avant d'enregistrer.",
+      warningText: "Ces paramètres définissent la liaison entre le backend Veritas et PostgreSQL. Une erreur (hôte, port, identifiants ou base incorrecte) rend l'application inutilisable jusqu'à correction. Testez toujours la connexion avant d'enregistrer.",
       passwordHint: "Laisser vide pour conserver le mot de passe actuellement enregistré.",
       testConnectionOk: "Connexion PostgreSQL établie",
       testConnectionFail: "Connexion PostgreSQL impossible",
@@ -108,26 +102,24 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
         settings: "Paramètres",
         clients: "Clients",
         tickets: "Tickets",
-        migrations: "Migrations schéma",
+        migrations: "Migrations schéma"
       },
       referenceSchemaOk: "Migration de référence Veritas présente",
       referenceSchemaMissing: "Migration de référence Veritas absente",
       saveConfirmTitle: "Appliquer la nouvelle configuration ?",
-      saveConfirmText:
-        "Veritas va basculer immédiatement sur ces paramètres PostgreSQL. En cas d'erreur, le backend perdra l'accès à la base jusqu'à restauration des bons identifiants (fichier .env ou accès direct PostgreSQL).",
+      saveConfirmText: "Veritas va basculer immédiatement sur ces paramètres PostgreSQL. En cas d'erreur, le backend perdra l'accès à la base jusqu'à restauration des bons identifiants (fichier .env ou accès direct PostgreSQL).",
       saveConfirmBtn: "Oui, appliquer",
       saveCancelBtn: "Annuler",
-      applyRestartHint: "Configuration appliquée. Redémarrez le service backend si des anomalies persistent.",
+      applyRestartHint: "Configuration appliquée. Redémarrez le service backend si des anomalies persistent."
     },
     appearance: {
       title: "Apparence",
-      description:
-        "Thème appliqué par défaut lorsqu'aucune préférence personnelle n'est enregistrée.",
+      description: "Thème appliqué par défaut lorsqu'aucune préférence personnelle n'est enregistrée.",
       themeLabel: "Thème par défaut",
       themeAria: "Thème par défaut",
       pageSizeLabel: "Éléments par page",
       pageSizeHint: "Pagination par défaut des listes et tableaux.",
-      pageSizeAria: "Éléments par page",
+      pageSizeAria: "Éléments par page"
     },
     organization: {
       title: "Organisation",
@@ -142,22 +134,20 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       supportPhoneHint: "Numéro affiché pour joindre votre équipe support.",
       addressLabel: "Adresse",
       addressHint: "Siège ou adresse principale de votre MSP.",
-      websiteLabel: "Site web",
+      websiteLabel: "Site web"
     },
     support: {
       title: "Support & outils",
       description: "Liens externes utilisés par vos équipes depuis l'interface Veritas.",
       knowledgeBaseLabel: "Knowledge Base",
-      knowledgeBaseHint: "URL ouverte par le bouton Knowledge Base dans le détail d'un ticket. Laissez vide pour désactiver le bouton.",
+      knowledgeBaseHint: "URL ouverte par le bouton Knowledge Base dans le détail d'un ticket. Laissez vide pour désactiver le bouton."
     },
     onboarding: {
       title: "Guide Premiers pas",
-      description:
-        "Parcours de configuration initiale de votre instance MSP (identité, support, horaires, équipe, licence).",
-      body:
-        "Relancez le guide à tout moment pour revoir les étapes ou mettre à jour la configuration de base. L'ouverture concerne votre compte administrateur uniquement.",
-      relaunch: "Relancer le guide Premiers pas",
-    },
+      description: "Parcours de configuration initiale de votre instance MSP (identité, support, horaires, équipe, licence).",
+      body: "Relancez le guide à tout moment pour revoir les étapes ou mettre à jour la configuration de base. L'ouverture concerne votre compte administrateur uniquement.",
+      relaunch: "Relancer le guide Premiers pas"
+    }
   },
   en: {
     loading: "Loading settings…",
@@ -168,7 +158,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
     tabs: {
       general: "General",
       email: "Email (SMTP)",
-      database: "Database",
+      database: "Database"
     },
     localeRegion: {
       title: "Language & region",
@@ -180,7 +170,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       timezoneHint: "Reference for scheduling and timestamps.",
       timezoneAria: "Time zone",
       dateFormatLabel: "Date format",
-      dateFormatAria: "Date format",
+      dateFormatAria: "Date format"
     },
     email: {
       loadError: "Unable to load email configuration",
@@ -188,8 +178,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       saveError: "Error saving email configuration",
       saveBtn: "Save email configuration",
       title: "SMTP server",
-      description:
-        "Settings used for notifications, password reset, and other automated Veritas emails.",
+      description: "Settings used for notifications, password reset, and other automated Veritas emails.",
       hostLabel: "SMTP server",
       hostHint: "Hostname or IP address of your SMTP relay.",
       portLabel: "SMTP port",
@@ -207,7 +196,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       testSuccess: "Test email sent successfully",
       testFail: "Test email failed",
       testTo: "Recipient",
-      testServer: "SMTP server",
+      testServer: "SMTP server"
     },
     database: {
       loadError: "Unable to load database configuration",
@@ -229,8 +218,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       versionLabel: "PostgreSQL version",
       topTablesTitle: "Largest tables",
       connectionTitle: "PostgreSQL connection",
-      connectionDescription:
-        "Connection settings for the database used by Veritas. A service restart may be required after changes.",
+      connectionDescription: "Connection settings for the database used by Veritas. A service restart may be required after changes.",
       hostLabel: "Host",
       portLabel: "Port",
       nameLabel: "Database",
@@ -238,8 +226,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       passwordLabel: "Password",
       maintenanceTitle: "Maintenance",
       maintenanceDescription: "Maintenance operations on the PostgreSQL database.",
-      maintenanceHint:
-        "VACUUM ANALYZE updates planner statistics and may improve performance. Run during off-peak hours.",
+      maintenanceHint: "VACUUM ANALYZE updates planner statistics and may improve performance. Run during off-peak hours.",
       maintenanceBtn: "Run VACUUM ANALYZE",
       maintenanceRunning: "Maintenance running…",
       maintenanceSuccess: "Maintenance completed successfully",
@@ -251,8 +238,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       testSuccess: "Connection successful",
       testFail: "Connection failed",
       warningTitle: "Sensitive change",
-      warningText:
-        "These settings define the link between the Veritas backend and PostgreSQL. A mistake (wrong host, port, credentials, or database) makes the application unusable until corrected. Always test the connection before saving.",
+      warningText: "These settings define the link between the Veritas backend and PostgreSQL. A mistake (wrong host, port, credentials, or database) makes the application unusable until corrected. Always test the connection before saving.",
       passwordHint: "Leave blank to keep the currently saved password.",
       testConnectionOk: "PostgreSQL connection established",
       testConnectionFail: "Unable to connect to PostgreSQL",
@@ -265,16 +251,15 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
         settings: "Settings",
         clients: "Clients",
         tickets: "Tickets",
-        migrations: "Schema migrations",
+        migrations: "Schema migrations"
       },
       referenceSchemaOk: "Veritas reference migration present",
       referenceSchemaMissing: "Veritas reference migration missing",
       saveConfirmTitle: "Apply the new configuration?",
-      saveConfirmText:
-        "Veritas will immediately switch to these PostgreSQL settings. If they are wrong, the backend will lose database access until the correct credentials are restored (.env file or direct PostgreSQL access).",
+      saveConfirmText: "Veritas will immediately switch to these PostgreSQL settings. If they are wrong, the backend will lose database access until the correct credentials are restored (.env file or direct PostgreSQL access).",
       saveConfirmBtn: "Yes, apply",
       saveCancelBtn: "Cancel",
-      applyRestartHint: "Configuration applied. Restart the backend service if issues persist.",
+      applyRestartHint: "Configuration applied. Restart the backend service if issues persist."
     },
     appearance: {
       title: "Appearance",
@@ -283,7 +268,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       themeAria: "Default theme",
       pageSizeLabel: "Items per page",
       pageSizeHint: "Default pagination for lists and tables.",
-      pageSizeAria: "Items per page",
+      pageSizeAria: "Items per page"
     },
     organization: {
       title: "Organization",
@@ -298,22 +283,20 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       supportPhoneHint: "Number shown to reach your support team.",
       addressLabel: "Address",
       addressHint: "Head office or main address of your MSP.",
-      websiteLabel: "Website",
+      websiteLabel: "Website"
     },
     support: {
       title: "Support & tools",
       description: "External links used by your teams from the Veritas interface.",
       knowledgeBaseLabel: "Knowledge Base",
-      knowledgeBaseHint: "URL opened by the Knowledge Base button on ticket detail. Leave empty to disable the button.",
+      knowledgeBaseHint: "URL opened by the Knowledge Base button on ticket detail. Leave empty to disable the button."
     },
     onboarding: {
       title: "Getting started guide",
-      description:
-        "Initial setup journey for your MSP instance (identity, support, hours, team, license).",
-      body:
-        "Relaunch the guide anytime to review steps or update basic configuration. This applies to your administrator account only.",
-      relaunch: "Relaunch getting started guide",
-    },
+      description: "Initial setup journey for your MSP instance (identity, support, hours, team, license).",
+      body: "Relaunch the guide anytime to review steps or update basic configuration. This applies to your administrator account only.",
+      relaunch: "Relaunch getting started guide"
+    }
   },
   de: {
     loading: "Einstellungen werden geladen…",
@@ -324,7 +307,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
     tabs: {
       general: "Allgemein",
       email: "E-Mail (SMTP)",
-      database: "Datenbank",
+      database: "Datenbank"
     },
     localeRegion: {
       title: "Sprache & Region",
@@ -336,7 +319,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       timezoneHint: "Referenz für Planung und Zeitstempel.",
       timezoneAria: "Zeitzone",
       dateFormatLabel: "Datumsformat",
-      dateFormatAria: "Datumsformat",
+      dateFormatAria: "Datumsformat"
     },
     email: {
       loadError: "E-Mail-Konfiguration konnte nicht geladen werden",
@@ -362,7 +345,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       testSuccess: "Test-E-Mail erfolgreich gesendet",
       testFail: "Test-E-Mail fehlgeschlagen",
       testTo: "Empfänger",
-      testServer: "SMTP-Server",
+      testServer: "SMTP-Server"
     },
     database: {
       loadError: "Datenbankkonfiguration konnte nicht geladen werden",
@@ -404,8 +387,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       testSuccess: "Verbindung erfolgreich",
       testFail: "Verbindung fehlgeschlagen",
       warningTitle: "Sensible Änderung",
-      warningText:
-        "Diese Parameter definieren die Verbindung zwischen dem Veritas-Backend und PostgreSQL. Ein Fehler macht die Anwendung unbenutzbar, bis die korrekten Werte wiederhergestellt sind. Testen Sie die Verbindung immer vor dem Speichern.",
+      warningText: "Diese Parameter definieren die Verbindung zwischen dem Veritas-Backend und PostgreSQL. Ein Fehler macht die Anwendung unbenutzbar, bis die korrekten Werte wiederhergestellt sind. Testen Sie die Verbindung immer vor dem Speichern.",
       passwordHint: "Leer lassen, um das gespeicherte Passwort beizubehalten.",
       testConnectionOk: "PostgreSQL-Verbindung hergestellt",
       testConnectionFail: "Keine Verbindung zu PostgreSQL möglich",
@@ -418,16 +400,15 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
         settings: "Einstellungen",
         clients: "Kunden",
         tickets: "Tickets",
-        migrations: "Schema-Migrationen",
+        migrations: "Schema-Migrationen"
       },
       referenceSchemaOk: "Veritas-Referenzmigration vorhanden",
       referenceSchemaMissing: "Veritas-Referenzmigration fehlt",
       saveConfirmTitle: "Neue Konfiguration anwenden?",
-      saveConfirmText:
-        "Veritas wechselt sofort zu diesen PostgreSQL-Einstellungen. Bei Fehlern verliert das Backend den Datenbankzugriff, bis die korrekten Zugangsdaten wiederhergestellt sind.",
+      saveConfirmText: "Veritas wechselt sofort zu diesen PostgreSQL-Einstellungen. Bei Fehlern verliert das Backend den Datenbankzugriff, bis die korrekten Zugangsdaten wiederhergestellt sind.",
       saveConfirmBtn: "Ja, anwenden",
       saveCancelBtn: "Abbrechen",
-      applyRestartHint: "Konfiguration angewendet. Starten Sie den Backend-Dienst neu, falls Probleme bestehen.",
+      applyRestartHint: "Konfiguration angewendet. Starten Sie den Backend-Dienst neu, falls Probleme bestehen."
     },
     appearance: {
       title: "Darstellung",
@@ -436,7 +417,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       themeAria: "Standard-Theme",
       pageSizeLabel: "Einträge pro Seite",
       pageSizeHint: "Standard-Paginierung für Listen und Tabellen.",
-      pageSizeAria: "Einträge pro Seite",
+      pageSizeAria: "Einträge pro Seite"
     },
     organization: {
       title: "Organisation",
@@ -451,22 +432,20 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       supportPhoneHint: "Nummer Ihres Support-Teams.",
       addressLabel: "Adresse",
       addressHint: "Hauptsitz oder Hauptadresse Ihres MSP.",
-      websiteLabel: "Website",
+      websiteLabel: "Website"
     },
     support: {
       title: "Support & Tools",
       description: "Externe Links, die Ihre Teams in der Veritas-Oberfläche nutzen.",
       knowledgeBaseLabel: "Knowledge Base",
-      knowledgeBaseHint: "URL für die Knowledge-Base-Schaltfläche in der Ticketdetailansicht. Leer lassen, um die Schaltfläche zu deaktivieren.",
+      knowledgeBaseHint: "URL für die Knowledge-Base-Schaltfläche in der Ticketdetailansicht. Leer lassen, um die Schaltfläche zu deaktivieren."
     },
     onboarding: {
       title: "Erste-Schritte-Anleitung",
-      description:
-        "Ersteinrichtung Ihrer MSP-Instanz (Identität, Support, Zeiten, Team, Lizenz).",
-      body:
-        "Starten Sie die Anleitung jederzeit neu, um Schritte zu überprüfen oder die Basiskonfiguration zu aktualisieren. Gilt nur für Ihr Administratorkonto.",
-      relaunch: "Erste-Schritte-Anleitung neu starten",
-    },
+      description: "Ersteinrichtung Ihrer MSP-Instanz (Identität, Support, Zeiten, Team, Lizenz).",
+      body: "Starten Sie die Anleitung jederzeit neu, um Schritte zu überprüfen oder die Basiskonfiguration zu aktualisieren. Gilt nur für Ihr Administratorkonto.",
+      relaunch: "Erste-Schritte-Anleitung neu starten"
+    }
   },
   it: {
     loading: "Caricamento impostazioni…",
@@ -477,7 +456,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
     tabs: {
       general: "Generale",
       email: "Email (SMTP)",
-      database: "Database",
+      database: "Database"
     },
     localeRegion: {
       title: "Lingua e regione",
@@ -489,7 +468,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       timezoneHint: "Riferimento per pianificazione e timestamp.",
       timezoneAria: "Fuso orario",
       dateFormatLabel: "Formato data",
-      dateFormatAria: "Formato data",
+      dateFormatAria: "Formato data"
     },
     email: {
       loadError: "Impossibile caricare la configurazione email",
@@ -515,7 +494,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       testSuccess: "Email di test inviata con successo",
       testFail: "Invio email di test fallito",
       testTo: "Destinatario",
-      testServer: "Server SMTP",
+      testServer: "Server SMTP"
     },
     database: {
       loadError: "Impossibile caricare la configurazione database",
@@ -557,8 +536,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       testSuccess: "Connessione riuscita",
       testFail: "Connessione fallita",
       warningTitle: "Modifica sensibile",
-      warningText:
-        "Questi parametri definiscono il collegamento tra il backend Veritas e PostgreSQL. Un errore rende l'applicazione inutilizzabile fino alla correzione. Testate sempre la connessione prima di salvare.",
+      warningText: "Questi parametri definiscono il collegamento tra il backend Veritas e PostgreSQL. Un errore rende l'applicazione inutilizzabile fino alla correzione. Testate sempre la connessione prima di salvare.",
       passwordHint: "Lasciare vuoto per mantenere la password attualmente salvata.",
       testConnectionOk: "Connessione PostgreSQL stabilita",
       testConnectionFail: "Impossibile connettersi a PostgreSQL",
@@ -571,16 +549,15 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
         settings: "Impostazioni",
         clients: "Clienti",
         tickets: "Ticket",
-        migrations: "Migrazioni schema",
+        migrations: "Migrazioni schema"
       },
       referenceSchemaOk: "Migrazione di riferimento Veritas presente",
       referenceSchemaMissing: "Migrazione di riferimento Veritas assente",
       saveConfirmTitle: "Applicare la nuova configurazione?",
-      saveConfirmText:
-        "Veritas passerà immediatamente a questi parametri PostgreSQL. In caso di errore, il backend perderà l'accesso al database fino al ripristino delle credenziali corrette.",
+      saveConfirmText: "Veritas passerà immediatamente a questi parametri PostgreSQL. In caso di errore, il backend perderà l'accesso al database fino al ripristino delle credenziali corrette.",
       saveConfirmBtn: "Sì, applica",
       saveCancelBtn: "Annulla",
-      applyRestartHint: "Configurazione applicata. Riavviare il servizio backend se persistono anomalie.",
+      applyRestartHint: "Configurazione applicata. Riavviare il servizio backend se persistono anomalie."
     },
     appearance: {
       title: "Aspetto",
@@ -589,7 +566,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       themeAria: "Tema predefinito",
       pageSizeLabel: "Elementi per pagina",
       pageSizeHint: "Paginazione predefinita per elenchi e tabelle.",
-      pageSizeAria: "Elementi per pagina",
+      pageSizeAria: "Elementi per pagina"
     },
     organization: {
       title: "Organizzazione",
@@ -604,22 +581,20 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       supportPhoneHint: "Numero per contattare il team supporto.",
       addressLabel: "Indirizzo",
       addressHint: "Sede o indirizzo principale del vostro MSP.",
-      websiteLabel: "Sito web",
+      websiteLabel: "Sito web"
     },
     support: {
       title: "Supporto e strumenti",
       description: "Link esterni usati dai vostri team dall'interfaccia Veritas.",
       knowledgeBaseLabel: "Knowledge Base",
-      knowledgeBaseHint: "URL aperta dal pulsante Knowledge Base nel dettaglio ticket. Lasciare vuoto per disattivare il pulsante.",
+      knowledgeBaseHint: "URL aperta dal pulsante Knowledge Base nel dettaglio ticket. Lasciare vuoto per disattivare il pulsante."
     },
     onboarding: {
       title: "Guida Primi passi",
-      description:
-        "Percorso di configurazione iniziale della vostra istanza MSP (identità, supporto, orari, team, licenza).",
-      body:
-        "Rilanciate la guida in qualsiasi momento per rivedere i passaggi o aggiornare la configurazione di base. Si applica solo al vostro account amministratore.",
-      relaunch: "Rilanciare la guida Primi passi",
-    },
+      description: "Percorso di configurazione iniziale della vostra istanza MSP (identità, supporto, orari, team, licenza).",
+      body: "Rilanciate la guida in qualsiasi momento per rivedere i passaggi o aggiornare la configurazione di base. Si applica solo al vostro account amministratore.",
+      relaunch: "Rilanciare la guida Primi passi"
+    }
   },
   es: {
     loading: "Cargando ajustes…",
@@ -630,7 +605,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
     tabs: {
       general: "General",
       email: "Email (SMTP)",
-      database: "Base de datos",
+      database: "Base de datos"
     },
     localeRegion: {
       title: "Idioma y región",
@@ -642,7 +617,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       timezoneHint: "Referencia para planificación y marcas de tiempo.",
       timezoneAria: "Zona horaria",
       dateFormatLabel: "Formato de fecha",
-      dateFormatAria: "Formato de fecha",
+      dateFormatAria: "Formato de fecha"
     },
     email: {
       loadError: "No se pudo cargar la configuración de email",
@@ -668,7 +643,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       testSuccess: "Email de prueba enviado correctamente",
       testFail: "Fallo al enviar el email de prueba",
       testTo: "Destinatario",
-      testServer: "Servidor SMTP",
+      testServer: "Servidor SMTP"
     },
     database: {
       loadError: "No se pudo cargar la configuración de la base de datos",
@@ -710,8 +685,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       testSuccess: "Conexión correcta",
       testFail: "Conexión fallida",
       warningTitle: "Cambio sensible",
-      warningText:
-        "Estos parámetros definen el enlace entre el backend Veritas y PostgreSQL. Un error deja la aplicación inutilizable hasta corregirlo. Pruebe siempre la conexión antes de guardar.",
+      warningText: "Estos parámetros definen el enlace entre el backend Veritas y PostgreSQL. Un error deja la aplicación inutilizable hasta corregirlo. Pruebe siempre la conexión antes de guardar.",
       passwordHint: "Dejar vacío para conservar la contraseña guardada.",
       testConnectionOk: "Conexión PostgreSQL establecida",
       testConnectionFail: "No se puede conectar a PostgreSQL",
@@ -724,16 +698,15 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
         settings: "Ajustes",
         clients: "Clientes",
         tickets: "Tickets",
-        migrations: "Migraciones de esquema",
+        migrations: "Migraciones de esquema"
       },
       referenceSchemaOk: "Migración de referencia Veritas presente",
       referenceSchemaMissing: "Migración de referencia Veritas ausente",
       saveConfirmTitle: "¿Aplicar la nueva configuración?",
-      saveConfirmText:
-        "Veritas cambiará inmediatamente a estos parámetros PostgreSQL. Si son incorrectos, el backend perderá el acceso a la base hasta restaurar las credenciales correctas.",
+      saveConfirmText: "Veritas cambiará inmediatamente a estos parámetros PostgreSQL. Si son incorrectos, el backend perderá el acceso a la base hasta restaurar las credenciales correctas.",
       saveConfirmBtn: "Sí, aplicar",
       saveCancelBtn: "Cancelar",
-      applyRestartHint: "Configuración aplicada. Reinicie el servicio backend si persisten anomalías.",
+      applyRestartHint: "Configuración aplicada. Reinicie el servicio backend si persisten anomalías."
     },
     appearance: {
       title: "Apariencia",
@@ -742,7 +715,7 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       themeAria: "Tema predeterminado",
       pageSizeLabel: "Elementos por página",
       pageSizeHint: "Paginación predeterminada de listas y tablas.",
-      pageSizeAria: "Elementos por página",
+      pageSizeAria: "Elementos por página"
     },
     organization: {
       title: "Organización",
@@ -757,23 +730,20 @@ const ADMIN_GENERAL_SETTINGS_COPY = {
       supportPhoneHint: "Número para contactar con su equipo de soporte.",
       addressLabel: "Dirección",
       addressHint: "Sede o dirección principal de su MSP.",
-      websiteLabel: "Sitio web",
+      websiteLabel: "Sitio web"
     },
     support: {
       title: "Soporte y herramientas",
       description: "Enlaces externos usados por sus equipos desde la interfaz Veritas.",
       knowledgeBaseLabel: "Knowledge Base",
-      knowledgeBaseHint: "URL abierta por el botón Knowledge Base en el detalle del ticket. Déjelo vacío para desactivar el botón.",
+      knowledgeBaseHint: "URL abierta por el botón Knowledge Base en el detalle del ticket. Déjelo vacío para desactivar el botón."
     },
     onboarding: {
       title: "Guía Primeros pasos",
-      description:
-        "Recorrido de configuración inicial de su instancia MSP (identidad, soporte, horarios, equipo, licencia).",
-      body:
-        "Relance la guía en cualquier momento para revisar los pasos o actualizar la configuración básica. Solo afecta a su cuenta de administrador.",
-      relaunch: "Relanzar guía Primeros pasos",
-    },
-  },
+      description: "Recorrido de configuración inicial de su instancia MSP (identidad, soporte, horarios, equipo, licencia).",
+      body: "Relance la guía en cualquier momento para revisar los pasos o actualizar la configuración básica. Solo afecta a su cuenta de administrador.",
+      relaunch: "Relanzar guía Primeros pasos"
+    }
+  }
 };
-
 export const getAdminGeneralSettingsCopy = createLocaleGetter(ADMIN_GENERAL_SETTINGS_COPY);

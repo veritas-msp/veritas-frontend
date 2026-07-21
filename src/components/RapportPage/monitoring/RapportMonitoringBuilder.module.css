@@ -277,25 +277,25 @@
   justify-content: center;
 }
 
-/* Réduction de la taille des icônes des modules dans la colonne des étapes */
+
 .timelineIcon svg {
   width: 18px !important;
   height: 18px !important;
   display: block;
 }
 
-/* Couleurs par catégorie pour les icônes de modules */
+
 .timelineSectionInfra .timelineIcon svg {
-  color: #3b82f6 !important; /* bleu */
+  color: #3b82f6 !important; 
   fill: #3b82f6 !important;
 }
 
-/* Onglets du résumé de rapport (INFRA / CYBER / SERVICES) */
-/* En-tête commun des rapports (client, période, séparateur, titre rapport) */
+
+
 .summaryHeader {
   text-align: left;
   margin-bottom: 1.25rem;
-  padding: 0.75rem 1.75rem 0.25rem 1.75rem; /* même padding horizontal que le contenu */
+  padding: 0.75rem 1.75rem 0.25rem 1.75rem; 
   border-radius: 0;
   background: transparent;
   border: none;
@@ -378,7 +378,7 @@
 }
 
 .summaryTabActive {
-  /* plus de shadow, l'état actif est géré par la bordure colorée */
+  
 }
 
 .summaryReportTitle {
@@ -418,12 +418,12 @@
 }
 
 .timelineSectionCyber .timelineIcon svg {
-  color: #ef4444 !important; /* rouge */
+  color: #ef4444 !important; 
   fill: #ef4444 !important;
 }
 
 .timelineSectionServices .timelineIcon svg {
-  color: #8b5cf6 !important; /* violet */
+  color: #8b5cf6 !important; 
   fill: #8b5cf6 !important;
 }
 
@@ -477,8 +477,8 @@
   color: var(--text-muted, #9ca3af);
 }
 
-/* Panneau latéral pour les commentaires d'équipement */
-/* Démarre sous le header du builder (~88px) pour ne pas masquer le header */
+
+
 .commentsDrawerOverlay {
   position: fixed;
   top: 88px;
@@ -493,7 +493,7 @@
   pointer-events: auto;
 }
 
-/* Avec barre d'onglets : barre (48px) + header (~88px) */
+
 .commentsDrawerOverlayWithTabs {
   top: 136px;
 }
@@ -578,7 +578,7 @@
   position: relative;
   margin-left: 0;
   border-radius: 0.75rem;
-  /* Fond clair dans le thème vert de l'app */
+  
   background: #ecfdf5;
   padding: 0.9rem 0.9rem 0.6rem 0.9rem;
   display: flex;
@@ -607,7 +607,7 @@
   font-size: 0.8rem;
   font-weight: 600;
   position: absolute;
-  /* En dehors de la carte, en bas à gauche */
+  
   left: -28px;
 
 }
@@ -629,7 +629,7 @@
   font-size: 0.85rem;
   padding: 0.4rem 0.45rem;
   border-radius: 0.5rem;
-  /* Pas de bordure, même fond que la carte pour fondre le champ */
+  
   border: none;
   outline: none;
   box-shadow: none;
@@ -647,7 +647,7 @@
   padding: 0.25rem 0.9rem;
   border-radius: 999px;
   border: none;
-  /* Même esprit que les boutons verts du header */
+  
   background-color: #15D1A0;
   color: #0f172a;
   font-size: 0.8rem;
@@ -787,7 +787,7 @@
   background: #059669;
 }
 
-/* ── Layout unifié des steps monitoring ── */
+
 .stepShell,
 .antivirusStepContainer {
   display: flex;
@@ -1050,7 +1050,7 @@
   gap: 0.75rem;
 }
 
-/* Tableau générique pour les équipements d'infrastructure */
+
 .infraTableSection {
   display: flex;
   flex-direction: column;
@@ -1076,7 +1076,7 @@
   gap: 0.75rem;
 }
 
-/* Barre de recherche : même style que EnterprisePage */
+
 .infraTableSearchBox {
   position: relative;
   display: flex;
@@ -1125,7 +1125,7 @@
   color: var(--text-primary, #f9fafb);
 }
 
-/* Surbrillance temporaire sur les lignes EquipmentPage */
+
 .infraTableRowHighlight {
   background: rgba(19, 186, 142, 0.12) !important;
   box-shadow: inset 3px 0 0 #13ba8e;
@@ -1285,7 +1285,7 @@
   color: var(--text-muted, #9ca3af);
 }
 
-/* Grille d’instances de sauvegarde (2 par ligne) */
+
 .backupInstancesGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1402,7 +1402,7 @@
   width: 80px;
 }
 
-/* Skeleton détaillé Office365 (comme TenantDetail) */
+
 .o365SyncSkeleton {
   display: flex;
   flex-direction: column;
@@ -1502,11 +1502,11 @@
   }
 }
 
-/* Colonne d'étapes sticky sur desktop pour garder le menu visible au scroll */
+
 @media (min-width: 1024px) {
   .timelineCard {
     position: sticky;
-    top: 88px; /* aligné sur le header (~88px) */
+    top: 88px; 
     align-self: flex-start;
     max-height: calc(100vh - 96px);
     overflow-y: auto;
@@ -1528,7 +1528,7 @@
   }
 }
 
-/* Antivirus step · cartes SaaS (pas de mapping CheckMK) */
+
 .antivirusCards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -1620,7 +1620,7 @@
   color: var(--text-primary, #111827);
 }
 
-/* Office365 / Exchange · KPI alignés sur le style TenantDetailPage */
+
 .exchangeKpiRow {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1724,7 +1724,7 @@
   justify-content: center;
 }
 
-/* Bouton Plus d'infos (colonne Informations Antivirus) */
+
 .antivirusInfoButton {
   display: inline-flex;
   align-items: center;
@@ -1744,7 +1744,7 @@
   border-color: #d1d5db;
 }
 
-/* Modal Antivirus détails */
+
 .antivirusModalOverlay {
   position: fixed;
   inset: 0;
@@ -1973,7 +1973,7 @@
   font-size: 0.9rem;
 }
 
-/* Firewall step · disposition des blocs haut (alarmes + trafic web) */
+
 .firewallTopRow {
   display: flex;
   flex-wrap: wrap;
@@ -1986,7 +1986,7 @@
   min-width: 260px;
 }
 
-/* Office 365 · onglets de step alignés sur TenantDetailPage */
+
 .o365TabsContainer {
   display: flex;
   align-items: center;

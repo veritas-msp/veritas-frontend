@@ -1,41 +1,57 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
-const SALES_VIEW_DEFS = [
-  { id: "all", kind: "", icon: "mdi:view-list" },
-  { id: "prestation", kind: "prestation", icon: "mdi:briefcase-edit-outline" },
-  { id: "installation", kind: "installation", icon: "mdi:tools" },
-];
-
+const SALES_VIEW_DEFS = [{
+  id: "all",
+  kind: "",
+  icon: "mdi:view-list"
+}, {
+  id: "prestation",
+  kind: "prestation",
+  icon: "mdi:briefcase-edit-outline"
+}, {
+  id: "installation",
+  kind: "installation",
+  icon: "mdi:tools"
+}];
 const STATUS_FILTER_KEYS = ["new", "in_progress", "pending", "resolved", "closed"];
-
 const STATUS_FILTER_META = {
-  new: { icon: "mdi:inbox-arrow-down", kpiTone: "blue" },
-  in_progress: { icon: "mdi:progress-clock", kpiTone: "amber" },
-  pending: { icon: "mdi:pause-circle-outline", kpiTone: "violet" },
-  resolved: { icon: "mdi:check-circle-outline", kpiTone: "blue" },
-  closed: { icon: "mdi:archive-outline", kpiTone: "orange" },
+  new: {
+    icon: "mdi:inbox-arrow-down",
+    kpiTone: "blue"
+  },
+  in_progress: {
+    icon: "mdi:progress-clock",
+    kpiTone: "amber"
+  },
+  pending: {
+    icon: "mdi:pause-circle-outline",
+    kpiTone: "violet"
+  },
+  resolved: {
+    icon: "mdi:check-circle-outline",
+    kpiTone: "blue"
+  },
+  closed: {
+    icon: "mdi:archive-outline",
+    kpiTone: "orange"
+  }
 };
-
 const PRIORITY_KEYS = ["low", "normal", "high", "urgent"];
 const CHANNEL_KEYS = ["web", "phone", "email", "chat", "api", "whatsapp"];
-
 const CHANNEL_ICONS = {
   web: "mdi:web",
   phone: "mdi:phone",
   email: "mdi:email-outline",
   chat: "mdi:message-outline",
   api: "mdi:api",
-  whatsapp: "mdi:whatsapp",
+  whatsapp: "mdi:whatsapp"
 };
-
 const LOCALE_BCP47 = {
   fr: "fr-FR",
   en: "en-GB",
   de: "de-DE",
   it: "it-IT",
-  es: "es-ES",
+  es: "es-ES"
 };
-
 const TICKET_SALES_PAGE = {
   fr: {
     eyebrow: "Exploitation",
@@ -56,35 +72,44 @@ const TICKET_SALES_PAGE = {
       paneAria: "Vues prestations et installations",
       title: "Vues",
       typesGroup: "Types",
-      all: { name: "Toutes", hint: "Prestations et installations" },
-      prestation: { name: "Prestations", hint: "Demandes de prestation" },
-      installation: { name: "Installations", hint: "Demandes d'installation" },
+      all: {
+        name: "Toutes",
+        hint: "Prestations et installations"
+      },
+      prestation: {
+        name: "Prestations",
+        hint: "Demandes de prestation"
+      },
+      installation: {
+        name: "Installations",
+        hint: "Demandes d'installation"
+      },
       requestCountAria: "{count} demande",
-      requestCountAriaPlural: "{count} demandes",
+      requestCountAriaPlural: "{count} demandes"
     },
     trashBanner: {
       title: "Corbeille",
-      hint: "Demandes supprimées · restauration ou suppression définitive",
+      hint: "Demandes supprimées · restauration ou suppression définitive"
     },
     statusFilters: {
       new: "Nouveaux",
       in_progress: "En cours",
       pending: "En attente",
       resolved: "Résolus",
-      closed: "Clos",
+      closed: "Clos"
     },
     statusBadge: {
       new: "Nouveau",
       in_progress: "En cours",
       pending: "En attente",
       resolved: "Résolu",
-      closed: "Clos",
+      closed: "Clos"
     },
     priority: {
       low: "Basse",
       normal: "Normale",
       high: "Haute",
-      urgent: "Urgente",
+      urgent: "Urgente"
     },
     channels: {
       web: "Web",
@@ -92,25 +117,25 @@ const TICKET_SALES_PAGE = {
       email: "Email",
       chat: "Chat",
       api: "API",
-      whatsapp: "WhatsApp",
+      whatsapp: "WhatsApp"
     },
     kind: {
       prestation: "Prestation",
-      installation: "Installation",
+      installation: "Installation"
     },
     allCategories: "Toutes catégories",
     search: {
       placeholder: "Demande, client, demandeur, sujet…",
       aria: "Rechercher une demande",
       clear: "Effacer",
-      filterCategory: "Filtrer par catégorie",
+      filterCategory: "Filtrer par catégorie"
     },
     empty: {
       trashTitle: "Corbeille vide",
       noRequestsTitle: "Aucune demande trouvée",
       trashHint: "Les demandes supprimées apparaîtront ici.",
       activeHint: "Ajustez vos filtres ou créez une nouvelle demande de prestation ou d'installation.",
-      newRequest: "Nouvelle demande",
+      newRequest: "Nouvelle demande"
     },
     bulk: {
       selected: "sélectionnée",
@@ -133,7 +158,7 @@ const TICKET_SALES_PAGE = {
       requestLabelPlural: "{count} demandes",
       adminOnlyPurge: "Seuls les administrateurs peuvent supprimer définitivement une demande",
       toastPurgedOne: "Demande supprimée définitivement",
-      toastPurgeError: "Erreur lors de la suppression définitive",
+      toastPurgeError: "Erreur lors de la suppression définitive"
     },
     table: {
       selectAll: "Sélectionner toutes les demandes de la page",
@@ -156,22 +181,22 @@ const TICKET_SALES_PAGE = {
       restore: "Restaurer",
       restoreTitle: "Restaurer la demande",
       purgeTitle: "Supprimer définitivement",
-      purge: "Supprimer",
+      purge: "Supprimer"
     },
     sla: {
       firstResponse: "Délai première prise en charge",
       resolution: "Délai résolution",
-      default: "SLA",
+      default: "SLA"
     },
     tooltip: {
       comment: "{count} commentaire",
-      commentPlural: "{count} commentaires",
+      commentPlural: "{count} commentaires"
     },
     pagination: {
       perPage: "Par page",
       page: "Page {current} / {total}",
       prev: "Page précédente",
-      next: "Page suivante",
+      next: "Page suivante"
     },
     followersCount: "{count} followers",
     toasts: {
@@ -191,7 +216,7 @@ const TICKET_SALES_PAGE = {
       bulkDeleteError: "Erreur lors de la suppression groupée",
       bulkUpdatePartial: "{success} mise(s) à jour, {failure} échec(s)",
       bulkUpdateOk: "{count} demande mise à jour",
-      bulkUpdateOkPlural: "{count} demandes mises à jour",
+      bulkUpdateOkPlural: "{count} demandes mises à jour"
     },
     csv: {
       filenamePrefix: "prestations-installations",
@@ -208,9 +233,9 @@ const TICKET_SALES_PAGE = {
         status: "Statut",
         priority: "Priorité",
         created: "Création",
-        updated: "Dernière modification",
-      },
-    },
+        updated: "Dernière modification"
+      }
+    }
   },
   en: {
     eyebrow: "Operations",
@@ -231,35 +256,44 @@ const TICKET_SALES_PAGE = {
       paneAria: "Services & installations views",
       title: "Views",
       typesGroup: "Types",
-      all: { name: "All", hint: "Services and installations" },
-      prestation: { name: "Services", hint: "Service requests" },
-      installation: { name: "Installations", hint: "Installation requests" },
+      all: {
+        name: "All",
+        hint: "Services and installations"
+      },
+      prestation: {
+        name: "Services",
+        hint: "Service requests"
+      },
+      installation: {
+        name: "Installations",
+        hint: "Installation requests"
+      },
       requestCountAria: "{count} request",
-      requestCountAriaPlural: "{count} requests",
+      requestCountAriaPlural: "{count} requests"
     },
     trashBanner: {
       title: "Trash",
-      hint: "Deleted requests · restore or permanently delete",
+      hint: "Deleted requests · restore or permanently delete"
     },
     statusFilters: {
       new: "New",
       in_progress: "In progress",
       pending: "Pending",
       resolved: "Resolved",
-      closed: "Closed",
+      closed: "Closed"
     },
     statusBadge: {
       new: "New",
       in_progress: "In progress",
       pending: "Pending",
       resolved: "Resolved",
-      closed: "Closed",
+      closed: "Closed"
     },
     priority: {
       low: "Low",
       normal: "Normal",
       high: "High",
-      urgent: "Urgent",
+      urgent: "Urgent"
     },
     channels: {
       web: "Web",
@@ -267,25 +301,25 @@ const TICKET_SALES_PAGE = {
       email: "Email",
       chat: "Chat",
       api: "API",
-      whatsapp: "WhatsApp",
+      whatsapp: "WhatsApp"
     },
     kind: {
       prestation: "Service",
-      installation: "Installation",
+      installation: "Installation"
     },
     allCategories: "All categories",
     search: {
       placeholder: "Request, client, requester, subject…",
       aria: "Search for a request",
       clear: "Clear",
-      filterCategory: "Filter by category",
+      filterCategory: "Filter by category"
     },
     empty: {
       trashTitle: "Trash is empty",
       noRequestsTitle: "No requests found",
       trashHint: "Deleted requests will appear here.",
       activeHint: "Adjust your filters or create a new service or installation request.",
-      newRequest: "New request",
+      newRequest: "New request"
     },
     bulk: {
       selected: "selected",
@@ -308,7 +342,7 @@ const TICKET_SALES_PAGE = {
       requestLabelPlural: "{count} requests",
       adminOnlyPurge: "Only administrators can permanently delete a request",
       toastPurgedOne: "Request permanently deleted",
-      toastPurgeError: "Error permanently deleting request",
+      toastPurgeError: "Error permanently deleting request"
     },
     table: {
       selectAll: "Select all requests on this page",
@@ -331,22 +365,22 @@ const TICKET_SALES_PAGE = {
       restore: "Restore",
       restoreTitle: "Restore request",
       purgeTitle: "Delete permanently",
-      purge: "Delete",
+      purge: "Delete"
     },
     sla: {
       firstResponse: "First response deadline",
       resolution: "Resolution deadline",
-      default: "SLA",
+      default: "SLA"
     },
     tooltip: {
       comment: "{count} comment",
-      commentPlural: "{count} comments",
+      commentPlural: "{count} comments"
     },
     pagination: {
       perPage: "Per page",
       page: "Page {current} / {total}",
       prev: "Previous page",
-      next: "Next page",
+      next: "Next page"
     },
     followersCount: "{count} followers",
     toasts: {
@@ -366,7 +400,7 @@ const TICKET_SALES_PAGE = {
       bulkDeleteError: "Error during bulk delete",
       bulkUpdatePartial: "{success} updated, {failure} failed",
       bulkUpdateOk: "{count} request updated",
-      bulkUpdateOkPlural: "{count} requests updated",
+      bulkUpdateOkPlural: "{count} requests updated"
     },
     csv: {
       filenamePrefix: "services-installations",
@@ -383,9 +417,9 @@ const TICKET_SALES_PAGE = {
         status: "Status",
         priority: "Priority",
         created: "Created",
-        updated: "Last updated",
-      },
-    },
+        updated: "Last updated"
+      }
+    }
   },
   de: {
     eyebrow: "Betrieb",
@@ -406,35 +440,44 @@ const TICKET_SALES_PAGE = {
       paneAria: "Ansichten Leistungen & Installationen",
       title: "Ansichten",
       typesGroup: "Typen",
-      all: { name: "Alle", hint: "Leistungen und Installationen" },
-      prestation: { name: "Leistungen", hint: "Leistungsanfragen" },
-      installation: { name: "Installationen", hint: "Installationsanfragen" },
+      all: {
+        name: "Alle",
+        hint: "Leistungen und Installationen"
+      },
+      prestation: {
+        name: "Leistungen",
+        hint: "Leistungsanfragen"
+      },
+      installation: {
+        name: "Installationen",
+        hint: "Installationsanfragen"
+      },
       requestCountAria: "{count} Anfrage",
-      requestCountAriaPlural: "{count} Anfragen",
+      requestCountAriaPlural: "{count} Anfragen"
     },
     trashBanner: {
       title: "Papierkorb",
-      hint: "Gelöschte Anfragen · wiederherstellen oder endgültig löschen",
+      hint: "Gelöschte Anfragen · wiederherstellen oder endgültig löschen"
     },
     statusFilters: {
       new: "Neu",
       in_progress: "In Bearbeitung",
       pending: "Wartend",
       resolved: "Gelöst",
-      closed: "Geschlossen",
+      closed: "Geschlossen"
     },
     statusBadge: {
       new: "Neu",
       in_progress: "In Bearbeitung",
       pending: "Wartend",
       resolved: "Gelöst",
-      closed: "Geschlossen",
+      closed: "Geschlossen"
     },
     priority: {
       low: "Niedrig",
       normal: "Normal",
       high: "Hoch",
-      urgent: "Dringend",
+      urgent: "Dringend"
     },
     channels: {
       web: "Web",
@@ -442,25 +485,25 @@ const TICKET_SALES_PAGE = {
       email: "E-Mail",
       chat: "Chat",
       api: "API",
-      whatsapp: "WhatsApp",
+      whatsapp: "WhatsApp"
     },
     kind: {
       prestation: "Leistung",
-      installation: "Installation",
+      installation: "Installation"
     },
     allCategories: "Alle Kategorien",
     search: {
       placeholder: "Anfrage, Kunde, Anfragender, Betreff…",
       aria: "Anfrage suchen",
       clear: "Löschen",
-      filterCategory: "Nach Kategorie filtern",
+      filterCategory: "Nach Kategorie filtern"
     },
     empty: {
       trashTitle: "Papierkorb leer",
       noRequestsTitle: "Keine Anfragen gefunden",
       trashHint: "Gelöschte Anfragen erscheinen hier.",
       activeHint: "Filter anpassen oder neue Leistungs- oder Installationsanfrage erstellen.",
-      newRequest: "Neue Anfrage",
+      newRequest: "Neue Anfrage"
     },
     bulk: {
       selected: "ausgewählt",
@@ -483,7 +526,7 @@ const TICKET_SALES_PAGE = {
       requestLabelPlural: "{count} Anfragen",
       adminOnlyPurge: "Nur Administratoren können Anfragen endgültig löschen",
       toastPurgedOne: "Anfrage endgültig gelöscht",
-      toastPurgeError: "Fehler beim endgültigen Löschen",
+      toastPurgeError: "Fehler beim endgültigen Löschen"
     },
     table: {
       selectAll: "Alle Anfragen auf dieser Seite auswählen",
@@ -506,22 +549,22 @@ const TICKET_SALES_PAGE = {
       restore: "Wiederherstellen",
       restoreTitle: "Anfrage wiederherstellen",
       purgeTitle: "Endgültig löschen",
-      purge: "Löschen",
+      purge: "Löschen"
     },
     sla: {
       firstResponse: "Frist erste Reaktion",
       resolution: "Frist Lösung",
-      default: "SLA",
+      default: "SLA"
     },
     tooltip: {
       comment: "{count} Kommentar",
-      commentPlural: "{count} Kommentare",
+      commentPlural: "{count} Kommentare"
     },
     pagination: {
       perPage: "Pro Seite",
       page: "Seite {current} / {total}",
       prev: "Vorherige Seite",
-      next: "Nächste Seite",
+      next: "Nächste Seite"
     },
     followersCount: "{count} Follower",
     toasts: {
@@ -541,7 +584,7 @@ const TICKET_SALES_PAGE = {
       bulkDeleteError: "Fehler bei der Massenlöschung",
       bulkUpdatePartial: "{success} aktualisiert, {failure} fehlgeschlagen",
       bulkUpdateOk: "{count} Anfrage aktualisiert",
-      bulkUpdateOkPlural: "{count} Anfragen aktualisiert",
+      bulkUpdateOkPlural: "{count} Anfragen aktualisiert"
     },
     csv: {
       filenamePrefix: "leistungen-installationen",
@@ -558,9 +601,9 @@ const TICKET_SALES_PAGE = {
         status: "Status",
         priority: "Priorität",
         created: "Erstellt",
-        updated: "Zuletzt geändert",
-      },
-    },
+        updated: "Zuletzt geändert"
+      }
+    }
   },
   it: {
     eyebrow: "Operazioni",
@@ -581,35 +624,44 @@ const TICKET_SALES_PAGE = {
       paneAria: "Viste prestazioni e installazioni",
       title: "Viste",
       typesGroup: "Tipi",
-      all: { name: "Tutte", hint: "Prestazioni e installazioni" },
-      prestation: { name: "Prestazioni", hint: "Richieste di prestazione" },
-      installation: { name: "Installazioni", hint: "Richieste di installazione" },
+      all: {
+        name: "Tutte",
+        hint: "Prestazioni e installazioni"
+      },
+      prestation: {
+        name: "Prestazioni",
+        hint: "Richieste di prestazione"
+      },
+      installation: {
+        name: "Installazioni",
+        hint: "Richieste di installazione"
+      },
       requestCountAria: "{count} richiesta",
-      requestCountAriaPlural: "{count} richieste",
+      requestCountAriaPlural: "{count} richieste"
     },
     trashBanner: {
       title: "Cestino",
-      hint: "Richieste eliminate · ripristino o eliminazione definitiva",
+      hint: "Richieste eliminate · ripristino o eliminazione definitiva"
     },
     statusFilters: {
       new: "Nuovi",
       in_progress: "In corso",
       pending: "In attesa",
       resolved: "Risolti",
-      closed: "Chiusi",
+      closed: "Chiusi"
     },
     statusBadge: {
       new: "Nuovo",
       in_progress: "In corso",
       pending: "In attesa",
       resolved: "Risolto",
-      closed: "Chiuso",
+      closed: "Chiuso"
     },
     priority: {
       low: "Bassa",
       normal: "Normale",
       high: "Alta",
-      urgent: "Urgente",
+      urgent: "Urgente"
     },
     channels: {
       web: "Web",
@@ -617,25 +669,25 @@ const TICKET_SALES_PAGE = {
       email: "Email",
       chat: "Chat",
       api: "API",
-      whatsapp: "WhatsApp",
+      whatsapp: "WhatsApp"
     },
     kind: {
       prestation: "Prestazione",
-      installation: "Installazione",
+      installation: "Installazione"
     },
     allCategories: "Tutte le categorie",
     search: {
       placeholder: "Richiesta, cliente, richiedente, oggetto…",
       aria: "Cerca una richiesta",
       clear: "Cancella",
-      filterCategory: "Filtra per categoria",
+      filterCategory: "Filtra per categoria"
     },
     empty: {
       trashTitle: "Cestino vuoto",
       noRequestsTitle: "Nessuna richiesta trovata",
       trashHint: "Le richieste eliminate appariranno qui.",
       activeHint: "Modifica i filtri o crea una nuova richiesta di prestazione o installazione.",
-      newRequest: "Nuova richiesta",
+      newRequest: "Nuova richiesta"
     },
     bulk: {
       selected: "selezionata",
@@ -658,7 +710,7 @@ const TICKET_SALES_PAGE = {
       requestLabelPlural: "{count} richieste",
       adminOnlyPurge: "Solo gli amministratori possono eliminare definitivamente una richiesta",
       toastPurgedOne: "Richiesta eliminata definitivamente",
-      toastPurgeError: "Errore durante l'eliminazione definitiva",
+      toastPurgeError: "Errore durante l'eliminazione definitiva"
     },
     table: {
       selectAll: "Seleziona tutte le richieste della pagina",
@@ -681,22 +733,22 @@ const TICKET_SALES_PAGE = {
       restore: "Ripristina",
       restoreTitle: "Ripristina richiesta",
       purgeTitle: "Elimina definitivamente",
-      purge: "Elimina",
+      purge: "Elimina"
     },
     sla: {
       firstResponse: "Scadenza prima risposta",
       resolution: "Scadenza risoluzione",
-      default: "SLA",
+      default: "SLA"
     },
     tooltip: {
       comment: "{count} commento",
-      commentPlural: "{count} commenti",
+      commentPlural: "{count} commenti"
     },
     pagination: {
       perPage: "Per pagina",
       page: "Pagina {current} / {total}",
       prev: "Pagina precedente",
-      next: "Pagina successiva",
+      next: "Pagina successiva"
     },
     followersCount: "{count} follower",
     toasts: {
@@ -716,7 +768,7 @@ const TICKET_SALES_PAGE = {
       bulkDeleteError: "Errore durante l'eliminazione di massa",
       bulkUpdatePartial: "{success} aggiornata/e, {failure} errore/i",
       bulkUpdateOk: "{count} richiesta aggiornata",
-      bulkUpdateOkPlural: "{count} richieste aggiornate",
+      bulkUpdateOkPlural: "{count} richieste aggiornate"
     },
     csv: {
       filenamePrefix: "prestazioni-installazioni",
@@ -733,9 +785,9 @@ const TICKET_SALES_PAGE = {
         status: "Stato",
         priority: "Priorità",
         created: "Creazione",
-        updated: "Ultima modifica",
-      },
-    },
+        updated: "Ultima modifica"
+      }
+    }
   },
   es: {
     eyebrow: "Operaciones",
@@ -756,35 +808,44 @@ const TICKET_SALES_PAGE = {
       paneAria: "Vistas prestaciones e instalaciones",
       title: "Vistas",
       typesGroup: "Tipos",
-      all: { name: "Todas", hint: "Prestaciones e instalaciones" },
-      prestation: { name: "Prestaciones", hint: "Solicitudes de prestación" },
-      installation: { name: "Instalaciones", hint: "Solicitudes de instalación" },
+      all: {
+        name: "Todas",
+        hint: "Prestaciones e instalaciones"
+      },
+      prestation: {
+        name: "Prestaciones",
+        hint: "Solicitudes de prestación"
+      },
+      installation: {
+        name: "Instalaciones",
+        hint: "Solicitudes de instalación"
+      },
       requestCountAria: "{count} solicitud",
-      requestCountAriaPlural: "{count} solicitudes",
+      requestCountAriaPlural: "{count} solicitudes"
     },
     trashBanner: {
       title: "Papelera",
-      hint: "Solicitudes eliminadas · restaurar o eliminar definitivamente",
+      hint: "Solicitudes eliminadas · restaurar o eliminar definitivamente"
     },
     statusFilters: {
       new: "Nuevos",
       in_progress: "En curso",
       pending: "En espera",
       resolved: "Resueltos",
-      closed: "Cerrados",
+      closed: "Cerrados"
     },
     statusBadge: {
       new: "Nuevo",
       in_progress: "En curso",
       pending: "En espera",
       resolved: "Resuelto",
-      closed: "Cerrado",
+      closed: "Cerrado"
     },
     priority: {
       low: "Baja",
       normal: "Normal",
       high: "Alta",
-      urgent: "Urgente",
+      urgent: "Urgente"
     },
     channels: {
       web: "Web",
@@ -792,25 +853,25 @@ const TICKET_SALES_PAGE = {
       email: "Email",
       chat: "Chat",
       api: "API",
-      whatsapp: "WhatsApp",
+      whatsapp: "WhatsApp"
     },
     kind: {
       prestation: "Prestación",
-      installation: "Instalación",
+      installation: "Instalación"
     },
     allCategories: "Todas las categorías",
     search: {
       placeholder: "Solicitud, cliente, solicitante, asunto…",
       aria: "Buscar una solicitud",
       clear: "Borrar",
-      filterCategory: "Filtrar por categoría",
+      filterCategory: "Filtrar por categoría"
     },
     empty: {
       trashTitle: "Papelera vacía",
       noRequestsTitle: "Ninguna solicitud encontrada",
       trashHint: "Las solicitudes eliminadas aparecerán aquí.",
       activeHint: "Ajuste los filtros o cree una nueva solicitud de prestación o instalación.",
-      newRequest: "Nueva solicitud",
+      newRequest: "Nueva solicitud"
     },
     bulk: {
       selected: "seleccionada",
@@ -833,7 +894,7 @@ const TICKET_SALES_PAGE = {
       requestLabelPlural: "{count} solicitudes",
       adminOnlyPurge: "Solo los administradores pueden eliminar definitivamente una solicitud",
       toastPurgedOne: "Solicitud eliminada definitivamente",
-      toastPurgeError: "Error al eliminar definitivamente",
+      toastPurgeError: "Error al eliminar definitivamente"
     },
     table: {
       selectAll: "Seleccionar todas las solicitudes de la página",
@@ -856,22 +917,22 @@ const TICKET_SALES_PAGE = {
       restore: "Restaurar",
       restoreTitle: "Restaurar solicitud",
       purgeTitle: "Eliminar definitivamente",
-      purge: "Eliminar",
+      purge: "Eliminar"
     },
     sla: {
       firstResponse: "Plazo primera respuesta",
       resolution: "Plazo de resolución",
-      default: "SLA",
+      default: "SLA"
     },
     tooltip: {
       comment: "{count} comentario",
-      commentPlural: "{count} comentarios",
+      commentPlural: "{count} comentarios"
     },
     pagination: {
       perPage: "Por página",
       page: "Página {current} / {total}",
       prev: "Página anterior",
-      next: "Página siguiente",
+      next: "Página siguiente"
     },
     followersCount: "{count} followers",
     toasts: {
@@ -891,7 +952,7 @@ const TICKET_SALES_PAGE = {
       bulkDeleteError: "Error durante la eliminación masiva",
       bulkUpdatePartial: "{success} actualizada(s), {failure} error(es)",
       bulkUpdateOk: "{count} solicitud actualizada",
-      bulkUpdateOkPlural: "{count} solicitudes actualizadas",
+      bulkUpdateOkPlural: "{count} solicitudes actualizadas"
     },
     csv: {
       filenamePrefix: "prestaciones-instalaciones",
@@ -908,70 +969,73 @@ const TICKET_SALES_PAGE = {
         status: "Estado",
         priority: "Prioridad",
         created: "Creación",
-        updated: "Última modificación",
-      },
-    },
-  },
+        updated: "Última modificación"
+      }
+    }
+  }
 };
-
 export function getTicketSalesPageCopy(locale) {
   const t = pickLocaleMessages(TICKET_SALES_PAGE, locale);
   const localeTag = LOCALE_BCP47[locale] || "fr-FR";
-
   return {
     ...t,
     locale,
     localeTag,
-    salesViews: SALES_VIEW_DEFS.map((view) => ({
+    salesViews: SALES_VIEW_DEFS.map(view => ({
       ...view,
       name: t.views[view.id].name,
-      hint: t.views[view.id].hint,
+      hint: t.views[view.id].hint
     })),
-    statusFilters: STATUS_FILTER_KEYS.map((key) => ({
+    statusFilters: STATUS_FILTER_KEYS.map(key => ({
       key,
       label: t.statusFilters[key],
       icon: STATUS_FILTER_META[key].icon,
-      kpiTone: STATUS_FILTER_META[key].kpiTone,
+      kpiTone: STATUS_FILTER_META[key].kpiTone
     })),
     priorityLabels: PRIORITY_KEYS.reduce((acc, key) => {
       acc[key] = t.priority[key];
       return acc;
     }, {}),
     channelMeta: CHANNEL_KEYS.reduce((acc, key) => {
-      acc[key] = { label: t.channels[key], icon: CHANNEL_ICONS[key] };
+      acc[key] = {
+        label: t.channels[key],
+        icon: CHANNEL_ICONS[key]
+      };
       return acc;
     }, {}),
     formatSubtitle: (loading, viewMode, viewName, count) => {
       if (loading) return t.loading;
       if (viewMode === "trash") {
         return interpolate(count === 1 ? t.subtitleTrash : t.subtitleTrashPlural, {
-          count: String(count),
+          count: String(count)
         });
       }
       return interpolate(count === 1 ? t.subtitleActive : t.subtitleActivePlural, {
         view: viewName,
-        count: String(count),
+        count: String(count)
       });
     },
-    formatViewCountAria: (count) =>
-      interpolate(count === 1 ? t.views.requestCountAria : t.views.requestCountAriaPlural, {
-        count: String(count),
-      }),
-    formatBulkLabel: (count) =>
-      interpolate(count > 1 ? t.bulk.requestLabelPlural : t.bulk.requestLabel, {
-        count: String(count),
-      }),
-    formatCommentCount: (count) =>
-      interpolate(count === 1 ? t.tooltip.comment : t.tooltip.commentPlural, {
-        count: String(count),
-      }),
-    formatFollowersCount: (count) => interpolate(t.followersCount, { count: String(count) }),
-    formatBulkSelected: (count) =>
-      interpolate(count > 1 ? t.bulk.selectedPlural : t.bulk.selected, {}),
-    formatPagination: (current, total) =>
-      interpolate(t.pagination.page, { current: String(current), total: String(total) }),
-    formatSelectOne: (id) => interpolate(t.table.selectOne, { id: String(id) }),
-    formatDateTime: (value) => {
+    formatViewCountAria: count => interpolate(count === 1 ? t.views.requestCountAria : t.views.requestCountAriaPlural, {
+      count: String(count)
+    }),
+    formatBulkLabel: count => interpolate(count > 1 ? t.bulk.requestLabelPlural : t.bulk.requestLabel, {
+      count: String(count)
+    }),
+    formatCommentCount: count => interpolate(count === 1 ? t.tooltip.comment : t.tooltip.commentPlural, {
+      count: String(count)
+    }),
+    formatFollowersCount: count => interpolate(t.followersCount, {
+      count: String(count)
+    }),
+    formatBulkSelected: count => interpolate(count > 1 ? t.bulk.selectedPlural : t.bulk.selected, {}),
+    formatPagination: (current, total) => interpolate(t.pagination.page, {
+      current: String(current),
+      total: String(total)
+    }),
+    formatSelectOne: id => interpolate(t.table.selectOne, {
+      id: String(id)
+    }),
+    formatDateTime: value => {
       if (!value) return "-";
       const d = new Date(value);
       if (Number.isNaN(d.getTime())) return "-";
@@ -980,65 +1044,55 @@ export function getTicketSalesPageCopy(locale) {
         month: "2-digit",
         year: "2-digit",
         hour: "2-digit",
-        minute: "2-digit",
+        minute: "2-digit"
       });
     },
-    getKindLabel: (ticket) => {
-      if (
-        String(ticket?.type || "").toLowerCase() === "demande" &&
-        String(ticket?.category || "").startsWith("installation-")
-      ) {
+    getKindLabel: ticket => {
+      if (String(ticket?.type || "").toLowerCase() === "demande" && String(ticket?.category || "").startsWith("installation-")) {
         return t.kind.installation;
       }
-      if (
-        String(ticket?.type || "").toLowerCase() === "demande" &&
-        String(ticket?.category || "").startsWith("prestation-")
-      ) {
+      if (String(ticket?.type || "").toLowerCase() === "demande" && String(ticket?.category || "").startsWith("prestation-")) {
         return t.kind.prestation;
       }
       return "-";
     },
-    getPriorityVisual: (priority) => {
+    getPriorityVisual: priority => {
       if (priority === "urgent") {
-        return { icon: "mdi:alert-octagon", label: t.priority.urgent };
+        return {
+          icon: "mdi:alert-octagon",
+          label: t.priority.urgent
+        };
       }
       if (priority === "low") {
-        return { icon: "mdi:arrow-down", label: t.priority.low };
+        return {
+          icon: "mdi:arrow-down",
+          label: t.priority.low
+        };
       }
       if (priority === "normal") {
-        return { icon: "mdi:minus", label: t.priority.normal };
+        return {
+          icon: "mdi:minus",
+          label: t.priority.normal
+        };
       }
-      return { icon: "mdi:arrow-up", label: t.priority[priority] || priority || "-" };
+      return {
+        icon: "mdi:arrow-up",
+        label: t.priority[priority] || priority || "-"
+      };
     },
-    getStatusBadge: (status) => {
+    getStatusBadge: status => {
       const normalized = status === "open" ? "new" : status;
       return t.statusBadge[normalized] || status || "-";
     },
-    getSlaTitle: (phase) => {
+    getSlaTitle: phase => {
       if (phase === "first_response") return t.sla.firstResponse;
       if (phase === "resolution") return t.sla.resolution;
       return t.sla.default;
     },
-    getCsvHeaders: () => [
-      t.csv.headers.id,
-      t.csv.headers.subject,
-      t.csv.headers.type,
-      t.csv.headers.category,
-      t.csv.headers.channel,
-      t.csv.headers.requester,
-      t.csv.headers.client,
-      t.csv.headers.assigned,
-      t.csv.headers.followers,
-      t.csv.headers.status,
-      t.csv.headers.priority,
-      t.csv.headers.created,
-      t.csv.headers.updated,
-    ],
+    getCsvHeaders: () => [t.csv.headers.id, t.csv.headers.subject, t.csv.headers.type, t.csv.headers.category, t.csv.headers.channel, t.csv.headers.requester, t.csv.headers.client, t.csv.headers.assigned, t.csv.headers.followers, t.csv.headers.status, t.csv.headers.priority, t.csv.headers.created, t.csv.headers.updated]
   };
 }
-
 export function formatSalesBulkLabel(locale, count) {
   return getTicketSalesPageCopy(locale).formatBulkLabel(count);
 }
-
 export { interpolate };

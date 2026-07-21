@@ -1,92 +1,79 @@
-// src/api/history.js
 const API_URL = process.env.REACT_APP_API_BASE_URL;
-
 export async function fetchUserHistory() {
   try {
     const res = await fetch(`${API_URL}/api/history`, {
-      credentials: 'include',
+      credentials: 'include'
     });
-
-    if (!res.ok) throw new Error("Erreur lors du chargement de l'historique");
-
+    if (!res.ok) throw new Error("Error loading history");
     return await res.json();
   } catch (err) {
     console.error("❌ fetchUserHistory:", err);
     return [];
   }
 }
-
 export async function fetchAllHistory() {
   try {
     const res = await fetch(`${API_URL}/api/history/all`, {
-      credentials: 'include',
+      credentials: 'include'
     });
-
     if (res.status === 403) {
       const err = new Error('Forbidden');
       err.status = 403;
       throw err;
     }
     if (!res.ok) {
-      const err = new Error("Erreur lors du chargement de l'historique global");
+      const err = new Error("Error loading global history");
       err.status = res.status;
       throw err;
     }
-
     return await res.json();
   } catch (err) {
     console.error("❌ fetchAllHistory:", err);
     return [];
   }
 }
-
-// Fonction pour compresser les données avant sauvegarde
 function compressData(data) {
   try {
-    // Si les données contiennent des images, on les compresse ou on les supprime
     if (data.appreciations) {
       const compressedAppreciations = {};
-      
       Object.entries(data.appreciations).forEach(([type, appreciation]) => {
-        const compressedAppreciation = { ...appreciation };
-        
-        // Au lieu de supprimer complètement les images, on garde les IDs
-        // et on supprime seulement les base64 pour réduire la taille
+        const compressedAppreciation = {
+          ...appreciation
+        };
         if (compressedAppreciation.images && Array.isArray(compressedAppreciation.images)) {
-          // Garder les IDs numériques, supprimer les base64
           compressedAppreciation.images = compressedAppreciation.images.map(img => {
             if (typeof img === 'number') {
-              return img; // Garder les IDs
+              return img;
             } else if (typeof img === 'string' && img.startsWith('data:image')) {
-              return null; // Supprimer les base64
+              return null;
             } else if (typeof img === 'string' && img.startsWith('/uploads/photos/')) {
-              return img; // Garder les URLs relatives
+              return img;
             }
-            return img; // Garder le reste
+            return img;
           });
         }
-        
         compressedAppreciations[type] = compressedAppreciation;
       });
-      
       return {
         ...data,
         appreciations: compressedAppreciations
       };
     }
-    
     return data;
   } catch (error) {
-    console.error("Erreur lors de la compression des données:", error);
+    console.error("Error compressing data:", error);
     return data;
   }
 }
-
-export async function saveDocumentToHistory({ name, type, data, overwrite, imageIds }) {
+export async function saveDocumentToHistory({
+  name,
+  type,
+  data,
+  overwrite,
+  imageIds
+}) {
   try {
-    // Compresser les données pour éviter l'erreur 413
     const compressedData = compressData(data);
-    
     const payload = {
       name,
       type,
@@ -94,46 +81,37 @@ export async function saveDocumentToHistory({ name, type, data, overwrite, image
     };
     if (overwrite !== undefined) payload.overwrite = overwrite;
     if (imageIds && Array.isArray(imageIds)) payload.imageIds = imageIds;
-
-
-
     const res = await fetch(`${API_URL}/api/history`, {
       method: "POST",
       credentials: 'include',
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payload)
     });
-
     if (!res.ok) {
       if (res.status === 413) {
-        throw new Error("Les données sont trop volumineuses pour être sauvegardées. Veuillez réduire le contenu.");
+        throw new Error("The data is too large to save. Please reduce the content.");
       }
-      throw new Error(`Erreur serveur: ${res.status} ${res.statusText}`);
+      throw new Error(`Server error: ${res.status} ${res.statusText}`);
     }
-
     const result = await res.json();
     return result;
   } catch (err) {
     console.error("❌ saveDocumentToHistory:", err);
-    
-    // Retourner un objet d'erreur plus informatif
-    return { 
-      success: false, 
-      error: err.message || "Erreur lors de la sauvegarde",
+    return {
+      success: false,
+      error: err.message || "Error saving",
       details: err.toString()
     };
   }
 }
-
 export async function deleteDocumentById(id) {
   try {
     const res = await fetch(`${API_URL}/api/history/${id}`, {
       method: "DELETE",
-      credentials: 'include',
+      credentials: 'include'
     });
-    
     if (res.ok) {
       const result = await res.json();
       return {
@@ -141,25 +119,28 @@ export async function deleteDocumentById(id) {
         deletedImages: result.deletedImages || 0
       };
     }
-    
-    return { success: false };
+    return {
+      success: false
+    };
   } catch (err) {
     console.error("❌ deleteDocumentById:", err);
-    return { success: false };
+    return {
+      success: false
+    };
   }
 }
-
 export async function deleteDocumentByName(name, preserveImageIds = []) {
   try {
     const res = await fetch(`${API_URL}/api/history/by-name/${encodeURIComponent(name)}`, {
       method: "DELETE",
       credentials: 'include',
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({ preserveImageIds }),
+      body: JSON.stringify({
+        preserveImageIds
+      })
     });
-    
     if (res.ok) {
       const result = await res.json();
       return {
@@ -167,25 +148,28 @@ export async function deleteDocumentByName(name, preserveImageIds = []) {
         deletedImages: result.deletedImages || 0
       };
     }
-    
-    return { success: false };
+    return {
+      success: false
+    };
   } catch (err) {
     console.error("❌ deleteDocumentByName:", err);
-    return { success: false };
+    return {
+      success: false
+    };
   }
 }
-
 export async function overwriteDocument(name, preserveImageIds = []) {
   try {
     const res = await fetch(`${API_URL}/api/history/overwrite/${encodeURIComponent(name)}`, {
       method: "DELETE",
       credentials: 'include',
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({ preserveImageIds }),
+      body: JSON.stringify({
+        preserveImageIds
+      })
     });
-    
     if (res.ok) {
       const result = await res.json();
       return {
@@ -195,23 +179,27 @@ export async function overwriteDocument(name, preserveImageIds = []) {
         totalImages: result.totalImages || 0
       };
     }
-    
-    return { success: false };
+    return {
+      success: false
+    };
   } catch (err) {
     console.error("❌ overwriteDocument:", err);
-    return { success: false };
+    return {
+      success: false
+    };
   }
 }
-
 export async function updateDocumentName(id, newName) {
   try {
     const res = await fetch(`${API_URL}/api/history/${id}`, {
       method: "PATCH",
       credentials: 'include',
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({ name: newName }),
+      body: JSON.stringify({
+        name: newName
+      })
     });
     return res.ok;
   } catch (err) {
@@ -219,15 +207,11 @@ export async function updateDocumentName(id, newName) {
     return false;
   }
 }
-
-// ──────────────────────────────
-// 🗑️ Corbeille
-// ──────────────────────────────
 export async function moveDocumentToTrash(id) {
   try {
     const res = await fetch(`${API_URL}/api/history/${id}/trash`, {
       method: "POST",
-      credentials: 'include',
+      credentials: 'include'
     });
     return res.ok;
   } catch (err) {
@@ -235,12 +219,11 @@ export async function moveDocumentToTrash(id) {
     return false;
   }
 }
-
 export async function restoreDocumentById(id) {
   try {
     const res = await fetch(`${API_URL}/api/history/${id}/restore`, {
       method: "POST",
-      credentials: 'include',
+      credentials: 'include'
     });
     return res.ok;
   } catch (err) {
@@ -248,12 +231,11 @@ export async function restoreDocumentById(id) {
     return false;
   }
 }
-
 export async function purgeDocumentById(id) {
   try {
     const res = await fetch(`${API_URL}/api/history/${id}/purge`, {
       method: "DELETE",
-      credentials: 'include',
+      credentials: 'include'
     });
     return res.ok;
   } catch (err) {
@@ -261,20 +243,18 @@ export async function purgeDocumentById(id) {
     return false;
   }
 }
-
 export async function fetchLastUserDocuments(limit = 3) {
   try {
     const res = await fetch(`${API_URL}/api/recent-docs?limit=${limit}`, {
-      credentials: 'include',
+      credentials: 'include'
     });
-    if (!res.ok) throw new Error("Erreur lors du chargement des documents récents");
+    if (!res.ok) throw new Error("Error loading recent documents");
     return await res.json();
   } catch (err) {
     console.error("❌ fetchLastUserDocuments:", err);
     return [];
   }
 }
-
 export async function fetchDocumentsByClient(clientName) {
   return [];
 }

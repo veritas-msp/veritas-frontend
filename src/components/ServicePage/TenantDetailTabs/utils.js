@@ -1,11 +1,8 @@
-// Fonctions utilitaires partagées pour les onglets TenantDetail
-
-// Mapping des identifiants de licences vers des noms lisibles
 export const licenseNameMapping = {
   'ENTERPRISEPACK': 'Microsoft 365 E3',
   'ENTERPRISEPREMIUM': 'Microsoft 365 E5',
-  'STANDARDWOFFPACK_FACULTY': 'Office 365 Éducation (Enseignants)',
-  'STANDARDWOFFPACK_STUDENT': 'Office 365 Éducation (Étudiants)',
+  'STANDARDWOFFPACK_FACULTY': 'Office 365 Education (Faculty)',
+  'STANDARDWOFFPACK_STUDENT': 'Office 365 Education (Students)',
   'O365_BUSINESS': 'Microsoft 365 Business Basic',
   'O365_BUSINESS_ESSENTIALS': 'Microsoft 365 Business Essentials',
   'O365_BUSINESS_PREMIUM': 'Microsoft 365 Business Premium',
@@ -13,32 +10,17 @@ export const licenseNameMapping = {
   'EXCHANGEENTERPRISE': 'Exchange Online Plan 2',
   'SHAREPOINTSTANDARD': 'SharePoint Online Plan 1',
   'SHAREPOINTENTERPRISE': 'SharePoint Online Plan 2',
-  'TEAMS1': 'Microsoft Teams (Essentiel)',
-  'FLOW_FREE': 'Power Automate (Gratuit)',
+  'TEAMS1': 'Microsoft Teams (Essential)',
+  'FLOW_FREE': 'Power Automate (Free)'
 };
-
-// Identifiants ou motifs indiquant une licence gratuite / non payante (faible utilisation = pas d'alerte)
-const FREE_LICENSE_PATTERNS = [
-  'FLOW_FREE',
-  'STORE',           // ex. Windows Store
-  'WINDOWS_STORE',
-  'EXPLORATORY',     // ex. Teams Exploratory
-  'TRIAL',
-  'POWER_BI_STANDALONE',
-  'FREE',
-  'GRATUIT',
-];
-
-/** Retourne true si la licence est considérée comme gratuite/non payante (pas d'alerte orange/rouge si peu utilisée). */
+const FREE_LICENSE_PATTERNS = ['FLOW_FREE', 'STORE', 'WINDOWS_STORE', 'EXPLORATORY', 'TRIAL', 'POWER_BI_STANDALONE', 'FREE', 'GRATUIT'];
 export function isFreeLicense(lic) {
-  const raw = ((lic && (lic.nom || lic.displayName)) || '').toUpperCase().trim();
+  const raw = (lic && (lic.nom || lic.displayName) || '').toUpperCase().trim();
   if (!raw) return false;
-  return FREE_LICENSE_PATTERNS.some((pattern) => raw.includes(pattern.toUpperCase()));
+  return FREE_LICENSE_PATTERNS.some(pattern => raw.includes(pattern.toUpperCase()));
 }
-
-// Fonction pour obtenir le nom lisible d'une licence
-export const getLicenseDisplayName = (licenseId) => {
-  if (!licenseId) return 'Licence inconnue';
+export const getLicenseDisplayName = licenseId => {
+  if (!licenseId) return 'Unknown license';
   const normalizedId = licenseId.toUpperCase().trim();
   if (licenseNameMapping[normalizedId]) {
     return licenseNameMapping[normalizedId];
@@ -48,31 +30,22 @@ export const getLicenseDisplayName = (licenseId) => {
       return value;
     }
   }
-  const formatted = licenseId
-    .replace(/_/g, ' ')
-    .replace(/-/g, ' ')
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
+  const formatted = licenseId.replace(/_/g, ' ').replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
   return formatted;
 };
-
-// Fonctions utilitaires pour les recommandations de sécurité
 export const priorityLevelLabelMap = {
-  3: "Élevée",
-  2: "Moyenne",
-  1: "Faible",
-  0: "Non classée"
+  3: "High",
+  2: "Medium",
+  1: "Low",
+  0: "Unclassified"
 };
-
 export const priorityColorMap = {
-  "Élevée": "#ef4444",
-  "Moyenne": "#f59e0b",
-  "Faible": "#6b7280",
-  "Non classée": "#9ca3af"
+  "High": "#ef4444",
+  "Medium": "#f59e0b",
+  "Low": "#6b7280",
+  "Unclassified": "#9ca3af"
 };
-
-export const computePriorityLevel = (rec) => {
+export const computePriorityLevel = rec => {
   const rank = typeof rec?.rank === 'number' ? rec.rank : null;
   const maxScore = typeof rec?.maxScore === 'number' ? rec.maxScore : 0;
   if (rec?.priorityLevel !== undefined && rec.priorityLevel !== null) {
@@ -88,17 +61,13 @@ export const computePriorityLevel = (rec) => {
   if (maxScore > 0) return 1;
   return 0;
 };
-
-export const getPriorityLabelFromLevel = (level) => {
-  return priorityLevelLabelMap[level] || "Non classée";
+export const getPriorityLabelFromLevel = level => {
+  return priorityLevelLabelMap[level] || "Unclassified";
 };
-
-export const getPriorityColorValue = (label) => {
-  return priorityColorMap[label] || priorityColorMap["Non classée"];
+export const getPriorityColorValue = label => {
+  return priorityColorMap[label] || priorityColorMap["Unclassified"];
 };
-
-export const getPriorityLabel = (rec) => {
+export const getPriorityLabel = rec => {
   if (rec?.priorityLabel) return rec.priorityLabel;
   return getPriorityLabelFromLevel(computePriorityLevel(rec));
 };
-

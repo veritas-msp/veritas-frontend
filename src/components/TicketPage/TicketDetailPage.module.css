@@ -1,4 +1,4 @@
-/* TicketDetailPage · refonte MSP v2 (base : EnterprisesPage.module.css) */
+
 
 .shell {
   --td-radius: 14px;
@@ -222,6 +222,65 @@
 }
 
 .ticketHeroSubjectInput:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(43, 95, 171, 0.12);
+}
+
+.descriptionTitleBtn {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0.2rem 0.35rem;
+  border: 1px solid transparent;
+  border-radius: var(--msp-radius-sm, 10px);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.descriptionTitleBtn:hover:not(:disabled) {
+  border-color: var(--msp-border, #e2e8f0);
+  background: var(--msp-surface-2, #f7f9fc);
+}
+
+.descriptionTitleBtn:disabled {
+  cursor: default;
+}
+
+.descriptionTitle {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  color: var(--msp-text, #0f1c2e);
+  word-break: break-word;
+}
+
+.descriptionTitlePlaceholder {
+  color: var(--msp-muted, #8a97ab);
+  font-style: italic;
+  font-weight: 600;
+}
+
+.descriptionTitleInput {
+  display: block;
+  width: 100%;
+  margin: 0;
+  border: 1px solid var(--msp-accent, #2b5fab);
+  border-radius: var(--msp-radius-sm, 10px);
+  background: var(--msp-surface, #fff);
+  color: var(--msp-text, #0f1c2e);
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 0.3rem 0.5rem;
+  font-family: inherit;
+  line-height: 1.35;
+}
+
+.descriptionTitleInput:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(43, 95, 171, 0.12);
 }
@@ -535,6 +594,43 @@
   flex-shrink: 0;
 }
 
+.historyRefreshBtn {
+  height: 28px;
+  width: 28px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--msp-muted, #5c6b82);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  font-size: 1.05rem;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.historyRefreshBtn:hover:not(:disabled) {
+  color: var(--msp-accent, #2b5fab);
+  background: rgba(43, 95, 171, 0.08);
+  border-color: rgba(43, 95, 171, 0.15);
+}
+
+.historyRefreshBtn:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.historyRefreshSpin {
+  animation: historyRefreshSpin 0.8s linear infinite;
+}
+
+@keyframes historyRefreshSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .contractHeaderStatus {
   font-size: 0.62rem;
   font-weight: 650;
@@ -839,6 +935,19 @@
   color: var(--msp-accent, #2b5fab);
   background: var(--msp-accent-soft, rgba(43, 95, 171, 0.12));
   box-shadow: var(--msp-shadow);
+}
+
+.sidebarSeparator {
+  display: block;
+  width: 22px;
+  height: 1px;
+  margin: 0.1rem 0;
+  background: var(--msp-border, #e2e8f0);
+  flex-shrink: 0;
+}
+
+:global(html.dark) .sidebarSeparator {
+  background: var(--msp-border, #2a3a55);
 }
 
 .ticketLogList {
@@ -2012,63 +2121,77 @@
 }
 
 .commentItem {
-  padding: 0.45rem 0.6rem;
-  border: 1px solid var(--msp-border-light, #eef2f7);
-  margin-bottom: 0;
-  border-radius: 8px;
-  background: var(--td-surface);
-  box-shadow: 0 1px 3px rgba(15, 28, 46, 0.04);
-}
-
-.descriptionItem {
-  background: linear-gradient(180deg, #fff 0%, var(--td-surface-2) 100%);
-  border-style: dashed;
-}
-
-.descriptionSticky {
-  flex-shrink: 0;
-  max-height: 180px;
-  overflow-y: auto;
-  margin-bottom: 0.4rem;
-}
-
-.descriptionBodyBtn {
-  display: block;
-  width: 100%;
-  margin: 0;
-  padding: 0;
+  padding: 0.4rem 0.5rem;
   border: none;
+  border-bottom: 1px solid var(--msp-border-light, #eef2f7);
+  margin-bottom: 0;
+  border-radius: 0;
   background: transparent;
-  text-align: left;
-  cursor: pointer;
-  border-radius: 6px;
-  transition: background 0.15s;
+  box-shadow: none;
 }
 
-.descriptionBodyBtn:hover:not(:disabled) {
-  background: rgba(43, 95, 171, 0.06);
-}
-
-.descriptionBodyBtn:disabled {
-  cursor: default;
-}
-
-.descriptionBodyText,
 .descriptionBodyPlaceholder {
   margin: 0;
-  font-size: 0.88rem;
-  line-height: 1.35;
+  font-size: 0.86rem;
+  line-height: 1.5;
   white-space: pre-wrap;
   word-break: break-word;
-}
-
-.descriptionBodyText {
-  color: var(--msp-text, #0f1c2e);
-}
-
-.descriptionBodyPlaceholder {
   color: var(--msp-muted-light, #8b9bb5);
   font-style: italic;
+}
+
+.initialRequestEditBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.2rem;
+}
+
+.commentItemInitial {
+  background: var(--msp-surface-2, #f7f9fc);
+  border: none;
+  border-bottom: 1px solid var(--msp-border-light, #eef2f7);
+  border-left: 3px solid var(--msp-muted, #5c6b82);
+  border-radius: 6px;
+  padding-left: 0.55rem;
+}
+
+.commentItemInitial .commentMeta {
+  flex-wrap: wrap;
+  row-gap: 0.2rem;
+}
+
+.initialRequestTitleWrap {
+  min-width: 0;
+  margin: 0.15rem 0 0.2rem;
+  padding-left: calc(26px + 0.4rem);
+}
+
+.initialRequestTitleWrap .descriptionTitle {
+  font-size: 0.95rem;
+  font-weight: 650;
+}
+
+.commentItemInitial .descriptionBodyPlaceholder {
+  padding-left: calc(26px + 0.4rem);
+}
+
+.commentItemInitial .initialRequestEditBox {
+  padding-left: calc(26px + 0.4rem);
+}
+
+.initialRequestBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.12rem 0.4rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--msp-muted, #5c6b82);
+  background: rgba(92, 107, 130, 0.12);
+  white-space: nowrap;
 }
 
 .descriptionEditTextarea {
@@ -2095,21 +2218,29 @@
 .commentItemInternal {
   background: rgba(43, 95, 171, 0.05);
   border-left: 3px solid var(--msp-accent, #2b5fab);
+  border-radius: 6px;
+  padding-left: 0.55rem;
 }
 
 .commentItemResolutionPending {
-  border-color: rgba(217, 119, 6, 0.35);
+  border-left: 3px solid rgba(217, 119, 6, 0.7);
   background: rgba(217, 119, 6, 0.08);
+  border-radius: 6px;
+  padding-left: 0.55rem;
 }
 
 .commentItemResolutionRejected {
-  border-color: rgba(220, 38, 38, 0.35);
+  border-left: 3px solid rgba(220, 38, 38, 0.7);
   background: rgba(220, 38, 38, 0.06);
+  border-radius: 6px;
+  padding-left: 0.55rem;
 }
 
 .commentItemResolutionDone {
-  border-color: rgba(22, 163, 74, 0.35);
+  border-left: 3px solid rgba(22, 163, 74, 0.7);
   background: rgba(22, 163, 74, 0.06);
+  border-radius: 6px;
+  padding-left: 0.55rem;
 }
 
 .validationDeadline {
@@ -2693,6 +2824,16 @@
   color: var(--msp-accent, #2b5fab);
 }
 
+.aiToolSpin {
+  animation: ticketDetailAiSpin 0.8s linear infinite;
+}
+
+@keyframes ticketDetailAiSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .emojiMenu {
   position: absolute;
   top: calc(100% + 0.35rem);
@@ -3030,7 +3171,7 @@
   }
 }
 
-/* ── Mode sombre MSP ── */
+
 :global(html.dark) .shell {
   --msp-border-light: #243047;
   --msp-accent: #5a8fd4;
@@ -3087,8 +3228,15 @@
   border-bottom-color: var(--msp-border-light, #243047);
 }
 
-:global(html.dark) .descriptionItem {
-  background: var(--msp-surface-3, #1e2d4a);
+:global(html.dark) .commentItemInitial {
+  background: var(--msp-surface-2, #152035);
+  border-bottom-color: var(--msp-border-light, #243047);
+  border-left-color: var(--msp-muted, #8fa8c4);
+}
+
+:global(html.dark) .initialRequestBadge {
+  color: var(--msp-muted-light, #a8bdd4);
+  background: rgba(148, 163, 184, 0.14);
 }
 
 :global(html.dark) .commentItemInternal {
@@ -3186,6 +3334,25 @@
   background: var(--msp-surface-2, #152035);
   border-color: var(--msp-border, #2a3a55);
   color: var(--msp-muted, #8fa8c4);
+}
+
+:global(html.dark) .descriptionTitle {
+  color: var(--msp-text, #e8edf5);
+}
+
+:global(html.dark) .descriptionTitlePlaceholder {
+  color: var(--msp-muted-light, #6a88a8);
+}
+
+:global(html.dark) .descriptionTitleBtn:hover:not(:disabled) {
+  border-color: var(--msp-border, #2a3a55);
+  background: var(--msp-surface-2, #152035);
+}
+
+:global(html.dark) .descriptionTitleInput {
+  background: var(--msp-surface-2, #152035);
+  border-color: #5a8fd4;
+  color: var(--msp-text, #e8edf5);
 }
 
 :global(html.dark) .replyCollapsedSummary:hover:not(:disabled) {

@@ -23,17 +23,19 @@ export function buildDefaultMacroAction() {
     tagsText: "",
     phoneNumber: "",
     ticketId: "",
-    equipmentId: "",
+    equipmentId: ""
   };
 }
-
 export function normalizeMacroActionForEditor(action) {
-  const merged = { ...buildDefaultMacroAction(), ...(action || {}) };
+  const merged = {
+    ...buildDefaultMacroAction(),
+    ...(action || {})
+  };
   if (merged.type === "add_tags") {
     return {
       ...merged,
       type: "manage_tags",
-      tagsMode: merged.tagsMode || "add",
+      tagsMode: merged.tagsMode || "add"
     };
   }
   return merged;

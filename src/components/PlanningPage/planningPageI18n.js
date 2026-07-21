@@ -1,7 +1,6 @@
 import { createLocaleGetter, interpolate, pickLocaleMessages } from "../../i18n/translate";
 import { PLANNING_EVENT_TYPES, PLANNING_SUPPORT_LEGEND } from "./planningEventTypes";
 import moment from "moment";
-
 const PLANNING_PAGE = {
   fr: {
     eyebrow: "Organisation",
@@ -16,9 +15,11 @@ const PLANNING_PAGE = {
       agent: "Agent",
       team: "Équipe",
       noName: "Sans nom",
-      cyberCampaign: "Campagne cybersécurité",
+      cyberCampaign: "Campagne cybersécurité"
     },
-    kpi: { total: "Total" },
+    kpi: {
+      total: "Total"
+    },
     toolbar: {
       prevPeriod: "Période précédente",
       nextPeriod: "Période suivante",
@@ -28,7 +29,7 @@ const PLANNING_PAGE = {
       week: "Semaine",
       day: "Jour",
       agenda: "Agenda",
-      weekLabel: "Semaine {week} · {monthYear}",
+      weekLabel: "Semaine {week} · {monthYear}"
     },
     calendar: {
       next: "Suivant",
@@ -41,7 +42,7 @@ const PLANNING_PAGE = {
       date: "Date",
       time: "Heure",
       event: "Événement",
-      noEventsInRange: "Aucun événement dans cette période",
+      noEventsInRange: "Aucun événement dans cette période"
     },
     filters: {
       aria: "Filtres planning",
@@ -66,33 +67,32 @@ const PLANNING_PAGE = {
       hideAgentPlanning: "Masquer le planning de {name}",
       removeFromList: "Retirer de la liste",
       removeAgentFromList: "Retirer {name} de la liste",
-      meSuffix: "(Moi)",
+      meSuffix: "(Moi)"
     },
     search: {
       placeholder: "Événement, client, agent…",
       aria: "Rechercher dans le planning",
       clear: "Effacer la recherche",
-      clearFilters: "Effacer les filtres",
+      clearFilters: "Effacer les filtres"
     },
     supportLegend: {
       support_incident: "Incident support",
       support_demande: "Demande support",
-      support_probleme: "Problème support",
+      support_probleme: "Problème support"
     },
     dayAction: {
       close: "Fermer",
       hint: "Que souhaitez-vous faire ?",
       createEvent: "Créer un événement",
-      goToDate: "Aller à cette date",
+      goToDate: "Aller à cette date"
     },
     agenda: {
       weekOf: "Semaine du",
       eventCount: "{count} événement{plural}",
       emptyTitle: "Aucun événement cette semaine",
-      emptyHint:
-        "Ajustez les filtres agents ou types, ou naviguez vers une autre semaine avec les flèches du calendrier.",
+      emptyHint: "Ajustez les filtres agents ou types, ou naviguez vers une autre semaine avec les flèches du calendrier.",
       today: "Aujourd'hui",
-      weekend: "Week-end",
+      weekend: "Week-end"
     },
     agendaTime: {
       allDay: "Journée entière",
@@ -100,13 +100,13 @@ const PLANNING_PAGE = {
       endSince: "Fin · depuis le {date}",
       endsAt: "→ {time}",
       startsAt: "{time} →",
-      range: "{start} – {end}",
+      range: "{start} – {end}"
     },
     linkedGroups: {
       infrastructure: "Infrastructure",
       cybersecurity: "Cybersécurité",
       tenant: "Tenant",
-      ndd: "NDD",
+      ndd: "NDD"
     },
     toasts: {
       assigneeUpdated: "Agent mis à jour",
@@ -114,13 +114,13 @@ const PLANNING_PAGE = {
       moveError: "Impossible de déplacer l'événement",
       teamsLoadError: "Impossible de charger les équipes",
       teamNoMembers: "L'équipe « {name} » n'a aucun agent.",
-      teamMembersAdded: "{count} agent{plural} ajouté{plural} depuis « {team} »",
+      teamMembersAdded: "{count} agent{plural} ajouté{plural} depuis « {team} »"
     },
     deleteEvent: {
       confirm: "Êtes-vous sûr de vouloir supprimer cet événement ?",
       success: "Événement supprimé avec succès",
-      error: "Erreur lors de la suppression de l'événement",
-    },
+      error: "Erreur lors de la suppression de l'événement"
+    }
   },
   en: {
     eyebrow: "Organization",
@@ -135,9 +135,11 @@ const PLANNING_PAGE = {
       agent: "Assignee",
       team: "Team",
       noName: "Unnamed",
-      cyberCampaign: "Cybersecurity campaign",
+      cyberCampaign: "Cybersecurity campaign"
     },
-    kpi: { total: "Total" },
+    kpi: {
+      total: "Total"
+    },
     toolbar: {
       prevPeriod: "Previous period",
       nextPeriod: "Next period",
@@ -147,7 +149,7 @@ const PLANNING_PAGE = {
       week: "Week",
       day: "Day",
       agenda: "Agenda",
-      weekLabel: "Week {week} · {monthYear}",
+      weekLabel: "Week {week} · {monthYear}"
     },
     calendar: {
       next: "Next",
@@ -160,7 +162,7 @@ const PLANNING_PAGE = {
       date: "Date",
       time: "Time",
       event: "Event",
-      noEventsInRange: "No events in this period",
+      noEventsInRange: "No events in this period"
     },
     filters: {
       aria: "Schedule filters",
@@ -185,33 +187,32 @@ const PLANNING_PAGE = {
       hideAgentPlanning: "Hide schedule for {name}",
       removeFromList: "Remove from list",
       removeAgentFromList: "Remove {name} from list",
-      meSuffix: "(Me)",
+      meSuffix: "(Me)"
     },
     search: {
       placeholder: "Event, client, assignee…",
       aria: "Search schedule",
       clear: "Clear search",
-      clearFilters: "Clear filters",
+      clearFilters: "Clear filters"
     },
     supportLegend: {
       support_incident: "Support incident",
       support_demande: "Support request",
-      support_probleme: "Support issue",
+      support_probleme: "Support issue"
     },
     dayAction: {
       close: "Close",
       hint: "What would you like to do?",
       createEvent: "Create an event",
-      goToDate: "Go to this date",
+      goToDate: "Go to this date"
     },
     agenda: {
       weekOf: "Week of",
       eventCount: "{count} event{plural}",
       emptyTitle: "No events this week",
-      emptyHint:
-        "Adjust assignee or type filters, or navigate to another week using the calendar arrows.",
+      emptyHint: "Adjust assignee or type filters, or navigate to another week using the calendar arrows.",
       today: "Today",
-      weekend: "Weekend",
+      weekend: "Weekend"
     },
     agendaTime: {
       allDay: "All day",
@@ -219,13 +220,13 @@ const PLANNING_PAGE = {
       endSince: "End · since {date}",
       endsAt: "→ {time}",
       startsAt: "{time} →",
-      range: "{start} – {end}",
+      range: "{start} – {end}"
     },
     linkedGroups: {
       infrastructure: "Infrastructure",
       cybersecurity: "Cybersecurity",
       tenant: "Tenant",
-      ndd: "Domain",
+      ndd: "Domain"
     },
     toasts: {
       assigneeUpdated: "Assignee updated",
@@ -233,13 +234,13 @@ const PLANNING_PAGE = {
       moveError: "Unable to move event",
       teamsLoadError: "Unable to load teams",
       teamNoMembers: "Team « {name} » has no assignees.",
-      teamMembersAdded: "{count} assignee{plural} added from « {team} »",
+      teamMembersAdded: "{count} assignee{plural} added from « {team} »"
     },
     deleteEvent: {
       confirm: "Are you sure you want to delete this event?",
       success: "Event deleted successfully",
-      error: "Error deleting event",
-    },
+      error: "Error deleting event"
+    }
   },
   de: {
     eyebrow: "Organisation",
@@ -254,9 +255,11 @@ const PLANNING_PAGE = {
       agent: "Mitarbeiter",
       team: "Team",
       noName: "Ohne Namen",
-      cyberCampaign: "Cybersicherheitskampagne",
+      cyberCampaign: "Cybersicherheitskampagne"
     },
-    kpi: { total: "Gesamt" },
+    kpi: {
+      total: "Gesamt"
+    },
     toolbar: {
       prevPeriod: "Vorheriger Zeitraum",
       nextPeriod: "Nächster Zeitraum",
@@ -266,7 +269,7 @@ const PLANNING_PAGE = {
       week: "Woche",
       day: "Tag",
       agenda: "Agenda",
-      weekLabel: "Woche {week} · {monthYear}",
+      weekLabel: "Woche {week} · {monthYear}"
     },
     calendar: {
       next: "Weiter",
@@ -279,7 +282,7 @@ const PLANNING_PAGE = {
       date: "Datum",
       time: "Uhrzeit",
       event: "Ereignis",
-      noEventsInRange: "Keine Ereignisse in diesem Zeitraum",
+      noEventsInRange: "Keine Ereignisse in diesem Zeitraum"
     },
     filters: {
       aria: "Planungsfilter",
@@ -304,33 +307,32 @@ const PLANNING_PAGE = {
       hideAgentPlanning: "Planung von {name} ausblenden",
       removeFromList: "Aus Liste entfernen",
       removeAgentFromList: "{name} aus Liste entfernen",
-      meSuffix: "(Ich)",
+      meSuffix: "(Ich)"
     },
     search: {
       placeholder: "Ereignis, Kunde, Mitarbeiter…",
       aria: "Planung durchsuchen",
       clear: "Suche löschen",
-      clearFilters: "Filter löschen",
+      clearFilters: "Filter löschen"
     },
     supportLegend: {
       support_incident: "Support-Vorfall",
       support_demande: "Support-Anfrage",
-      support_probleme: "Support-Problem",
+      support_probleme: "Support-Problem"
     },
     dayAction: {
       close: "Schließen",
       hint: "Was möchten Sie tun?",
       createEvent: "Ereignis erstellen",
-      goToDate: "Zu diesem Datum wechseln",
+      goToDate: "Zu diesem Datum wechseln"
     },
     agenda: {
       weekOf: "Woche vom",
       eventCount: "{count} Ereignis{plural}",
       emptyTitle: "Keine Ereignisse diese Woche",
-      emptyHint:
-        "Passen Sie Mitarbeiter- oder Typfilter an oder navigieren Sie mit den Kalenderpfeilen zu einer anderen Woche.",
+      emptyHint: "Passen Sie Mitarbeiter- oder Typfilter an oder navigieren Sie mit den Kalenderpfeilen zu einer anderen Woche.",
       today: "Heute",
-      weekend: "Wochenende",
+      weekend: "Wochenende"
     },
     agendaTime: {
       allDay: "Ganztägig",
@@ -338,13 +340,13 @@ const PLANNING_PAGE = {
       endSince: "Ende · seit {date}",
       endsAt: "→ {time}",
       startsAt: "{time} →",
-      range: "{start} – {end}",
+      range: "{start} – {end}"
     },
     linkedGroups: {
       infrastructure: "Infrastruktur",
       cybersecurity: "Cybersicherheit",
       tenant: "Tenant",
-      ndd: "Domain",
+      ndd: "Domain"
     },
     toasts: {
       assigneeUpdated: "Mitarbeiter aktualisiert",
@@ -352,13 +354,13 @@ const PLANNING_PAGE = {
       moveError: "Ereignis konnte nicht verschoben werden",
       teamsLoadError: "Teams konnten nicht geladen werden",
       teamNoMembers: "Team « {name} » hat keine Mitarbeiter.",
-      teamMembersAdded: "{count} Mitarbeiter{plural} aus « {team} » hinzugefügt",
+      teamMembersAdded: "{count} Mitarbeiter{plural} aus « {team} » hinzugefügt"
     },
     deleteEvent: {
       confirm: "Möchten Sie dieses Ereignis wirklich löschen?",
       success: "Ereignis erfolgreich gelöscht",
-      error: "Fehler beim Löschen des Ereignisses",
-    },
+      error: "Fehler beim Löschen des Ereignisses"
+    }
   },
   it: {
     eyebrow: "Organizzazione",
@@ -373,9 +375,11 @@ const PLANNING_PAGE = {
       agent: "Agente",
       team: "Team",
       noName: "Senza nome",
-      cyberCampaign: "Campagna cybersicurezza",
+      cyberCampaign: "Campagna cybersicurezza"
     },
-    kpi: { total: "Totale" },
+    kpi: {
+      total: "Totale"
+    },
     toolbar: {
       prevPeriod: "Periodo precedente",
       nextPeriod: "Periodo successivo",
@@ -385,7 +389,7 @@ const PLANNING_PAGE = {
       week: "Settimana",
       day: "Giorno",
       agenda: "Agenda",
-      weekLabel: "Settimana {week} · {monthYear}",
+      weekLabel: "Settimana {week} · {monthYear}"
     },
     calendar: {
       next: "Successivo",
@@ -398,7 +402,7 @@ const PLANNING_PAGE = {
       date: "Data",
       time: "Ora",
       event: "Evento",
-      noEventsInRange: "Nessun evento in questo periodo",
+      noEventsInRange: "Nessun evento in questo periodo"
     },
     filters: {
       aria: "Filtri pianificazione",
@@ -423,33 +427,32 @@ const PLANNING_PAGE = {
       hideAgentPlanning: "Nascondi pianificazione di {name}",
       removeFromList: "Rimuovi dall'elenco",
       removeAgentFromList: "Rimuovi {name} dall'elenco",
-      meSuffix: "(Io)",
+      meSuffix: "(Io)"
     },
     search: {
       placeholder: "Evento, cliente, agente…",
       aria: "Cerca nella pianificazione",
       clear: "Cancella ricerca",
-      clearFilters: "Cancella filtri",
+      clearFilters: "Cancella filtri"
     },
     supportLegend: {
       support_incident: "Incidente supporto",
       support_demande: "Richiesta supporto",
-      support_probleme: "Problema supporto",
+      support_probleme: "Problema supporto"
     },
     dayAction: {
       close: "Chiudi",
       hint: "Cosa desideri fare?",
       createEvent: "Crea un evento",
-      goToDate: "Vai a questa data",
+      goToDate: "Vai a questa data"
     },
     agenda: {
       weekOf: "Settimana del",
       eventCount: "{count} evento{plural}",
       emptyTitle: "Nessun evento questa settimana",
-      emptyHint:
-        "Modifica i filtri agenti o tipi, oppure naviga verso un'altra settimana con le frecce del calendario.",
+      emptyHint: "Modifica i filtri agenti o tipi, oppure naviga verso un'altra settimana con le frecce del calendario.",
       today: "Oggi",
-      weekend: "Fine settimana",
+      weekend: "Fine settimana"
     },
     agendaTime: {
       allDay: "Giornata intera",
@@ -457,13 +460,13 @@ const PLANNING_PAGE = {
       endSince: "Fine · dal {date}",
       endsAt: "→ {time}",
       startsAt: "{time} →",
-      range: "{start} – {end}",
+      range: "{start} – {end}"
     },
     linkedGroups: {
       infrastructure: "Infrastruttura",
       cybersecurity: "Cybersicurezza",
       tenant: "Tenant",
-      ndd: "Dominio",
+      ndd: "Dominio"
     },
     toasts: {
       assigneeUpdated: "Agente aggiornato",
@@ -471,13 +474,13 @@ const PLANNING_PAGE = {
       moveError: "Impossibile spostare l'evento",
       teamsLoadError: "Impossibile caricare i team",
       teamNoMembers: "Il team « {name} » non ha agenti.",
-      teamMembersAdded: "{count} agente{plural} aggiunto{plural} da « {team} »",
+      teamMembersAdded: "{count} agente{plural} aggiunto{plural} da « {team} »"
     },
     deleteEvent: {
       confirm: "Eliminare questo evento?",
       success: "Evento eliminato con successo",
-      error: "Errore durante l'eliminazione dell'evento",
-    },
+      error: "Errore durante l'eliminazione dell'evento"
+    }
   },
   es: {
     eyebrow: "Organización",
@@ -492,9 +495,11 @@ const PLANNING_PAGE = {
       agent: "Agente",
       team: "Equipo",
       noName: "Sin nombre",
-      cyberCampaign: "Campaña de ciberseguridad",
+      cyberCampaign: "Campaña de ciberseguridad"
     },
-    kpi: { total: "Total" },
+    kpi: {
+      total: "Total"
+    },
     toolbar: {
       prevPeriod: "Periodo anterior",
       nextPeriod: "Periodo siguiente",
@@ -504,7 +509,7 @@ const PLANNING_PAGE = {
       week: "Semana",
       day: "Día",
       agenda: "Agenda",
-      weekLabel: "Semana {week} · {monthYear}",
+      weekLabel: "Semana {week} · {monthYear}"
     },
     calendar: {
       next: "Siguiente",
@@ -517,7 +522,7 @@ const PLANNING_PAGE = {
       date: "Fecha",
       time: "Hora",
       event: "Evento",
-      noEventsInRange: "No hay eventos en este periodo",
+      noEventsInRange: "No hay eventos en este periodo"
     },
     filters: {
       aria: "Filtros de planificación",
@@ -542,33 +547,32 @@ const PLANNING_PAGE = {
       hideAgentPlanning: "Ocultar planificación de {name}",
       removeFromList: "Quitar de la lista",
       removeAgentFromList: "Quitar {name} de la lista",
-      meSuffix: "(Yo)",
+      meSuffix: "(Yo)"
     },
     search: {
       placeholder: "Evento, cliente, agente…",
       aria: "Buscar en la planificación",
       clear: "Borrar búsqueda",
-      clearFilters: "Borrar filtros",
+      clearFilters: "Borrar filtros"
     },
     supportLegend: {
       support_incident: "Incidente de soporte",
       support_demande: "Solicitud de soporte",
-      support_probleme: "Problema de soporte",
+      support_probleme: "Problema de soporte"
     },
     dayAction: {
       close: "Cerrar",
       hint: "¿Qué desea hacer?",
       createEvent: "Crear un evento",
-      goToDate: "Ir a esta fecha",
+      goToDate: "Ir a esta fecha"
     },
     agenda: {
       weekOf: "Semana del",
       eventCount: "{count} evento{plural}",
       emptyTitle: "Ningún evento esta semana",
-      emptyHint:
-        "Ajuste los filtros de agentes o tipos, o navegue a otra semana con las flechas del calendario.",
+      emptyHint: "Ajuste los filtros de agentes o tipos, o navegue a otra semana con las flechas del calendario.",
       today: "Hoy",
-      weekend: "Fin de semana",
+      weekend: "Fin de semana"
     },
     agendaTime: {
       allDay: "Todo el día",
@@ -576,13 +580,13 @@ const PLANNING_PAGE = {
       endSince: "Fin · desde {date}",
       endsAt: "→ {time}",
       startsAt: "{time} →",
-      range: "{start} – {end}",
+      range: "{start} – {end}"
     },
     linkedGroups: {
       infrastructure: "Infraestructura",
       cybersecurity: "Ciberseguridad",
       tenant: "Tenant",
-      ndd: "Dominio",
+      ndd: "Dominio"
     },
     toasts: {
       assigneeUpdated: "Agente actualizado",
@@ -590,44 +594,42 @@ const PLANNING_PAGE = {
       moveError: "No se pudo mover el evento",
       teamsLoadError: "No se pudieron cargar los equipos",
       teamNoMembers: "El equipo « {name} » no tiene agentes.",
-      teamMembersAdded: "{count} agente{plural} añadido{plural} desde « {team} »",
+      teamMembersAdded: "{count} agente{plural} añadido{plural} desde « {team} »"
     },
     deleteEvent: {
       confirm: "¿Eliminar este evento?",
       success: "Evento eliminado correctamente",
-      error: "Error al eliminar el evento",
-    },
-  },
+      error: "Error al eliminar el evento"
+    }
+  }
 };
-
 function pluralSuffix(count, locale) {
   if (count === 1) return "";
   if (locale === "fr") return "s";
   return "s";
 }
-
 function formatToolbarLabel(activeView, date, monthsShown, t) {
   const m = moment(date);
-
   switch (activeView) {
     case "day":
       return m.format("dddd D MMMM YYYY");
     case "week":
       return interpolate(t.toolbar.weekLabel, {
         week: m.isoWeek(),
-        monthYear: m.format("MMMM YYYY"),
+        monthYear: m.format("MMMM YYYY")
       });
-    case "agenda": {
-      const weekStart = m.clone().startOf("week");
-      const weekEnd = m.clone().endOf("week");
-      if (weekStart.isSame(weekEnd, "month")) {
-        return `${weekStart.format("D")} – ${weekEnd.format("D MMMM YYYY")}`;
+    case "agenda":
+      {
+        const weekStart = m.clone().startOf("week");
+        const weekEnd = m.clone().endOf("week");
+        if (weekStart.isSame(weekEnd, "month")) {
+          return `${weekStart.format("D")} – ${weekEnd.format("D MMMM YYYY")}`;
+        }
+        if (weekStart.isSame(weekEnd, "year")) {
+          return `${weekStart.format("D MMMM")} – ${weekEnd.format("D MMMM YYYY")}`;
+        }
+        return `${weekStart.format("D MMMM YYYY")} – ${weekEnd.format("D MMMM YYYY")}`;
       }
-      if (weekStart.isSame(weekEnd, "year")) {
-        return `${weekStart.format("D MMMM")} – ${weekEnd.format("D MMMM YYYY")}`;
-      }
-      return `${weekStart.format("D MMMM YYYY")} – ${weekEnd.format("D MMMM YYYY")}`;
-    }
     case "month":
     default:
       if (monthsShown <= 1) {
@@ -645,62 +647,62 @@ function formatToolbarLabel(activeView, date, monthsShown, t) {
       }
   }
 }
-
 export function getPlanningPageCopy(locale, eventTypeLabels = {}) {
   const t = pickLocaleMessages(PLANNING_PAGE, locale);
-
-  const planningTypes = PLANNING_EVENT_TYPES.map((type) => ({
+  const planningTypes = PLANNING_EVENT_TYPES.map(type => ({
     ...type,
-    label: eventTypeLabels[type.value] || type.label,
+    label: eventTypeLabels[type.value] || type.label
   }));
-
-  const legendItems = [
-    ...planningTypes.filter((type) => type.value !== "campagne"),
-    ...PLANNING_SUPPORT_LEGEND.map((item) => ({
-      ...item,
-      label: t.supportLegend[item.value] || item.label,
-    })),
-    planningTypes.find((type) => type.value === "campagne"),
-  ].filter(Boolean);
-
+  const legendItems = [...planningTypes.filter(type => type.value !== "campagne"), ...PLANNING_SUPPORT_LEGEND.map(item => ({
+    ...item,
+    label: t.supportLegend[item.value] || item.label
+  })), planningTypes.find(type => type.value === "campagne")].filter(Boolean);
   return {
     ...t,
     locale,
     planningTypes,
     legendItems,
     calendarMessages: t.calendar,
-    formatMonthsButton: (n) => interpolate(t.toolbar.monthsCount, { n }),
-    formatEventsSubtitle: (displayed, total) =>
-      interpolate(t.eventsSubtitle, {
-        displayed,
-        total,
-        displayedPlural: displayed > 1 ? pluralSuffix(displayed, locale) : "",
-      }),
-    formatTeamMemberCount: (count) =>
-      interpolate(t.filters.teamMemberCount, {
-        count,
-        plural: count > 1 ? pluralSuffix(count, locale) : "",
-      }),
-    formatAgentsSelected: (count) => interpolate(t.filters.agentsSelected, { count }),
-    formatTeamMembersAdded: (count, team) =>
-      interpolate(t.toasts.teamMembersAdded, {
-        count,
-        team,
-        plural: count > 1 ? pluralSuffix(count, locale) : "",
-      }),
-    formatShowAgentPlanning: (name) => interpolate(t.filters.showAgentPlanning, { name }),
-    formatHideAgentPlanning: (name) => interpolate(t.filters.hideAgentPlanning, { name }),
-    formatRemoveAgentFromList: (name) => interpolate(t.filters.removeAgentFromList, { name }),
-    formatTeamNoMembers: (name) => interpolate(t.toasts.teamNoMembers, { name }),
-    formatTimezoneTooltip: (timezone) => interpolate(t.toolbar.timezoneTooltip, { timezone }),
-    formatAgendaEventCount: (count) =>
-      interpolate(t.agenda.eventCount, {
-        count,
-        plural: count > 1 ? pluralSuffix(count, locale) : "",
-      }),
-    formatToolbarLabel: (activeView, date, monthsShown = 1) =>
-      formatToolbarLabel(activeView, date, monthsShown, t),
+    formatMonthsButton: n => interpolate(t.toolbar.monthsCount, {
+      n
+    }),
+    formatEventsSubtitle: (displayed, total) => interpolate(t.eventsSubtitle, {
+      displayed,
+      total,
+      displayedPlural: displayed > 1 ? pluralSuffix(displayed, locale) : ""
+    }),
+    formatTeamMemberCount: count => interpolate(t.filters.teamMemberCount, {
+      count,
+      plural: count > 1 ? pluralSuffix(count, locale) : ""
+    }),
+    formatAgentsSelected: count => interpolate(t.filters.agentsSelected, {
+      count
+    }),
+    formatTeamMembersAdded: (count, team) => interpolate(t.toasts.teamMembersAdded, {
+      count,
+      team,
+      plural: count > 1 ? pluralSuffix(count, locale) : ""
+    }),
+    formatShowAgentPlanning: name => interpolate(t.filters.showAgentPlanning, {
+      name
+    }),
+    formatHideAgentPlanning: name => interpolate(t.filters.hideAgentPlanning, {
+      name
+    }),
+    formatRemoveAgentFromList: name => interpolate(t.filters.removeAgentFromList, {
+      name
+    }),
+    formatTeamNoMembers: name => interpolate(t.toasts.teamNoMembers, {
+      name
+    }),
+    formatTimezoneTooltip: timezone => interpolate(t.toolbar.timezoneTooltip, {
+      timezone
+    }),
+    formatAgendaEventCount: count => interpolate(t.agenda.eventCount, {
+      count,
+      plural: count > 1 ? pluralSuffix(count, locale) : ""
+    }),
+    formatToolbarLabel: (activeView, date, monthsShown = 1) => formatToolbarLabel(activeView, date, monthsShown, t)
   };
 }
-
 export const getPlanningPageCopyBase = createLocaleGetter(PLANNING_PAGE);

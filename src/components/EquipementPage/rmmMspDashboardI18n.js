@@ -1,9 +1,7 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 function pluralPick(count, one, many) {
   return Number(count) > 1 ? many : one;
 }
-
 const RMM_MSP_DASHBOARD_COPY = {
   fr: {
     healthLabel: "Santé agents",
@@ -16,13 +14,13 @@ const RMM_MSP_DASHBOARD_COPY = {
       agents: "Agents",
       clients: "Entreprises",
       online: "En ligne",
-      offline: "Hors ligne",
+      offline: "Hors ligne"
     },
     statusFilters: {
       all: "Tous",
       online: "En ligne",
       offline: "Hors ligne",
-      updates: "MAJ en attente",
+      updates: "MAJ en attente"
     },
     statusFilterAria: "Filtre statut",
     searchPlaceholder: "Rechercher poste, client, IP, OS…",
@@ -46,8 +44,8 @@ const RMM_MSP_DASHBOARD_COPY = {
       os: "OS",
       ip: "IP",
       lastSeen: "Dernière activité",
-      actions: "Actions",
-    },
+      actions: "Actions"
+    }
   },
   en: {
     healthLabel: "Agent health",
@@ -60,13 +58,13 @@ const RMM_MSP_DASHBOARD_COPY = {
       agents: "Agents",
       clients: "Companies",
       online: "Online",
-      offline: "Offline",
+      offline: "Offline"
     },
     statusFilters: {
       all: "All",
       online: "Online",
       offline: "Offline",
-      updates: "Pending updates",
+      updates: "Pending updates"
     },
     statusFilterAria: "Status filter",
     searchPlaceholder: "Search workstation, client, IP, OS…",
@@ -90,34 +88,34 @@ const RMM_MSP_DASHBOARD_COPY = {
       os: "OS",
       ip: "IP",
       lastSeen: "Last activity",
-      actions: "Actions",
-    },
-  },
+      actions: "Actions"
+    }
+  }
 };
-
 export function getRmmMspDashboardCopy(locale) {
   const t = pickLocaleMessages(RMM_MSP_DASHBOARD_COPY, locale);
   const code = locale?.slice?.(0, 2) || "fr";
-
   return {
     ...t,
     locale: code,
-    formatHeroDesc: (offlineCount) =>
-      offlineCount > 0
-        ? interpolate(
-            pluralPick(offlineCount, t.heroDescIssues, t.heroDescIssuesPlural),
-            { count: String(offlineCount) }
-          )
-        : t.heroDescOk,
-    formatAgentCount: (count) =>
-      interpolate(pluralPick(count, t.agentCount, t.agentCountPlural), {
-        count: String(count),
-      }),
-    statusFilters: [
-      { id: "all", label: t.statusFilters.all },
-      { id: "online", label: t.statusFilters.online },
-      { id: "offline", label: t.statusFilters.offline },
-      { id: "updates", label: t.statusFilters.updates },
-    ],
+    formatHeroDesc: offlineCount => offlineCount > 0 ? interpolate(pluralPick(offlineCount, t.heroDescIssues, t.heroDescIssuesPlural), {
+      count: String(offlineCount)
+    }) : t.heroDescOk,
+    formatAgentCount: count => interpolate(pluralPick(count, t.agentCount, t.agentCountPlural), {
+      count: String(count)
+    }),
+    statusFilters: [{
+      id: "all",
+      label: t.statusFilters.all
+    }, {
+      id: "online",
+      label: t.statusFilters.online
+    }, {
+      id: "offline",
+      label: t.statusFilters.offline
+    }, {
+      id: "updates",
+      label: t.statusFilters.updates
+    }]
   };
 }

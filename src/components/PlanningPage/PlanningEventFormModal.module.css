@@ -30,7 +30,7 @@
   background: rgba(220, 38, 38, 0.06);
 }
 
-/* Type picker */
+
 .typeGrid {
   display: flex;
   flex-wrap: wrap;
@@ -65,7 +65,7 @@
   box-shadow: 0 0 0 1px rgba(43, 95, 171, 0.12);
 }
 
-/* Client autocomplete */
+
 .autocompleteWrapper {
   position: relative;
 }
@@ -121,7 +121,7 @@
   color: var(--msp-muted, #5c6b82);
 }
 
-/* Rich editor */
+
 .richEditorWrapper {
   border: 1px solid var(--msp-border, #dde3ed);
   border-radius: 10px;
@@ -152,7 +152,7 @@
   font-style: normal;
 }
 
-/* Switches */
+
 .switchRow {
   display: flex;
   align-items: center;
@@ -213,7 +213,7 @@
   transform: translateX(20px);
 }
 
-/* Assignee picker */
+
 .assigneePicker {
   position: relative;
 }
@@ -333,7 +333,7 @@
   line-height: 1.4;
 }
 
-/* Linked objects */
+
 .objectsToolbar {
   display: flex;
   flex-direction: column;
@@ -455,7 +455,7 @@
   white-space: nowrap;
 }
 
-/* Todos & notes */
+
 .todoComposer {
   display: flex;
   flex-direction: column;
@@ -784,7 +784,7 @@
   color: var(--msp-muted, #5c6b82);
 }
 
-/* Dark mode */
+
 :global(.dark) .typeBtn,
 :global(.dark) .assigneePickerButton,
 :global(.dark) .assigneeDropdown,

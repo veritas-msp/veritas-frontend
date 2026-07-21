@@ -1,10 +1,7 @@
 import { Page } from "./AdminUi";
 import SalesFormsAdmin from "./SalesFormsAdmin";
-
 export default function AdminSalesFormsPage() {
-  return (
-    <Page>
+  return <Page>
       <SalesFormsAdmin />
-    </Page>
-  );
+    </Page>;
 }

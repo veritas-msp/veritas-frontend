@@ -1,6 +1,6 @@
 *, *::before, *::after { box-sizing: border-box; }
 
-/* ─── Loading ──────────────────────────────────────────────────────── */
+
 .loading {
   min-height: 100vh;
   display: flex;
@@ -21,7 +21,7 @@
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ─── Layout UniFi-like ────────────────────────────────────────────── */
+
 .layout {
   --portal-bg: #f4f6f8;
   --portal-sidebar-bg: #ffffff;
@@ -77,7 +77,7 @@
   --portal-theme-option-active-text: #ffffff;
 }
 
-/* ─── Sidebar ──────────────────────────────────────────────────────── */
+
 .sidebar {
   width: 280px;
   flex-shrink: 0;
@@ -404,7 +404,7 @@
 
 .logoutBtn:hover { background: var(--portal-hover); }
 
-/* ─── Main area ────────────────────────────────────────────────────── */
+
 .main {
   margin-left: 240px;
   min-width: 0;
@@ -517,7 +517,7 @@
   animation: spin 0.7s linear infinite;
 }
 
-/* ─── Sidebar navigation ───────────────────────────────────────────── */
+
 .portalNav {
   display: flex;
   flex-direction: column;
@@ -730,7 +730,7 @@
   border-radius: 50%;
 }
 
-/* ─── Panels ───────────────────────────────────────────────────────── */
+
 .panel {
   background: var(--portal-surface);
   border: 1px solid var(--portal-border);
@@ -758,7 +758,7 @@
   color: var(--portal-text-muted);
 }
 
-/* ─── Health bars (style UniFi DHCP/DNS) ───────────────────────────── */
+
 .healthBars {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -793,7 +793,7 @@
   transition: width 0.4s ease;
 }
 
-/* ─── Device grid (style UniFi AP icons) ───────────────────────────── */
+
 .deviceGroup {
   margin-bottom: 14px;
 }
@@ -874,7 +874,7 @@
 .dotOk { background: #10b981; }
 .dotOff { background: #9ca3af; }
 
-/* ─── Cloud services ───────────────────────────────────────────────── */
+
 .cloudGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -926,7 +926,7 @@
   flex-shrink: 0;
 }
 
-/* ─── Dashboard KPI & quick links ─────────────────────────────────── */
+
 .dashboardTopRow {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.15fr) minmax(0, 1.15fr);
@@ -1103,14 +1103,14 @@
   color: var(--portal-text);
 }
 
-/* ─── Two columns ──────────────────────────────────────────────────── */
+
 .twoCol {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
-/* ─── Tables ───────────────────────────────────────────────────────── */
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -1153,7 +1153,7 @@
   color: var(--portal-text-muted);
 }
 
-/* ─── Responsive ───────────────────────────────────────────────────── */
+
 @media (max-width: 1024px) {
   .twoCol { grid-template-columns: 1fr; }
   .healthBars { grid-template-columns: 1fr 1fr; }

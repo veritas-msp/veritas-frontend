@@ -5,11 +5,7 @@ import { mdiOfficeBuilding } from "@mdi/js";
 import { HardDrive } from "lucide-react";
 import { scoreToLetter, letterToBackground } from "../../../utils/gradeUtils";
 import styles from "./TopologyCommon.module.css";
-
-// Services utilisés pour évaluer l'état global des stockages
 const DEFAULT_SERVICES = ["CPU", "MEMOIRE", "DISQUE", "UPTIME"];
-
-// Helpers pour les événements et disponibilité
 const getEventsCountValue = (storageData = {}) => {
   if (typeof storageData.eventsCount === "number") {
     return storageData.eventsCount;
@@ -23,30 +19,19 @@ const getEventsCountValue = (storageData = {}) => {
   }
   return null;
 };
-
 const getAvailabilityValue = (storageData = {}) => {
-  const raw =
-    storageData?.availabilityData?.up ??
-    storageData?.availability?.up ??
-    storageData?.availability;
+  const raw = storageData?.availabilityData?.up ?? storageData?.availability?.up ?? storageData?.availability;
   if (raw === null || raw === undefined) return null;
   const numeric = typeof raw === "number" ? raw : parseFloat(raw);
   return Number.isFinite(numeric) ? numeric : null;
 };
-
-// Fonction pour calculer le score de santé d'un stockage (identique à getStorageHealthScore de Stockage.js)
 const computeStorageHealthScore = (storageName, storageConfig, storageData = {}) => {
-  // Vérifier si le stockage est mappé CheckMK
   const isMapped = Boolean(storageConfig?.checkmk_host_name);
   const hasSyncData = Boolean(storageData?.lastSyncDate);
-
-  // Si mappé mais pas encore synchronisé, retourner null
   if (isMapped && !hasSyncData) {
     return null;
   }
-
   if (!storageData) return null;
-  
   const servicesCoverageWeight = isMapped ? 0.15 : 0;
   const eventsWeight = isMapped ? 0.15 : 0;
   const availabilityWeight = isMapped ? 0.15 : 0;
@@ -55,8 +40,6 @@ const computeStorageHealthScore = (storageName, storageConfig, storageData = {})
   const serviceTableWeight = isMapped ? 0.15 : 0.3;
   let totalScore = 0;
   let weightSum = 0;
-
-  // Score basé sur la couverture des services CheckMK
   if (servicesCoverageWeight > 0) {
     let servicesCoverageScore = 100;
     const checkmkData = storageData?.checkmkData;
@@ -72,38 +55,28 @@ const computeStorageHealthScore = (storageName, storageConfig, storageData = {})
     totalScore += servicesCoverageScore * servicesCoverageWeight;
     weightSum += servicesCoverageWeight;
   }
-
-  // Score basé sur les disques
   const diskStates = storageData.diskStates || {};
   const currentDisks = parseInt(storageConfig?.nbDisquesActuels) || 0;
   let okCount = 0;
   let warnCount = 0;
   let critCount = 0;
-  
   if (currentDisks > 0 && diskWeight > 0) {
     for (let i = 0; i < currentDisks; i++) {
       const state = diskStates[i] || 'ok';
-      if (state === 'ok') okCount++;
-      else if (state === 'warn') warnCount++;
-      else if (state === 'crit') critCount++;
+      if (state === 'ok') okCount++;else if (state === 'warn') warnCount++;else if (state === 'crit') critCount++;
     }
-    
     const okRatio = okCount / currentDisks;
     const warnRatio = warnCount / currentDisks;
     const critRatio = critCount / currentDisks;
-    let diskScore = (okRatio * 100) + (warnRatio * 40) + (critRatio * 0);
-    
+    let diskScore = okRatio * 100 + warnRatio * 40 + critRatio * 0;
     if (critRatio > 0) {
       diskScore = Math.min(diskScore, 30);
     } else if (warnRatio > 0) {
       diskScore = Math.min(diskScore, 60);
     }
-    
     totalScore += diskScore * diskWeight;
     weightSum += diskWeight;
   }
-
-  // Score basé sur l'espace disponible
   const usedSpace = parseInt(storageData.espaceUtiliseGo) || 0;
   const totalSpace = (() => {
     if (!storageConfig?.capacite) return 0;
@@ -120,11 +93,9 @@ const computeStorageHealthScore = (storageName, storageConfig, storageData = {})
     const n = parseFloat(capacityStr);
     return Number.isNaN(n) ? 0 : Math.round(n);
   })();
-  
   if (totalSpace > 0 && usedSpace >= 0 && spaceWeight > 0) {
-    const usagePercentage = (usedSpace / totalSpace) * 100;
+    const usagePercentage = usedSpace / totalSpace * 100;
     let spaceScore = 100;
-    
     if (usagePercentage >= 90) {
       spaceScore = 0;
     } else if (usagePercentage >= 75) {
@@ -134,12 +105,9 @@ const computeStorageHealthScore = (storageName, storageConfig, storageData = {})
     } else {
       spaceScore = 100;
     }
-    
     totalScore += spaceScore * spaceWeight;
     weightSum += spaceWeight;
   }
-
-  // Score basé sur les événements
   let hasEvents = false;
   let eventCount = 0;
   if (eventsWeight > 0) {
@@ -147,7 +115,6 @@ const computeStorageHealthScore = (storageName, storageConfig, storageData = {})
     if (eventCount > 0) {
       hasEvents = true;
     }
-    
     let eventScore = 100;
     if (eventCount === 0) {
       eventScore = 100;
@@ -160,12 +127,9 @@ const computeStorageHealthScore = (storageName, storageConfig, storageData = {})
     } else {
       eventScore = 15;
     }
-    
     totalScore += eventScore * eventsWeight;
     weightSum += eventsWeight;
   }
-
-  // Score basé sur la disponibilité
   let availabilityValue = 100;
   let hasLowAvailability = false;
   if (availabilityWeight > 0) {
@@ -185,26 +149,20 @@ const computeStorageHealthScore = (storageName, storageConfig, storageData = {})
     totalScore += availabilityScore * availabilityWeight;
     weightSum += availabilityWeight;
   }
-
-  // Score basé sur la table de disponibilité des services
   if (serviceTableWeight > 0) {
     let serviceTableScore = 0;
     let serviceTableCount = 0;
-    
     DEFAULT_SERVICES.forEach(service => {
       const serviceData = storageData[service] || {};
       const parse = (val, fallback) => isNaN(parseInt(val, 10)) ? fallback : parseInt(val, 10);
-      
       const ok = parse(serviceData.ok, 100);
       const warn = parse(serviceData.warn, 0);
       const crit = parse(serviceData.crit, 0);
-      
       const serviceTotal = ok + warn + crit;
       if (serviceTotal > 0) {
         const okRatio = ok / serviceTotal;
         const warnRatio = warn / serviceTotal;
         const critRatio = crit / serviceTotal;
-        
         let critScore = 0;
         if (critRatio > 0.1) {
           critScore = 0;
@@ -213,66 +171,46 @@ const computeStorageHealthScore = (storageName, storageConfig, storageData = {})
         } else {
           critScore = critRatio * 30;
         }
-        
-        serviceTableScore += (okRatio * 100) + (warnRatio * 50) + critScore;
+        serviceTableScore += okRatio * 100 + warnRatio * 50 + critScore;
         serviceTableCount++;
       }
     });
-    
     if (serviceTableCount > 0) {
       serviceTableScore = serviceTableScore / serviceTableCount;
     } else {
       serviceTableScore = 100;
     }
-    
     totalScore += serviceTableScore * serviceTableWeight;
     weightSum += serviceTableWeight;
   }
-
   if (weightSum === 0) return null;
-  
   let finalScore = Math.round(totalScore / weightSum);
-
-  // APPLICATION DE PLAFONDS CRITIQUES
-  // Si disque CRITIQUE : score maximum = 30
   if (critCount > 0) {
     finalScore = Math.min(finalScore, 30);
-  }
-  // Si disque WARNING : score maximum = 60
-  else if (warnCount > 0) {
+  } else if (warnCount > 0) {
     finalScore = Math.min(finalScore, 60);
   }
-
-  // Si disponibilité < 80% : score maximum = 50
   if (isMapped && availabilityValue < 80) {
     finalScore = Math.min(finalScore, 50);
-  }
-  // Si disponibilité < 95% : score maximum = 70
-  else if (isMapped && availabilityValue < 95) {
+  } else if (isMapped && availabilityValue < 95) {
     finalScore = Math.min(finalScore, 70);
   }
-  
-  // Si événements > 0 : score maximum = 70
   if (isMapped && hasEvents && finalScore > 70) {
     finalScore = Math.min(finalScore, 70);
   }
-  // Si événements >= 4 : score maximum = 50
   if (isMapped && eventCount >= 4 && finalScore > 50) {
     finalScore = Math.min(finalScore, 50);
   }
-  
   return finalScore;
 };
-
-// Fallback basique sur les pourcentages de services si on n'a vraiment aucun score
 const getStorageStatusFallback = (storageData = {}) => {
-  if (!storageData) return { status: "unknown" };
-
+  if (!storageData) return {
+    status: "unknown"
+  };
   let totalCrit = 0;
   let totalWarn = 0;
   let totalOk = 0;
-
-  DEFAULT_SERVICES.forEach((service) => {
+  DEFAULT_SERVICES.forEach(service => {
     const svc = storageData[service] || {};
     const parse = (val, fallback) => {
       const parsed = parseInt(val, 10);
@@ -282,19 +220,26 @@ const getStorageStatusFallback = (storageData = {}) => {
     totalWarn += parse(svc.warn, 0);
     totalOk += parse(svc.ok, 100);
   });
-
   const avgCrit = totalCrit / DEFAULT_SERVICES.length;
   const avgWarn = totalWarn / DEFAULT_SERVICES.length;
   const avgOk = totalOk / DEFAULT_SERVICES.length;
-
-  if (avgCrit > 20) return { status: "critical" };
-  if (avgCrit > 10 || avgWarn > 30) return { status: "warning" };
-  if (avgOk >= 90) return { status: "excellent" };
-  if (avgOk >= 70) return { status: "good" };
-  return { status: "poor" };
+  if (avgCrit > 20) return {
+    status: "critical"
+  };
+  if (avgCrit > 10 || avgWarn > 30) return {
+    status: "warning"
+  };
+  if (avgOk >= 90) return {
+    status: "excellent"
+  };
+  if (avgOk >= 70) return {
+    status: "good"
+  };
+  return {
+    status: "poor"
+  };
 };
-
-const getStorageLetterFromStatus = (status) => {
+const getStorageLetterFromStatus = status => {
   switch (status) {
     case "excellent":
       return "A";
@@ -310,24 +255,27 @@ const getStorageLetterFromStatus = (status) => {
       return null;
   }
 };
-
-const StockageTopology = ({ config, data, selectedSites = [] }) => {
-  const { theme } = useTheme();
-  const rawStockages = useMemo(() => {
-    const list1 = config?.client?.equipements?.Stockage || [];
+const StorageTopology = ({
+  config,
+  data,
+  selectedSites = []
+}) => {
+  const {
+    theme
+  } = useTheme();
+  const rawStorages = useMemo(() => {
+    const list1 = config?.client?.equipements?.Storage || [];
     const nasList = config?.client?.equipements?.NAS || [];
     const sanList = config?.client?.equipements?.SAN || [];
     return [...list1, ...nasList, ...sanList].filter(Boolean);
   }, [config]);
-  
-  // Les données sont dans data directement (data[storageName])
-  // data correspond à data.stockage passé depuis MonitoringSummary
   const storageData = data || {};
   const svgRef = useRef(null);
   const containerRef = useRef(null);
-  const [dimensions, setDimensions] = useState({ width: 1400, height: 600 });
-
-  // Calculer les dimensions du conteneur
+  const [dimensions, setDimensions] = useState({
+    width: 1400,
+    height: 600
+  });
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
@@ -344,35 +292,28 @@ const StockageTopology = ({ config, data, selectedSites = [] }) => {
     window.addEventListener('resize', updateDimensions);
     return () => window.removeEventListener('resize', updateDimensions);
   }, []);
-
-  // Filtrer par sites sélectionnés
   const filteredStorages = useMemo(() => {
     if (selectedSites.length > 0) {
-      return rawStockages.filter(stg => {
+      return rawStorages.filter(stg => {
         const equipmentSite = stg?.site ? String(stg.site).trim() : null;
-        const siteToCheck = equipmentSite || "Sans site";
+        const siteToCheck = equipmentSite || "No site";
         return selectedSites.includes(siteToCheck);
       });
     }
-    return rawStockages;
-  }, [rawStockages, selectedSites]);
-
-  // Grouper les stockages par site puis par type (NAS/SAN)
+    return rawStorages;
+  }, [rawStorages, selectedSites]);
   const groupedBySiteAndType = useMemo(() => {
     return filteredStorages.reduce((acc, stockage) => {
-      const siteName = stockage.site || "Sans site";
-      // Déterminer le type de stockage de manière intelligente
+      const siteName = stockage.site || "No site";
       let type = stockage.type;
       if (!type) {
-        // Si pas de type défini, essayer de déterminer automatiquement
         if (stockage.nbDisquesActuels && stockage.nbDisquesActuels > 0) {
-          type = "SAN"; // Si a des disques, probablement un SAN
+          type = "SAN";
         } else {
-          type = "NAS"; // Valeur par défaut
+          type = "NAS";
         }
       }
       const finalType = type;
-      
       if (!acc[siteName]) {
         acc[siteName] = {};
       }
@@ -383,18 +324,17 @@ const StockageTopology = ({ config, data, selectedSites = [] }) => {
       return acc;
     }, {});
   }, [filteredStorages]);
-
-  // Tri des types : SAN, puis NAS, puis autres, "Sans type" en dernier
   const sortTypes = (a, b) => {
-    const typeOrder = { SAN: 1, NAS: 2 };
-    const orderA = typeOrder[a] || (a === "Sans type" ? 99 : 3);
-    const orderB = typeOrder[b] || (b === "Sans type" ? 99 : 3);
+    const typeOrder = {
+      SAN: 1,
+      NAS: 2
+    };
+    const orderA = typeOrder[a] || (a === "No type" ? 99 : 3);
+    const orderB = typeOrder[b] || (b === "No type" ? 99 : 3);
     if (orderA !== orderB) return orderA - orderB;
     return a.localeCompare(b);
   };
-
-  const sites = Object.keys(groupedBySiteAndType).sort(); // Trier les sites pour que le premier soit à gauche
-
+  const sites = Object.keys(groupedBySiteAndType).sort();
   const maxSitesPerRow = 2;
   const numRows = Math.ceil(sites.length / maxSitesPerRow);
   const buildingY = 50;
@@ -404,31 +344,23 @@ const StockageTopology = ({ config, data, selectedSites = [] }) => {
   const maxStoragesPerLine = 4;
   const siteWidth = dimensions.width / 2;
   const rowHeight = 600;
-
-  // Calcul précis de la hauteur pour éviter que le SVG se superpose aux cartes de santé
   const totalHeight = useMemo(() => {
     const paddingTop = 50;
     const paddingBottom = 100;
-    const baseRowGap = rowHeight; // même espacement de base que le layout horizontal
+    const baseRowGap = rowHeight;
     let maxBottom = 0;
-
     sites.forEach((siteName, siteIndex) => {
       const rowIndex = Math.floor(siteIndex / maxSitesPerRow);
-      const siteStartY = buildingY + (rowIndex * baseRowGap);
+      const siteStartY = buildingY + rowIndex * baseRowGap;
       const types = Object.keys(groupedBySiteAndType[siteName] || {}).sort(sortTypes);
       let currentY = siteStartY + storagesStartY;
       let siteMinY = Infinity;
       let siteMaxY = -Infinity;
-
-      types.forEach((type) => {
+      types.forEach(type => {
         const storages = groupedBySiteAndType[siteName][type] || [];
         const totalLines = Math.ceil(storages.length / maxStoragesPerLine);
         const typeStartY = currentY;
-
-        // Hauteur occupée par ce type
         currentY += totalLines * storageSpacingY + 10;
-
-        // Étendre la boîte englobante verticale
         siteMinY = Math.min(siteMinY, typeStartY);
         storages.forEach((_, idx) => {
           const lineIndex = Math.floor(idx / maxStoragesPerLine);
@@ -437,289 +369,175 @@ const StockageTopology = ({ config, data, selectedSites = [] }) => {
           siteMaxY = Math.max(siteMaxY, storageY);
         });
       });
-
       if (Number.isFinite(siteMinY) && Number.isFinite(siteMaxY)) {
         const boxY = siteMinY - paddingTop;
-        const boxHeight = (siteMaxY - siteMinY) + paddingTop + paddingBottom;
+        const boxHeight = siteMaxY - siteMinY + paddingTop + paddingBottom;
         const siteBottom = boxY + boxHeight;
         maxBottom = Math.max(maxBottom, siteBottom);
       }
     });
-
-    // Marge de sécurité minimale
     return maxBottom > 0 ? maxBottom + 20 : 200;
   }, [sites, groupedBySiteAndType, maxSitesPerRow, buildingY, storagesStartY, storageSpacingY, maxStoragesPerLine, rowHeight]);
-
-  // Vérifier si on a des stockages
-  if (rawStockages.length === 0) {
-    return (
-      <div className={`${styles.topologyContainer} ${theme === "dark" ? styles.dark : ""}`}>
+  if (rawStorages.length === 0) {
+    return <div className={`${styles.topologyContainer} ${theme === "dark" ? styles.dark : ""}`}>
         <div className={styles.emptyState}>
-          <p>Aucun stockage configuré pour ce client.</p>
+          <p>No storage configured for this client.</p>
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  // Si pas de sites après filtrage
   if (Object.keys(groupedBySiteAndType).length === 0) {
-    return (
-      <div className={`${styles.topologyContainer} ${theme === "dark" ? styles.dark : ""}`}>
+    return <div className={`${styles.topologyContainer} ${theme === "dark" ? styles.dark : ""}`}>
         <div className={styles.emptyState}>
-          <p>Aucun stockage ne correspond aux filtres sélectionnés.</p>
+          <p>No storage matches the selected filters.</p>
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  // Fonction pour tronquer le nom du stockage
   const truncateStorageName = (name, maxLength = 10) => {
     if (!name) return '';
     if (name.length <= maxLength) return name;
     return name.substring(0, maxLength - 3) + '...';
   };
-
-  return (
-    <div 
-      ref={containerRef}
-      className={`${styles.topologyContainer} ${theme === "dark" ? styles.dark : ""}`}
-    >
+  return <div ref={containerRef} className={`${styles.topologyContainer} ${theme === "dark" ? styles.dark : ""}`}>
       <div className={styles.serversTopologyViewport}>
-        <svg
-          ref={svgRef}
-          width={dimensions.width}
-          height={totalHeight}
-          className={styles.topologySvg}
-        >
-          {/* Sites en lignes (2 par ligne max) */}
+        <svg ref={svgRef} width={dimensions.width} height={totalHeight} className={styles.topologySvg}>
+          {}
           {sites.map((siteName, siteIndex) => {
-            const rowIndex = Math.floor(siteIndex / maxSitesPerRow);
-            const positionInRow = siteIndex % maxSitesPerRow;
-            const buildingX = positionInRow === 0 
-              ? siteWidth / 2
-              : siteWidth + (siteWidth / 2);
-            const siteStartY = buildingY + (rowIndex * rowHeight);
-            const types = Object.keys(groupedBySiteAndType[siteName]).sort(sortTypes);
-            let currentY = siteStartY + storagesStartY;
-
-            // Boîte englobante des stockages du site
-            let siteMinX = Infinity;
-            let siteMaxX = -Infinity;
-            let siteMinY = Infinity;
-            let siteMaxY = -Infinity;
-
-            return (
-              <g key={`site-${siteName}`}>
-                {/* Stockages groupés par type : Type à gauche, stockages à droite */}
-                {types.map((type) => {
-                  const sortedStorages = groupedBySiteAndType[siteName][type];
-                  const totalLines = Math.ceil(sortedStorages.length / maxStoragesPerLine);
-                  
-                  const typeLabelX = positionInRow === 0 
-                    ? 50
-                    : siteWidth + 50;
-                  const typeStartY = currentY;
-                  
-                  // Augmenter l'espace entre le label et les cartes pour éviter l'overflow
-                  const storagesStartX = typeLabelX + 180;
-                  const storagesPerLine = Math.min(sortedStorages.length, maxStoragesPerLine);
-
-                  currentY += totalLines * storageSpacingY + 10;
-
-                  siteMinX = Math.min(siteMinX, typeLabelX);
-                  siteMinY = Math.min(siteMinY, typeStartY);
-                  
-                  const storagePositions = sortedStorages.map((storage, idx) => {
-                    const lineIndex = Math.floor(idx / maxStoragesPerLine);
-                    const colIndex = idx % maxStoragesPerLine;
-                    const storageX = storagesStartX + colIndex * storageSpacingX;
-                    const storageY = typeStartY + lineIndex * storageSpacingY;
-
-                    siteMinX = Math.min(siteMinX, storageX);
-                    siteMaxX = Math.max(siteMaxX, storageX);
-                    siteMinY = Math.min(siteMinY, storageY);
-                    siteMaxY = Math.max(siteMaxY, storageY);
-
-                    return {
-                      storage,
-                      x: storageX,
-                      y: storageY,
-                      idx
-                    };
-                  });
-
-                  return (
-                    <g key={`type-${siteName}-${type}`}>
-                      {/* Label Type à gauche avec limitation de largeur pour éviter l'overflow */}
-                      <foreignObject
-                        x={typeLabelX}
-                        y={typeStartY - 10}
-                        width="160"
-                        height="20"
-                      >
+          const rowIndex = Math.floor(siteIndex / maxSitesPerRow);
+          const positionInRow = siteIndex % maxSitesPerRow;
+          const buildingX = positionInRow === 0 ? siteWidth / 2 : siteWidth + siteWidth / 2;
+          const siteStartY = buildingY + rowIndex * rowHeight;
+          const types = Object.keys(groupedBySiteAndType[siteName]).sort(sortTypes);
+          let currentY = siteStartY + storagesStartY;
+          let siteMinX = Infinity;
+          let siteMaxX = -Infinity;
+          let siteMinY = Infinity;
+          let siteMaxY = -Infinity;
+          return <g key={`site-${siteName}`}>
+                {}
+                {types.map(type => {
+              const sortedStorages = groupedBySiteAndType[siteName][type];
+              const totalLines = Math.ceil(sortedStorages.length / maxStoragesPerLine);
+              const typeLabelX = positionInRow === 0 ? 50 : siteWidth + 50;
+              const typeStartY = currentY;
+              const storagesStartX = typeLabelX + 180;
+              const storagesPerLine = Math.min(sortedStorages.length, maxStoragesPerLine);
+              currentY += totalLines * storageSpacingY + 10;
+              siteMinX = Math.min(siteMinX, typeLabelX);
+              siteMinY = Math.min(siteMinY, typeStartY);
+              const storagePositions = sortedStorages.map((storage, idx) => {
+                const lineIndex = Math.floor(idx / maxStoragesPerLine);
+                const colIndex = idx % maxStoragesPerLine;
+                const storageX = storagesStartX + colIndex * storageSpacingX;
+                const storageY = typeStartY + lineIndex * storageSpacingY;
+                siteMinX = Math.min(siteMinX, storageX);
+                siteMaxX = Math.max(siteMaxX, storageX);
+                siteMinY = Math.min(siteMinY, storageY);
+                siteMaxY = Math.max(siteMaxY, storageY);
+                return {
+                  storage,
+                  x: storageX,
+                  y: storageY,
+                  idx
+                };
+              });
+              return <g key={`type-${siteName}-${type}`}>
+                      {}
+                      <foreignObject x={typeLabelX} y={typeStartY - 10} width="160" height="20">
                         <div style={{
-                          fontSize: '14px',
-                          fontWeight: '700',
-                          color: theme === 'dark' ? '#9ca3af' : '#6b7280',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          width: '100%'
-                        }}>
+                    fontSize: '14px',
+                    fontWeight: '700',
+                    color: theme === 'dark' ? '#9ca3af' : '#6b7280',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    width: '100%'
+                  }}>
                           {type}
                         </div>
                       </foreignObject>
                       
-                      {/* Stockages à droite */}
-                      {storagePositions.map((storagePos) => {
-                        const { storage, x: storageX, y: storageY, idx } = storagePos;
-                        const iconColor = theme === 'dark' ? '#111827' : '#1f2937';
-
-                        // Récupération de la note du stockage depuis les données du rapport
-                        const stgData = storageData?.[storage.nom] || {};
-                        const isMapped = Boolean(storage.checkmk_host_name);
-                        const manualScore = stgData.manualHealthScore;
-                        // Utiliser la fonction identique à Stockage.js
-                        const calculatedHealthScore = computeStorageHealthScore(storage.nom, storage, stgData);
-                        const resolvedScore = manualScore !== undefined && manualScore !== null
-                          ? manualScore
-                          : calculatedHealthScore;
-
-                        let healthLetter = null;
-                        if (resolvedScore !== undefined && resolvedScore !== null) {
-                          healthLetter = scoreToLetter(resolvedScore);
-                        } else {
-                          const statusFallback = getStorageStatusFallback(stgData);
-                          healthLetter = getStorageLetterFromStatus(statusFallback.status);
-                        }
-
-                        const nodeFill = healthLetter
-                          ? letterToBackground(healthLetter)
-                          : (theme === 'dark' ? '#1e1e3f' : '#ffffff');
-                        
-                        return (
-                          <g key={`storage-${storage.nom}-${idx}`}>
-                            {/* Bloc stockage : carré à coins arrondis */}
-                            <rect
-                              x={storageX - 20}
-                              y={storageY - 20}
-                              width="40"
-                              height="40"
-                              rx="8"
-                              fill={nodeFill}
-                              stroke={theme === 'dark' ? '#4b5563' : '#9ca3af'}
-                              strokeWidth="2"
-                            />
+                      {}
+                      {storagePositions.map(storagePos => {
+                  const {
+                    storage,
+                    x: storageX,
+                    y: storageY,
+                    idx
+                  } = storagePos;
+                  const iconColor = theme === 'dark' ? '#111827' : '#1f2937';
+                  const stgData = storageData?.[storage.nom] || {};
+                  const isMapped = Boolean(storage.checkmk_host_name);
+                  const manualScore = stgData.manualHealthScore;
+                  const calculatedHealthScore = computeStorageHealthScore(storage.nom, storage, stgData);
+                  const resolvedScore = manualScore !== undefined && manualScore !== null ? manualScore : calculatedHealthScore;
+                  let healthLetter = null;
+                  if (resolvedScore !== undefined && resolvedScore !== null) {
+                    healthLetter = scoreToLetter(resolvedScore);
+                  } else {
+                    const statusFallback = getStorageStatusFallback(stgData);
+                    healthLetter = getStorageLetterFromStatus(statusFallback.status);
+                  }
+                  const nodeFill = healthLetter ? letterToBackground(healthLetter) : theme === 'dark' ? '#1e1e3f' : '#ffffff';
+                  return <g key={`storage-${storage.nom}-${idx}`}>
+                            {}
+                            <rect x={storageX - 20} y={storageY - 20} width="40" height="40" rx="8" fill={nodeFill} stroke={theme === 'dark' ? '#4b5563' : '#9ca3af'} strokeWidth="2" />
                             
-                            {/* Icône stockage */}
-                            <foreignObject
-                              x={storageX - 12}
-                              y={storageY - 12}
-                              width="24"
-                              height="24"
-                            >
-                              <div className={styles.connectionIconWrapper} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
+                            {}
+                            <foreignObject x={storageX - 12} y={storageY - 12} width="24" height="24">
+                              <div className={styles.connectionIconWrapper} style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '100%',
+                        height: '100%'
+                      }}>
                                 <HardDrive size={20} color={iconColor} />
                               </div>
                             </foreignObject>
                             
-                            {/* Nom du stockage avec défilement si trop long */}
-                            {storage.nom && storage.nom.length > 10 ? (
-                              <foreignObject
-                                x={storageX - 40}
-                                y={storageY + 33}
-                                width="80"
-                                height="15"
-                              >
+                            {}
+                            {storage.nom && storage.nom.length > 10 ? <foreignObject x={storageX - 40} y={storageY + 33} width="80" height="15">
                                 <div className={styles.scrollingServerName}>
                                   <span>{storage.nom}</span>
                                 </div>
-                              </foreignObject>
-                            ) : (
-                              <text
-                                x={storageX}
-                                y={storageY + 45}
-                                textAnchor="middle"
-                                fill={theme === 'dark' ? '#e5e7eb' : '#111827'}
-                                fontWeight="600"
-                                fontSize="11"
-                              >
+                              </foreignObject> : <text x={storageX} y={storageY + 45} textAnchor="middle" fill={theme === 'dark' ? '#e5e7eb' : '#111827'} fontWeight="600" fontSize="11">
                                 {storage.nom || ''}
-                              </text>
-                            )}
+                              </text>}
                             
-                            {/* IP du stockage */}
-                            <text
-                              x={storageX}
-                              y={storageY + 60}
-                              textAnchor="middle"
-                              fill={theme === 'dark' ? '#9ca3af' : '#6b7280'}
-                              fontWeight="400"
-                              fontSize="10"
-                            >
+                            {}
+                            <text x={storageX} y={storageY + 60} textAnchor="middle" fill={theme === 'dark' ? '#9ca3af' : '#6b7280'} fontWeight="400" fontSize="10">
                               {storage.ip || 'N/A'}
                             </text>
-                          </g>
-                        );
-                      })}
-                    </g>
-                  );
+                          </g>;
                 })}
-                {/* Cadre pointillé autour du site */}
+                    </g>;
+            })}
+                {}
                 {Number.isFinite(siteMinY) && Number.isFinite(siteMaxY) && (() => {
-                  const paddingTop = 50;
-                  const paddingBottom = 100;
-                  const gap = 48;
-
-                  const boxWidth = (dimensions.width - gap) / 2;
-
-                  const boxX = positionInRow === 0
-                    ? 0
-                    : boxWidth + gap;
-                  const boxY = siteMinY - paddingTop;
-                  const boxHeight = (siteMaxY - siteMinY) + paddingTop + paddingBottom;
-
-                  return (
-                    <>
-                      {/* Titre du lieu avec icône */}
-                      <foreignObject
-                        x={boxX - 3}
-                        y={boxY - 48}
-                        width={boxWidth - 16}
-                        height="24"
-                      >
+              const paddingTop = 50;
+              const paddingBottom = 100;
+              const gap = 48;
+              const boxWidth = (dimensions.width - gap) / 2;
+              const boxX = positionInRow === 0 ? 0 : boxWidth + gap;
+              const boxY = siteMinY - paddingTop;
+              const boxHeight = siteMaxY - siteMinY + paddingTop + paddingBottom;
+              return <>
+                      {}
+                      <foreignObject x={boxX - 3} y={boxY - 48} width={boxWidth - 16} height="24">
                         <div className={styles.siteHeaderLeft}>
-                          <Icon
-                            path={mdiOfficeBuilding}
-                            size="1.1rem"
-                            color={theme === "dark" ? "#9ca3af" : "#6b7280"}
-                          />
+                          <Icon path={mdiOfficeBuilding} size="1.1rem" color={theme === "dark" ? "#9ca3af" : "#6b7280"} />
                           <span className={styles.siteHeaderLabel}>
                             {siteName}
                           </span>
                         </div>
                       </foreignObject>
-                      <rect
-                        x={boxX}
-                        y={boxY}
-                        width={boxWidth}
-                        height={boxHeight}
-                        rx="16"
-                        fill="none"
-                        stroke={theme === 'dark' ? '#4b5563' : '#cbd5e1'}
-                        strokeWidth="2"
-                        strokeDasharray="6 6"
-                      />
-                    </>
-                  );
-                })()}
-              </g>
-            );
-          })}
+                      <rect x={boxX} y={boxY} width={boxWidth} height={boxHeight} rx="16" fill="none" stroke={theme === 'dark' ? '#4b5563' : '#cbd5e1'} strokeWidth="2" strokeDasharray="6 6" />
+                    </>;
+            })()}
+              </g>;
+        })}
         </svg>
       </div>
-    </div>
-  );
+    </div>;
 };
-
-export default StockageTopology;
+export default StorageTopology;

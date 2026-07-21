@@ -1,11 +1,10 @@
 import React from "react";
 import { Icon } from "@iconify/react";
 import { getFirewallBrandIconDef } from "./firewallBrandIconMap";
-
-/**
- * Logo de marque firewall · couleur uniforme via className (currentColor).
- */
-export default function FirewallBrandIcon({ brand, className }) {
+export default function FirewallBrandIcon({
+  brand,
+  className
+}) {
   const def = getFirewallBrandIconDef(brand);
   if (!def) {
     return <Icon icon="mdi:shield-outline" className={className} aria-hidden />;

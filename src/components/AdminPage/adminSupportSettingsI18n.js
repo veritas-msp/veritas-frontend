@@ -1,30 +1,23 @@
 import { createLocaleGetter, interpolate } from "../../i18n/translate";
 import { SUPPORT_SETTINGS_MODALS } from "./adminSupportSettingsModalsI18n";
-
 const TAB_KEYS = ["templates", "macros", "categories", "solution-catalog", "ticket-views"];
-
 const VIEW_META_KEYS = ["templates", "macros", "categories", "solution-catalog", "ticket-views"];
-
 const TEMPLATE_FORM_SECTION_ICONS = {
   general: "mdi:information-outline",
-  content: "mdi:text-box-outline",
+  content: "mdi:text-box-outline"
 };
-
 const MACRO_FORM_SECTION_ICONS = {
   general: "mdi:information-outline",
-  actions: "mdi:lightning-bolt-outline",
+  actions: "mdi:lightning-bolt-outline"
 };
-
 const ITIL_CATEGORY_FORM_SECTION_ICONS = {
   general: "mdi:information-outline",
-  details: "mdi:text-box-outline",
+  details: "mdi:text-box-outline"
 };
-
 const ITIL_SECTION_FORM_SECTION_ICONS = {
   general: "mdi:information-outline",
-  details: "mdi:text-box-outline",
+  details: "mdi:text-box-outline"
 };
-
 const SUPPORT_SETTINGS_COPY = {
   fr: {
     tabs: {
@@ -32,30 +25,29 @@ const SUPPORT_SETTINGS_COPY = {
       macros: "Macros",
       categories: "Catégories",
       "solution-catalog": "Solutions",
-      "ticket-views": "Vues support",
+      "ticket-views": "Vues support"
     },
     viewMeta: {
       templates: {
         title: "Modèles de commentaires",
-        description:
-          "Textes prédéfinis réutilisables dans les réponses et les automatisations de tickets.",
+        description: "Textes prédéfinis réutilisables dans les réponses et les automatisations de tickets."
       },
       macros: {
         title: "Enchaînements d'actions",
-        description: "Macros exécutables en un clic : statut, commentaire, email, message Teams, etc.",
+        description: "Macros exécutables en un clic : statut, commentaire, email, message Teams, etc."
       },
       categories: {
         title: "Arborescence ITIL",
-        description: "Sections et catégories proposées lors de la création et du classement des tickets.",
+        description: "Sections et catégories proposées lors de la création et du classement des tickets."
       },
       "solution-catalog": {
         title: "Catégories de résolution",
-        description: "Types d'intervention et d'action proposés lors de la résolution d'un ticket.",
+        description: "Types d'intervention et d'action proposés lors de la résolution d'un ticket."
       },
       "ticket-views": {
         title: "Vues support",
-        description: "Filtres de tickets et assignation par utilisateur, profil ou équipe.",
-      },
+        description: "Filtres de tickets et assignation par utilisateur, profil ou équipe."
+      }
     },
     common: {
       columns: {
@@ -69,14 +61,14 @@ const SUPPORT_SETTINGS_COPY = {
         view: "Vue",
         visibility: "Visibilité",
         filters: "Filtres",
-        assignment: "Assignation",
+        assignment: "Assignation"
       },
       actions: {
         preview: "Aperçu",
         edit: "Modifier",
         delete: "Supprimer",
         add: "Ajouter",
-        actionsAria: "Actions",
+        actionsAria: "Actions"
       },
       loading: "Chargement…",
       emptyDash: "-",
@@ -91,7 +83,7 @@ const SUPPORT_SETTINGS_COPY = {
       countEntry: "{count} entrée",
       countEntryPlural: "{count} entrées",
       countView: "{count} vue",
-      countViewPlural: "{count} vues",
+      countViewPlural: "{count} vues"
     },
     templates: {
       addBtn: "Ajouter un template",
@@ -105,16 +97,15 @@ const SUPPORT_SETTINGS_COPY = {
       toast: {
         loadError: "Erreur de chargement templates/macros",
         nameRequired: "Le nom du template est requis",
-        limitWarn:
-          "Limite Community : {max} templates maximum. Passez à Veritas Pro pour en ajouter davantage.",
+        limitWarn: "Limite Community : {max} templates maximum. Passez à Veritas Pro pour en ajouter davantage.",
         addError: "Erreur lors de l'ajout du template",
         updateError: "Erreur lors de la mise a jour du template",
         saveError: "Erreur lors de l'enregistrement du template",
         deleteError: "Erreur lors de la suppression du template",
         added: "Template ajouté",
         updated: "Template mis à jour",
-        deleted: "Template supprimé",
-      },
+        deleted: "Template supprimé"
+      }
     },
     macros: {
       addBtn: "Ajouter une macro",
@@ -122,14 +113,13 @@ const SUPPORT_SETTINGS_COPY = {
       limitReached: "Limite atteinte ({current}/{max} macros).",
       quota: "Quota : {current}/{max} macros actives.",
       empty: "Aucune macro",
-      proLockedHint:
-        "Cette action est réservée à Veritas Pro. Passez à l'édition Pro pour l'utiliser à l'exécution.",
+      proLockedHint: "Cette action est réservée à Veritas Pro. Passez à l'édition Pro pour l'utiliser à l'exécution.",
       describe: {
         visibilityInternal: "interne",
         visibilityPublic: "public",
         tagsAdd: "Ajouter",
         tagsRemove: "Retirer",
-        manualAttachment: "pièce jointe manuelle",
+        manualAttachment: "pièce jointe manuelle"
       },
       placeholders: {
         assignee: "Rechercher un assigné...",
@@ -150,28 +140,25 @@ const SUPPORT_SETTINGS_COPY = {
         reminderOffsetLabel: "Délai (minutes après exécution)",
         reminderNote: "Note de l'alerte (optionnel)",
         selectWebhook: "Sélectionner un webhook",
-        noWebhookHint:
-          "Aucun webhook actif. Configurez-en un dans Administration → Tickets → Webhooks.",
+        noWebhookHint: "Aucun webhook actif. Configurez-en un dans Administration → Tickets → Webhooks.",
         teamsTitle: "Titre du message (optionnel)",
         teamsMessage: "Message Teams",
         phoneNumber: "Numéro à appeler",
         ticketId: "ID ticket à lier",
         equipmentId: "ID matériel à lier",
-        manualAttachmentHint:
-          "La pièce jointe sera à ajouter manuellement lors de l'exécution de la macro.",
+        manualAttachmentHint: "La pièce jointe sera à ajouter manuellement lors de l'exécution de la macro."
       },
       toast: {
         nameRequired: "Le nom de la macro est requis",
         actionsRequired: "Ajoutez au moins une action dans la macro",
-        limitWarn:
-          "Limite Community : {max} macros maximum. Passez à Veritas Pro pour en ajouter davantage.",
+        limitWarn: "Limite Community : {max} macros maximum. Passez à Veritas Pro pour en ajouter davantage.",
         addError: "Erreur lors de l'ajout de la macro",
         updateError: "Erreur lors de la mise a jour de la macro",
         deleteError: "Erreur lors de la suppression de la macro",
         added: "Macro ajoutée",
         updated: "Macro mise à jour",
-        deleted: "Macro supprimée",
-      },
+        deleted: "Macro supprimée"
+      }
     },
     categories: {
       newSectionBtn: "Nouvelle section",
@@ -183,14 +170,10 @@ const SUPPORT_SETTINGS_COPY = {
       emptySectionsSearch: "Aucune section ne correspond à la recherche.",
       emptyCategories: "Aucune catégorie ITIL",
       emptyCategoriesSearch: "Aucune catégorie ne correspond à la recherche.",
-      sectionDeleteBlockedOne:
-        "Suppression impossible : 1 catégorie rattachée",
-      sectionDeleteBlockedMany:
-        "Suppression impossible : {count} catégories rattachées",
-      sectionDeleteWarnOne:
-        "Impossible de supprimer « {name} » : 1 catégorie ITIL y est encore rattachée.",
-      sectionDeleteWarnMany:
-        "Impossible de supprimer « {name} » : {count} catégories ITIL y sont encore rattachées.",
+      sectionDeleteBlockedOne: "Suppression impossible : 1 catégorie rattachée",
+      sectionDeleteBlockedMany: "Suppression impossible : {count} catégories rattachées",
+      sectionDeleteWarnOne: "Impossible de supprimer « {name} » : 1 catégorie ITIL y est encore rattachée.",
+      sectionDeleteWarnMany: "Impossible de supprimer « {name} » : {count} catégories ITIL y sont encore rattachées.",
       thisSection: "cette section",
       toast: {
         categoriesLoadError: "Erreur lors du chargement des catégories ITIL",
@@ -206,8 +189,8 @@ const SUPPORT_SETTINGS_COPY = {
         sectionUpdated: "Section ITIL mise à jour",
         sectionSaveError: "Erreur lors de la sauvegarde de la section ITIL",
         sectionDeleted: "Section ITIL supprimée",
-        sectionDeleteError: "Erreur lors de la suppression de la section ITIL",
-      },
+        sectionDeleteError: "Erreur lors de la suppression de la section ITIL"
+      }
     },
     solutions: {
       interventionTitle: "Types d'intervention",
@@ -223,23 +206,22 @@ const SUPPORT_SETTINGS_COPY = {
         updated: "Entrée catalogue mise à jour",
         saveError: "Erreur lors de la sauvegarde de l'entrée catalogue",
         deleted: "Entrée catalogue supprimée",
-        deleteError: "Erreur lors de la suppression de l'entrée catalogue",
-      },
+        deleteError: "Erreur lors de la suppression de l'entrée catalogue"
+      }
     },
     ticketViews: {
-      cardDescription:
-        "Créez des vues de filtrage et assignez-les à des utilisateurs, profils ou équipes.",
+      cardDescription: "Créez des vues de filtrage et assignez-les à des utilisateurs, profils ou équipes.",
       newViewBtn: "Nouvelle vue",
       searchPlaceholder: "Rechercher une vue…",
       filters: {
         all: "Toutes les vues",
         public: "Publiques",
-        assigned: "Assignées",
+        assigned: "Assignées"
       },
       visibility: {
         public: "Publique",
         assigned: "Assignée",
-        private: "Privée",
+        private: "Privée"
       },
       builtin: "Intégrée",
       emptyNone: "Aucune vue.",
@@ -250,94 +232,198 @@ const SUPPORT_SETTINGS_COPY = {
         updated: "Vue mise à jour",
         created: "Vue créée",
         deleted: "Vue supprimée",
-        deleteError: "Erreur lors de la suppression",
-      },
+        deleteError: "Erreur lors de la suppression"
+      }
     },
     templateFormSections: {
-      general: { label: "Général", description: "Nom du template" },
-      content: { label: "Contenu", description: "Texte et mise en forme" },
+      general: {
+        label: "Général",
+        description: "Nom du template"
+      },
+      content: {
+        label: "Contenu",
+        description: "Texte et mise en forme"
+      }
     },
     macroFormSections: {
-      general: { label: "Général", description: "Nom de la macro" },
-      actions: { label: "Actions", description: "Ordre d'exécution" },
+      general: {
+        label: "Général",
+        description: "Nom de la macro"
+      },
+      actions: {
+        label: "Actions",
+        description: "Ordre d'exécution"
+      }
     },
     itilCategoryFormSections: {
-      general: { label: "Général", description: "Section et nom" },
-      details: { label: "Détails", description: "Description et statut" },
+      general: {
+        label: "Général",
+        description: "Section et nom"
+      },
+      details: {
+        label: "Détails",
+        description: "Description et statut"
+      }
     },
     itilSectionFormSections: {
-      general: { label: "Général", description: "Nom et statut" },
-      details: { label: "Détails", description: "Description" },
+      general: {
+        label: "Général",
+        description: "Nom et statut"
+      },
+      details: {
+        label: "Détails",
+        description: "Description"
+      }
     },
-    macroActionTypes: [
-      { value: "set_field", label: "Changer un champ" },
-      { value: "add_comment", label: "Envoyer un message support" },
-      { value: "open_email", label: "Ouvrir un email" },
-      { value: "manage_tags", label: "Gérer les étiquettes" },
-      { value: "planning_alert", label: "Alerte planning", proOnly: true },
-      { value: "teams_message", label: "Message Teams (webhook)", proOnly: true },
-      { value: "call", label: "Lancer un appel" },
-      { value: "add_attachment", label: "Ajouter une pièce jointe (manuel)" },
-    ],
-    macroFieldOptions: [
-      { value: "assigned_user_id", label: "Assigné" },
-      { value: "followers", label: "Followers" },
-      { value: "status", label: "Statut" },
-      { value: "type", label: "Type" },
-      { value: "category", label: "Catégorie" },
-      { value: "priority", label: "Priorité" },
-      { value: "is_major_incident", label: "Incident majeur" },
-      { value: "channel", label: "Canal" },
-      { value: "assigned_to_me", label: "Assigner à moi" },
-    ],
+    macroActionTypes: [{
+      value: "set_field",
+      label: "Changer un champ"
+    }, {
+      value: "add_comment",
+      label: "Envoyer un message support"
+    }, {
+      value: "open_email",
+      label: "Ouvrir un email"
+    }, {
+      value: "manage_tags",
+      label: "Gérer les étiquettes"
+    }, {
+      value: "planning_alert",
+      label: "Alerte planning",
+      proOnly: true
+    }, {
+      value: "teams_message",
+      label: "Message Teams (webhook)",
+      proOnly: true
+    }, {
+      value: "call",
+      label: "Lancer un appel"
+    }, {
+      value: "add_attachment",
+      label: "Ajouter une pièce jointe (manuel)"
+    }],
+    macroFieldOptions: [{
+      value: "assigned_user_id",
+      label: "Assigné"
+    }, {
+      value: "followers",
+      label: "Followers"
+    }, {
+      value: "status",
+      label: "Statut"
+    }, {
+      value: "type",
+      label: "Type"
+    }, {
+      value: "category",
+      label: "Catégorie"
+    }, {
+      value: "priority",
+      label: "Priorité"
+    }, {
+      value: "is_major_incident",
+      label: "Incident majeur"
+    }, {
+      value: "channel",
+      label: "Canal"
+    }, {
+      value: "assigned_to_me",
+      label: "Assigner à moi"
+    }],
     macroFieldModeOptions: {
-      assigned_user_id: [
-        { value: "replace", label: "Remplacer" },
-        { value: "add", label: "Ajouter" },
-      ],
-      followers: [
-        { value: "add", label: "Ajouter" },
-        { value: "remove", label: "Retirer" },
-        { value: "replace", label: "Remplacer" },
-      ],
+      assigned_user_id: [{
+        value: "replace",
+        label: "Remplacer"
+      }, {
+        value: "add",
+        label: "Ajouter"
+      }],
+      followers: [{
+        value: "add",
+        label: "Ajouter"
+      }, {
+        value: "remove",
+        label: "Retirer"
+      }, {
+        value: "replace",
+        label: "Remplacer"
+      }]
     },
     macroBoundedFieldValues: {
-      status: [
-        { value: "new", label: "Nouveau" },
-        { value: "in_progress", label: "En cours" },
-        { value: "pending", label: "En attente" },
-        { value: "resolved", label: "Résolu" },
-        { value: "closed", label: "Clos" },
-      ],
-      type: [
-        { value: "incident", label: "Incident" },
-        { value: "demande", label: "Demande" },
-        { value: "probleme", label: "Problème" },
-        { value: "changement", label: "Changement" },
-      ],
-      priority: [
-        { value: "low", label: "Basse" },
-        { value: "normal", label: "Normale" },
-        { value: "high", label: "Haute" },
-        { value: "urgent", label: "Urgente" },
-      ],
-      channel: [
-        { value: "phone", label: "Téléphone" },
-        { value: "email", label: "Email" },
-        { value: "web", label: "Web" },
-        { value: "chat", label: "Chat" },
-        { value: "whatsapp", label: "WhatsApp" },
-      ],
-      is_major_incident: [
-        { value: "true", label: "Oui" },
-        { value: "false", label: "Non" },
-      ],
-      assigned_to_me: [
-        { value: "true", label: "Oui" },
-        { value: "false", label: "Non" },
-      ],
+      status: [{
+        value: "new",
+        label: "Nouveau"
+      }, {
+        value: "in_progress",
+        label: "En cours"
+      }, {
+        value: "pending",
+        label: "En attente"
+      }, {
+        value: "resolved",
+        label: "Résolu"
+      }, {
+        value: "closed",
+        label: "Clos"
+      }],
+      type: [{
+        value: "incident",
+        label: "Incident"
+      }, {
+        value: "demande",
+        label: "Demande"
+      }, {
+        value: "probleme",
+        label: "Problème"
+      }, {
+        value: "changement",
+        label: "Changement"
+      }],
+      priority: [{
+        value: "low",
+        label: "Basse"
+      }, {
+        value: "normal",
+        label: "Normale"
+      }, {
+        value: "high",
+        label: "Haute"
+      }, {
+        value: "urgent",
+        label: "Urgente"
+      }],
+      channel: [{
+        value: "phone",
+        label: "Téléphone"
+      }, {
+        value: "email",
+        label: "Email"
+      }, {
+        value: "web",
+        label: "Web"
+      }, {
+        value: "chat",
+        label: "Chat"
+      }, {
+        value: "whatsapp",
+        label: "WhatsApp"
+      }],
+      is_major_incident: [{
+        value: "true",
+        label: "Oui"
+      }, {
+        value: "false",
+        label: "Non"
+      }],
+      assigned_to_me: [{
+        value: "true",
+        label: "Oui"
+      }, {
+        value: "false",
+        label: "Non"
+      }]
     },
-    modals: SUPPORT_SETTINGS_MODALS.fr,
+    modals: SUPPORT_SETTINGS_MODALS.fr
   },
   en: {
     tabs: {
@@ -345,29 +431,29 @@ const SUPPORT_SETTINGS_COPY = {
       macros: "Macros",
       categories: "Categories",
       "solution-catalog": "Solutions",
-      "ticket-views": "Support views",
+      "ticket-views": "Support views"
     },
     viewMeta: {
       templates: {
         title: "Comment templates",
-        description: "Predefined texts reused in ticket replies and automations.",
+        description: "Predefined texts reused in ticket replies and automations."
       },
       macros: {
         title: "Action sequences",
-        description: "One-click macros: status, comment, email, Teams message, etc.",
+        description: "One-click macros: status, comment, email, Teams message, etc."
       },
       categories: {
         title: "ITIL tree",
-        description: "Sections and categories offered when creating and classifying tickets.",
+        description: "Sections and categories offered when creating and classifying tickets."
       },
       "solution-catalog": {
         title: "Resolution categories",
-        description: "Intervention and action types offered when resolving a ticket.",
+        description: "Intervention and action types offered when resolving a ticket."
       },
       "ticket-views": {
         title: "Support views",
-        description: "Ticket filters and assignment by user, profile or team.",
-      },
+        description: "Ticket filters and assignment by user, profile or team."
+      }
     },
     common: {
       columns: {
@@ -381,14 +467,14 @@ const SUPPORT_SETTINGS_COPY = {
         view: "View",
         visibility: "Visibility",
         filters: "Filters",
-        assignment: "Assignment",
+        assignment: "Assignment"
       },
       actions: {
         preview: "Preview",
         edit: "Edit",
         delete: "Delete",
         add: "Add",
-        actionsAria: "Actions",
+        actionsAria: "Actions"
       },
       loading: "Loading…",
       emptyDash: "-",
@@ -403,7 +489,7 @@ const SUPPORT_SETTINGS_COPY = {
       countEntry: "{count} entry",
       countEntryPlural: "{count} entries",
       countView: "{count} view",
-      countViewPlural: "{count} views",
+      countViewPlural: "{count} views"
     },
     templates: {
       addBtn: "Add template",
@@ -417,16 +503,15 @@ const SUPPORT_SETTINGS_COPY = {
       toast: {
         loadError: "Error loading templates/macros",
         nameRequired: "Template name is required",
-        limitWarn:
-          "Community limit: {max} templates maximum. Upgrade to Veritas Pro to add more.",
+        limitWarn: "Community limit: {max} templates maximum. Upgrade to Veritas Pro to add more.",
         addError: "Error while adding template",
         updateError: "Error while updating template",
         saveError: "Error while saving template",
         deleteError: "Error while deleting template",
         added: "Template added",
         updated: "Template updated",
-        deleted: "Template deleted",
-      },
+        deleted: "Template deleted"
+      }
     },
     macros: {
       addBtn: "Add macro",
@@ -434,14 +519,13 @@ const SUPPORT_SETTINGS_COPY = {
       limitReached: "Limit reached ({current}/{max} macros).",
       quota: "Quota: {current}/{max} active macros.",
       empty: "No macros",
-      proLockedHint:
-        "This action is reserved for Veritas Pro. Upgrade to Pro to use it at runtime.",
+      proLockedHint: "This action is reserved for Veritas Pro. Upgrade to Pro to use it at runtime.",
       describe: {
         visibilityInternal: "internal",
         visibilityPublic: "public",
         tagsAdd: "Add",
         tagsRemove: "Remove",
-        manualAttachment: "manual attachment",
+        manualAttachment: "manual attachment"
       },
       placeholders: {
         assignee: "Search for an assignee...",
@@ -468,21 +552,19 @@ const SUPPORT_SETTINGS_COPY = {
         phoneNumber: "Phone number to call",
         ticketId: "Ticket ID to link",
         equipmentId: "Equipment ID to link",
-        manualAttachmentHint:
-          "The attachment must be added manually when running the macro.",
+        manualAttachmentHint: "The attachment must be added manually when running the macro."
       },
       toast: {
         nameRequired: "Macro name is required",
         actionsRequired: "Add at least one action to the macro",
-        limitWarn:
-          "Community limit: {max} macros maximum. Upgrade to Veritas Pro to add more.",
+        limitWarn: "Community limit: {max} macros maximum. Upgrade to Veritas Pro to add more.",
         addError: "Error while adding macro",
         updateError: "Error while updating macro",
         deleteError: "Error while deleting macro",
         added: "Macro added",
         updated: "Macro updated",
-        deleted: "Macro deleted",
-      },
+        deleted: "Macro deleted"
+      }
     },
     categories: {
       newSectionBtn: "New section",
@@ -496,10 +578,8 @@ const SUPPORT_SETTINGS_COPY = {
       emptyCategoriesSearch: "No category matches your search.",
       sectionDeleteBlockedOne: "Cannot delete: 1 linked category",
       sectionDeleteBlockedMany: "Cannot delete: {count} linked categories",
-      sectionDeleteWarnOne:
-        "Cannot delete « {name} »: 1 ITIL category is still linked to it.",
-      sectionDeleteWarnMany:
-        "Cannot delete « {name} »: {count} ITIL categories are still linked to it.",
+      sectionDeleteWarnOne: "Cannot delete « {name} »: 1 ITIL category is still linked to it.",
+      sectionDeleteWarnMany: "Cannot delete « {name} »: {count} ITIL categories are still linked to it.",
       thisSection: "this section",
       toast: {
         categoriesLoadError: "Error loading ITIL categories",
@@ -515,8 +595,8 @@ const SUPPORT_SETTINGS_COPY = {
         sectionUpdated: "ITIL section updated",
         sectionSaveError: "Error saving ITIL section",
         sectionDeleted: "ITIL section deleted",
-        sectionDeleteError: "Error deleting ITIL section",
-      },
+        sectionDeleteError: "Error deleting ITIL section"
+      }
     },
     solutions: {
       interventionTitle: "Intervention types",
@@ -532,8 +612,8 @@ const SUPPORT_SETTINGS_COPY = {
         updated: "Catalog entry updated",
         saveError: "Error saving catalog entry",
         deleted: "Catalog entry deleted",
-        deleteError: "Error deleting catalog entry",
-      },
+        deleteError: "Error deleting catalog entry"
+      }
     },
     ticketViews: {
       cardDescription: "Create filter views and assign them to users, profiles or teams.",
@@ -542,12 +622,12 @@ const SUPPORT_SETTINGS_COPY = {
       filters: {
         all: "All views",
         public: "Public",
-        assigned: "Assigned",
+        assigned: "Assigned"
       },
       visibility: {
         public: "Public",
         assigned: "Assigned",
-        private: "Private",
+        private: "Private"
       },
       builtin: "Built-in",
       emptyNone: "No views.",
@@ -558,94 +638,198 @@ const SUPPORT_SETTINGS_COPY = {
         updated: "View updated",
         created: "View created",
         deleted: "View deleted",
-        deleteError: "Error while deleting",
-      },
+        deleteError: "Error while deleting"
+      }
     },
     templateFormSections: {
-      general: { label: "General", description: "Template name" },
-      content: { label: "Content", description: "Text and formatting" },
+      general: {
+        label: "General",
+        description: "Template name"
+      },
+      content: {
+        label: "Content",
+        description: "Text and formatting"
+      }
     },
     macroFormSections: {
-      general: { label: "General", description: "Macro name" },
-      actions: { label: "Actions", description: "Execution order" },
+      general: {
+        label: "General",
+        description: "Macro name"
+      },
+      actions: {
+        label: "Actions",
+        description: "Execution order"
+      }
     },
     itilCategoryFormSections: {
-      general: { label: "General", description: "Section and name" },
-      details: { label: "Details", description: "Description and status" },
+      general: {
+        label: "General",
+        description: "Section and name"
+      },
+      details: {
+        label: "Details",
+        description: "Description and status"
+      }
     },
     itilSectionFormSections: {
-      general: { label: "General", description: "Name and status" },
-      details: { label: "Details", description: "Description" },
+      general: {
+        label: "General",
+        description: "Name and status"
+      },
+      details: {
+        label: "Details",
+        description: "Description"
+      }
     },
-    macroActionTypes: [
-      { value: "set_field", label: "Change a field" },
-      { value: "add_comment", label: "Send a support message" },
-      { value: "open_email", label: "Open an email" },
-      { value: "manage_tags", label: "Manage tags" },
-      { value: "planning_alert", label: "Planning alert", proOnly: true },
-      { value: "teams_message", label: "Teams message (webhook)", proOnly: true },
-      { value: "call", label: "Start a call" },
-      { value: "add_attachment", label: "Add attachment (manual)" },
-    ],
-    macroFieldOptions: [
-      { value: "assigned_user_id", label: "Assignee" },
-      { value: "followers", label: "Followers" },
-      { value: "status", label: "Status" },
-      { value: "type", label: "Type" },
-      { value: "category", label: "Category" },
-      { value: "priority", label: "Priority" },
-      { value: "is_major_incident", label: "Major incident" },
-      { value: "channel", label: "Channel" },
-      { value: "assigned_to_me", label: "Assign to me" },
-    ],
+    macroActionTypes: [{
+      value: "set_field",
+      label: "Change a field"
+    }, {
+      value: "add_comment",
+      label: "Send a support message"
+    }, {
+      value: "open_email",
+      label: "Open an email"
+    }, {
+      value: "manage_tags",
+      label: "Manage tags"
+    }, {
+      value: "planning_alert",
+      label: "Planning alert",
+      proOnly: true
+    }, {
+      value: "teams_message",
+      label: "Teams message (webhook)",
+      proOnly: true
+    }, {
+      value: "call",
+      label: "Start a call"
+    }, {
+      value: "add_attachment",
+      label: "Add attachment (manual)"
+    }],
+    macroFieldOptions: [{
+      value: "assigned_user_id",
+      label: "Assignee"
+    }, {
+      value: "followers",
+      label: "Followers"
+    }, {
+      value: "status",
+      label: "Status"
+    }, {
+      value: "type",
+      label: "Type"
+    }, {
+      value: "category",
+      label: "Category"
+    }, {
+      value: "priority",
+      label: "Priority"
+    }, {
+      value: "is_major_incident",
+      label: "Major incident"
+    }, {
+      value: "channel",
+      label: "Channel"
+    }, {
+      value: "assigned_to_me",
+      label: "Assign to me"
+    }],
     macroFieldModeOptions: {
-      assigned_user_id: [
-        { value: "replace", label: "Replace" },
-        { value: "add", label: "Add" },
-      ],
-      followers: [
-        { value: "add", label: "Add" },
-        { value: "remove", label: "Remove" },
-        { value: "replace", label: "Replace" },
-      ],
+      assigned_user_id: [{
+        value: "replace",
+        label: "Replace"
+      }, {
+        value: "add",
+        label: "Add"
+      }],
+      followers: [{
+        value: "add",
+        label: "Add"
+      }, {
+        value: "remove",
+        label: "Remove"
+      }, {
+        value: "replace",
+        label: "Replace"
+      }]
     },
     macroBoundedFieldValues: {
-      status: [
-        { value: "new", label: "New" },
-        { value: "in_progress", label: "In progress" },
-        { value: "pending", label: "Pending" },
-        { value: "resolved", label: "Resolved" },
-        { value: "closed", label: "Closed" },
-      ],
-      type: [
-        { value: "incident", label: "Incident" },
-        { value: "demande", label: "Request" },
-        { value: "probleme", label: "Problem" },
-        { value: "changement", label: "Change" },
-      ],
-      priority: [
-        { value: "low", label: "Low" },
-        { value: "normal", label: "Normal" },
-        { value: "high", label: "High" },
-        { value: "urgent", label: "Urgent" },
-      ],
-      channel: [
-        { value: "phone", label: "Phone" },
-        { value: "email", label: "Email" },
-        { value: "web", label: "Web" },
-        { value: "chat", label: "Chat" },
-        { value: "whatsapp", label: "WhatsApp" },
-      ],
-      is_major_incident: [
-        { value: "true", label: "Yes" },
-        { value: "false", label: "No" },
-      ],
-      assigned_to_me: [
-        { value: "true", label: "Yes" },
-        { value: "false", label: "No" },
-      ],
+      status: [{
+        value: "new",
+        label: "New"
+      }, {
+        value: "in_progress",
+        label: "In progress"
+      }, {
+        value: "pending",
+        label: "Pending"
+      }, {
+        value: "resolved",
+        label: "Resolved"
+      }, {
+        value: "closed",
+        label: "Closed"
+      }],
+      type: [{
+        value: "incident",
+        label: "Incident"
+      }, {
+        value: "demande",
+        label: "Request"
+      }, {
+        value: "probleme",
+        label: "Problem"
+      }, {
+        value: "changement",
+        label: "Change"
+      }],
+      priority: [{
+        value: "low",
+        label: "Low"
+      }, {
+        value: "normal",
+        label: "Normal"
+      }, {
+        value: "high",
+        label: "High"
+      }, {
+        value: "urgent",
+        label: "Urgent"
+      }],
+      channel: [{
+        value: "phone",
+        label: "Phone"
+      }, {
+        value: "email",
+        label: "Email"
+      }, {
+        value: "web",
+        label: "Web"
+      }, {
+        value: "chat",
+        label: "Chat"
+      }, {
+        value: "whatsapp",
+        label: "WhatsApp"
+      }],
+      is_major_incident: [{
+        value: "true",
+        label: "Yes"
+      }, {
+        value: "false",
+        label: "No"
+      }],
+      assigned_to_me: [{
+        value: "true",
+        label: "Yes"
+      }, {
+        value: "false",
+        label: "No"
+      }]
     },
-    modals: SUPPORT_SETTINGS_MODALS.en,
+    modals: SUPPORT_SETTINGS_MODALS.en
   },
   de: {
     tabs: {
@@ -653,29 +837,29 @@ const SUPPORT_SETTINGS_COPY = {
       macros: "Makros",
       categories: "Kategorien",
       "solution-catalog": "Lösungen",
-      "ticket-views": "Support-Ansichten",
+      "ticket-views": "Support-Ansichten"
     },
     viewMeta: {
       templates: {
         title: "Kommentarvorlagen",
-        description: "Vordefinierte Texte für Ticket-Antworten und Automatisierungen.",
+        description: "Vordefinierte Texte für Ticket-Antworten und Automatisierungen."
       },
       macros: {
         title: "Aktionsketten",
-        description: "Makros per Klick: Status, Kommentar, E-Mail, Teams-Nachricht usw.",
+        description: "Makros per Klick: Status, Kommentar, E-Mail, Teams-Nachricht usw."
       },
       categories: {
         title: "ITIL-Baum",
-        description: "Abschnitte und Kategorien bei Ticket-Erstellung und -Klassifizierung.",
+        description: "Abschnitte und Kategorien bei Ticket-Erstellung und -Klassifizierung."
       },
       "solution-catalog": {
         title: "Lösungskategorien",
-        description: "Interventions- und Aktionstypen bei Ticket-Lösung.",
+        description: "Interventions- und Aktionstypen bei Ticket-Lösung."
       },
       "ticket-views": {
         title: "Support-Ansichten",
-        description: "Ticket-Filter und Zuweisung nach Benutzer, Profil oder Team.",
-      },
+        description: "Ticket-Filter und Zuweisung nach Benutzer, Profil oder Team."
+      }
     },
     common: {
       columns: {
@@ -689,14 +873,14 @@ const SUPPORT_SETTINGS_COPY = {
         view: "Ansicht",
         visibility: "Sichtbarkeit",
         filters: "Filter",
-        assignment: "Zuweisung",
+        assignment: "Zuweisung"
       },
       actions: {
         preview: "Vorschau",
         edit: "Bearbeiten",
         delete: "Löschen",
         add: "Hinzufügen",
-        actionsAria: "Aktionen",
+        actionsAria: "Aktionen"
       },
       loading: "Laden…",
       emptyDash: "-",
@@ -711,7 +895,7 @@ const SUPPORT_SETTINGS_COPY = {
       countEntry: "{count} Eintrag",
       countEntryPlural: "{count} Einträge",
       countView: "{count} Ansicht",
-      countViewPlural: "{count} Ansichten",
+      countViewPlural: "{count} Ansichten"
     },
     templates: {
       addBtn: "Template hinzufügen",
@@ -725,16 +909,15 @@ const SUPPORT_SETTINGS_COPY = {
       toast: {
         loadError: "Fehler beim Laden von Templates/Makros",
         nameRequired: "Template-Name ist erforderlich",
-        limitWarn:
-          "Community-Limit: maximal {max} Templates. Wechseln Sie zu Veritas Pro für mehr.",
+        limitWarn: "Community-Limit: maximal {max} Templates. Wechseln Sie zu Veritas Pro für mehr.",
         addError: "Fehler beim Hinzufügen des Templates",
         updateError: "Fehler beim Aktualisieren des Templates",
         saveError: "Fehler beim Speichern des Templates",
         deleteError: "Fehler beim Löschen des Templates",
         added: "Template hinzugefügt",
         updated: "Template aktualisiert",
-        deleted: "Template gelöscht",
-      },
+        deleted: "Template gelöscht"
+      }
     },
     macros: {
       addBtn: "Makro hinzufügen",
@@ -742,14 +925,13 @@ const SUPPORT_SETTINGS_COPY = {
       limitReached: "Limit erreicht ({current}/{max} Makros).",
       quota: "Kontingent: {current}/{max} aktive Makros.",
       empty: "Keine Makros",
-      proLockedHint:
-        "Diese Aktion ist Veritas Pro vorbehalten. Wechseln Sie zu Pro, um sie auszuführen.",
+      proLockedHint: "Diese Aktion ist Veritas Pro vorbehalten. Wechseln Sie zu Pro, um sie auszuführen.",
       describe: {
         visibilityInternal: "intern",
         visibilityPublic: "öffentlich",
         tagsAdd: "Hinzufügen",
         tagsRemove: "Entfernen",
-        manualAttachment: "manueller Anhang",
+        manualAttachment: "manueller Anhang"
       },
       placeholders: {
         assignee: "Assignee suchen...",
@@ -770,28 +952,25 @@ const SUPPORT_SETTINGS_COPY = {
         reminderOffsetLabel: "Verzögerung (Minuten nach Ausführung)",
         reminderNote: "Hinweis zur Warnung (optional)",
         selectWebhook: "Webhook auswählen",
-        noWebhookHint:
-          "Kein aktiver Webhook. Konfigurieren Sie einen unter Administration → Tickets → Webhooks.",
+        noWebhookHint: "Kein aktiver Webhook. Konfigurieren Sie einen unter Administration → Tickets → Webhooks.",
         teamsTitle: "Nachrichtentitel (optional)",
         teamsMessage: "Teams-Nachricht",
         phoneNumber: "Anzurufende Nummer",
         ticketId: "Zu verknüpfende Ticket-ID",
         equipmentId: "Zu verknüpfende Geräte-ID",
-        manualAttachmentHint:
-          "Der Anhang muss bei der Makro-Ausführung manuell hinzugefügt werden.",
+        manualAttachmentHint: "Der Anhang muss bei der Makro-Ausführung manuell hinzugefügt werden."
       },
       toast: {
         nameRequired: "Makro-Name ist erforderlich",
         actionsRequired: "Fügen Sie mindestens eine Aktion zum Makro hinzu",
-        limitWarn:
-          "Community-Limit: maximal {max} Makros. Wechseln Sie zu Veritas Pro für mehr.",
+        limitWarn: "Community-Limit: maximal {max} Makros. Wechseln Sie zu Veritas Pro für mehr.",
         addError: "Fehler beim Hinzufügen des Makros",
         updateError: "Fehler beim Aktualisieren des Makros",
         deleteError: "Fehler beim Löschen des Makros",
         added: "Makro hinzugefügt",
         updated: "Makro aktualisiert",
-        deleted: "Makro gelöscht",
-      },
+        deleted: "Makro gelöscht"
+      }
     },
     categories: {
       newSectionBtn: "Neuer Abschnitt",
@@ -805,10 +984,8 @@ const SUPPORT_SETTINGS_COPY = {
       emptyCategoriesSearch: "Keine Kategorie entspricht der Suche.",
       sectionDeleteBlockedOne: "Löschen nicht möglich: 1 verknüpfte Kategorie",
       sectionDeleteBlockedMany: "Löschen nicht möglich: {count} verknüpfte Kategorien",
-      sectionDeleteWarnOne:
-        "« {name} » kann nicht gelöscht werden: 1 ITIL-Kategorie ist noch verknüpft.",
-      sectionDeleteWarnMany:
-        "« {name} » kann nicht gelöscht werden: {count} ITIL-Kategorien sind noch verknüpft.",
+      sectionDeleteWarnOne: "« {name} » kann nicht gelöscht werden: 1 ITIL-Kategorie ist noch verknüpft.",
+      sectionDeleteWarnMany: "« {name} » kann nicht gelöscht werden: {count} ITIL-Kategorien sind noch verknüpft.",
       thisSection: "dieser Abschnitt",
       toast: {
         categoriesLoadError: "Fehler beim Laden der ITIL-Kategorien",
@@ -824,8 +1001,8 @@ const SUPPORT_SETTINGS_COPY = {
         sectionUpdated: "ITIL-Abschnitt aktualisiert",
         sectionSaveError: "Fehler beim Speichern des ITIL-Abschnitts",
         sectionDeleted: "ITIL-Abschnitt gelöscht",
-        sectionDeleteError: "Fehler beim Löschen des ITIL-Abschnitts",
-      },
+        sectionDeleteError: "Fehler beim Löschen des ITIL-Abschnitts"
+      }
     },
     solutions: {
       interventionTitle: "Interventionstypen",
@@ -841,23 +1018,22 @@ const SUPPORT_SETTINGS_COPY = {
         updated: "Katalogeintrag aktualisiert",
         saveError: "Fehler beim Speichern des Katalogeintrags",
         deleted: "Katalogeintrag gelöscht",
-        deleteError: "Fehler beim Löschen des Katalogeintrags",
-      },
+        deleteError: "Fehler beim Löschen des Katalogeintrags"
+      }
     },
     ticketViews: {
-      cardDescription:
-        "Erstellen Sie Filteransichten und weisen Sie sie Benutzern, Profilen oder Teams zu.",
+      cardDescription: "Erstellen Sie Filteransichten und weisen Sie sie Benutzern, Profilen oder Teams zu.",
       newViewBtn: "Neue Ansicht",
       searchPlaceholder: "Ansicht suchen…",
       filters: {
         all: "Alle Ansichten",
         public: "Öffentlich",
-        assigned: "Zugewiesen",
+        assigned: "Zugewiesen"
       },
       visibility: {
         public: "Öffentlich",
         assigned: "Zugewiesen",
-        private: "Privat",
+        private: "Privat"
       },
       builtin: "Integriert",
       emptyNone: "Keine Ansichten.",
@@ -868,94 +1044,198 @@ const SUPPORT_SETTINGS_COPY = {
         updated: "Ansicht aktualisiert",
         created: "Ansicht erstellt",
         deleted: "Ansicht gelöscht",
-        deleteError: "Fehler beim Löschen",
-      },
+        deleteError: "Fehler beim Löschen"
+      }
     },
     templateFormSections: {
-      general: { label: "Allgemein", description: "Template-Name" },
-      content: { label: "Inhalt", description: "Text und Formatierung" },
+      general: {
+        label: "Allgemein",
+        description: "Template-Name"
+      },
+      content: {
+        label: "Inhalt",
+        description: "Text und Formatierung"
+      }
     },
     macroFormSections: {
-      general: { label: "Allgemein", description: "Makro-Name" },
-      actions: { label: "Aktionen", description: "Ausführungsreihenfolge" },
+      general: {
+        label: "Allgemein",
+        description: "Makro-Name"
+      },
+      actions: {
+        label: "Aktionen",
+        description: "Ausführungsreihenfolge"
+      }
     },
     itilCategoryFormSections: {
-      general: { label: "Allgemein", description: "Abschnitt und Name" },
-      details: { label: "Details", description: "Beschreibung und Status" },
+      general: {
+        label: "Allgemein",
+        description: "Abschnitt und Name"
+      },
+      details: {
+        label: "Details",
+        description: "Beschreibung und Status"
+      }
     },
     itilSectionFormSections: {
-      general: { label: "Allgemein", description: "Name und Status" },
-      details: { label: "Details", description: "Beschreibung" },
+      general: {
+        label: "Allgemein",
+        description: "Name und Status"
+      },
+      details: {
+        label: "Details",
+        description: "Beschreibung"
+      }
     },
-    macroActionTypes: [
-      { value: "set_field", label: "Feld ändern" },
-      { value: "add_comment", label: "Support-Nachricht senden" },
-      { value: "open_email", label: "E-Mail öffnen" },
-      { value: "manage_tags", label: "Tags verwalten" },
-      { value: "planning_alert", label: "Planungswarnung", proOnly: true },
-      { value: "teams_message", label: "Teams-Nachricht (Webhook)", proOnly: true },
-      { value: "call", label: "Anruf starten" },
-      { value: "add_attachment", label: "Anhang hinzufügen (manuell)" },
-    ],
-    macroFieldOptions: [
-      { value: "assigned_user_id", label: "Zugewiesen" },
-      { value: "followers", label: "Follower" },
-      { value: "status", label: "Status" },
-      { value: "type", label: "Typ" },
-      { value: "category", label: "Kategorie" },
-      { value: "priority", label: "Priorität" },
-      { value: "is_major_incident", label: "Schwerer Vorfall" },
-      { value: "channel", label: "Kanal" },
-      { value: "assigned_to_me", label: "Mir zuweisen" },
-    ],
+    macroActionTypes: [{
+      value: "set_field",
+      label: "Feld ändern"
+    }, {
+      value: "add_comment",
+      label: "Support-Nachricht senden"
+    }, {
+      value: "open_email",
+      label: "E-Mail öffnen"
+    }, {
+      value: "manage_tags",
+      label: "Tags verwalten"
+    }, {
+      value: "planning_alert",
+      label: "Planungswarnung",
+      proOnly: true
+    }, {
+      value: "teams_message",
+      label: "Teams-Nachricht (Webhook)",
+      proOnly: true
+    }, {
+      value: "call",
+      label: "Anruf starten"
+    }, {
+      value: "add_attachment",
+      label: "Anhang hinzufügen (manuell)"
+    }],
+    macroFieldOptions: [{
+      value: "assigned_user_id",
+      label: "Zugewiesen"
+    }, {
+      value: "followers",
+      label: "Follower"
+    }, {
+      value: "status",
+      label: "Status"
+    }, {
+      value: "type",
+      label: "Typ"
+    }, {
+      value: "category",
+      label: "Kategorie"
+    }, {
+      value: "priority",
+      label: "Priorität"
+    }, {
+      value: "is_major_incident",
+      label: "Schwerer Vorfall"
+    }, {
+      value: "channel",
+      label: "Kanal"
+    }, {
+      value: "assigned_to_me",
+      label: "Mir zuweisen"
+    }],
     macroFieldModeOptions: {
-      assigned_user_id: [
-        { value: "replace", label: "Ersetzen" },
-        { value: "add", label: "Hinzufügen" },
-      ],
-      followers: [
-        { value: "add", label: "Hinzufügen" },
-        { value: "remove", label: "Entfernen" },
-        { value: "replace", label: "Ersetzen" },
-      ],
+      assigned_user_id: [{
+        value: "replace",
+        label: "Ersetzen"
+      }, {
+        value: "add",
+        label: "Hinzufügen"
+      }],
+      followers: [{
+        value: "add",
+        label: "Hinzufügen"
+      }, {
+        value: "remove",
+        label: "Entfernen"
+      }, {
+        value: "replace",
+        label: "Ersetzen"
+      }]
     },
     macroBoundedFieldValues: {
-      status: [
-        { value: "new", label: "Neu" },
-        { value: "in_progress", label: "In Bearbeitung" },
-        { value: "pending", label: "Ausstehend" },
-        { value: "resolved", label: "Gelöst" },
-        { value: "closed", label: "Geschlossen" },
-      ],
-      type: [
-        { value: "incident", label: "Vorfall" },
-        { value: "demande", label: "Anfrage" },
-        { value: "probleme", label: "Problem" },
-        { value: "changement", label: "Änderung" },
-      ],
-      priority: [
-        { value: "low", label: "Niedrig" },
-        { value: "normal", label: "Normal" },
-        { value: "high", label: "Hoch" },
-        { value: "urgent", label: "Dringend" },
-      ],
-      channel: [
-        { value: "phone", label: "Telefon" },
-        { value: "email", label: "E-Mail" },
-        { value: "web", label: "Web" },
-        { value: "chat", label: "Chat" },
-        { value: "whatsapp", label: "WhatsApp" },
-      ],
-      is_major_incident: [
-        { value: "true", label: "Ja" },
-        { value: "false", label: "Nein" },
-      ],
-      assigned_to_me: [
-        { value: "true", label: "Ja" },
-        { value: "false", label: "Nein" },
-      ],
+      status: [{
+        value: "new",
+        label: "Neu"
+      }, {
+        value: "in_progress",
+        label: "In Bearbeitung"
+      }, {
+        value: "pending",
+        label: "Ausstehend"
+      }, {
+        value: "resolved",
+        label: "Gelöst"
+      }, {
+        value: "closed",
+        label: "Geschlossen"
+      }],
+      type: [{
+        value: "incident",
+        label: "Vorfall"
+      }, {
+        value: "demande",
+        label: "Anfrage"
+      }, {
+        value: "probleme",
+        label: "Problem"
+      }, {
+        value: "changement",
+        label: "Änderung"
+      }],
+      priority: [{
+        value: "low",
+        label: "Niedrig"
+      }, {
+        value: "normal",
+        label: "Normal"
+      }, {
+        value: "high",
+        label: "Hoch"
+      }, {
+        value: "urgent",
+        label: "Dringend"
+      }],
+      channel: [{
+        value: "phone",
+        label: "Telefon"
+      }, {
+        value: "email",
+        label: "E-Mail"
+      }, {
+        value: "web",
+        label: "Web"
+      }, {
+        value: "chat",
+        label: "Chat"
+      }, {
+        value: "whatsapp",
+        label: "WhatsApp"
+      }],
+      is_major_incident: [{
+        value: "true",
+        label: "Ja"
+      }, {
+        value: "false",
+        label: "Nein"
+      }],
+      assigned_to_me: [{
+        value: "true",
+        label: "Ja"
+      }, {
+        value: "false",
+        label: "Nein"
+      }]
     },
-    modals: SUPPORT_SETTINGS_MODALS.de,
+    modals: SUPPORT_SETTINGS_MODALS.de
   },
   it: {
     tabs: {
@@ -963,29 +1243,29 @@ const SUPPORT_SETTINGS_COPY = {
       macros: "Macro",
       categories: "Categorie",
       "solution-catalog": "Soluzioni",
-      "ticket-views": "Viste supporto",
+      "ticket-views": "Viste supporto"
     },
     viewMeta: {
       templates: {
         title: "Modelli di commento",
-        description: "Testi predefiniti riutilizzabili nelle risposte e automazioni ticket.",
+        description: "Testi predefiniti riutilizzabili nelle risposte e automazioni ticket."
       },
       macros: {
         title: "Sequenze di azioni",
-        description: "Macro eseguibili in un clic: stato, commento, email, messaggio Teams, ecc.",
+        description: "Macro eseguibili in un clic: stato, commento, email, messaggio Teams, ecc."
       },
       categories: {
         title: "Albero ITIL",
-        description: "Sezioni e categorie proposte alla creazione e classificazione dei ticket.",
+        description: "Sezioni e categorie proposte alla creazione e classificazione dei ticket."
       },
       "solution-catalog": {
         title: "Categorie di risoluzione",
-        description: "Tipi di intervento e azione proposti alla risoluzione di un ticket.",
+        description: "Tipi di intervento e azione proposti alla risoluzione di un ticket."
       },
       "ticket-views": {
         title: "Viste supporto",
-        description: "Filtri ticket e assegnazione per utente, profilo o team.",
-      },
+        description: "Filtri ticket e assegnazione per utente, profilo o team."
+      }
     },
     common: {
       columns: {
@@ -999,14 +1279,14 @@ const SUPPORT_SETTINGS_COPY = {
         view: "Vista",
         visibility: "Visibilità",
         filters: "Filtri",
-        assignment: "Assegnazione",
+        assignment: "Assegnazione"
       },
       actions: {
         preview: "Anteprima",
         edit: "Modifica",
         delete: "Elimina",
         add: "Aggiungi",
-        actionsAria: "Azioni",
+        actionsAria: "Azioni"
       },
       loading: "Caricamento…",
       emptyDash: "-",
@@ -1021,7 +1301,7 @@ const SUPPORT_SETTINGS_COPY = {
       countEntry: "{count} voce",
       countEntryPlural: "{count} voci",
       countView: "{count} vista",
-      countViewPlural: "{count} viste",
+      countViewPlural: "{count} viste"
     },
     templates: {
       addBtn: "Aggiungi template",
@@ -1035,16 +1315,15 @@ const SUPPORT_SETTINGS_COPY = {
       toast: {
         loadError: "Errore caricamento template/macro",
         nameRequired: "Il nome del template è obbligatorio",
-        limitWarn:
-          "Limite Community: massimo {max} template. Passa a Veritas Pro per aggiungerne altri.",
+        limitWarn: "Limite Community: massimo {max} template. Passa a Veritas Pro per aggiungerne altri.",
         addError: "Errore durante l'aggiunta del template",
         updateError: "Errore durante l'aggiornamento del template",
         saveError: "Errore durante il salvataggio del template",
         deleteError: "Errore durante l'eliminazione del template",
         added: "Template aggiunto",
         updated: "Template aggiornato",
-        deleted: "Template eliminato",
-      },
+        deleted: "Template eliminato"
+      }
     },
     macros: {
       addBtn: "Aggiungi macro",
@@ -1052,14 +1331,13 @@ const SUPPORT_SETTINGS_COPY = {
       limitReached: "Limite raggiunto ({current}/{max} macro).",
       quota: "Quota: {current}/{max} macro attive.",
       empty: "Nessuna macro",
-      proLockedHint:
-        "Questa azione è riservata a Veritas Pro. Passa a Pro per usarla all'esecuzione.",
+      proLockedHint: "Questa azione è riservata a Veritas Pro. Passa a Pro per usarla all'esecuzione.",
       describe: {
         visibilityInternal: "interno",
         visibilityPublic: "pubblico",
         tagsAdd: "Aggiungi",
         tagsRemove: "Rimuovi",
-        manualAttachment: "allegato manuale",
+        manualAttachment: "allegato manuale"
       },
       placeholders: {
         assignee: "Cerca un assegnatario...",
@@ -1080,28 +1358,25 @@ const SUPPORT_SETTINGS_COPY = {
         reminderOffsetLabel: "Ritardo (minuti dopo l'esecuzione)",
         reminderNote: "Nota avviso (opzionale)",
         selectWebhook: "Seleziona un webhook",
-        noWebhookHint:
-          "Nessun webhook attivo. Configurane uno in Amministrazione → Ticket → Webhook.",
+        noWebhookHint: "Nessun webhook attivo. Configurane uno in Amministrazione → Ticket → Webhook.",
         teamsTitle: "Titolo messaggio (opzionale)",
         teamsMessage: "Messaggio Teams",
         phoneNumber: "Numero da chiamare",
         ticketId: "ID ticket da collegare",
         equipmentId: "ID materiale da collegare",
-        manualAttachmentHint:
-          "L'allegato dovrà essere aggiunto manualmente all'esecuzione della macro.",
+        manualAttachmentHint: "L'allegato dovrà essere aggiunto manualmente all'esecuzione della macro."
       },
       toast: {
         nameRequired: "Il nome della macro è obbligatorio",
         actionsRequired: "Aggiungi almeno un'azione alla macro",
-        limitWarn:
-          "Limite Community: massimo {max} macro. Passa a Veritas Pro per aggiungerne altre.",
+        limitWarn: "Limite Community: massimo {max} macro. Passa a Veritas Pro per aggiungerne altre.",
         addError: "Errore durante l'aggiunta della macro",
         updateError: "Errore durante l'aggiornamento della macro",
         deleteError: "Errore durante l'eliminazione della macro",
         added: "Macro aggiunta",
         updated: "Macro aggiornata",
-        deleted: "Macro eliminata",
-      },
+        deleted: "Macro eliminata"
+      }
     },
     categories: {
       newSectionBtn: "Nuova sezione",
@@ -1115,10 +1390,8 @@ const SUPPORT_SETTINGS_COPY = {
       emptyCategoriesSearch: "Nessuna categoria corrisponde alla ricerca.",
       sectionDeleteBlockedOne: "Eliminazione impossibile: 1 categoria collegata",
       sectionDeleteBlockedMany: "Eliminazione impossibile: {count} categorie collegate",
-      sectionDeleteWarnOne:
-        "Impossibile eliminare « {name} »: 1 categoria ITIL vi è ancora collegata.",
-      sectionDeleteWarnMany:
-        "Impossibile eliminare « {name} »: {count} categorie ITIL vi sono ancora collegate.",
+      sectionDeleteWarnOne: "Impossibile eliminare « {name} »: 1 categoria ITIL vi è ancora collegata.",
+      sectionDeleteWarnMany: "Impossibile eliminare « {name} »: {count} categorie ITIL vi sono ancora collegate.",
       thisSection: "questa sezione",
       toast: {
         categoriesLoadError: "Errore caricamento categorie ITIL",
@@ -1134,8 +1407,8 @@ const SUPPORT_SETTINGS_COPY = {
         sectionUpdated: "Sezione ITIL aggiornata",
         sectionSaveError: "Errore salvataggio sezione ITIL",
         sectionDeleted: "Sezione ITIL eliminata",
-        sectionDeleteError: "Errore eliminazione sezione ITIL",
-      },
+        sectionDeleteError: "Errore eliminazione sezione ITIL"
+      }
     },
     solutions: {
       interventionTitle: "Tipi di intervento",
@@ -1151,23 +1424,22 @@ const SUPPORT_SETTINGS_COPY = {
         updated: "Voce catalogo aggiornata",
         saveError: "Errore salvataggio voce catalogo",
         deleted: "Voce catalogo eliminata",
-        deleteError: "Errore eliminazione voce catalogo",
-      },
+        deleteError: "Errore eliminazione voce catalogo"
+      }
     },
     ticketViews: {
-      cardDescription:
-        "Crea viste di filtro e assegnale a utenti, profili o team.",
+      cardDescription: "Crea viste di filtro e assegnale a utenti, profili o team.",
       newViewBtn: "Nuova vista",
       searchPlaceholder: "Cerca una vista…",
       filters: {
         all: "Tutte le viste",
         public: "Pubbliche",
-        assigned: "Assegnate",
+        assigned: "Assegnate"
       },
       visibility: {
         public: "Pubblica",
         assigned: "Assegnata",
-        private: "Privata",
+        private: "Privata"
       },
       builtin: "Integrata",
       emptyNone: "Nessuna vista.",
@@ -1178,94 +1450,198 @@ const SUPPORT_SETTINGS_COPY = {
         updated: "Vista aggiornata",
         created: "Vista creata",
         deleted: "Vista eliminata",
-        deleteError: "Errore durante l'eliminazione",
-      },
+        deleteError: "Errore durante l'eliminazione"
+      }
     },
     templateFormSections: {
-      general: { label: "Generale", description: "Nome del template" },
-      content: { label: "Contenuto", description: "Testo e formattazione" },
+      general: {
+        label: "Generale",
+        description: "Nome del template"
+      },
+      content: {
+        label: "Contenuto",
+        description: "Testo e formattazione"
+      }
     },
     macroFormSections: {
-      general: { label: "Generale", description: "Nome della macro" },
-      actions: { label: "Azioni", description: "Ordine di esecuzione" },
+      general: {
+        label: "Generale",
+        description: "Nome della macro"
+      },
+      actions: {
+        label: "Azioni",
+        description: "Ordine di esecuzione"
+      }
     },
     itilCategoryFormSections: {
-      general: { label: "Generale", description: "Sezione e nome" },
-      details: { label: "Dettagli", description: "Descrizione e stato" },
+      general: {
+        label: "Generale",
+        description: "Sezione e nome"
+      },
+      details: {
+        label: "Dettagli",
+        description: "Descrizione e stato"
+      }
     },
     itilSectionFormSections: {
-      general: { label: "Generale", description: "Nome e stato" },
-      details: { label: "Dettagli", description: "Descrizione" },
+      general: {
+        label: "Generale",
+        description: "Nome e stato"
+      },
+      details: {
+        label: "Dettagli",
+        description: "Descrizione"
+      }
     },
-    macroActionTypes: [
-      { value: "set_field", label: "Modifica un campo" },
-      { value: "add_comment", label: "Invia un messaggio supporto" },
-      { value: "open_email", label: "Apri un'email" },
-      { value: "manage_tags", label: "Gestisci etichette" },
-      { value: "planning_alert", label: "Avviso pianificazione", proOnly: true },
-      { value: "teams_message", label: "Messaggio Teams (webhook)", proOnly: true },
-      { value: "call", label: "Avvia una chiamata" },
-      { value: "add_attachment", label: "Aggiungi allegato (manuale)" },
-    ],
-    macroFieldOptions: [
-      { value: "assigned_user_id", label: "Assegnatario" },
-      { value: "followers", label: "Follower" },
-      { value: "status", label: "Stato" },
-      { value: "type", label: "Tipo" },
-      { value: "category", label: "Categoria" },
-      { value: "priority", label: "Priorità" },
-      { value: "is_major_incident", label: "Incidente maggiore" },
-      { value: "channel", label: "Canale" },
-      { value: "assigned_to_me", label: "Assegna a me" },
-    ],
+    macroActionTypes: [{
+      value: "set_field",
+      label: "Modifica un campo"
+    }, {
+      value: "add_comment",
+      label: "Invia un messaggio supporto"
+    }, {
+      value: "open_email",
+      label: "Apri un'email"
+    }, {
+      value: "manage_tags",
+      label: "Gestisci etichette"
+    }, {
+      value: "planning_alert",
+      label: "Avviso pianificazione",
+      proOnly: true
+    }, {
+      value: "teams_message",
+      label: "Messaggio Teams (webhook)",
+      proOnly: true
+    }, {
+      value: "call",
+      label: "Avvia una chiamata"
+    }, {
+      value: "add_attachment",
+      label: "Aggiungi allegato (manuale)"
+    }],
+    macroFieldOptions: [{
+      value: "assigned_user_id",
+      label: "Assegnatario"
+    }, {
+      value: "followers",
+      label: "Follower"
+    }, {
+      value: "status",
+      label: "Stato"
+    }, {
+      value: "type",
+      label: "Tipo"
+    }, {
+      value: "category",
+      label: "Categoria"
+    }, {
+      value: "priority",
+      label: "Priorità"
+    }, {
+      value: "is_major_incident",
+      label: "Incidente maggiore"
+    }, {
+      value: "channel",
+      label: "Canale"
+    }, {
+      value: "assigned_to_me",
+      label: "Assegna a me"
+    }],
     macroFieldModeOptions: {
-      assigned_user_id: [
-        { value: "replace", label: "Sostituisci" },
-        { value: "add", label: "Aggiungi" },
-      ],
-      followers: [
-        { value: "add", label: "Aggiungi" },
-        { value: "remove", label: "Rimuovi" },
-        { value: "replace", label: "Sostituisci" },
-      ],
+      assigned_user_id: [{
+        value: "replace",
+        label: "Sostituisci"
+      }, {
+        value: "add",
+        label: "Aggiungi"
+      }],
+      followers: [{
+        value: "add",
+        label: "Aggiungi"
+      }, {
+        value: "remove",
+        label: "Rimuovi"
+      }, {
+        value: "replace",
+        label: "Sostituisci"
+      }]
     },
     macroBoundedFieldValues: {
-      status: [
-        { value: "new", label: "Nuovo" },
-        { value: "in_progress", label: "In corso" },
-        { value: "pending", label: "In attesa" },
-        { value: "resolved", label: "Risolto" },
-        { value: "closed", label: "Chiuso" },
-      ],
-      type: [
-        { value: "incident", label: "Incidente" },
-        { value: "demande", label: "Richiesta" },
-        { value: "probleme", label: "Problema" },
-        { value: "changement", label: "Cambio" },
-      ],
-      priority: [
-        { value: "low", label: "Bassa" },
-        { value: "normal", label: "Normale" },
-        { value: "high", label: "Alta" },
-        { value: "urgent", label: "Urgente" },
-      ],
-      channel: [
-        { value: "phone", label: "Telefono" },
-        { value: "email", label: "Email" },
-        { value: "web", label: "Web" },
-        { value: "chat", label: "Chat" },
-        { value: "whatsapp", label: "WhatsApp" },
-      ],
-      is_major_incident: [
-        { value: "true", label: "Sì" },
-        { value: "false", label: "No" },
-      ],
-      assigned_to_me: [
-        { value: "true", label: "Sì" },
-        { value: "false", label: "No" },
-      ],
+      status: [{
+        value: "new",
+        label: "Nuovo"
+      }, {
+        value: "in_progress",
+        label: "In corso"
+      }, {
+        value: "pending",
+        label: "In attesa"
+      }, {
+        value: "resolved",
+        label: "Risolto"
+      }, {
+        value: "closed",
+        label: "Chiuso"
+      }],
+      type: [{
+        value: "incident",
+        label: "Incidente"
+      }, {
+        value: "demande",
+        label: "Richiesta"
+      }, {
+        value: "probleme",
+        label: "Problema"
+      }, {
+        value: "changement",
+        label: "Cambio"
+      }],
+      priority: [{
+        value: "low",
+        label: "Bassa"
+      }, {
+        value: "normal",
+        label: "Normale"
+      }, {
+        value: "high",
+        label: "Alta"
+      }, {
+        value: "urgent",
+        label: "Urgente"
+      }],
+      channel: [{
+        value: "phone",
+        label: "Telefono"
+      }, {
+        value: "email",
+        label: "Email"
+      }, {
+        value: "web",
+        label: "Web"
+      }, {
+        value: "chat",
+        label: "Chat"
+      }, {
+        value: "whatsapp",
+        label: "WhatsApp"
+      }],
+      is_major_incident: [{
+        value: "true",
+        label: "Sì"
+      }, {
+        value: "false",
+        label: "No"
+      }],
+      assigned_to_me: [{
+        value: "true",
+        label: "Sì"
+      }, {
+        value: "false",
+        label: "No"
+      }]
     },
-    modals: SUPPORT_SETTINGS_MODALS.it,
+    modals: SUPPORT_SETTINGS_MODALS.it
   },
   es: {
     tabs: {
@@ -1273,29 +1649,29 @@ const SUPPORT_SETTINGS_COPY = {
       macros: "Macros",
       categories: "Categorías",
       "solution-catalog": "Soluciones",
-      "ticket-views": "Vistas de soporte",
+      "ticket-views": "Vistas de soporte"
     },
     viewMeta: {
       templates: {
         title: "Plantillas de comentarios",
-        description: "Textos predefinidos reutilizables en respuestas y automatizaciones de tickets.",
+        description: "Textos predefinidos reutilizables en respuestas y automatizaciones de tickets."
       },
       macros: {
         title: "Secuencias de acciones",
-        description: "Macros ejecutables en un clic: estado, comentario, email, mensaje Teams, etc.",
+        description: "Macros ejecutables en un clic: estado, comentario, email, mensaje Teams, etc."
       },
       categories: {
         title: "Árbol ITIL",
-        description: "Secciones y categorías propuestas al crear y clasificar tickets.",
+        description: "Secciones y categorías propuestas al crear y clasificar tickets."
       },
       "solution-catalog": {
         title: "Categorías de resolución",
-        description: "Tipos de intervención y acción propuestos al resolver un ticket.",
+        description: "Tipos de intervención y acción propuestos al resolver un ticket."
       },
       "ticket-views": {
         title: "Vistas de soporte",
-        description: "Filtros de tickets y asignación por usuario, perfil o equipo.",
-      },
+        description: "Filtros de tickets y asignación por usuario, perfil o equipo."
+      }
     },
     common: {
       columns: {
@@ -1309,14 +1685,14 @@ const SUPPORT_SETTINGS_COPY = {
         view: "Vista",
         visibility: "Visibilidad",
         filters: "Filtros",
-        assignment: "Asignación",
+        assignment: "Asignación"
       },
       actions: {
         preview: "Vista previa",
         edit: "Modificar",
         delete: "Eliminar",
         add: "Añadir",
-        actionsAria: "Acciones",
+        actionsAria: "Acciones"
       },
       loading: "Cargando…",
       emptyDash: "-",
@@ -1331,7 +1707,7 @@ const SUPPORT_SETTINGS_COPY = {
       countEntry: "{count} entrada",
       countEntryPlural: "{count} entradas",
       countView: "{count} vista",
-      countViewPlural: "{count} vistas",
+      countViewPlural: "{count} vistas"
     },
     templates: {
       addBtn: "Añadir plantilla",
@@ -1345,16 +1721,15 @@ const SUPPORT_SETTINGS_COPY = {
       toast: {
         loadError: "Error al cargar plantillas/macros",
         nameRequired: "El nombre de la plantilla es obligatorio",
-        limitWarn:
-          "Límite Community: {max} plantillas como máximo. Pase a Veritas Pro para añadir más.",
+        limitWarn: "Límite Community: {max} plantillas como máximo. Pase a Veritas Pro para añadir más.",
         addError: "Error al añadir la plantilla",
         updateError: "Error al actualizar la plantilla",
         saveError: "Error al guardar la plantilla",
         deleteError: "Error al eliminar la plantilla",
         added: "Plantilla añadida",
         updated: "Plantilla actualizada",
-        deleted: "Plantilla eliminada",
-      },
+        deleted: "Plantilla eliminada"
+      }
     },
     macros: {
       addBtn: "Añadir macro",
@@ -1362,14 +1737,13 @@ const SUPPORT_SETTINGS_COPY = {
       limitReached: "Límite alcanzado ({current}/{max} macros).",
       quota: "Cuota: {current}/{max} macros activas.",
       empty: "Ninguna macro",
-      proLockedHint:
-        "Esta acción está reservada a Veritas Pro. Pase a Pro para usarla en la ejecución.",
+      proLockedHint: "Esta acción está reservada a Veritas Pro. Pase a Pro para usarla en la ejecución.",
       describe: {
         visibilityInternal: "interno",
         visibilityPublic: "público",
         tagsAdd: "Añadir",
         tagsRemove: "Quitar",
-        manualAttachment: "adjunto manual",
+        manualAttachment: "adjunto manual"
       },
       placeholders: {
         assignee: "Buscar un asignado...",
@@ -1390,28 +1764,25 @@ const SUPPORT_SETTINGS_COPY = {
         reminderOffsetLabel: "Retraso (minutos tras la ejecución)",
         reminderNote: "Nota de alerta (opcional)",
         selectWebhook: "Seleccionar un webhook",
-        noWebhookHint:
-          "Ningún webhook activo. Configure uno en Administración → Tickets → Webhooks.",
+        noWebhookHint: "Ningún webhook activo. Configure uno en Administración → Tickets → Webhooks.",
         teamsTitle: "Título del mensaje (opcional)",
         teamsMessage: "Mensaje Teams",
         phoneNumber: "Número a llamar",
         ticketId: "ID de ticket a vincular",
         equipmentId: "ID de material a vincular",
-        manualAttachmentHint:
-          "El adjunto deberá añadirse manualmente al ejecutar la macro.",
+        manualAttachmentHint: "El adjunto deberá añadirse manualmente al ejecutar la macro."
       },
       toast: {
         nameRequired: "El nombre de la macro es obligatorio",
         actionsRequired: "Añada al menos una acción a la macro",
-        limitWarn:
-          "Límite Community: {max} macros como máximo. Pase a Veritas Pro para añadir más.",
+        limitWarn: "Límite Community: {max} macros como máximo. Pase a Veritas Pro para añadir más.",
         addError: "Error al añadir la macro",
         updateError: "Error al actualizar la macro",
         deleteError: "Error al eliminar la macro",
         added: "Macro añadida",
         updated: "Macro actualizada",
-        deleted: "Macro eliminada",
-      },
+        deleted: "Macro eliminada"
+      }
     },
     categories: {
       newSectionBtn: "Nueva sección",
@@ -1425,10 +1796,8 @@ const SUPPORT_SETTINGS_COPY = {
       emptyCategoriesSearch: "Ninguna categoría coincide con la búsqueda.",
       sectionDeleteBlockedOne: "Eliminación imposible: 1 categoría vinculada",
       sectionDeleteBlockedMany: "Eliminación imposible: {count} categorías vinculadas",
-      sectionDeleteWarnOne:
-        "No se puede eliminar « {name} »: 1 categoría ITIL sigue vinculada.",
-      sectionDeleteWarnMany:
-        "No se puede eliminar « {name} »: {count} categorías ITIL siguen vinculadas.",
+      sectionDeleteWarnOne: "No se puede eliminar « {name} »: 1 categoría ITIL sigue vinculada.",
+      sectionDeleteWarnMany: "No se puede eliminar « {name} »: {count} categorías ITIL siguen vinculadas.",
       thisSection: "esta sección",
       toast: {
         categoriesLoadError: "Error al cargar las categorías ITIL",
@@ -1444,8 +1813,8 @@ const SUPPORT_SETTINGS_COPY = {
         sectionUpdated: "Sección ITIL actualizada",
         sectionSaveError: "Error al guardar la sección ITIL",
         sectionDeleted: "Sección ITIL eliminada",
-        sectionDeleteError: "Error al eliminar la sección ITIL",
-      },
+        sectionDeleteError: "Error al eliminar la sección ITIL"
+      }
     },
     solutions: {
       interventionTitle: "Tipos de intervención",
@@ -1461,23 +1830,22 @@ const SUPPORT_SETTINGS_COPY = {
         updated: "Entrada del catálogo actualizada",
         saveError: "Error al guardar la entrada del catálogo",
         deleted: "Entrada del catálogo eliminada",
-        deleteError: "Error al eliminar la entrada del catálogo",
-      },
+        deleteError: "Error al eliminar la entrada del catálogo"
+      }
     },
     ticketViews: {
-      cardDescription:
-        "Cree vistas de filtrado y asígnelas a usuarios, perfiles o equipos.",
+      cardDescription: "Cree vistas de filtrado y asígnelas a usuarios, perfiles o equipos.",
       newViewBtn: "Nueva vista",
       searchPlaceholder: "Buscar una vista…",
       filters: {
         all: "Todas las vistas",
         public: "Públicas",
-        assigned: "Asignadas",
+        assigned: "Asignadas"
       },
       visibility: {
         public: "Pública",
         assigned: "Asignada",
-        private: "Privada",
+        private: "Privada"
       },
       builtin: "Integrada",
       emptyNone: "Ninguna vista.",
@@ -1488,107 +1856,208 @@ const SUPPORT_SETTINGS_COPY = {
         updated: "Vista actualizada",
         created: "Vista creada",
         deleted: "Vista eliminada",
-        deleteError: "Error al eliminar",
-      },
+        deleteError: "Error al eliminar"
+      }
     },
     templateFormSections: {
-      general: { label: "General", description: "Nombre de la plantilla" },
-      content: { label: "Contenido", description: "Texto y formato" },
+      general: {
+        label: "General",
+        description: "Nombre de la plantilla"
+      },
+      content: {
+        label: "Contenido",
+        description: "Texto y formato"
+      }
     },
     macroFormSections: {
-      general: { label: "General", description: "Nombre de la macro" },
-      actions: { label: "Acciones", description: "Orden de ejecución" },
+      general: {
+        label: "General",
+        description: "Nombre de la macro"
+      },
+      actions: {
+        label: "Acciones",
+        description: "Orden de ejecución"
+      }
     },
     itilCategoryFormSections: {
-      general: { label: "General", description: "Sección y nombre" },
-      details: { label: "Detalles", description: "Descripción y estado" },
+      general: {
+        label: "General",
+        description: "Sección y nombre"
+      },
+      details: {
+        label: "Detalles",
+        description: "Descripción y estado"
+      }
     },
     itilSectionFormSections: {
-      general: { label: "General", description: "Nombre y estado" },
-      details: { label: "Detalles", description: "Descripción" },
+      general: {
+        label: "General",
+        description: "Nombre y estado"
+      },
+      details: {
+        label: "Detalles",
+        description: "Descripción"
+      }
     },
-    macroActionTypes: [
-      { value: "set_field", label: "Cambiar un campo" },
-      { value: "add_comment", label: "Enviar un mensaje de soporte" },
-      { value: "open_email", label: "Abrir un email" },
-      { value: "manage_tags", label: "Gestionar etiquetas" },
-      { value: "planning_alert", label: "Alerta de planificación", proOnly: true },
-      { value: "teams_message", label: "Mensaje Teams (webhook)", proOnly: true },
-      { value: "call", label: "Iniciar una llamada" },
-      { value: "add_attachment", label: "Añadir adjunto (manual)" },
-    ],
-    macroFieldOptions: [
-      { value: "assigned_user_id", label: "Asignado" },
-      { value: "followers", label: "Seguidores" },
-      { value: "status", label: "Estado" },
-      { value: "type", label: "Tipo" },
-      { value: "category", label: "Categoría" },
-      { value: "priority", label: "Prioridad" },
-      { value: "is_major_incident", label: "Incidente mayor" },
-      { value: "channel", label: "Canal" },
-      { value: "assigned_to_me", label: "Asignarme" },
-    ],
+    macroActionTypes: [{
+      value: "set_field",
+      label: "Cambiar un campo"
+    }, {
+      value: "add_comment",
+      label: "Enviar un mensaje de soporte"
+    }, {
+      value: "open_email",
+      label: "Abrir un email"
+    }, {
+      value: "manage_tags",
+      label: "Gestionar etiquetas"
+    }, {
+      value: "planning_alert",
+      label: "Alerta de planificación",
+      proOnly: true
+    }, {
+      value: "teams_message",
+      label: "Mensaje Teams (webhook)",
+      proOnly: true
+    }, {
+      value: "call",
+      label: "Iniciar una llamada"
+    }, {
+      value: "add_attachment",
+      label: "Añadir adjunto (manual)"
+    }],
+    macroFieldOptions: [{
+      value: "assigned_user_id",
+      label: "Asignado"
+    }, {
+      value: "followers",
+      label: "Seguidores"
+    }, {
+      value: "status",
+      label: "Estado"
+    }, {
+      value: "type",
+      label: "Tipo"
+    }, {
+      value: "category",
+      label: "Categoría"
+    }, {
+      value: "priority",
+      label: "Prioridad"
+    }, {
+      value: "is_major_incident",
+      label: "Incidente mayor"
+    }, {
+      value: "channel",
+      label: "Canal"
+    }, {
+      value: "assigned_to_me",
+      label: "Asignarme"
+    }],
     macroFieldModeOptions: {
-      assigned_user_id: [
-        { value: "replace", label: "Reemplazar" },
-        { value: "add", label: "Añadir" },
-      ],
-      followers: [
-        { value: "add", label: "Añadir" },
-        { value: "remove", label: "Quitar" },
-        { value: "replace", label: "Reemplazar" },
-      ],
+      assigned_user_id: [{
+        value: "replace",
+        label: "Reemplazar"
+      }, {
+        value: "add",
+        label: "Añadir"
+      }],
+      followers: [{
+        value: "add",
+        label: "Añadir"
+      }, {
+        value: "remove",
+        label: "Quitar"
+      }, {
+        value: "replace",
+        label: "Reemplazar"
+      }]
     },
     macroBoundedFieldValues: {
-      status: [
-        { value: "new", label: "Nuevo" },
-        { value: "in_progress", label: "En curso" },
-        { value: "pending", label: "En espera" },
-        { value: "resolved", label: "Resuelto" },
-        { value: "closed", label: "Cerrado" },
-      ],
-      type: [
-        { value: "incident", label: "Incidente" },
-        { value: "demande", label: "Solicitud" },
-        { value: "probleme", label: "Problema" },
-        { value: "changement", label: "Cambio" },
-      ],
-      priority: [
-        { value: "low", label: "Baja" },
-        { value: "normal", label: "Normal" },
-        { value: "high", label: "Alta" },
-        { value: "urgent", label: "Urgente" },
-      ],
-      channel: [
-        { value: "phone", label: "Teléfono" },
-        { value: "email", label: "Email" },
-        { value: "web", label: "Web" },
-        { value: "chat", label: "Chat" },
-        { value: "whatsapp", label: "WhatsApp" },
-      ],
-      is_major_incident: [
-        { value: "true", label: "Sí" },
-        { value: "false", label: "No" },
-      ],
-      assigned_to_me: [
-        { value: "true", label: "Sí" },
-        { value: "false", label: "No" },
-      ],
+      status: [{
+        value: "new",
+        label: "Nuevo"
+      }, {
+        value: "in_progress",
+        label: "En curso"
+      }, {
+        value: "pending",
+        label: "En espera"
+      }, {
+        value: "resolved",
+        label: "Resuelto"
+      }, {
+        value: "closed",
+        label: "Cerrado"
+      }],
+      type: [{
+        value: "incident",
+        label: "Incidente"
+      }, {
+        value: "demande",
+        label: "Solicitud"
+      }, {
+        value: "probleme",
+        label: "Problema"
+      }, {
+        value: "changement",
+        label: "Cambio"
+      }],
+      priority: [{
+        value: "low",
+        label: "Baja"
+      }, {
+        value: "normal",
+        label: "Normal"
+      }, {
+        value: "high",
+        label: "Alta"
+      }, {
+        value: "urgent",
+        label: "Urgente"
+      }],
+      channel: [{
+        value: "phone",
+        label: "Teléfono"
+      }, {
+        value: "email",
+        label: "Email"
+      }, {
+        value: "web",
+        label: "Web"
+      }, {
+        value: "chat",
+        label: "Chat"
+      }, {
+        value: "whatsapp",
+        label: "WhatsApp"
+      }],
+      is_major_incident: [{
+        value: "true",
+        label: "Sí"
+      }, {
+        value: "false",
+        label: "No"
+      }],
+      assigned_to_me: [{
+        value: "true",
+        label: "Sí"
+      }, {
+        value: "false",
+        label: "No"
+      }]
     },
-    modals: SUPPORT_SETTINGS_MODALS.es,
-  },
+    modals: SUPPORT_SETTINGS_MODALS.es
+  }
 };
-
 export const getAdminSupportSettingsCopy = createLocaleGetter(SUPPORT_SETTINGS_COPY);
-
 export function getTicketAdminViews(locale) {
   const tabs = getAdminSupportSettingsCopy(locale).tabs;
-  return TAB_KEYS.map((key) => ({
+  return TAB_KEYS.map(key => ({
     key,
-    label: tabs[key],
+    label: tabs[key]
   }));
 }
-
 export function getSupportSettingsViewMeta(locale) {
   const copy = getAdminSupportSettingsCopy(locale);
   return VIEW_META_KEYS.reduce((acc, key) => {
@@ -1596,67 +2065,63 @@ export function getSupportSettingsViewMeta(locale) {
     return acc;
   }, {});
 }
-
 function buildFormSections(locale, sectionKey, icons) {
   const sections = getAdminSupportSettingsCopy(locale)[sectionKey];
-  return Object.keys(sections).map((id) => ({
+  return Object.keys(sections).map(id => ({
     id,
     icon: icons[id],
     label: sections[id].label,
-    description: sections[id].description,
+    description: sections[id].description
   }));
 }
-
 export function getTemplateFormSections(locale) {
   return buildFormSections(locale, "templateFormSections", TEMPLATE_FORM_SECTION_ICONS);
 }
-
 export function getMacroFormSections(locale) {
   return buildFormSections(locale, "macroFormSections", MACRO_FORM_SECTION_ICONS);
 }
-
 export function getItilCategoryFormSections(locale) {
   return buildFormSections(locale, "itilCategoryFormSections", ITIL_CATEGORY_FORM_SECTION_ICONS);
 }
-
 export function getItilSectionFormSections(locale) {
   return buildFormSections(locale, "itilSectionFormSections", ITIL_SECTION_FORM_SECTION_ICONS);
 }
-
 export function getMacroActionTypes(locale) {
-  return getAdminSupportSettingsCopy(locale).macroActionTypes.map((item) => ({ ...item }));
+  return getAdminSupportSettingsCopy(locale).macroActionTypes.map(item => ({
+    ...item
+  }));
 }
-
 export function getMacroFieldOptions(locale) {
-  return getAdminSupportSettingsCopy(locale).macroFieldOptions.map((item) => ({ ...item }));
+  return getAdminSupportSettingsCopy(locale).macroFieldOptions.map(item => ({
+    ...item
+  }));
 }
-
 export function getMacroFieldModeOptions(locale) {
   const options = getAdminSupportSettingsCopy(locale).macroFieldModeOptions;
-  return Object.fromEntries(
-    Object.entries(options).map(([field, values]) => [field, values.map((item) => ({ ...item }))])
-  );
+  return Object.fromEntries(Object.entries(options).map(([field, values]) => [field, values.map(item => ({
+    ...item
+  }))]));
 }
-
 export function getMacroBoundedFieldValues(locale) {
   const values = getAdminSupportSettingsCopy(locale).macroBoundedFieldValues;
-  return Object.fromEntries(
-    Object.entries(values).map(([field, options]) => [field, options.map((item) => ({ ...item }))])
-  );
+  return Object.fromEntries(Object.entries(values).map(([field, options]) => [field, options.map(item => ({
+    ...item
+  }))]));
 }
-
 export function getTicketViewVisibilityLabel(locale, visibility) {
   const labels = getAdminSupportSettingsCopy(locale).ticketViews.visibility;
   return labels[visibility] || visibility || "-";
 }
-
 export function formatSupportSettingsRange(locale, start, end, total) {
   const common = getAdminSupportSettingsCopy(locale).common;
   const n = Number(total) || 0;
   if (n === 0) return common.rangeEmpty;
-  return interpolate(common.range, { start, end, total: n });
+  return interpolate(common.range, {
+    start,
+    end,
+    total: n
+  });
 }
-
 export function formatSupportSettingsCount(locale, kind, count) {
   const common = getAdminSupportSettingsCopy(locale).common;
   const n = Number(count) || 0;
@@ -1664,10 +2129,11 @@ export function formatSupportSettingsCount(locale, kind, count) {
     section: [common.countSection, common.countSectionPlural],
     category: [common.countCategory, common.countCategoryPlural],
     entry: [common.countEntry, common.countEntryPlural],
-    view: [common.countView, common.countViewPlural],
+    view: [common.countView, common.countViewPlural]
   };
   const [singular, plural] = templates[kind] || templates.entry;
-  return interpolate(n === 1 ? singular : plural, { count: n });
+  return interpolate(n === 1 ? singular : plural, {
+    count: n
+  });
 }
-
 export { interpolate };

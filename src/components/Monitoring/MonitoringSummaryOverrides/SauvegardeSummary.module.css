@@ -1,4 +1,4 @@
-/* ───────────── CONTAINER PRINCIPAL ───────────── */
+
 .sauvegardeContainer {
   display: flex;
   flex-direction: column;
@@ -9,7 +9,7 @@
   margin-right: auto;
 }
 
-/* ───────────── CARTE MODULE ───────────── */
+
 .moduleCard {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -33,7 +33,7 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 }
 
-/* ───────────── EN-TÊTE DU MODULE ───────────── */
+
 .moduleHeader {
   display: flex;
   align-items: center;
@@ -96,7 +96,7 @@
   background-color: #4a4a6a;
 }
 
-/* ───────────── SECTION STATISTIQUES GLOBALES ───────────── */
+
 .statsSection {
   margin-bottom: 2rem;
   display: flex;
@@ -200,7 +200,7 @@
   color: #9ca3af;
 }
 
-/* ───────────── STATISTIQUES LOGICIEL ───────────── */
+
 .softwareStatsSection {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -294,7 +294,7 @@
   color: #9ca3af;
 }
 
-/* ───────────── STATISTIQUES TYPE DE FLUX ───────────── */
+
 .flowStatsSection {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -377,7 +377,7 @@
   color: #9ca3af;
 }
 
-/* Grille des cartes de sauvegarde */
+
 .backupGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
@@ -385,7 +385,7 @@
   width: 100%;
 }
 
-/* Cartes de sauvegarde */
+
 .backupCard {
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
@@ -416,7 +416,7 @@
   border-color: #4a4a6a;
 }
 
-/* En-tête des cartes */
+
 .cardHeader {
   display: flex;
   justify-content: space-between;
@@ -447,7 +447,7 @@
   flex-wrap: wrap;
 }
 
-/* Indicateurs de statut */
+
 .statusDot {
   flex-shrink: 0;
   width: 10px;
@@ -490,7 +490,7 @@
   color: #6b7280;
 }
 
-/* Informations de sauvegarde */
+
 .backupInfo {
   display: flex;
   flex-direction: column;
@@ -514,7 +514,7 @@
   color: #f9fafb;
 }
 
-/* Section des sous-titres */
+
 .backupDetailsContainer {
   width: 100%;
   padding-bottom: 0.75rem;
@@ -542,7 +542,7 @@
 
 
 
-/* Section d'affichage du nombre de jobs */
+
 .jobsCountSection {
   display: flex;
   justify-content: center;
@@ -583,7 +583,7 @@
   color: #9ca3af;
 }
 
-/* Labels des cartes */
+
 .backupTypeLabel,
 .flowTypeLabel,
 .storageTypeLabel,
@@ -621,7 +621,7 @@
   color: white;
 }
 
-/* Commentaire sauvegarde partielle */
+
 .partialBackupComment {
   font-size: 0.875rem;
   color: #6b7280;
@@ -634,7 +634,7 @@
   color: #9ca3af;
 }
 
-/* Informations de flux avec icônes */
+
 .flowInfo {
   display: flex;
   flex-direction: column;
@@ -702,7 +702,7 @@
   border-color: #4a4a6a;
 }
 
-/* Tooltips avec informations réelles du matériel */
+
 .serverTooltip,
 .storageTooltip {
   position: absolute;
@@ -773,7 +773,7 @@
   min-width: 80px;
 }
 
-/* Hover effects pour afficher les tooltips avec décalage */
+
 .flowSource:hover .serverTooltip,
 .flowDestination:hover .storageTooltip,
 .flowItem:hover .serverTooltip,
@@ -837,7 +837,7 @@
   z-index: 1;
 }
 
-/* Trait simple qui simule un flux */
+
 .flowArrow::before {
   content: '';
   position: absolute;
@@ -877,7 +877,7 @@
   animation: dataFlowGlow 1.5s linear infinite;
 }
 
-/* Flux bleu pour HyperBackup (référence Synology) */
+
 .flowArrowBlue::before {
   background: 
     repeating-linear-gradient(
@@ -897,7 +897,7 @@
   background: linear-gradient(90deg, transparent 0%, rgba(0, 102, 204, 0.3) 50%, transparent 100%);
 }
 
-/* Flux violet pour HYCU Backup */
+
 .flowArrowPurple::before {
   background: 
     repeating-linear-gradient(
@@ -917,7 +917,7 @@
   background: linear-gradient(90deg, transparent 0%, rgba(147, 51, 234, 0.3) 50%, transparent 100%);
 }
 
-/* Flux gris pour le lien entre datacenters */
+
 .flowArrowGray::before {
   background: 
     repeating-linear-gradient(
@@ -960,7 +960,7 @@
   }
 }
 
-/* Métriques centrées */
+
 .metricsSection {
   margin-top: 1rem;
   display: flex;
@@ -1003,7 +1003,7 @@
   color: #d1d5db;
 }
 
-/* Table des métriques (alignée avec Firewalls) */
+
 .metricsTable {
   flex: 1;
   margin-top: 0.5rem;
@@ -1053,7 +1053,7 @@
   color: #e5e7eb;
 }
 
-/* Badges valeurs */
+
 .metricValue {
   display: inline-block;
   padding: 4px 8px;
@@ -1112,7 +1112,7 @@
   border-color: #f87171;
 }
 
-/* ───────────── SECTION DE COMMENTAIRE ───────────── */
+
 .commentSection {
   display: flex;
   flex-direction: column;
@@ -1149,7 +1149,7 @@
   color: #6b7280;
 }
 
-/* États de succès et d'échec */
+
 .success {
   color: #10b981;
   font-weight: 600;
@@ -1170,7 +1170,7 @@
   color: #f87171;
 }
 
-/* État vide */
+
 .emptyState {
   display: flex;
   justify-content: center;
@@ -1190,14 +1190,14 @@
   color: #9ca3af;
 }
 
-/* Responsive */
+
 @media (max-width: 1200px) {
   .backupGrid {
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   }
 }
 
-/* Responsive design */
+
 @media (max-width: 768px) {
   .moduleCard {
     padding: 1rem;
@@ -1251,7 +1251,7 @@
     margin: 1rem 0;
   }
 
-  /* Garder les cartes de périphériques côte à côte même en mobile */
+  
   .flowInline {
     flex-direction: row;
     align-items: center;
@@ -1373,7 +1373,7 @@
   }
 }
 
-/* ───────────── STYLES POUR LE SUMMARY ───────────── */
+
 .container {
   display: flex;
   flex-direction: column;
@@ -1582,7 +1582,7 @@
   position: relative;
 }
 
-/* Triangle supprimé de .flowArrow::after - conservé uniquement le trait animé dans ::before */
+
 
 
 .flowDestination {
@@ -1608,7 +1608,7 @@
   border-color: #4a4a6a;
 }
 
-/* ───────────── TABLEAU DE JOBS (Veeam et HYCU) ───────────── */
+
 .jobsListSection {
   flex: 1;
   margin: 0.25rem 0 0 0;

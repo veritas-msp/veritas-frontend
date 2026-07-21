@@ -34,8 +34,7 @@ export default {
     average: "Moyenne",
     edited: "modifié",
     confidentialUse: "Usage confidentiel",
-    attachmentFormats:
-      "PDF, JPG, PNG, DOC, DOCX, CSV, XLS, XLSX, MP4, 3GP, MP3, OGG, AAC, AMR, M4A",
+    attachmentFormats: "PDF, JPG, PNG, DOC, DOCX, CSV, XLS, XLSX, MP4, 3GP, MP3, OGG, AAC, AMR, M4A"
   },
   layout: {
     brandSub: "Portail client",
@@ -82,15 +81,14 @@ export default {
     stopImpersonation: "Quitter l'impersonation",
     loadError: "Erreur lors du chargement du portail.",
     stopImpersonationSuccess: "Retour à votre session agent.",
-    stopImpersonationError: "Impossible de quitter l'impersonation.",
+    stopImpersonationError: "Impossible de quitter l'impersonation."
   },
   dashboard: {
     pageTitle: "Vue d'ensemble",
     healthBadge: "Santé IT {pct}%",
     actionRequiredTitleOne: "{count} ticket nécessite votre attention",
     actionRequiredTitleMany: "{count} tickets nécessitent votre attention",
-    actionRequiredDesc:
-      "Validation de résolution ou retour attendu de votre part pour faire avancer le traitement.",
+    actionRequiredDesc: "Validation de résolution ou retour attendu de votre part pour faire avancer le traitement.",
     autoCloseAt: "Clôture auto. le {date}",
     pendingYourResponse: "En attente de votre retour",
     seeInSupport: "Voir dans Support",
@@ -152,7 +150,7 @@ export default {
     cloudSummaryUsersMany: "{count} utilisateurs",
     cloudSummaryServicesOne: "{count} service",
     cloudSummaryServicesMany: "{count} services",
-    cloudSummaryBackup: "{instances} instance(s) · {jobs} job(s)",
+    cloudSummaryBackup: "{instances} instance(s) · {jobs} job(s)"
   },
   overviewCatalog: {
     workstations: "Postes de travail",
@@ -169,7 +167,7 @@ export default {
     save: "Sauvegarde",
     antivirus: "Antivirus",
     antispam: "Antispam",
-    ndd: "Noms de domaine",
+    ndd: "Noms de domaine"
   },
   devices: {
     eyebrow: "Infrastructure",
@@ -194,7 +192,7 @@ export default {
     agentOffline: "Agent hors ligne",
     agentUnknown: "Statut inconnu",
     noItemsInCategory: "Aucun équipement dans cette catégorie.",
-    noWorkstationsData: "Données détaillées indisponibles pour les postes.",
+    noWorkstationsData: "Données détaillées indisponibles pour les postes."
   },
   contract: {
     eyebrow: "Contrat",
@@ -206,7 +204,7 @@ export default {
     infraGroupTitle: "Infrastructure",
     cloudGroupTitle: "Cloud & cybersécurité",
     optionActive: "Souscrit",
-    optionInactive: "Non souscrit",
+    optionInactive: "Non souscrit"
   },
   services: {
     eyebrow: "Services",
@@ -250,7 +248,7 @@ export default {
     domain: "Domaine",
     jobCount: "{count} job(s)",
     jobCountOne: "{count} job",
-    saveJobLabel: "Job de sauvegarde",
+    saveJobLabel: "Job de sauvegarde"
   },
   fleet: {
     workstations: "Postes de travail",
@@ -323,7 +321,7 @@ export default {
     health: {
       controlled: "Parc sous contrôle",
       vigilance: "Points de vigilance",
-      watch: "Parc à surveiller",
+      watch: "Parc à surveiller"
     },
     chartLabels: {
       notSpecified: "Non renseigné",
@@ -354,8 +352,8 @@ export default {
       disk512to1tb: "512 Go – 1 To",
       disk1tbPlus: "1 To et +",
       powerDesktop: "Poste fixe",
-      powerGeneric: "Poste type",
-    },
+      powerGeneric: "Poste type"
+    }
   },
   profile: {
     eyebrow: "Compte",
@@ -389,14 +387,11 @@ export default {
       enabled: "Activé",
       pending: "Configuration en cours",
       off: "Désactivé",
-      enabledDesc:
-        "Votre compte est protégé par un code à usage unique généré par une application d'authentification.",
-      pendingDesc:
-        "La configuration MFA a été démarrée mais n'est pas terminée. Scannez le QR code et validez un code pour finaliser.",
-      offDesc:
-        "Ajoutez une couche de sécurité avec Microsoft Authenticator, Google Authenticator ou une application compatible TOTP.",
+      enabledDesc: "Votre compte est protégé par un code à usage unique généré par une application d'authentification.",
+      pendingDesc: "La configuration MFA a été démarrée mais n'est pas terminée. Scannez le QR code et validez un code pour finaliser.",
+      offDesc: "Ajoutez une couche de sécurité avec Microsoft Authenticator, Google Authenticator ou une application compatible TOTP.",
       continueSetup: "Continuer la configuration",
-      enable: "Activer le MFA",
+      enable: "Activer le MFA"
     },
     loadError: "Impossible de charger votre profil",
     modals: {
@@ -405,27 +400,27 @@ export default {
         title: "Modifier le nom affiché",
         label: "Nom affiché",
         hint: "2 à 50 caractères.",
-        placeholder: "Votre nom",
+        placeholder: "Votre nom"
       },
       email: {
         title: "Modifier l'e-mail",
         label: "Adresse e-mail",
         hint: "Doit être unique sur la plateforme.",
-        placeholder: "nom@entreprise.com",
+        placeholder: "nom@entreprise.com"
       },
       password: {
         title: "Changer le mot de passe",
         label: "Nouveau mot de passe",
         hint: "Minimum 6 caractères.",
         confirmLabel: "Confirmer le mot de passe",
-        confirmAction: "Mettre à jour",
+        confirmAction: "Mettre à jour"
       },
       portalEmail: {
         title: "Modifier l'e-mail de connexion",
         desc: "L'e-mail favori deviendra votre identifiant de connexion au portail après enregistrement.",
         previous: "Ancien e-mail",
         next: "Nouvel e-mail favori",
-        confirmAction: "Confirmer et enregistrer",
+        confirmAction: "Confirmer et enregistrer"
       },
       mfa: {
         title: "Configurer l'authentification à deux facteurs",
@@ -433,8 +428,8 @@ export default {
         qrAlt: "QR code MFA",
         manualKey: "Clé manuelle :",
         codePlaceholder: "000000",
-        enable: "Activer le MFA",
-      },
+        enable: "Activer le MFA"
+      }
     },
     toast: {
       usernameTooShort: "Le nom affiché doit contenir au moins 2 caractères.",
@@ -452,8 +447,8 @@ export default {
       contactIncomplete: "Complétez ou supprimez les coordonnées vides avant d'enregistrer.",
       mfaSetupError: "Erreur lors de la configuration MFA.",
       mfaEnabled: "Authentification à deux facteurs activée.",
-      mfaInvalidCode: "Code invalide.",
-    },
+      mfaInvalidCode: "Code invalide."
+    }
   },
   ticket: {
     status: {
@@ -462,21 +457,27 @@ export default {
       pending: "En attente",
       in_progress: "En cours",
       resolved: "Résolu",
-      closed: "Fermé",
+      closed: "Fermé"
     },
     priority: {
       low: "Basse",
       normal: "Normale",
       high: "Haute",
-      urgent: "Urgente",
+      urgent: "Urgente"
     },
     types: {
-      incident: { label: "Incident", hint: "Panne ou interruption de service" },
-      demande: { label: "Demande", hint: "Besoin ou question" },
+      incident: {
+        label: "Incident",
+        hint: "Panne ou interruption de service"
+      },
+      demande: {
+        label: "Demande",
+        hint: "Besoin ou question"
+      }
     },
     typeLabels: {
       probleme: "Problème",
-      changement: "Changement",
+      changement: "Changement"
     },
     channels: {
       web: "Portail client",
@@ -484,18 +485,18 @@ export default {
       email: "E-mail",
       chat: "Chat",
       api: "API",
-      whatsapp: "WhatsApp",
+      whatsapp: "WhatsApp"
     },
     statusFilters: {
       action_required: "Action requise",
       open: "Ouverts",
       all: "Tous",
       resolved: "Résolus",
-      closed: "Clos",
+      closed: "Clos"
     },
     badges: {
       validationRequired: "Validation requise",
-      actionRequired: "Action requise",
+      actionRequired: "Action requise"
     },
     list: {
       eyebrow: "Support",
@@ -520,7 +521,7 @@ export default {
       rated: "Évaluation enregistrée",
       notRated: "Non évalué",
       openTicketAria: "Ouvrir le ticket {id}",
-      loadError: "Impossible de charger les tickets.",
+      loadError: "Impossible de charger les tickets."
     },
     detail: {
       loading: "Chargement du ticket…",
@@ -534,8 +535,7 @@ export default {
       editMessageAria: "Modifier le message",
       editMessageTitle: "Modifier le message",
       validationQuestion: "La solution proposée vous convient-elle ?",
-      validationMeta:
-        "Confirmez si le problème est réglé, ou refusez pour une nouvelle prise en charge.",
+      validationMeta: "Confirmez si le problème est réglé, ou refusez pour une nouvelle prise en charge.",
       validationCommentPlaceholder: "Commentaire optionnel…",
       rejectResolution: "Non, le problème persiste",
       acceptResolution: "Oui, c'est résolu",
@@ -548,11 +548,9 @@ export default {
       ticketClosed: "clos",
       ticketResolved: "résolu",
       ticketFinishedTitle: "Ticket {status}",
-      ticketFinishedText:
-        "Vous pouvez consulter l'historique mais plus envoyer de nouveaux messages.",
+      ticketFinishedText: "Vous pouvez consulter l'historique mais plus envoyer de nouveaux messages.",
       satisfactionInviteTitle: "Votre avis compte pour nous",
-      satisfactionInviteText:
-        "Partagez votre expérience en quelques secondes · vos retours nous aident à améliorer le support.",
+      satisfactionInviteText: "Partagez votre expérience en quelques secondes · vos retours nous aident à améliorer le support.",
       giveFeedback: "Donner mon avis",
       thanksTitle: "Merci pour votre retour !",
       thanksText: "Votre évaluation a bien été enregistrée",
@@ -563,8 +561,7 @@ export default {
       modalEditTitle: "Modifier mon évaluation",
       modalViewTitle: "Votre évaluation",
       modalNewTitle: "Votre avis sur le support",
-      modalSubtitle:
-        "Notez chaque aspect de 1 à 5 étoiles et ajoutez un commentaire si vous le souhaitez.",
+      modalSubtitle: "Notez chaque aspect de 1 à 5 étoiles et ajoutez un commentaire si vous le souhaitez.",
       commentLabel: "Commentaire",
       commentOptional: "Commentaire (optionnel)",
       commentPlaceholder: "Partagez un commentaire libre sur votre expérience…",
@@ -578,8 +575,7 @@ export default {
       starNoteLabel: "Note",
       starNoteFor: "Note · {label}",
       validationAccepted: "Merci ! Le ticket a été clos.",
-      validationRejected:
-        "Votre retour a été transmis au support. Le ticket est de nouveau en cours.",
+      validationRejected: "Votre retour a été transmis au support. Le ticket est de nouveau en cours.",
       validationError: "Impossible d'enregistrer votre réponse.",
       satisfactionIncomplete: "Veuillez noter chaque critère de 1 à 5 étoiles.",
       satisfactionThanks: "Merci pour votre retour !",
@@ -592,7 +588,7 @@ export default {
       messageEmpty: "Le message ne peut pas être vide.",
       messageEdited: "Message modifié.",
       messageEditError: "Impossible de modifier le message.",
-      loadError: "Impossible de charger le ticket.",
+      loadError: "Impossible de charger le ticket."
     },
     infoPanel: {
       aria: "Informations du ticket",
@@ -617,7 +613,7 @@ export default {
       respondedAt: "Réponse le :",
       activity: "Activité",
       messages: "Messages :",
-      feedbackRecorded: "Avis enregistré",
+      feedbackRecorded: "Avis enregistré"
     },
     create: {
       eyebrow: "Helpdesk",
@@ -629,12 +625,7 @@ export default {
       dropHint: "{formats} · 15 Mo max par fichier, {max} max",
       tipsTitle: "Conseils",
       tipsAria: "Afficher les conseils de saisie",
-      tips: [
-        "Décrivez précisément le problème ou le besoin, avec le contexte métier.",
-        "Indiquez l'impact sur votre activité (nombre de personnes, services concernés).",
-        "Listez les manipulations déjà tentées pour accélérer le diagnostic.",
-        "Joignez des captures d'écran ou documents utiles à la prise en charge.",
-      ],
+      tips: ["Décrivez précisément le problème ou le besoin, avec le contexte métier.", "Indiquez l'impact sur votre activité (nombre de personnes, services concernés).", "Listez les manipulations déjà tentées pour accélérer le diagnostic.", "Joignez des captures d'écran ou documents utiles à la prise en charge."],
       detailsTitle: "Détails du ticket",
       subject: "Sujet",
       description: "Description détaillée",
@@ -644,12 +635,12 @@ export default {
       issueNatureOptions: {
         hardware: "Matériel",
         software: "Logiciel",
-        unsure: "Je ne sais pas",
+        unsure: "Je ne sais pas"
       },
       issueNatureLabels: {
         hardware: "Matériel",
         software: "Logiciel",
-        unsure: "Non précisé",
+        unsure: "Non précisé"
       },
       documents: "Documents",
       dropFilesTitle: "Glissez vos fichiers ici ou parcourez",
@@ -710,11 +701,11 @@ export default {
       confirmCreate: "Confirmer la création",
       titlePlaceholders: {
         incident: "Poste inaccessible · erreur réseau au démarrage",
-        demande: "Création compte pour nouveau collaborateur",
+        demande: "Création compte pour nouveau collaborateur"
       },
       descriptionPlaceholders: {
         incident: "Décrivez le problème et son impact sur votre activité.",
-        demande: "Précisez votre besoin, le contexte métier et la date souhaitée si applicable.",
+        demande: "Précisez votre besoin, le contexte métier et la date souhaitée si applicable."
       },
       loadDashboardError: "Impossible de charger les données entreprise.",
       invalidAttachment: "Pièce jointe invalide",
@@ -726,30 +717,30 @@ export default {
       attachmentsFailed: "Ticket créé, mais les pièces jointes n'ont pas pu être envoyées.",
       createError: "Impossible de créer le ticket.",
       contactSlotFrom: "À partir du {date} à {time}{note}",
-      contactSlotRange: "{date} · {start} – {end}{note}",
+      contactSlotRange: "{date} · {start} – {end}{note}"
     },
     satisfactionCriteria: {
       responsiveness: {
         label: "Réactivité",
-        hint: "Rapidité de prise en charge et suivi de votre demande",
+        hint: "Rapidité de prise en charge et suivi de votre demande"
       },
       solution_quality: {
         label: "Qualité de la solution",
-        hint: "Pertinence et efficacité de la résolution apportée",
+        hint: "Pertinence et efficacité de la résolution apportée"
       },
       communication: {
         label: "Communication",
-        hint: "Clarté, écoute et courtoisie des échanges",
+        hint: "Clarté, écoute et courtoisie des échanges"
       },
       professionalism: {
         label: "Professionnalisme",
-        hint: "Expertise et attitude de l'équipe support",
+        hint: "Expertise et attitude de l'équipe support"
       },
       overall: {
         label: "Impression globale",
-        hint: "Votre satisfaction générale sur cette demande",
-      },
-    },
+        hint: "Votre satisfaction générale sur cette demande"
+      }
+    }
   },
   vault: {
     eyebrow: "Coffre-fort",
@@ -763,11 +754,9 @@ export default {
     filterAria: "Filtrer par type",
     allTypes: "Tous les types",
     emptyDocumentsTitle: "Aucun document",
-    emptyDocumentsHint:
-      "Votre équipe support peut y déposer factures, contrats, guides et rapports.",
+    emptyDocumentsHint: "Votre équipe support peut y déposer factures, contrats, guides et rapports.",
     emptySecretsTitle: "Aucun accès partagé",
-    emptySecretsHint:
-      "Votre support peut vous transmettre ici un mot de passe ou un accès temporaire, avec expiration et limite de consultations.",
+    emptySecretsHint: "Votre support peut vous transmettre ici un mot de passe ou un accès temporaire, avec expiration et limite de consultations.",
     expiresAt: "Expire le {date}",
     viewsRemainingOne: "{remaining} vue restante sur {max}",
     viewsRemainingMany: "{remaining} vues restantes sur {max}",
@@ -781,8 +770,7 @@ export default {
     loginLabel: "Identifiant",
     secretLabel: "Mot de passe / secret",
     revealMeta: "Expire le {date} · {views}",
-    revealWarning:
-      "Ne partagez pas ce secret par e-mail non chiffré. Vous pouvez demander sa suppression immédiate une fois utilisé.",
+    revealWarning: "Ne partagez pas ce secret par e-mail non chiffré. Vous pouvez demander sa suppression immédiate une fois utilisé.",
     deleteAccess: "Supprimer cet accès",
     deleting: "Suppression…",
     deleteSuccess: "Accès supprimé.",
@@ -804,7 +792,7 @@ export default {
       Rapport: "Rapport",
       Contrat: "Contrat",
       Procédure: "Procédure",
-      Autre: "Autre",
-    },
-  },
+      Autre: "Autre"
+    }
+  }
 };

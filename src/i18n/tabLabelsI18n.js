@@ -1,5 +1,4 @@
 import { createLocaleGetter } from "./translate";
-
 const TAB_LABELS_COPY = {
   fr: {
     hints: {
@@ -7,6 +6,7 @@ const TAB_LABELS_COPY = {
       ContactDetail: "Contact",
       Equipment: "Inventaire",
       EquipmentDetail: "Équipement",
+      JobDetail: "Job sauvegarde",
       MonitoringDetail: "Rapport supervision",
       CampaignDetail: "Campagne",
       AntivirusDetail: "Antivirus",
@@ -19,7 +19,7 @@ const TAB_LABELS_COPY = {
       Ticket: "Liste tickets",
       Hardware: "Supervision",
       Mon: "Monitoring",
-      DocumentsHub: "Documents",
+      DocumentsHub: "Documents"
     },
     equipmentTypes: {
       serveurs: "Serveurs",
@@ -36,12 +36,13 @@ const TAB_LABELS_COPY = {
       Switch: "Switch",
       BorneWifi: "WiFi",
       Internet: "Internet",
-      Ordinateurs: "Ordinateurs",
+      Ordinateurs: "Ordinateurs"
     },
     defaults: {
       enterprise: "Entreprise",
       contact: "Contact",
       equipment: "Équipement",
+      backupJob: "Job sauvegarde",
       campaign: "Campagne",
       antivirus: "Antivirus",
       antispam: "Antispam",
@@ -61,8 +62,8 @@ const TAB_LABELS_COPY = {
       contactsList: "Contacts",
       supervisionCenter: "Supervision",
       monitoringList: "Monitoring",
-      documentsList: "Documents",
-    },
+      documentsList: "Documents"
+    }
   },
   en: {
     hints: {
@@ -70,6 +71,7 @@ const TAB_LABELS_COPY = {
       ContactDetail: "Contact",
       Equipment: "Inventory",
       EquipmentDetail: "Equipment",
+      JobDetail: "Backup job",
       MonitoringDetail: "Monitoring report",
       CampaignDetail: "Campaign",
       AntivirusDetail: "Antivirus",
@@ -82,7 +84,7 @@ const TAB_LABELS_COPY = {
       Ticket: "Ticket list",
       Hardware: "Supervision",
       Mon: "Monitoring",
-      DocumentsHub: "Documents",
+      DocumentsHub: "Documents"
     },
     equipmentTypes: {
       serveurs: "Servers",
@@ -99,12 +101,13 @@ const TAB_LABELS_COPY = {
       Switch: "Switch",
       BorneWifi: "WiFi",
       Internet: "Internet",
-      Ordinateurs: "Computers",
+      Ordinateurs: "Computers"
     },
     defaults: {
       enterprise: "Company",
       contact: "Contact",
       equipment: "Equipment",
+      backupJob: "Backup job",
       campaign: "Campaign",
       antivirus: "Antivirus",
       antispam: "Antispam",
@@ -124,8 +127,8 @@ const TAB_LABELS_COPY = {
       contactsList: "Contacts",
       supervisionCenter: "Supervision",
       monitoringList: "Monitoring",
-      documentsList: "Documents",
-    },
+      documentsList: "Documents"
+    }
   },
   de: {
     hints: {
@@ -133,6 +136,7 @@ const TAB_LABELS_COPY = {
       ContactDetail: "Kontakt",
       Equipment: "Inventar",
       EquipmentDetail: "Gerät",
+      JobDetail: "Backup-Job",
       MonitoringDetail: "Überwachungsbericht",
       CampaignDetail: "Kampagne",
       AntivirusDetail: "Antivirus",
@@ -145,7 +149,7 @@ const TAB_LABELS_COPY = {
       Ticket: "Ticketliste",
       Hardware: "Supervision",
       Mon: "Monitoring",
-      DocumentsHub: "Documents",
+      DocumentsHub: "Documents"
     },
     equipmentTypes: {
       serveurs: "Server",
@@ -162,12 +166,13 @@ const TAB_LABELS_COPY = {
       Switch: "Switch",
       BorneWifi: "WiFi",
       Internet: "Internet",
-      Ordinateurs: "Computer",
+      Ordinateurs: "Computer"
     },
     defaults: {
       enterprise: "Unternehmen",
       contact: "Kontakt",
       equipment: "Gerät",
+      backupJob: "Backup-Job",
       campaign: "Kampagne",
       antivirus: "Antivirus",
       antispam: "Antispam",
@@ -186,8 +191,8 @@ const TAB_LABELS_COPY = {
       contactsList: "Kontakte",
       supervisionCenter: "Supervision",
       monitoringList: "Monitoring",
-      documentsList: "Dokumente",
-    },
+      documentsList: "Dokumente"
+    }
   },
   it: {
     hints: {
@@ -195,6 +200,7 @@ const TAB_LABELS_COPY = {
       ContactDetail: "Contatto",
       Equipment: "Inventario",
       EquipmentDetail: "Equipaggiamento",
+      JobDetail: "Job di backup",
       MonitoringDetail: "Report supervisione",
       CampaignDetail: "Campagna",
       AntivirusDetail: "Antivirus",
@@ -207,7 +213,7 @@ const TAB_LABELS_COPY = {
       Ticket: "Elenco ticket",
       Hardware: "Supervisione",
       Mon: "Monitoring",
-      DocumentsHub: "Documenti",
+      DocumentsHub: "Documenti"
     },
     equipmentTypes: {
       serveurs: "Server",
@@ -224,12 +230,13 @@ const TAB_LABELS_COPY = {
       Switch: "Switch",
       BorneWifi: "WiFi",
       Internet: "Internet",
-      Ordinateurs: "Computer",
+      Ordinateurs: "Computer"
     },
     defaults: {
       enterprise: "Azienda",
       contact: "Contatto",
       equipment: "Equipaggiamento",
+      backupJob: "Job di backup",
       campaign: "Campagna",
       antivirus: "Antivirus",
       antispam: "Antispam",
@@ -248,8 +255,8 @@ const TAB_LABELS_COPY = {
       contactsList: "Contatti",
       supervisionCenter: "Supervisione",
       monitoringList: "Monitoring",
-      documentsList: "Documenti",
-    },
+      documentsList: "Documenti"
+    }
   },
   es: {
     hints: {
@@ -257,6 +264,7 @@ const TAB_LABELS_COPY = {
       ContactDetail: "Contacto",
       Equipment: "Inventario",
       EquipmentDetail: "Equipo",
+      JobDetail: "Job de backup",
       MonitoringDetail: "Informe supervisión",
       CampaignDetail: "Campaña",
       AntivirusDetail: "Antivirus",
@@ -269,7 +277,7 @@ const TAB_LABELS_COPY = {
       Ticket: "Lista tickets",
       Hardware: "Supervisión",
       Mon: "Monitorización",
-      DocumentsHub: "Documentos",
+      DocumentsHub: "Documentos"
     },
     equipmentTypes: {
       serveurs: "Servidores",
@@ -286,12 +294,13 @@ const TAB_LABELS_COPY = {
       Switch: "Switch",
       BorneWifi: "WiFi",
       Internet: "Internet",
-      Ordinateurs: "Ordenadores",
+      Ordinateurs: "Ordenadores"
     },
     defaults: {
       enterprise: "Empresa",
       contact: "Contacto",
       equipment: "Equipo",
+      backupJob: "Job de backup",
       campaign: "Campaña",
       antivirus: "Antivirus",
       antispam: "Antispam",
@@ -310,9 +319,8 @@ const TAB_LABELS_COPY = {
       contactsList: "Contactos",
       supervisionCenter: "Supervisión",
       monitoringList: "Monitorización",
-      documentsList: "Documentos",
-    },
-  },
+      documentsList: "Documentos"
+    }
+  }
 };
-
 export const getTabLabelsCopy = createLocaleGetter(TAB_LABELS_COPY);

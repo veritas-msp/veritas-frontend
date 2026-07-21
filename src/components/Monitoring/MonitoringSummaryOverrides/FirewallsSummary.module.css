@@ -76,7 +76,7 @@
   color: #e5e7eb;
 }
 
-/* ───────────── CARTE MODULE ───────────── */
+
 .moduleCard {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -100,7 +100,7 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 }
 
-/* ───────────── EN-TÊTE DU MODULE ───────────── */
+
 .moduleHeader {
   display: flex;
   align-items: center;
@@ -165,7 +165,7 @@
   background-color: #4a4a6a;
 }
 
-/* ───────────── SECTION STATISTIQUES GLOBALES ───────────── */
+
 .statsSection {
   margin-bottom: 2rem;
   display: flex;
@@ -257,7 +257,7 @@
   color: #9ca3af;
 }
 
-/* ───────────── RÉPARTITION PAR FABRICANT ───────────── */
+
 .fabricantStatsSection {
   margin-top: 1rem;
 }
@@ -338,7 +338,7 @@
 }
 
 .firewallGrid {
-  /* Ancien layout basé sur auto-fit, remplacé par firewallsGridBySite + siteColumn */
+  
   display: contents;
 }
 
@@ -355,13 +355,13 @@
   gap: 1rem;
   position: relative;
   padding: 0 1.5rem;
-  min-width: 0;          /* colonnes strictement égales */
+  min-width: 0;          
   max-width: 100%;
-  box-sizing: border-box; /* inclure le padding dans la largeur */
+  box-sizing: border-box; 
 }
 
 .siteGroup:first-child {
-  padding-left: 1.5rem;  /* même padding que les autres colonnes -> même largeur utile */
+  padding-left: 1.5rem;  
 }
 
 .siteGroup:not(:last-child)::after {
@@ -476,19 +476,19 @@
 }
 
 .healthScore {
-  width: 70px;          /* zone note plus compacte */
+  width: 70px;          
   min-width: 70px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  margin-top: 0.25rem; /* encore légèrement remonté */
+  margin-top: 0.25rem; 
   padding-top: 0;
 }
 
 .healthScoreRing {
-  width: 96px;          /* cercle légèrement réduit pour suivre la zone */
+  width: 96px;          
   height: 96px;
   border-radius: 50%;
   border: 8px solid;
@@ -589,7 +589,7 @@
 }
 
 .commentBubble {
-  margin: -0.5rem 0 -0.2rem; /* un peu moins d'espace au-dessus et en dessous */
+  margin: -0.5rem 0 -0.2rem; 
   padding: 0;
   border: none;
   background: transparent;
@@ -889,7 +889,7 @@
 
 .mappingBadgeTopRight {
   position: absolute;
-  top: 1.15rem; /* descendu de quelques pixels */
+  top: 1.15rem; 
   right: 1rem;
   margin: 0;
   z-index: 10;
@@ -967,7 +967,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  flex: 0 0 190px;           /* colonne CAMEMBERT un peu plus large */
+  flex: 0 0 190px;           
   max-width: 190px;
 }
 
@@ -1152,8 +1152,8 @@
   gap: 1rem;
   align-items: stretch;
   width: 100%;
-  border-left: 1px solid #e5e7eb; /* séparateur entre la note et les cartes de stats */
-  padding-left: 0rem;        /* un peu moins d'espace à droite du séparateur */
+  border-left: 1px solid #e5e7eb; 
+  padding-left: 0rem;        
 }
 
 .compactStatsGrid {
@@ -1164,13 +1164,13 @@
 
 .compactStatsGrid2x2 {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr)); /* 4 cartes sur une seule ligne */
+  grid-template-columns: repeat(4, minmax(0, 1fr)); 
   grid-template-rows: 1fr;
-  column-gap: 0rem;         /* un peu moins d'espace horizontal entre Service / Event / Dispo / Modules */
+  column-gap: 0rem;         
   row-gap: 0.5rem;
-  width: auto;               /* colonne STAT un peu plus étroite */  min-width: 0;
+  width: auto;                 min-width: 0;
   margin-top: 0rem;
-  flex: 1 2 auto;             /* largeur contrôlée pour éviter qu'elle prenne trop de place */
+  flex: 1 2 auto;             
   align-items: stretch;
 }
 
@@ -1178,14 +1178,14 @@
   border: none;
   border-radius: 12px;
   background: transparent;
-  padding: 0rem 0rem;        /* padding horizontal réduit pour rapprocher les cartes */
+  padding: 0rem 0rem;        
   display: flex;
-  flex-direction: column;         /* icône au-dessus, valeur en dessous */
+  flex-direction: column;         
   align-items: center;
   justify-content: center;
   gap: 0.2rem;
   color: #4b5563;
-  font-size: 0.75rem;             /* texte légèrement plus grand */
+  font-size: 0.75rem;             
   width: 100%;
   height: 100%;
 }
@@ -1208,7 +1208,7 @@
 
 .eventsBadge {
   display: flex;
-  flex-direction: column;   /* icône au-dessus, valeur en dessous */
+  flex-direction: column;   
   align-items: center;
   gap: 0.15rem;
   justify-content: center;
@@ -1220,7 +1220,7 @@
 }
 
 .eventsCount {
-  font-size: 0.8rem;          /* taille uniforme pour les valeurs Service/Dispo/Modules */
+  font-size: 0.8rem;          
   font-weight: 600;
   color: #9ca3af;
   margin-left: 0;
@@ -1253,7 +1253,7 @@
 }
 
 .compactStatCard > span:last-child {
-  font-size: 0.8rem;          /* taille uniforme pour les valeurs Service/Dispo/Modules */
+  font-size: 0.8rem;          
   font-weight: 600;
   color: #9ca3af;
   margin-left: 0;
@@ -1267,7 +1267,7 @@
 .compactStatMultiValue {
   color: #9ca3af;
   font-size: 0.8rem;   
-  gap: 0.1rem;       /* taille uniforme pour les valeurs Service/Dispo/Modules */
+  gap: 0.1rem;       
   font-weight: 600;
   margin-left: 0;
   text-align: center;
@@ -1280,7 +1280,7 @@
 .compactStatValueNeutral {
   color: #9ca3af;
   font-size: 0.8rem;   
-  gap: 0.1rem;       /* taille uniforme pour les valeurs Service/Dispo/Modules */
+  gap: 0.1rem;       
   font-weight: 600;
   margin-left: 0;
   text-align: center;
@@ -1302,7 +1302,7 @@
 .compactStatValueWarnActive {
   color: #f59e0b;
   font-size: 0.8rem;   
-  gap: 0.1rem;       /* taille uniforme pour les valeurs Service/Dispo/Modules */
+  gap: 0.1rem;       
   font-weight: 600;
   margin-left: 0;
   text-align: center;
@@ -1420,10 +1420,10 @@
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   padding: 1rem;
-  width: 100%;             /* prend toute la largeur disponible de la colonne */
-  min-width: 0;            /* respecte la largeur parente */
-  max-width: 100%;         /* pas de débordement */
-  box-sizing: border-box;  /* inclure padding/bordure dans la largeur */
+  width: 100%;             
+  min-width: 0;            
+  max-width: 100%;         
+  box-sizing: border-box;  
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -1475,37 +1475,37 @@
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
 }
 
-/* Statut Excellent */
+
 .statusDot.excellent {
   background-color: #10b981;
   color: #10b981;
 }
 
-/* Statut Good */
+
 .statusDot.good {
   background-color: #22c55e;
   color: #22c55e;
 }
 
-/* Statut Poor */
+
 .statusDot.poor {
   background-color: #eab308;
   color: #eab308;
 }
 
-/* Statut Warning */
+
 .statusDot.warning {
   background-color: #f59e0b;
   color: #f59e0b;
 }
 
-/* Statut Critical */
+
 .statusDot.critical {
   background-color: #ef4444;
   color: #ef4444;
 }
 
-/* Statut Unknown */
+
 .statusDot.unknown {
   background-color: #9ca3af;
   color: #9ca3af;
@@ -1883,7 +1883,7 @@
   color: #f9fafb;
 }
 
-/* Styles pour les valeurs de métriques en lecture seule */
+
 .metricValue {
   display: inline-block;
   padding: 4px 8px;
@@ -2001,7 +2001,7 @@
   border-color: #4a4a6a;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1200px) {
   .firewallGrid {
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));

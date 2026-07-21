@@ -1,5 +1,4 @@
 import { createLocaleGetter, interpolate } from "../../i18n/translate";
-
 const FORM_MODALS = {
   fr: {
     techNewsFeedForm: {
@@ -27,9 +26,15 @@ const FORM_MODALS = {
       noSource: "Sans source",
       addBtn: "Ajouter le flux",
       sections: {
-        source: { label: "Source", description: "Nom et URL" },
-        display: { label: "Affichage", description: "Catégorie et ordre" },
-      },
+        source: {
+          label: "Source",
+          description: "Nom et URL"
+        },
+        display: {
+          label: "Affichage",
+          description: "Catégorie et ordre"
+        }
+      }
     },
     contractModuleOptionForm: {
       eyebrow: "Options contrat",
@@ -53,9 +58,15 @@ const FORM_MODALS = {
       optionActiveHint: "Une option masquée conserve ses données mais n'apparaît plus dans l'application.",
       addBtn: "Ajouter l'option",
       sections: {
-        identity: { label: "Identité", description: "Clé et libellé" },
-        presentation: { label: "Présentation", description: "Icône et ordre" },
-      },
+        identity: {
+          label: "Identité",
+          description: "Clé et libellé"
+        },
+        presentation: {
+          label: "Présentation",
+          description: "Icône et ordre"
+        }
+      }
     },
     equipmentFamilyForm: {
       createTitle: "Nouvelle famille de matériel",
@@ -78,13 +89,31 @@ const FORM_MODALS = {
       displayModeLabel: "Mode d'affichage",
       positionQLabel: "Position Q (optionnel)",
       positionRLabel: "Position R (optionnel)",
-      fieldTypes: { text: "Texte", textarea: "Texte long", date: "Date", number: "Nombre", boolean: "Oui / Non" },
-      displayModes: { hexagon: "Hexagone (cartographie)", brick: "Brique latérale" },
-      sections: {
-        identity: { label: "Identité", description: "Nom et affichage" },
-        fields: { label: "Champs", description: "Formulaire de saisie" },
-        map: { label: "Cartographie", description: "Hexagone et position" },
+      fieldTypes: {
+        text: "Texte",
+        textarea: "Texte long",
+        date: "Date",
+        number: "Nombre",
+        boolean: "Oui / Non"
       },
+      displayModes: {
+        hexagon: "Hexagone (cartographie)",
+        brick: "Brique latérale"
+      },
+      sections: {
+        identity: {
+          label: "Identité",
+          description: "Nom et affichage"
+        },
+        fields: {
+          label: "Champs",
+          description: "Formulaire de saisie"
+        },
+        map: {
+          label: "Cartographie",
+          description: "Hexagone et position"
+        }
+      }
     },
     profileForm: {
       eyebrow: "Profils d'accès",
@@ -105,9 +134,15 @@ const FORM_MODALS = {
       defaultRightsHint: "Les nouveaux profils activent contrats et contacts par défaut. Ajustez les droits dans la matrice d'accès.",
       createBtn: "Créer le profil",
       sections: {
-        general: { label: "Général", description: "Identifiant et libellé" },
-        inheritance: { label: "Héritage", description: "Profil parent" },
-      },
+        general: {
+          label: "Général",
+          description: "Identifiant et libellé"
+        },
+        inheritance: {
+          label: "Héritage",
+          description: "Profil parent"
+        }
+      }
     },
     webhookForm: {
       eyebrow: "Webhooks notifications",
@@ -130,9 +165,15 @@ const FORM_MODALS = {
       channelDetectedLabel: "Canal détecté",
       createBtn: "Créer le webhook",
       sections: {
-        type: { label: "Type", description: "Canal de destination" },
-        config: { label: "Configuration", description: "Nom, URL et test" },
-      },
+        type: {
+          label: "Type",
+          description: "Canal de destination"
+        },
+        config: {
+          label: "Configuration",
+          description: "Nom, URL et test"
+        }
+      }
     },
     agentForm: {
       eyebrow: "Gestion des agents",
@@ -174,12 +215,24 @@ const FORM_MODALS = {
       creating: "Création…",
       saving: "Enregistrement…",
       sections: {
-        identity: { label: "Identité", description: "Email et nom" },
-        security: { label: "Sécurité", description: "Mot de passe" },
-        access: { label: "Accès", description: "Profil assigné" },
-        mfa: { label: "MFA", description: "Authentification" },
-      },
-    },
+        identity: {
+          label: "Identité",
+          description: "Email et nom"
+        },
+        security: {
+          label: "Sécurité",
+          description: "Mot de passe"
+        },
+        access: {
+          label: "Accès",
+          description: "Profil assigné"
+        },
+        mfa: {
+          label: "MFA",
+          description: "Authentification"
+        }
+      }
+    }
   },
   en: {
     techNewsFeedForm: {
@@ -207,9 +260,15 @@ const FORM_MODALS = {
       noSource: "No source",
       addBtn: "Add feed",
       sections: {
-        source: { label: "Source", description: "Name and URL" },
-        display: { label: "Display", description: "Category and order" },
-      },
+        source: {
+          label: "Source",
+          description: "Name and URL"
+        },
+        display: {
+          label: "Display",
+          description: "Category and order"
+        }
+      }
     },
     contractModuleOptionForm: {
       eyebrow: "Contract options",
@@ -233,9 +292,15 @@ const FORM_MODALS = {
       optionActiveHint: "A hidden option keeps its data but no longer appears in the app.",
       addBtn: "Add option",
       sections: {
-        identity: { label: "Identity", description: "Key and label" },
-        presentation: { label: "Presentation", description: "Icon and order" },
-      },
+        identity: {
+          label: "Identity",
+          description: "Key and label"
+        },
+        presentation: {
+          label: "Presentation",
+          description: "Icon and order"
+        }
+      }
     },
     equipmentFamilyForm: {
       createTitle: "New equipment family",
@@ -258,13 +323,31 @@ const FORM_MODALS = {
       displayModeLabel: "Display mode",
       positionQLabel: "Position Q (optional)",
       positionRLabel: "Position R (optional)",
-      fieldTypes: { text: "Text", textarea: "Long text", date: "Date", number: "Number", boolean: "Yes / No" },
-      displayModes: { hexagon: "Hexagon (map)", brick: "Side brick" },
-      sections: {
-        identity: { label: "Identity", description: "Name and display" },
-        fields: { label: "Fields", description: "Input form" },
-        map: { label: "Map", description: "Hexagon and position" },
+      fieldTypes: {
+        text: "Text",
+        textarea: "Long text",
+        date: "Date",
+        number: "Number",
+        boolean: "Yes / No"
       },
+      displayModes: {
+        hexagon: "Hexagon (map)",
+        brick: "Side brick"
+      },
+      sections: {
+        identity: {
+          label: "Identity",
+          description: "Name and display"
+        },
+        fields: {
+          label: "Fields",
+          description: "Input form"
+        },
+        map: {
+          label: "Map",
+          description: "Hexagon and position"
+        }
+      }
     },
     profileForm: {
       eyebrow: "Access profiles",
@@ -285,9 +368,15 @@ const FORM_MODALS = {
       defaultRightsHint: "New profiles enable contracts and contacts by default. Adjust rights in the access matrix.",
       createBtn: "Create profile",
       sections: {
-        general: { label: "General", description: "Identifier and label" },
-        inheritance: { label: "Inheritance", description: "Parent profile" },
-      },
+        general: {
+          label: "General",
+          description: "Identifier and label"
+        },
+        inheritance: {
+          label: "Inheritance",
+          description: "Parent profile"
+        }
+      }
     },
     webhookForm: {
       eyebrow: "Notification webhooks",
@@ -310,9 +399,15 @@ const FORM_MODALS = {
       channelDetectedLabel: "Detected channel",
       createBtn: "Create webhook",
       sections: {
-        type: { label: "Type", description: "Destination channel" },
-        config: { label: "Configuration", description: "Name, URL and test" },
-      },
+        type: {
+          label: "Type",
+          description: "Destination channel"
+        },
+        config: {
+          label: "Configuration",
+          description: "Name, URL and test"
+        }
+      }
     },
     agentForm: {
       eyebrow: "Agent management",
@@ -354,337 +449,797 @@ const FORM_MODALS = {
       creating: "Creating…",
       saving: "Saving…",
       sections: {
-        identity: { label: "Identity", description: "Email and name" },
-        security: { label: "Security", description: "Password" },
-        access: { label: "Access", description: "Assigned profile" },
-        mfa: { label: "MFA", description: "Authentication" },
-      },
-    },
+        identity: {
+          label: "Identity",
+          description: "Email and name"
+        },
+        security: {
+          label: "Security",
+          description: "Password"
+        },
+        access: {
+          label: "Access",
+          description: "Assigned profile"
+        },
+        mfa: {
+          label: "MFA",
+          description: "Authentication"
+        }
+      }
+    }
   },
   de: {
     techNewsFeedForm: {
-      eyebrow: "Tech-News", createTitle: "Neuer RSS-Feed", editTitle: "{name} bearbeiten", editFallback: "der Feed",
-      createSubtitle: "RSS/Atom-Quelle für die Tech-News-Spalte hinzufügen.", editSubtitle: "Quelle, URL oder Priorität aktualisieren.",
-      sectionsAria: "RSS-Feed-Abschnitte", sourceTitle: "Quelle", sourceDesc: "Name unter jedem Artikel und RSS/Atom-URL.",
-      sourceNameLabel: "Quellenname", sourceNamePlaceholder: "z. B. ZDNet", sourceNameHint: "Unter jedem Artikel in der News-Spalte.",
-      urlLabel: "RSS/Atom-Feed-URL", urlPlaceholder: "https://beispiel.de/feed/", urlHint: "Muss mit http:// oder https:// beginnen.",
-      displayTitle: "Darstellung", displayDesc: "Feed kategorisieren und Priorität festlegen.", sortOrderLabel: "Anzeigereihenfolge",
-      sortOrderHint: "Kleiner = höhere Priorität.", feedActiveLabel: "Aktiver Feed", feedActiveHint: "Nur aktive Feeds werden aggregiert.",
-      noSource: "Keine Quelle", addBtn: "Feed hinzufügen",
-      sections: { source: { label: "Quelle", description: "Name und URL" }, display: { label: "Darstellung", description: "Kategorie und Reihenfolge" } },
+      eyebrow: "Tech-News",
+      createTitle: "Neuer RSS-Feed",
+      editTitle: "{name} bearbeiten",
+      editFallback: "der Feed",
+      createSubtitle: "RSS/Atom-Quelle für die Tech-News-Spalte hinzufügen.",
+      editSubtitle: "Quelle, URL oder Priorität aktualisieren.",
+      sectionsAria: "RSS-Feed-Abschnitte",
+      sourceTitle: "Quelle",
+      sourceDesc: "Name unter jedem Artikel und RSS/Atom-URL.",
+      sourceNameLabel: "Quellenname",
+      sourceNamePlaceholder: "z. B. ZDNet",
+      sourceNameHint: "Unter jedem Artikel in der News-Spalte.",
+      urlLabel: "RSS/Atom-Feed-URL",
+      urlPlaceholder: "https://beispiel.de/feed/",
+      urlHint: "Muss mit http:// oder https:// beginnen.",
+      displayTitle: "Darstellung",
+      displayDesc: "Feed kategorisieren und Priorität festlegen.",
+      sortOrderLabel: "Anzeigereihenfolge",
+      sortOrderHint: "Kleiner = höhere Priorität.",
+      feedActiveLabel: "Aktiver Feed",
+      feedActiveHint: "Nur aktive Feeds werden aggregiert.",
+      noSource: "Keine Quelle",
+      addBtn: "Feed hinzufügen",
+      sections: {
+        source: {
+          label: "Quelle",
+          description: "Name und URL"
+        },
+        display: {
+          label: "Darstellung",
+          description: "Kategorie und Reihenfolge"
+        }
+      }
     },
     contractModuleOptionForm: {
-      eyebrow: "Vertragsoptionen", createTitle: "Neue Vertragsoption", editTitle: "{name} bearbeiten", editFallback: "die Option",
-      createSubtitle: "Option für Kundenvertragsdatensätze definieren.", editSubtitle: "Bezeichnung, Symbol oder Sichtbarkeit aktualisieren.",
-      sectionsAria: "Vertragsoption-Abschnitte", identityTitle: "Identität", identityDesc: "Bezeichnung sichtbar in der App. Technischer Schlüssel bleibt stabil.",
-      moduleKeyLabel: "Technischer Schlüssel", moduleKeyPlaceholder: "z. B. Support", moduleKeyHintCreate: "Optional. Leer lassen für Auto-Generierung.",
-      moduleKeyHintEdit: "Nach Erstellung nicht änderbar.", displayLabel: "Anzeigebezeichnung", displayLabelPlaceholder: "z. B. 24/7 Support",
-      presentationTitle: "Darstellung", presentationDesc: "Symbol und Reihenfolge auf Unternehmensdatensätzen.",
-      optionActiveLabel: "Aktive Option", optionActiveHint: "Ausgeblendete Option behält Daten, erscheint nicht mehr in der App.",
+      eyebrow: "Vertragsoptionen",
+      createTitle: "Neue Vertragsoption",
+      editTitle: "{name} bearbeiten",
+      editFallback: "die Option",
+      createSubtitle: "Option für Kundenvertragsdatensätze definieren.",
+      editSubtitle: "Bezeichnung, Symbol oder Sichtbarkeit aktualisieren.",
+      sectionsAria: "Vertragsoption-Abschnitte",
+      identityTitle: "Identität",
+      identityDesc: "Bezeichnung sichtbar in der App. Technischer Schlüssel bleibt stabil.",
+      moduleKeyLabel: "Technischer Schlüssel",
+      moduleKeyPlaceholder: "z. B. Support",
+      moduleKeyHintCreate: "Optional. Leer lassen für Auto-Generierung.",
+      moduleKeyHintEdit: "Nach Erstellung nicht änderbar.",
+      displayLabel: "Anzeigebezeichnung",
+      displayLabelPlaceholder: "z. B. 24/7 Support",
+      presentationTitle: "Darstellung",
+      presentationDesc: "Symbol und Reihenfolge auf Unternehmensdatensätzen.",
+      optionActiveLabel: "Aktive Option",
+      optionActiveHint: "Ausgeblendete Option behält Daten, erscheint nicht mehr in der App.",
       addBtn: "Option hinzufügen",
-      sections: { identity: { label: "Identität", description: "Schlüssel und Bezeichnung" }, presentation: { label: "Darstellung", description: "Symbol und Reihenfolge" } },
+      sections: {
+        identity: {
+          label: "Identität",
+          description: "Schlüssel und Bezeichnung"
+        },
+        presentation: {
+          label: "Darstellung",
+          description: "Symbol und Reihenfolge"
+        }
+      }
     },
     equipmentFamilyForm: {
-      createTitle: "Neue Gerätefamilie", editTitle: "{name} bearbeiten", editFallback: "die Familie",
-      subtitle: "Gerätetyp, Felder und Kartenanzeige konfigurieren.", identityTitle: "Familienidentität", identityDesc: "z. B. Beamer, Netzwerkdrucker…",
-      labelPlaceholder: "Beamer", familyKeyPlaceholder: "beamer", sortOrderLabel: "Anzeigereihenfolge", enabledLabel: "Aktiviert",
-      fieldsTitle: "Formularfelder", fieldsDesc: "Informationen für jedes Gerät dieser Familie.", noFields: "Keine Felder definiert.",
-      fieldLabelPlaceholder: "Feldbezeichnung", mapTitle: "Karte", mapDesc: "Sechseck-Familien auf der Infrastrukturkarte.",
-      displayModeLabel: "Anzeigemodus", positionQLabel: "Position Q (optional)", positionRLabel: "Position R (optional)",
-      fieldTypes: { text: "Text", textarea: "Langtext", date: "Datum", number: "Zahl", boolean: "Ja / Nein" },
-      displayModes: { hexagon: "Sechseck (Karte)", brick: "Seitenkachel" },
-      sections: { identity: { label: "Identität", description: "Name und Anzeige" }, fields: { label: "Felder", description: "Eingabeformular" }, map: { label: "Karte", description: "Sechseck und Position" } },
+      createTitle: "Neue Gerätefamilie",
+      editTitle: "{name} bearbeiten",
+      editFallback: "die Familie",
+      subtitle: "Gerätetyp, Felder und Kartenanzeige konfigurieren.",
+      identityTitle: "Familienidentität",
+      identityDesc: "z. B. Beamer, Netzwerkdrucker…",
+      labelPlaceholder: "Beamer",
+      familyKeyPlaceholder: "beamer",
+      sortOrderLabel: "Anzeigereihenfolge",
+      enabledLabel: "Aktiviert",
+      fieldsTitle: "Formularfelder",
+      fieldsDesc: "Informationen für jedes Gerät dieser Familie.",
+      noFields: "Keine Felder definiert.",
+      fieldLabelPlaceholder: "Feldbezeichnung",
+      mapTitle: "Karte",
+      mapDesc: "Sechseck-Familien auf der Infrastrukturkarte.",
+      displayModeLabel: "Anzeigemodus",
+      positionQLabel: "Position Q (optional)",
+      positionRLabel: "Position R (optional)",
+      fieldTypes: {
+        text: "Text",
+        textarea: "Langtext",
+        date: "Datum",
+        number: "Zahl",
+        boolean: "Ja / Nein"
+      },
+      displayModes: {
+        hexagon: "Sechseck (Karte)",
+        brick: "Seitenkachel"
+      },
+      sections: {
+        identity: {
+          label: "Identität",
+          description: "Name und Anzeige"
+        },
+        fields: {
+          label: "Felder",
+          description: "Eingabeformular"
+        },
+        map: {
+          label: "Karte",
+          description: "Sechseck und Position"
+        }
+      }
     },
     profileForm: {
-      eyebrow: "Zugriffsprofile", title: "Neues Profil", subtitle: "Abgeleitetes Profil mit konfigurierbaren Rechten.",
-      sectionsAria: "Profilabschnitte", generalTitle: "Informationen", generalDesc: "Technische Kennung ist permanent; Bezeichnung in der Admin.",
-      nameLabel: "Kennung", namePlaceholder: "agent", labelField: "Beschreibung", labelPlaceholder: "z. B. Standard-Technikerzugriff",
-      inheritanceTitle: "Rechtevererbung", inheritanceDesc: "Kindprofil erbt Rechte vom Elternprofil.", parentLabel: "Elternprofil",
-      noParent: "Keines · eigenständiges Profil", defaultRightsLabel: "Standardrechte", defaultRightsHint: "Neue Profile aktivieren Verträge und Kontakte standardmäßig.",
+      eyebrow: "Zugriffsprofile",
+      title: "Neues Profil",
+      subtitle: "Abgeleitetes Profil mit konfigurierbaren Rechten.",
+      sectionsAria: "Profilabschnitte",
+      generalTitle: "Informationen",
+      generalDesc: "Technische Kennung ist permanent; Bezeichnung in der Admin.",
+      nameLabel: "Kennung",
+      namePlaceholder: "agent",
+      labelField: "Beschreibung",
+      labelPlaceholder: "z. B. Standard-Technikerzugriff",
+      inheritanceTitle: "Rechtevererbung",
+      inheritanceDesc: "Kindprofil erbt Rechte vom Elternprofil.",
+      parentLabel: "Elternprofil",
+      noParent: "Keines · eigenständiges Profil",
+      defaultRightsLabel: "Standardrechte",
+      defaultRightsHint: "Neue Profile aktivieren Verträge und Kontakte standardmäßig.",
       createBtn: "Profil erstellen",
-      sections: { general: { label: "Allgemein", description: "Kennung und Bezeichnung" }, inheritance: { label: "Vererbung", description: "Elternprofil" } },
+      sections: {
+        general: {
+          label: "Allgemein",
+          description: "Kennung und Bezeichnung"
+        },
+        inheritance: {
+          label: "Vererbung",
+          description: "Elternprofil"
+        }
+      }
     },
     webhookForm: {
-      eyebrow: "Benachrichtigungs-Webhooks", createTitle: "Neuer Webhook", editTitle: "{name} bearbeiten", editFallback: "der Webhook",
-      createSubtitle: "Veritas mit Teams, Slack oder HTTP-Endpunkt verbinden.", editSubtitle: "Kanal, URL und Verfügbarkeit aktualisieren.",
-      sectionsAria: "Webhook-Abschnitte", typeTitle: "Kanaltyp", typeDesc: "Plattform für ausgehende Benachrichtigungen wählen.",
-      configTitle: "Konfiguration", configDesc: "Webhook benennen, URL eingeben und Verbindung testen.",
-      webhookActiveLabel: "Aktiver Webhook", webhookActiveHint: "Inaktive Webhooks erhalten keine Benachrichtigungen mehr.",
-      nameLabel: "Webhook-Name", namePlaceholder: "z. B. Teams L1", urlLabel: "Webhook-URL", urlPlaceholder: "https://...",
-      channelDetectedLabel: "Erkannter Kanal", createBtn: "Webhook erstellen",
-      sections: { type: { label: "Typ", description: "Zielkanal" }, config: { label: "Konfiguration", description: "Name, URL und Test" } },
+      eyebrow: "Benachrichtigungs-Webhooks",
+      createTitle: "Neuer Webhook",
+      editTitle: "{name} bearbeiten",
+      editFallback: "der Webhook",
+      createSubtitle: "Veritas mit Teams, Slack oder HTTP-Endpunkt verbinden.",
+      editSubtitle: "Kanal, URL und Verfügbarkeit aktualisieren.",
+      sectionsAria: "Webhook-Abschnitte",
+      typeTitle: "Kanaltyp",
+      typeDesc: "Plattform für ausgehende Benachrichtigungen wählen.",
+      configTitle: "Konfiguration",
+      configDesc: "Webhook benennen, URL eingeben und Verbindung testen.",
+      webhookActiveLabel: "Aktiver Webhook",
+      webhookActiveHint: "Inaktive Webhooks erhalten keine Benachrichtigungen mehr.",
+      nameLabel: "Webhook-Name",
+      namePlaceholder: "z. B. Teams L1",
+      urlLabel: "Webhook-URL",
+      urlPlaceholder: "https://...",
+      channelDetectedLabel: "Erkannter Kanal",
+      createBtn: "Webhook erstellen",
+      sections: {
+        type: {
+          label: "Typ",
+          description: "Zielkanal"
+        },
+        config: {
+          label: "Konfiguration",
+          description: "Name, URL und Test"
+        }
+      }
     },
     agentForm: {
-      eyebrow: "Agentenverwaltung", createTitle: "Neuer Agent", editTitle: "Agent bearbeiten",
+      eyebrow: "Agentenverwaltung",
+      createTitle: "Neuer Agent",
+      editTitle: "Agent bearbeiten",
       createSubtitle: "Agentenkonto mit Profil und Anmeldepasswort erstellen.",
-      editSubtitle: "Kontaktdaten, Profil, Sicherheit und MFA aktualisieren.", sectionsAria: "Agentenabschnitte",
-      identityTitle: "Identität", identityDescCreate: "Anmelde-E-Mail und optionaler Benutzername.",
+      editSubtitle: "Kontaktdaten, Profil, Sicherheit und MFA aktualisieren.",
+      sectionsAria: "Agentenabschnitte",
+      identityTitle: "Identität",
+      identityDescCreate: "Anmelde-E-Mail und optionaler Benutzername.",
       identityDescEdit: "E-Mail-Adresse und Benutzername des Agenten aktualisieren.",
-      emailLabel: "E-Mail-Adresse", emailPlaceholder: "beispiel@domain.de", usernameLabel: "Benutzername", usernamePlaceholder: "Optional",
-      accountActiveLabel: "Aktives Konto", securityTitle: "Sicherheit",
+      emailLabel: "E-Mail-Adresse",
+      emailPlaceholder: "beispiel@domain.de",
+      usernameLabel: "Benutzername",
+      usernamePlaceholder: "Optional",
+      accountActiveLabel: "Aktives Konto",
+      securityTitle: "Sicherheit",
       securityDescCreate: "Initiales Passwort festlegen (mindestens 6 Zeichen).",
       securityDescEdit: "Leer lassen um aktuelles Passwort zu behalten, oder neues eingeben (min. 6 Zeichen).",
-      passwordLabel: "Passwort", passwordPlaceholderCreate: "Mindestens 6 Zeichen", passwordPlaceholderEdit: "Leer lassen um nicht zu ändern",
-      passwordConfirmLabel: "Bestätigung", passwordConfirmPlaceholder: "Passwort wiederholen",
-      accessTitle: "Zugriffsprofil", accessDesc: "Profil bestimmt Rechte und sichtbare Module in Veritas.",
-      profileLabel: "Zugewiesenes Profil", mfaTitle: "MFA-Authentifizierung", mfaDesc: "Zwei-Faktor-Status für diesen Agenten.",
+      passwordLabel: "Passwort",
+      passwordPlaceholderCreate: "Mindestens 6 Zeichen",
+      passwordPlaceholderEdit: "Leer lassen um nicht zu ändern",
+      passwordConfirmLabel: "Bestätigung",
+      passwordConfirmPlaceholder: "Passwort wiederholen",
+      accessTitle: "Zugriffsprofil",
+      accessDesc: "Profil bestimmt Rechte und sichtbare Module in Veritas.",
+      profileLabel: "Zugewiesenes Profil",
+      mfaTitle: "MFA-Authentifizierung",
+      mfaDesc: "Zwei-Faktor-Status für diesen Agenten.",
       mfaHintEnabled: "Agent muss bei jeder Anmeldung einen TOTP-Code eingeben.",
-      mfaHintPending: "MFA-Einrichtung gestartet, aber noch nicht validiert.", mfaHintOff: "MFA ist für dieses Konto nicht aktiviert.",
-      releaseMfaBtn: "MFA zurücksetzen", footerNoEmail: "Keine E-Mail", footerNoProfile: "Kein Profil", footerInactive: "Inaktiv",
-      deleteTitle: "Diesen Agent löschen", createBtn: "Agent erstellen", creating: "Erstellung…", saving: "Speichern…",
+      mfaHintPending: "MFA-Einrichtung gestartet, aber noch nicht validiert.",
+      mfaHintOff: "MFA ist für dieses Konto nicht aktiviert.",
+      releaseMfaBtn: "MFA zurücksetzen",
+      footerNoEmail: "Keine E-Mail",
+      footerNoProfile: "Kein Profil",
+      footerInactive: "Inaktiv",
+      deleteTitle: "Diesen Agent löschen",
+      createBtn: "Agent erstellen",
+      creating: "Erstellung…",
+      saving: "Speichern…",
       sections: {
-        identity: { label: "Identität", description: "E-Mail und Name" },
-        security: { label: "Sicherheit", description: "Passwort" },
-        access: { label: "Zugriff", description: "Zugewiesenes Profil" },
-        mfa: { label: "MFA", description: "Authentifizierung" },
-      },
-    },
+        identity: {
+          label: "Identität",
+          description: "E-Mail und Name"
+        },
+        security: {
+          label: "Sicherheit",
+          description: "Passwort"
+        },
+        access: {
+          label: "Zugriff",
+          description: "Zugewiesenes Profil"
+        },
+        mfa: {
+          label: "MFA",
+          description: "Authentifizierung"
+        }
+      }
+    }
   },
   it: {
     techNewsFeedForm: {
-      eyebrow: "Notizie tech", createTitle: "Nuovo feed RSS", editTitle: "Modifica {name}", editFallback: "il feed",
-      createSubtitle: "Aggiungi una fonte RSS/Atom per la colonna notizie.", editSubtitle: "Aggiorna fonte, URL o priorità.",
-      sectionsAria: "Sezioni feed RSS", sourceTitle: "Fonte", sourceDesc: "Nome sotto ogni articolo e URL del feed RSS o Atom.",
-      sourceNameLabel: "Nome fonte", sourceNamePlaceholder: "Es. ZDNet", sourceNameHint: "Mostrato sotto ogni articolo.",
-      urlLabel: "URL feed RSS/Atom", urlPlaceholder: "https://esempio.it/feed/", urlHint: "Deve iniziare con http:// o https://",
-      displayTitle: "Visualizzazione", displayDesc: "Categorizza il feed e imposta la priorità.", sortOrderLabel: "Ordine di visualizzazione",
-      sortOrderHint: "Più basso = priorità maggiore.", feedActiveLabel: "Feed attivo", feedActiveHint: "Solo i feed attivi sono aggregati.",
-      noSource: "Senza fonte", addBtn: "Aggiungi feed",
-      sections: { source: { label: "Fonte", description: "Nome e URL" }, display: { label: "Visualizzazione", description: "Categoria e ordine" } },
+      eyebrow: "Notizie tech",
+      createTitle: "Nuovo feed RSS",
+      editTitle: "Modifica {name}",
+      editFallback: "il feed",
+      createSubtitle: "Aggiungi una fonte RSS/Atom per la colonna notizie.",
+      editSubtitle: "Aggiorna fonte, URL o priorità.",
+      sectionsAria: "Sezioni feed RSS",
+      sourceTitle: "Fonte",
+      sourceDesc: "Nome sotto ogni articolo e URL del feed RSS o Atom.",
+      sourceNameLabel: "Nome fonte",
+      sourceNamePlaceholder: "Es. ZDNet",
+      sourceNameHint: "Mostrato sotto ogni articolo.",
+      urlLabel: "URL feed RSS/Atom",
+      urlPlaceholder: "https://esempio.it/feed/",
+      urlHint: "Deve iniziare con http:// o https://",
+      displayTitle: "Visualizzazione",
+      displayDesc: "Categorizza il feed e imposta la priorità.",
+      sortOrderLabel: "Ordine di visualizzazione",
+      sortOrderHint: "Più basso = priorità maggiore.",
+      feedActiveLabel: "Feed attivo",
+      feedActiveHint: "Solo i feed attivi sono aggregati.",
+      noSource: "Senza fonte",
+      addBtn: "Aggiungi feed",
+      sections: {
+        source: {
+          label: "Fonte",
+          description: "Nome e URL"
+        },
+        display: {
+          label: "Visualizzazione",
+          description: "Categoria e ordine"
+        }
+      }
     },
     contractModuleOptionForm: {
-      eyebrow: "Opzioni contratto", createTitle: "Nuova opzione contratto", editTitle: "Modifica {name}", editFallback: "l'opzione",
-      createSubtitle: "Definisci un'opzione sulle schede contratto cliente.", editSubtitle: "Aggiorna etichetta, icona o visibilità.",
-      sectionsAria: "Sezioni opzione contratto", identityTitle: "Identità", identityDesc: "L'etichetta è visibile nell'app. La chiave tecnica resta stabile.",
-      moduleKeyLabel: "Chiave tecnica", moduleKeyPlaceholder: "Es. Support", moduleKeyHintCreate: "Opzionale. Lascia vuoto per generazione automatica.",
-      moduleKeyHintEdit: "Non modificabile dopo la creazione.", displayLabel: "Etichetta visualizzata", displayLabelPlaceholder: "Es. Supporto 24/7",
-      presentationTitle: "Presentazione", presentationDesc: "Personalizza icona e ordine sulle schede azienda.",
-      optionActiveLabel: "Opzione attiva", optionActiveHint: "Un'opzione nascosta conserva i dati ma non compare più nell'app.",
+      eyebrow: "Opzioni contratto",
+      createTitle: "Nuova opzione contratto",
+      editTitle: "Modifica {name}",
+      editFallback: "l'opzione",
+      createSubtitle: "Definisci un'opzione sulle schede contratto cliente.",
+      editSubtitle: "Aggiorna etichetta, icona o visibilità.",
+      sectionsAria: "Sezioni opzione contratto",
+      identityTitle: "Identità",
+      identityDesc: "L'etichetta è visibile nell'app. La chiave tecnica resta stabile.",
+      moduleKeyLabel: "Chiave tecnica",
+      moduleKeyPlaceholder: "Es. Support",
+      moduleKeyHintCreate: "Opzionale. Lascia vuoto per generazione automatica.",
+      moduleKeyHintEdit: "Non modificabile dopo la creazione.",
+      displayLabel: "Etichetta visualizzata",
+      displayLabelPlaceholder: "Es. Supporto 24/7",
+      presentationTitle: "Presentazione",
+      presentationDesc: "Personalizza icona e ordine sulle schede azienda.",
+      optionActiveLabel: "Opzione attiva",
+      optionActiveHint: "Un'opzione nascosta conserva i dati ma non compare più nell'app.",
       addBtn: "Aggiungi opzione",
-      sections: { identity: { label: "Identità", description: "Chiave ed etichetta" }, presentation: { label: "Presentazione", description: "Icona e ordine" } },
+      sections: {
+        identity: {
+          label: "Identità",
+          description: "Chiave ed etichetta"
+        },
+        presentation: {
+          label: "Presentazione",
+          description: "Icona e ordine"
+        }
+      }
     },
     equipmentFamilyForm: {
-      createTitle: "Nuova famiglia dispositivi", editTitle: "Modifica {name}", editFallback: "la famiglia",
-      subtitle: "Configura tipo, campi e visualizzazione sulla mappa.", identityTitle: "Identità famiglia", identityDesc: "Es. Proiettore, Stampante di rete…",
-      labelPlaceholder: "Proiettore", familyKeyPlaceholder: "proiettore", sortOrderLabel: "Ordine di visualizzazione", enabledLabel: "Attiva",
-      fieldsTitle: "Campi del modulo", fieldsDesc: "Informazioni per ogni dispositivo di questa famiglia.", noFields: "Nessun campo definito.",
-      fieldLabelPlaceholder: "Etichetta campo", mapTitle: "Mappa", mapDesc: "Famiglie esagono sulla mappa infrastruttura.",
-      displayModeLabel: "Modalità visualizzazione", positionQLabel: "Posizione Q (opzionale)", positionRLabel: "Posizione R (opzionale)",
-      fieldTypes: { text: "Testo", textarea: "Testo lungo", date: "Data", number: "Numero", boolean: "Sì / No" },
-      displayModes: { hexagon: "Esagono (mappa)", brick: "Mattone laterale" },
-      sections: { identity: { label: "Identità", description: "Nome e visualizzazione" }, fields: { label: "Campi", description: "Modulo di inserimento" }, map: { label: "Mappa", description: "Esagono e posizione" } },
+      createTitle: "Nuova famiglia dispositivi",
+      editTitle: "Modifica {name}",
+      editFallback: "la famiglia",
+      subtitle: "Configura tipo, campi e visualizzazione sulla mappa.",
+      identityTitle: "Identità famiglia",
+      identityDesc: "Es. Proiettore, Stampante di rete…",
+      labelPlaceholder: "Proiettore",
+      familyKeyPlaceholder: "proiettore",
+      sortOrderLabel: "Ordine di visualizzazione",
+      enabledLabel: "Attiva",
+      fieldsTitle: "Campi del modulo",
+      fieldsDesc: "Informazioni per ogni dispositivo di questa famiglia.",
+      noFields: "Nessun campo definito.",
+      fieldLabelPlaceholder: "Etichetta campo",
+      mapTitle: "Mappa",
+      mapDesc: "Famiglie esagono sulla mappa infrastruttura.",
+      displayModeLabel: "Modalità visualizzazione",
+      positionQLabel: "Posizione Q (opzionale)",
+      positionRLabel: "Posizione R (opzionale)",
+      fieldTypes: {
+        text: "Testo",
+        textarea: "Testo lungo",
+        date: "Data",
+        number: "Numero",
+        boolean: "Sì / No"
+      },
+      displayModes: {
+        hexagon: "Esagono (mappa)",
+        brick: "Mattone laterale"
+      },
+      sections: {
+        identity: {
+          label: "Identità",
+          description: "Nome e visualizzazione"
+        },
+        fields: {
+          label: "Campi",
+          description: "Modulo di inserimento"
+        },
+        map: {
+          label: "Mappa",
+          description: "Esagono e posizione"
+        }
+      }
     },
     profileForm: {
-      eyebrow: "Profili di accesso", title: "Nuovo profilo", subtitle: "Crea un profilo derivato con diritti e ereditarietà configurabili.",
-      sectionsAria: "Sezioni profilo", generalTitle: "Informazioni", generalDesc: "L'identificativo tecnico è permanente; l'etichetta è mostrata in admin.",
-      nameLabel: "Identificativo", namePlaceholder: "agent", labelField: "Descrizione", labelPlaceholder: "Es. Accesso standard tecnico",
-      inheritanceTitle: "Ereditarietà diritti", inheritanceDesc: "Un profilo figlio eredita i diritti dal profilo padre.", parentLabel: "Profilo padre",
-      noParent: "Nessuno · profilo autonomo", defaultRightsLabel: "Diritti predefiniti", defaultRightsHint: "I nuovi profili attivano contratti e contatti per impostazione predefinita.",
+      eyebrow: "Profili di accesso",
+      title: "Nuovo profilo",
+      subtitle: "Crea un profilo derivato con diritti e ereditarietà configurabili.",
+      sectionsAria: "Sezioni profilo",
+      generalTitle: "Informazioni",
+      generalDesc: "L'identificativo tecnico è permanente; l'etichetta è mostrata in admin.",
+      nameLabel: "Identificativo",
+      namePlaceholder: "agent",
+      labelField: "Descrizione",
+      labelPlaceholder: "Es. Accesso standard tecnico",
+      inheritanceTitle: "Ereditarietà diritti",
+      inheritanceDesc: "Un profilo figlio eredita i diritti dal profilo padre.",
+      parentLabel: "Profilo padre",
+      noParent: "Nessuno · profilo autonomo",
+      defaultRightsLabel: "Diritti predefiniti",
+      defaultRightsHint: "I nuovi profili attivano contratti e contatti per impostazione predefinita.",
       createBtn: "Crea profilo",
-      sections: { general: { label: "Generale", description: "Identificativo ed etichetta" }, inheritance: { label: "Ereditarietà", description: "Profilo padre" } },
+      sections: {
+        general: {
+          label: "Generale",
+          description: "Identificativo ed etichetta"
+        },
+        inheritance: {
+          label: "Ereditarietà",
+          description: "Profilo padre"
+        }
+      }
     },
     webhookForm: {
-      eyebrow: "Webhook notifiche", createTitle: "Nuovo webhook", editTitle: "Modifica {name}", editFallback: "il webhook",
-      createSubtitle: "Collega Veritas a Teams, Slack o endpoint HTTP.", editSubtitle: "Aggiorna canale, URL e disponibilità.",
-      sectionsAria: "Sezioni webhook", typeTitle: "Tipo canale", typeDesc: "Piattaforma che riceverà le notifiche in uscita.",
-      configTitle: "Configurazione", configDesc: "Nomina il webhook, inserisci l'URL e testa la connessione.",
-      webhookActiveLabel: "Webhook attivo", webhookActiveHint: "I webhook inattivi non ricevono più notifiche.",
-      nameLabel: "Nome webhook", namePlaceholder: "Es. Teams L1", urlLabel: "URL webhook", urlPlaceholder: "https://...",
-      channelDetectedLabel: "Canale rilevato", createBtn: "Crea webhook",
-      sections: { type: { label: "Tipo", description: "Canale di destinazione" }, config: { label: "Configurazione", description: "Nome, URL e test" } },
+      eyebrow: "Webhook notifiche",
+      createTitle: "Nuovo webhook",
+      editTitle: "Modifica {name}",
+      editFallback: "il webhook",
+      createSubtitle: "Collega Veritas a Teams, Slack o endpoint HTTP.",
+      editSubtitle: "Aggiorna canale, URL e disponibilità.",
+      sectionsAria: "Sezioni webhook",
+      typeTitle: "Tipo canale",
+      typeDesc: "Piattaforma che riceverà le notifiche in uscita.",
+      configTitle: "Configurazione",
+      configDesc: "Nomina il webhook, inserisci l'URL e testa la connessione.",
+      webhookActiveLabel: "Webhook attivo",
+      webhookActiveHint: "I webhook inattivi non ricevono più notifiche.",
+      nameLabel: "Nome webhook",
+      namePlaceholder: "Es. Teams L1",
+      urlLabel: "URL webhook",
+      urlPlaceholder: "https://...",
+      channelDetectedLabel: "Canale rilevato",
+      createBtn: "Crea webhook",
+      sections: {
+        type: {
+          label: "Tipo",
+          description: "Canale di destinazione"
+        },
+        config: {
+          label: "Configurazione",
+          description: "Nome, URL e test"
+        }
+      }
     },
     agentForm: {
-      eyebrow: "Gestione agenti", createTitle: "Nuovo agente", editTitle: "Modifica agente",
+      eyebrow: "Gestione agenti",
+      createTitle: "Nuovo agente",
+      editTitle: "Modifica agente",
       createSubtitle: "Crea un account agente con profilo e password di accesso.",
-      editSubtitle: "Aggiorna contatti, profilo, sicurezza e MFA.", sectionsAria: "Sezioni agente",
-      identityTitle: "Identità", identityDescCreate: "Inserisci l'email di accesso e un nome utente opzionale.",
+      editSubtitle: "Aggiorna contatti, profilo, sicurezza e MFA.",
+      sectionsAria: "Sezioni agente",
+      identityTitle: "Identità",
+      identityDescCreate: "Inserisci l'email di accesso e un nome utente opzionale.",
       identityDescEdit: "Aggiorna email e nome utente dell'agente.",
-      emailLabel: "Indirizzo email", emailPlaceholder: "esempio@dominio.it", usernameLabel: "Nome utente", usernamePlaceholder: "Opzionale",
-      accountActiveLabel: "Account attivo", securityTitle: "Sicurezza",
+      emailLabel: "Indirizzo email",
+      emailPlaceholder: "esempio@dominio.it",
+      usernameLabel: "Nome utente",
+      usernamePlaceholder: "Opzionale",
+      accountActiveLabel: "Account attivo",
+      securityTitle: "Sicurezza",
       securityDescCreate: "Imposta una password iniziale (minimo 6 caratteri).",
       securityDescEdit: "Lascia vuoto per mantenere la password attuale, o inseriscine una nuova (min. 6 caratteri).",
-      passwordLabel: "Password", passwordPlaceholderCreate: "Minimo 6 caratteri", passwordPlaceholderEdit: "Lascia vuoto per non cambiare",
-      passwordConfirmLabel: "Conferma", passwordConfirmPlaceholder: "Ripeti la password",
-      accessTitle: "Profilo di accesso", accessDesc: "Il profilo determina diritti e moduli visibili in Veritas.",
-      profileLabel: "Profilo assegnato", mfaTitle: "Autenticazione MFA", mfaDesc: "Stato autenticazione a due fattori per questo agente.",
+      passwordLabel: "Password",
+      passwordPlaceholderCreate: "Minimo 6 caratteri",
+      passwordPlaceholderEdit: "Lascia vuoto per non cambiare",
+      passwordConfirmLabel: "Conferma",
+      passwordConfirmPlaceholder: "Ripeti la password",
+      accessTitle: "Profilo di accesso",
+      accessDesc: "Il profilo determina diritti e moduli visibili in Veritas.",
+      profileLabel: "Profilo assegnato",
+      mfaTitle: "Autenticazione MFA",
+      mfaDesc: "Stato autenticazione a due fattori per questo agente.",
       mfaHintEnabled: "L'agente deve inserire un codice TOTP a ogni accesso.",
-      mfaHintPending: "Configurazione MFA avviata ma non ancora validata.", mfaHintOff: "MFA non attiva su questo account.",
-      releaseMfaBtn: "Reimposta MFA", footerNoEmail: "Senza email", footerNoProfile: "Senza profilo", footerInactive: "Inattivo",
-      deleteTitle: "Elimina questo agente", createBtn: "Crea agente", creating: "Creazione…", saving: "Salvataggio…",
+      mfaHintPending: "Configurazione MFA avviata ma non ancora validata.",
+      mfaHintOff: "MFA non attiva su questo account.",
+      releaseMfaBtn: "Reimposta MFA",
+      footerNoEmail: "Senza email",
+      footerNoProfile: "Senza profilo",
+      footerInactive: "Inattivo",
+      deleteTitle: "Elimina questo agente",
+      createBtn: "Crea agente",
+      creating: "Creazione…",
+      saving: "Salvataggio…",
       sections: {
-        identity: { label: "Identità", description: "Email e nome" },
-        security: { label: "Sicurezza", description: "Password" },
-        access: { label: "Accesso", description: "Profilo assegnato" },
-        mfa: { label: "MFA", description: "Autenticazione" },
-      },
-    },
+        identity: {
+          label: "Identità",
+          description: "Email e nome"
+        },
+        security: {
+          label: "Sicurezza",
+          description: "Password"
+        },
+        access: {
+          label: "Accesso",
+          description: "Profilo assegnato"
+        },
+        mfa: {
+          label: "MFA",
+          description: "Autenticazione"
+        }
+      }
+    }
   },
   es: {
     techNewsFeedForm: {
-      eyebrow: "Noticias tech", createTitle: "Nuevo feed RSS", editTitle: "Modificar {name}", editFallback: "el feed",
-      createSubtitle: "Añada una fuente RSS/Atom para la columna de noticias.", editSubtitle: "Actualice fuente, URL o prioridad.",
-      sectionsAria: "Secciones del feed RSS", sourceTitle: "Fuente", sourceDesc: "Nombre bajo cada artículo y URL del feed RSS o Atom.",
-      sourceNameLabel: "Nombre de la fuente", sourceNamePlaceholder: "Ej. ZDNet", sourceNameHint: "Mostrado bajo cada artículo.",
-      urlLabel: "URL del feed RSS/Atom", urlPlaceholder: "https://ejemplo.com/feed/", urlHint: "Debe empezar por http:// o https://",
-      displayTitle: "Visualización", displayDesc: "Clasifique el feed y defina su prioridad.", sortOrderLabel: "Orden de visualización",
-      sortOrderHint: "Menor = mayor prioridad.", feedActiveLabel: "Feed activo", feedActiveHint: "Solo se agregan los feeds activos.",
-      noSource: "Sin fuente", addBtn: "Añadir feed",
-      sections: { source: { label: "Fuente", description: "Nombre y URL" }, display: { label: "Visualización", description: "Categoría y orden" } },
+      eyebrow: "Noticias tech",
+      createTitle: "Nuevo feed RSS",
+      editTitle: "Modificar {name}",
+      editFallback: "el feed",
+      createSubtitle: "Añada una fuente RSS/Atom para la columna de noticias.",
+      editSubtitle: "Actualice fuente, URL o prioridad.",
+      sectionsAria: "Secciones del feed RSS",
+      sourceTitle: "Fuente",
+      sourceDesc: "Nombre bajo cada artículo y URL del feed RSS o Atom.",
+      sourceNameLabel: "Nombre de la fuente",
+      sourceNamePlaceholder: "Ej. ZDNet",
+      sourceNameHint: "Mostrado bajo cada artículo.",
+      urlLabel: "URL del feed RSS/Atom",
+      urlPlaceholder: "https://ejemplo.com/feed/",
+      urlHint: "Debe empezar por http:// o https://",
+      displayTitle: "Visualización",
+      displayDesc: "Clasifique el feed y defina su prioridad.",
+      sortOrderLabel: "Orden de visualización",
+      sortOrderHint: "Menor = mayor prioridad.",
+      feedActiveLabel: "Feed activo",
+      feedActiveHint: "Solo se agregan los feeds activos.",
+      noSource: "Sin fuente",
+      addBtn: "Añadir feed",
+      sections: {
+        source: {
+          label: "Fuente",
+          description: "Nombre y URL"
+        },
+        display: {
+          label: "Visualización",
+          description: "Categoría y orden"
+        }
+      }
     },
     contractModuleOptionForm: {
-      eyebrow: "Opciones de contrato", createTitle: "Nueva opción de contrato", editTitle: "Modificar {name}", editFallback: "la opción",
-      createSubtitle: "Defina una opción en las fichas de contrato cliente.", editSubtitle: "Actualice etiqueta, icono o visibilidad.",
-      sectionsAria: "Secciones de la opción", identityTitle: "Identidad", identityDesc: "La etiqueta es visible en la app. La clave técnica permanece estable.",
-      moduleKeyLabel: "Clave técnica", moduleKeyPlaceholder: "Ej. Support", moduleKeyHintCreate: "Opcional. Deje vacío para generación automática.",
-      moduleKeyHintEdit: "No modificable tras la creación.", displayLabel: "Etiqueta mostrada", displayLabelPlaceholder: "Ej. Soporte 24/7",
-      presentationTitle: "Presentación", presentationDesc: "Personalice icono y orden en fichas de empresa.",
-      optionActiveLabel: "Opción activa", optionActiveHint: "Una opción oculta conserva datos pero ya no aparece en la app.",
+      eyebrow: "Opciones de contrato",
+      createTitle: "Nueva opción de contrato",
+      editTitle: "Modificar {name}",
+      editFallback: "la opción",
+      createSubtitle: "Defina una opción en las fichas de contrato cliente.",
+      editSubtitle: "Actualice etiqueta, icono o visibilidad.",
+      sectionsAria: "Secciones de la opción",
+      identityTitle: "Identidad",
+      identityDesc: "La etiqueta es visible en la app. La clave técnica permanece estable.",
+      moduleKeyLabel: "Clave técnica",
+      moduleKeyPlaceholder: "Ej. Support",
+      moduleKeyHintCreate: "Opcional. Deje vacío para generación automática.",
+      moduleKeyHintEdit: "No modificable tras la creación.",
+      displayLabel: "Etiqueta mostrada",
+      displayLabelPlaceholder: "Ej. Soporte 24/7",
+      presentationTitle: "Presentación",
+      presentationDesc: "Personalice icono y orden en fichas de empresa.",
+      optionActiveLabel: "Opción activa",
+      optionActiveHint: "Una opción oculta conserva datos pero ya no aparece en la app.",
       addBtn: "Añadir opción",
-      sections: { identity: { label: "Identidad", description: "Clave y etiqueta" }, presentation: { label: "Presentación", description: "Icono y orden" } },
+      sections: {
+        identity: {
+          label: "Identidad",
+          description: "Clave y etiqueta"
+        },
+        presentation: {
+          label: "Presentación",
+          description: "Icono y orden"
+        }
+      }
     },
     equipmentFamilyForm: {
-      createTitle: "Nueva familia de equipos", editTitle: "Modificar {name}", editFallback: "la familia",
-      subtitle: "Configure tipo, campos y visualización en el mapa.", identityTitle: "Identidad de la familia", identityDesc: "Ej. Proyector, Impresora de red…",
-      labelPlaceholder: "Proyector", familyKeyPlaceholder: "proyector", sortOrderLabel: "Orden de visualización", enabledLabel: "Activada",
-      fieldsTitle: "Campos del formulario", fieldsDesc: "Información para cada equipo de esta familia.", noFields: "Ningún campo definido.",
-      fieldLabelPlaceholder: "Etiqueta del campo", mapTitle: "Mapa", mapDesc: "Familias hexágono en el mapa de infraestructura.",
-      displayModeLabel: "Modo de visualización", positionQLabel: "Posición Q (opcional)", positionRLabel: "Posición R (opcional)",
-      fieldTypes: { text: "Texto", textarea: "Texto largo", date: "Fecha", number: "Número", boolean: "Sí / No" },
-      displayModes: { hexagon: "Hexágono (mapa)", brick: "Ladrillo lateral" },
-      sections: { identity: { label: "Identidad", description: "Nombre y visualización" }, fields: { label: "Campos", description: "Formulario" }, map: { label: "Mapa", description: "Hexágono y posición" } },
+      createTitle: "Nueva familia de equipos",
+      editTitle: "Modificar {name}",
+      editFallback: "la familia",
+      subtitle: "Configure tipo, campos y visualización en el mapa.",
+      identityTitle: "Identidad de la familia",
+      identityDesc: "Ej. Proyector, Impresora de red…",
+      labelPlaceholder: "Proyector",
+      familyKeyPlaceholder: "proyector",
+      sortOrderLabel: "Orden de visualización",
+      enabledLabel: "Activada",
+      fieldsTitle: "Campos del formulario",
+      fieldsDesc: "Información para cada equipo de esta familia.",
+      noFields: "Ningún campo definido.",
+      fieldLabelPlaceholder: "Etiqueta del campo",
+      mapTitle: "Mapa",
+      mapDesc: "Familias hexágono en el mapa de infraestructura.",
+      displayModeLabel: "Modo de visualización",
+      positionQLabel: "Posición Q (opcional)",
+      positionRLabel: "Posición R (opcional)",
+      fieldTypes: {
+        text: "Texto",
+        textarea: "Texto largo",
+        date: "Fecha",
+        number: "Número",
+        boolean: "Sí / No"
+      },
+      displayModes: {
+        hexagon: "Hexágono (mapa)",
+        brick: "Ladrillo lateral"
+      },
+      sections: {
+        identity: {
+          label: "Identidad",
+          description: "Nombre y visualización"
+        },
+        fields: {
+          label: "Campos",
+          description: "Formulario"
+        },
+        map: {
+          label: "Mapa",
+          description: "Hexágono y posición"
+        }
+      }
     },
     profileForm: {
-      eyebrow: "Perfiles de acceso", title: "Nuevo perfil", subtitle: "Cree un perfil derivado con derechos y herencia configurables.",
-      sectionsAria: "Secciones del perfil", generalTitle: "Información", generalDesc: "El identificador técnico es permanente; la etiqueta se muestra en admin.",
-      nameLabel: "Identificador", namePlaceholder: "agent", labelField: "Descripción", labelPlaceholder: "Ej. Acceso estándar técnico",
-      inheritanceTitle: "Herencia de derechos", inheritanceDesc: "Un perfil hijo hereda derechos del perfil padre.", parentLabel: "Perfil padre",
-      noParent: "Ninguno · perfil autónomo", defaultRightsLabel: "Derechos predeterminados", defaultRightsHint: "Los nuevos perfiles activan contratos y contactos por defecto.",
+      eyebrow: "Perfiles de acceso",
+      title: "Nuevo perfil",
+      subtitle: "Cree un perfil derivado con derechos y herencia configurables.",
+      sectionsAria: "Secciones del perfil",
+      generalTitle: "Información",
+      generalDesc: "El identificador técnico es permanente; la etiqueta se muestra en admin.",
+      nameLabel: "Identificador",
+      namePlaceholder: "agent",
+      labelField: "Descripción",
+      labelPlaceholder: "Ej. Acceso estándar técnico",
+      inheritanceTitle: "Herencia de derechos",
+      inheritanceDesc: "Un perfil hijo hereda derechos del perfil padre.",
+      parentLabel: "Perfil padre",
+      noParent: "Ninguno · perfil autónomo",
+      defaultRightsLabel: "Derechos predeterminados",
+      defaultRightsHint: "Los nuevos perfiles activan contratos y contactos por defecto.",
       createBtn: "Crear perfil",
-      sections: { general: { label: "General", description: "Identificador y etiqueta" }, inheritance: { label: "Herencia", description: "Perfil padre" } },
+      sections: {
+        general: {
+          label: "General",
+          description: "Identificador y etiqueta"
+        },
+        inheritance: {
+          label: "Herencia",
+          description: "Perfil padre"
+        }
+      }
     },
     webhookForm: {
-      eyebrow: "Webhooks de notificaciones", createTitle: "Nuevo webhook", editTitle: "Modificar {name}", editFallback: "el webhook",
-      createSubtitle: "Conecte Veritas a Teams, Slack o un endpoint HTTP.", editSubtitle: "Actualice canal, URL y disponibilidad.",
-      sectionsAria: "Secciones del webhook", typeTitle: "Tipo de canal", typeDesc: "Plataforma que recibirá las notificaciones salientes.",
-      configTitle: "Configuración", configDesc: "Nombre, URL y prueba de conexión antes de guardar.",
-      webhookActiveLabel: "Webhook activo", webhookActiveHint: "Los webhooks inactivos ya no reciben notificaciones.",
-      nameLabel: "Nombre del webhook", namePlaceholder: "Ej. Teams L1", urlLabel: "URL del webhook", urlPlaceholder: "https://...",
-      channelDetectedLabel: "Canal detectado", createBtn: "Crear webhook",
-      sections: { type: { label: "Tipo", description: "Canal destino" }, config: { label: "Configuración", description: "Nombre, URL y prueba" } },
+      eyebrow: "Webhooks de notificaciones",
+      createTitle: "Nuevo webhook",
+      editTitle: "Modificar {name}",
+      editFallback: "el webhook",
+      createSubtitle: "Conecte Veritas a Teams, Slack o un endpoint HTTP.",
+      editSubtitle: "Actualice canal, URL y disponibilidad.",
+      sectionsAria: "Secciones del webhook",
+      typeTitle: "Tipo de canal",
+      typeDesc: "Plataforma que recibirá las notificaciones salientes.",
+      configTitle: "Configuración",
+      configDesc: "Nombre, URL y prueba de conexión antes de guardar.",
+      webhookActiveLabel: "Webhook activo",
+      webhookActiveHint: "Los webhooks inactivos ya no reciben notificaciones.",
+      nameLabel: "Nombre del webhook",
+      namePlaceholder: "Ej. Teams L1",
+      urlLabel: "URL del webhook",
+      urlPlaceholder: "https://...",
+      channelDetectedLabel: "Canal detectado",
+      createBtn: "Crear webhook",
+      sections: {
+        type: {
+          label: "Tipo",
+          description: "Canal destino"
+        },
+        config: {
+          label: "Configuración",
+          description: "Nombre, URL y prueba"
+        }
+      }
     },
     agentForm: {
-      eyebrow: "Gestión de agentes", createTitle: "Nuevo agente", editTitle: "Modificar agente",
+      eyebrow: "Gestión de agentes",
+      createTitle: "Nuevo agente",
+      editTitle: "Modificar agente",
       createSubtitle: "Cree una cuenta de agente con perfil y contraseña de acceso.",
-      editSubtitle: "Actualice datos, perfil, seguridad y MFA.", sectionsAria: "Secciones del agente",
-      identityTitle: "Identidad", identityDescCreate: "Introduzca el email de acceso y un nombre de usuario opcional.",
+      editSubtitle: "Actualice datos, perfil, seguridad y MFA.",
+      sectionsAria: "Secciones del agente",
+      identityTitle: "Identidad",
+      identityDescCreate: "Introduzca el email de acceso y un nombre de usuario opcional.",
       identityDescEdit: "Actualice el email y nombre de usuario del agente.",
-      emailLabel: "Dirección de email", emailPlaceholder: "ejemplo@dominio.es", usernameLabel: "Nombre de usuario", usernamePlaceholder: "Opcional",
-      accountActiveLabel: "Cuenta activa", securityTitle: "Seguridad",
+      emailLabel: "Dirección de email",
+      emailPlaceholder: "ejemplo@dominio.es",
+      usernameLabel: "Nombre de usuario",
+      usernamePlaceholder: "Opcional",
+      accountActiveLabel: "Cuenta activa",
+      securityTitle: "Seguridad",
       securityDescCreate: "Defina una contraseña inicial (mínimo 6 caracteres).",
       securityDescEdit: "Deje vacío para conservar la contraseña actual, o introduzca una nueva (mín. 6 caracteres).",
-      passwordLabel: "Contraseña", passwordPlaceholderCreate: "Mínimo 6 caracteres", passwordPlaceholderEdit: "Dejar vacío para no cambiar",
-      passwordConfirmLabel: "Confirmación", passwordConfirmPlaceholder: "Repita la contraseña",
-      accessTitle: "Perfil de acceso", accessDesc: "El perfil determina derechos y módulos visibles en Veritas.",
-      profileLabel: "Perfil asignado", mfaTitle: "Autenticación MFA", mfaDesc: "Estado de autenticación en dos pasos para este agente.",
+      passwordLabel: "Contraseña",
+      passwordPlaceholderCreate: "Mínimo 6 caracteres",
+      passwordPlaceholderEdit: "Dejar vacío para no cambiar",
+      passwordConfirmLabel: "Confirmación",
+      passwordConfirmPlaceholder: "Repita la contraseña",
+      accessTitle: "Perfil de acceso",
+      accessDesc: "El perfil determina derechos y módulos visibles en Veritas.",
+      profileLabel: "Perfil asignado",
+      mfaTitle: "Autenticación MFA",
+      mfaDesc: "Estado de autenticación en dos pasos para este agente.",
       mfaHintEnabled: "El agente debe introducir un código TOTP en cada conexión.",
-      mfaHintPending: "Configuración MFA iniciada pero aún no validada.", mfaHintOff: "MFA no activa en esta cuenta.",
-      releaseMfaBtn: "Restablecer MFA", footerNoEmail: "Sin email", footerNoProfile: "Sin perfil", footerInactive: "Inactivo",
-      deleteTitle: "Eliminar este agente", createBtn: "Crear agente", creating: "Creación…", saving: "Guardando…",
+      mfaHintPending: "Configuración MFA iniciada pero aún no validada.",
+      mfaHintOff: "MFA no activa en esta cuenta.",
+      releaseMfaBtn: "Restablecer MFA",
+      footerNoEmail: "Sin email",
+      footerNoProfile: "Sin perfil",
+      footerInactive: "Inactivo",
+      deleteTitle: "Eliminar este agente",
+      createBtn: "Crear agente",
+      creating: "Creación…",
+      saving: "Guardando…",
       sections: {
-        identity: { label: "Identidad", description: "Email y nombre" },
-        security: { label: "Seguridad", description: "Contraseña" },
-        access: { label: "Acceso", description: "Perfil asignado" },
-        mfa: { label: "MFA", description: "Autenticación" },
-      },
-    },
-  },
+        identity: {
+          label: "Identidad",
+          description: "Email y nombre"
+        },
+        security: {
+          label: "Seguridad",
+          description: "Contraseña"
+        },
+        access: {
+          label: "Acceso",
+          description: "Perfil asignado"
+        },
+        mfa: {
+          label: "MFA",
+          description: "Autenticación"
+        }
+      }
+    }
+  }
 };
-
 const getFormModalsRoot = createLocaleGetter(FORM_MODALS);
-
 export function getAdminFormModalCopy(locale, modalKey) {
   const root = getFormModalsRoot(locale);
   return root[modalKey] || {};
 }
-
 function buildFormSections(copy, sectionIds, icons) {
-  return sectionIds.map((id) => ({
+  return sectionIds.map(id => ({
     id,
     label: copy.sections?.[id]?.label || id,
     description: copy.sections?.[id]?.description || "",
-    icon: icons[id] || "mdi:information-outline",
+    icon: icons[id] || "mdi:information-outline"
   }));
 }
-
 export function getTechNewsFeedFormSections(locale) {
   const copy = getAdminFormModalCopy(locale, "techNewsFeedForm");
   return buildFormSections(copy, ["source", "display"], {
     source: "mdi:rss",
-    display: "mdi:tune-variant",
+    display: "mdi:tune-variant"
   });
 }
-
 export function getContractModuleOptionFormSections(locale) {
   const copy = getAdminFormModalCopy(locale, "contractModuleOptionForm");
   return buildFormSections(copy, ["identity", "presentation"], {
     identity: "mdi:identifier",
-    presentation: "mdi:palette-outline",
+    presentation: "mdi:palette-outline"
   });
 }
-
 export function getEquipmentFamilyFormSections(locale) {
   const copy = getAdminFormModalCopy(locale, "equipmentFamilyForm");
   return buildFormSections(copy, ["identity", "fields", "map"], {
     identity: "mdi:identifier",
     fields: "mdi:form-select",
-    map: "mdi:hexagon-outline",
+    map: "mdi:hexagon-outline"
   });
 }
-
 export function getProfileFormSections(locale) {
   const copy = getAdminFormModalCopy(locale, "profileForm");
   return buildFormSections(copy, ["general", "inheritance"], {
     general: "mdi:information-outline",
-    inheritance: "mdi:source-branch",
+    inheritance: "mdi:source-branch"
   });
 }
-
 export function getWebhookFormSections(locale) {
   const copy = getAdminFormModalCopy(locale, "webhookForm");
   return buildFormSections(copy, ["type", "config"], {
     type: "mdi:lan-connect",
-    config: "mdi:cog-outline",
+    config: "mdi:cog-outline"
   });
 }
-
 export function getAgentFormSections(locale, isEdit = false) {
   const copy = getAdminFormModalCopy(locale, "agentForm");
-  const sectionIds = isEdit
-    ? ["identity", "security", "access", "mfa"]
-    : ["identity", "security", "access"];
+  const sectionIds = isEdit ? ["identity", "security", "access", "mfa"] : ["identity", "security", "access"];
   const icons = {
     identity: "mdi:card-account-details-outline",
     security: "mdi:lock-outline",
     access: "mdi:shield-account-outline",
-    mfa: "mdi:shield-key-outline",
+    mfa: "mdi:shield-key-outline"
   };
   return buildFormSections(copy, sectionIds, icons);
 }
-
 export function getEquipmentFieldTypes(locale) {
   const types = getAdminFormModalCopy(locale, "equipmentFamilyForm").fieldTypes || {};
-  return ["text", "textarea", "date", "number", "boolean"].map((value) => ({
+  return ["text", "textarea", "date", "number", "boolean"].map(value => ({
     value,
-    label: types[value] || value,
+    label: types[value] || value
   }));
 }
-
 export function getEquipmentDisplayModes(locale) {
   const modes = getAdminFormModalCopy(locale, "equipmentFamilyForm").displayModes || {};
-  return ["hexagon", "brick"].map((value) => ({
+  return ["hexagon", "brick"].map(value => ({
     value,
-    label: modes[value] || value,
+    label: modes[value] || value
   }));
 }
-
 export { interpolate, getFormModalsRoot };

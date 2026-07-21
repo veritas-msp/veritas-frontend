@@ -1,20 +1,8 @@
 import { createLocaleGetter, interpolate } from "../../i18n/translate";
-import {
-  COLLECTOR_FORM_SECTIONS,
-  COLLECTOR_PROVIDER_PRESETS,
-} from "./collectorConstants";
-import {
-  INGESTION_RULE_FORM_SECTIONS,
-  RULE_ACTION_OPTIONS,
-} from "./ingestionRuleConstants";
-import {
-  MAIL_CRITERION_FIELD_OPTIONS,
-  MAIL_CRITERION_OPERATOR_OPTIONS,
-  normalizeExclusionFilterRoot,
-  normalizeIngestionAction,
-} from "../../utils/mailIngestionRules";
+import { COLLECTOR_FORM_SECTIONS, COLLECTOR_PROVIDER_PRESETS } from "./collectorConstants";
+import { INGESTION_RULE_FORM_SECTIONS, RULE_ACTION_OPTIONS } from "./ingestionRuleConstants";
+import { MAIL_CRITERION_FIELD_OPTIONS, MAIL_CRITERION_OPERATOR_OPTIONS, normalizeExclusionFilterRoot, normalizeIngestionAction } from "../../utils/mailIngestionRules";
 import { ORPHAN_REPLY_BEHAVIOR_OPTIONS } from "../../utils/mailCollectSettingsConstants";
-
 const ADMIN_MAIL_COLLECT_COPY = {
   "fr": {
     "tabs": {
@@ -2422,104 +2410,80 @@ const ADMIN_MAIL_COLLECT_COPY = {
     }
   }
 };
-
 export const getAdminMailCollectCopy = createLocaleGetter(ADMIN_MAIL_COLLECT_COPY);
-
 export function getLocalizedCollectorProviders(copy) {
-  return COLLECTOR_PROVIDER_PRESETS.map((provider) => ({
+  return COLLECTOR_PROVIDER_PRESETS.map(provider => ({
     ...provider,
     label: copy.providers[provider.key]?.label ?? provider.label,
     hint: copy.providers[provider.key]?.hint ?? provider.hint,
     connectionTitle: copy.providers[provider.key]?.connectionTitle ?? provider.connectionTitle,
-    connectionDescription:
-      copy.providers[provider.key]?.connectionDescription ?? provider.connectionDescription,
+    connectionDescription: copy.providers[provider.key]?.connectionDescription ?? provider.connectionDescription
   }));
 }
-
 export function getLocalizedCollectorFormSections(copy) {
-  return COLLECTOR_FORM_SECTIONS.map((section) => ({
+  return COLLECTOR_FORM_SECTIONS.map(section => ({
     ...section,
     label: copy.collectorFormSections[section.id]?.label ?? section.label,
-    description: copy.collectorFormSections[section.id]?.description ?? section.description,
+    description: copy.collectorFormSections[section.id]?.description ?? section.description
   }));
 }
-
 export function getLocalizedIngestionRuleFormSections(copy) {
-  return INGESTION_RULE_FORM_SECTIONS.map((section) => ({
+  return INGESTION_RULE_FORM_SECTIONS.map(section => ({
     ...section,
     label: copy.ingestionRuleFormSections[section.id]?.label ?? section.label,
-    description: copy.ingestionRuleFormSections[section.id]?.description ?? section.description,
+    description: copy.ingestionRuleFormSections[section.id]?.description ?? section.description
   }));
 }
-
 export function getLocalizedRuleActionOptions(copy) {
-  return RULE_ACTION_OPTIONS.map((option) => ({
+  return RULE_ACTION_OPTIONS.map(option => ({
     ...option,
-    label: copy.ruleActions[normalizeIngestionAction(option.value)]?.label ?? option.label,
+    label: copy.ruleActions[normalizeIngestionAction(option.value)]?.label ?? option.label
   }));
 }
-
 export function getRuleActionLabel(action, copy) {
   const key = normalizeIngestionAction(action);
   return copy.ruleActions[key]?.label ?? action;
 }
-
 export function getLocalizedMailCriterionFields(copy) {
-  return MAIL_CRITERION_FIELD_OPTIONS.map((option) => ({
+  return MAIL_CRITERION_FIELD_OPTIONS.map(option => ({
     ...option,
-    label: copy.mailCriteria.fields[option.value]?.label ?? option.label,
+    label: copy.mailCriteria.fields[option.value]?.label ?? option.label
   }));
 }
-
 export function getLocalizedMailCriterionOperators(copy) {
-  return MAIL_CRITERION_OPERATOR_OPTIONS.map((option) => ({
+  return MAIL_CRITERION_OPERATOR_OPTIONS.map(option => ({
     ...option,
-    label: copy.mailCriteria.operators[option.value]?.label ?? option.label,
+    label: copy.mailCriteria.operators[option.value]?.label ?? option.label
   }));
 }
-
 export function getLocalizedOrphanReplyOptions(copy) {
-  return ORPHAN_REPLY_BEHAVIOR_OPTIONS.map((option) => ({
+  return ORPHAN_REPLY_BEHAVIOR_OPTIONS.map(option => ({
     ...option,
     label: copy.orphanReply[option.value]?.label ?? option.label,
-    subtitle: copy.orphanReply[option.value]?.subtitle ?? option.subtitle,
+    subtitle: copy.orphanReply[option.value]?.subtitle ?? option.subtitle
   }));
 }
-
 export function describeLocalizedRuleCollector(rule, collectors, copy) {
   const collectorId = String(rule?.collectorId || "").trim();
   if (!collectorId) return copy.ruleHelpers.allCollectors;
-  const match = (Array.isArray(collectors) ? collectors : []).find(
-    (item) => String(item?.id) === collectorId
-  );
+  const match = (Array.isArray(collectors) ? collectors : []).find(item => String(item?.id) === collectorId);
   if (!match) return copy.ruleHelpers.deletedCollector;
-  return (
-    String(match.name || "").trim() ||
-    String(match.username || "").trim() ||
-    String(match.server || "").trim() ||
-    copy.common.collectorFallback
-  );
+  return String(match.name || "").trim() || String(match.username || "").trim() || String(match.server || "").trim() || copy.common.collectorFallback;
 }
-
 export function describeLocalizedMailCriterionBrief(criterion, copy) {
-  const field =
-    copy.mailCriteria.fields[criterion.field]?.label ?? criterion.field ?? copy.common.field;
-  const operator =
-    copy.mailCriteria.operators[criterion.operator]?.label ??
-    criterion.operator ??
-    copy.common.operator;
+  const field = copy.mailCriteria.fields[criterion.field]?.label ?? criterion.field ?? copy.common.field;
+  const operator = copy.mailCriteria.operators[criterion.operator]?.label ?? criterion.operator ?? copy.common.operator;
   if (criterion.operator === "is_empty" || criterion.operator === "is_not_empty") {
     return `${field} ${operator}`;
   }
   const value = String(criterion.value || "").trim();
   return value ? `${field} ${operator} « ${value} »` : `${field} ${operator}…`;
 }
-
 export function describeLocalizedExclusionRuleFilters(rule, copy) {
   const root = normalizeExclusionFilterRoot(rule);
   if (!root.children?.length) return copy.mailCriteria.allEmailsNoCriteria;
   const parts = [];
-  const walk = (group) => {
+  const walk = group => {
     (group.children || []).forEach((child, index) => {
       if (index > 0 && child.connector) {
         parts.push(child.connector === "or" ? ` ${copy.common.or} ` : ` ${copy.common.and} `);
@@ -2536,7 +2500,6 @@ export function describeLocalizedExclusionRuleFilters(rule, copy) {
   walk(root);
   return parts.join("") || copy.mailCriteria.allEmails;
 }
-
 export function formatMailCollectDateTime(value, locale = "fr") {
   if (!value) return "-";
   const date = value instanceof Date ? value : new Date(value);
@@ -2547,8 +2510,7 @@ export function formatMailCollectDateTime(value, locale = "fr") {
     month: "2-digit",
     year: "numeric",
     hour: "2-digit",
-    minute: "2-digit",
+    minute: "2-digit"
   });
 }
-
 export { interpolate };

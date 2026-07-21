@@ -11,7 +11,6 @@ import { interpolate } from "../../i18n/translate";
 import { DEFAULT_TECH_NEWS_FEED_CATEGORIES } from "./techNewsFeedConstants";
 import layout from "../EnterprisesPage/EnterpriseFormModal.module.css";
 import formStyles from "./IngestionRuleFormModal.module.css";
-
 export default function TechNewsFeedFormModal({
   open,
   mode = "create",
@@ -19,9 +18,9 @@ export default function TechNewsFeedFormModal({
   setDraft,
   saving = false,
   categoryOptions = DEFAULT_TECH_NEWS_FEED_CATEGORIES,
-  categoryLabel = (key) => key,
+  categoryLabel = key => key,
   onClose,
-  onSave,
+  onSave
 }) {
   const locale = useAppLocale();
   const commonCopy = useCommonCopy();
@@ -30,35 +29,28 @@ export default function TechNewsFeedFormModal({
   const formSections = useMemo(() => getTechNewsFeedFormSections(locale), [locale]);
   const isCreate = mode === "create";
   const [activeSection, setActiveSection] = useState("source");
-
   useEffect(() => {
     if (!open) return;
     setActiveSection("source");
   }, [open]);
-
-  const sectionMeta = useMemo(
-    () => ({
-      source: Boolean(String(draft?.source || "").trim() && String(draft?.url || "").trim()),
-      display: true,
-    }),
-    [draft]
-  );
-
+  const sectionMeta = useMemo(() => ({
+    source: Boolean(String(draft?.source || "").trim() && String(draft?.url || "").trim()),
+    display: true
+  }), [draft]);
   if (!open || !draft) return null;
-
-  const patchDraft = (patch) => setDraft((prev) => ({ ...prev, ...patch }));
-
-  const modalTitle = isCreate
-    ? modalCopy.createTitle
-    : interpolate(modalCopy.editTitle, { name: draft.source || modalCopy.editFallback });
+  const patchDraft = patch => setDraft(prev => ({
+    ...prev,
+    ...patch
+  }));
+  const modalTitle = isCreate ? modalCopy.createTitle : interpolate(modalCopy.editTitle, {
+    name: draft.source || modalCopy.editFallback
+  });
   const modalSubtitle = isCreate ? modalCopy.createSubtitle : modalCopy.editSubtitle;
   const categories = categoryOptions?.length ? categoryOptions : DEFAULT_TECH_NEWS_FEED_CATEGORIES;
-
   const renderSectionContent = () => {
     switch (activeSection) {
       case "source":
-        return (
-          <>
+        return <>
             <div className={layout.sectionHead}>
               <h3 className={layout.sectionTitle}>{modalCopy.sourceTitle}</h3>
               <p className={layout.sectionDesc}>{modalCopy.sourceDesc}</p>
@@ -68,38 +60,24 @@ export default function TechNewsFeedFormModal({
                 <label className={`${layout.label} ${layout.labelRequired}`} htmlFor="feed-source">
                   {modalCopy.sourceNameLabel}
                 </label>
-                <input
-                  id="feed-source"
-                  type="text"
-                  className={layout.input}
-                  value={draft.source || ""}
-                  onChange={(e) => patchDraft({ source: e.target.value })}
-                  placeholder={modalCopy.sourceNamePlaceholder}
-                  autoFocus
-                />
+                <input id="feed-source" type="text" className={layout.input} value={draft.source || ""} onChange={e => patchDraft({
+                source: e.target.value
+              })} placeholder={modalCopy.sourceNamePlaceholder} autoFocus />
                 <p className={layout.sectionDesc}>{modalCopy.sourceNameHint}</p>
               </div>
               <div className={`${layout.field} ${layout.fieldFull}`}>
                 <label className={`${layout.label} ${layout.labelRequired}`} htmlFor="feed-url">
                   {modalCopy.urlLabel}
                 </label>
-                <input
-                  id="feed-url"
-                  type="url"
-                  className={layout.input}
-                  value={draft.url || ""}
-                  onChange={(e) => patchDraft({ url: e.target.value })}
-                  placeholder={modalCopy.urlPlaceholder}
-                />
+                <input id="feed-url" type="url" className={layout.input} value={draft.url || ""} onChange={e => patchDraft({
+                url: e.target.value
+              })} placeholder={modalCopy.urlPlaceholder} />
                 <p className={layout.sectionDesc}>{modalCopy.urlHint}</p>
               </div>
             </div>
-          </>
-        );
-
+          </>;
       case "display":
-        return (
-          <>
+        return <>
             <div className={layout.sectionHead}>
               <h3 className={layout.sectionTitle}>{modalCopy.displayTitle}</h3>
               <p className={layout.sectionDesc}>{modalCopy.displayDesc}</p>
@@ -109,31 +87,21 @@ export default function TechNewsFeedFormModal({
                 <label className={layout.label} htmlFor="feed-category">
                   {adminCopy.category}
                 </label>
-                <select
-                  id="feed-category"
-                  className={layout.input}
-                  value={draft.category || "news"}
-                  onChange={(e) => patchDraft({ category: e.target.value })}
-                >
-                  {categories.map((cat) => (
-                    <option key={cat} value={cat}>
+                <select id="feed-category" className={layout.input} value={draft.category || "news"} onChange={e => patchDraft({
+                category: e.target.value
+              })}>
+                  {categories.map(cat => <option key={cat} value={cat}>
                       {categoryLabel(cat)}
-                    </option>
-                  ))}
+                    </option>)}
                 </select>
               </div>
               <div className={layout.field}>
                 <label className={layout.label} htmlFor="feed-sort-order">
                   {modalCopy.sortOrderLabel}
                 </label>
-                <input
-                  id="feed-sort-order"
-                  type="number"
-                  className={layout.input}
-                  value={draft.sortOrder ?? ""}
-                  onChange={(e) => patchDraft({ sortOrder: e.target.value })}
-                  placeholder={adminCopy.auto}
-                />
+                <input id="feed-sort-order" type="number" className={layout.input} value={draft.sortOrder ?? ""} onChange={e => patchDraft({
+                sortOrder: e.target.value
+              })} placeholder={adminCopy.auto} />
                 <p className={layout.sectionDesc}>{modalCopy.sortOrderHint}</p>
               </div>
             </div>
@@ -142,32 +110,20 @@ export default function TechNewsFeedFormModal({
                 <div className={formStyles.statusLabel}>{modalCopy.feedActiveLabel}</div>
                 <p className={formStyles.statusHint}>{modalCopy.feedActiveHint}</p>
               </div>
-              <Switch
-                checked={Boolean(draft.enabled)}
-                onChange={(on) => patchDraft({ enabled: on })}
-                label={draft.enabled ? adminCopy.active : adminCopy.disabledShort}
-              />
+              <Switch checked={Boolean(draft.enabled)} onChange={on => patchDraft({
+              enabled: on
+            })} label={draft.enabled ? adminCopy.active : adminCopy.disabledShort} />
             </div>
-          </>
-        );
-
+          </>;
       default:
         return null;
     }
   };
-
   const canSave = Boolean(String(draft.source || "").trim() && String(draft.url || "").trim());
-
-  return createPortal(
-    <div className={layout.overlay} onClick={onClose} role="presentation">
-      <div
-        className={layout.shell}
-        style={{ maxWidth: "min(720px, 100%)" }}
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="tech-news-feed-form-title"
-      >
+  return createPortal(<div className={layout.overlay} onClick={onClose} role="presentation">
+      <div className={layout.shell} style={{
+      maxWidth: "min(720px, 100%)"
+    }} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="tech-news-feed-form-title">
         <div className={layout.accentBar} aria-hidden />
         <header className={layout.header}>
           <div className={layout.headerMain}>
@@ -189,22 +145,14 @@ export default function TechNewsFeedFormModal({
 
         <div className={layout.body}>
           <nav className={layout.nav} aria-label={modalCopy.sectionsAria}>
-            {formSections.map((section) => (
-              <button
-                key={section.id}
-                type="button"
-                className={`${layout.navItem} ${activeSection === section.id ? layout.navItemActive : ""}`}
-                onClick={() => setActiveSection(section.id)}
-                aria-current={activeSection === section.id ? "step" : undefined}
-              >
+            {formSections.map(section => <button key={section.id} type="button" className={`${layout.navItem} ${activeSection === section.id ? layout.navItemActive : ""}`} onClick={() => setActiveSection(section.id)} aria-current={activeSection === section.id ? "step" : undefined}>
                 <Icon icon={section.icon} className={layout.navItemIcon} aria-hidden />
                 <span className={layout.navItemText}>
                   <span className={layout.navItemLabel}>{section.label}</span>
                   <span className={layout.navItemHint}>{section.description}</span>
                 </span>
                 {sectionMeta[section.id] && <span className={layout.navBadge}>✓</span>}
-              </button>
-            ))}
+              </button>)}
           </nav>
 
           <div className={layout.content}>{renderSectionContent()}</div>
@@ -219,33 +167,20 @@ export default function TechNewsFeedFormModal({
             <button type="button" className={layout.ghostBtn} onClick={onClose} disabled={saving}>
               {commonCopy.cancel}
             </button>
-            <button
-              type="button"
-              className={layout.primaryBtn}
-              onClick={onSave}
-              disabled={saving || !canSave}
-            >
-              {saving ? (
-                <>
+            <button type="button" className={layout.primaryBtn} onClick={onSave} disabled={saving || !canSave}>
+              {saving ? <>
                   <Icon icon="mdi:loading" className={layout.spinning} aria-hidden />
                   {commonCopy.saving}
-                </>
-              ) : isCreate ? (
-                <>
+                </> : isCreate ? <>
                   <Icon icon="mdi:plus" aria-hidden />
                   {modalCopy.addBtn}
-                </>
-              ) : (
-                <>
+                </> : <>
                   <Icon icon="mdi:content-save-outline" aria-hidden />
                   {commonCopy.save}
-                </>
-              )}
+                </>}
             </button>
           </div>
         </footer>
       </div>
-    </div>,
-    document.getElementById("modal-root") || document.body
-  );
+    </div>, document.getElementById("modal-root") || document.body);
 }

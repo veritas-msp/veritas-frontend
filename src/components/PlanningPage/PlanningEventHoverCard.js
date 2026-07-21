@@ -3,130 +3,110 @@ import { createPortal } from "react-dom";
 import moment from "moment";
 import { Icon } from "@iconify/react";
 import { getLinkedItemIcon } from "./planningEventFormConfig";
-import {
-  getTicketTypeSupportLabel,
-  getTicketTypeIcon,
-} from "../../utils/ticketReminderEvent";
+import { getTicketTypeSupportLabel, getTicketTypeIcon } from "../../utils/ticketReminderEvent";
 import { getAgentColor, getEventPrimaryAgentId } from "./planningAgentColors";
 import { getPlanningEventId } from "./planningEventMove";
 import styles from "./PlanningEventHoverCard.module.css";
 import { sanitizeHtml } from "../../utils/sanitizeHtml";
 import { getPlanningEventHoverCardCopy } from "./planningEventHoverCardI18n";
-
 function hasHtmlContent(html) {
   return Boolean((html || "").replace(/<[^>]*>/g, "").trim());
 }
-
 function isRichHtml(html) {
   return /<[^>]+>/.test(html || "");
 }
-
 function inferAllDay(event) {
   if (event.schedule?.allDay === true) return true;
   if (event.schedule?.allDay === false) return false;
   if (!event.start || !event.end) return false;
   const start = moment(event.start);
   const end = moment(event.end);
-  return (
-    start.format("HH:mm") === "00:00" &&
-    (end.format("HH:mm") === "23:59" || end.format("HH:mm") === "00:00")
-  );
+  return start.format("HH:mm") === "00:00" && (end.format("HH:mm") === "23:59" || end.format("HH:mm") === "00:00");
 }
-
 function formatDateRange(event) {
   if (!event.start || !event.end) return "-";
   const start = moment(event.start);
   const end = moment(event.end);
   const allDay = inferAllDay(event);
-
   if (allDay) {
     if (start.isSame(end, "day")) {
       return start.format("dddd D MMMM YYYY");
     }
     return `${start.format("D MMM YYYY")} → ${end.format("D MMM YYYY")}`;
   }
-
   if (start.isSame(end, "day")) {
     return `${start.format("dddd D MMMM YYYY")} · ${start.format("HH:mm")} – ${end.format("HH:mm")}`;
   }
   return `${start.format("D MMM YYYY HH:mm")} → ${end.format("D MMM YYYY HH:mm")}`;
 }
-
 function formatTicketReminderTitle(event, copy) {
-  const reminderTitle = (event.title || copy?.defaults?.reminder || "Rappel").trim();
+  const reminderTitle = (event.title || copy?.defaults?.reminder || "Reminder").trim();
   const ticketNumber = event.ticketNumber;
   if (ticketNumber) {
     return `#${ticketNumber} · ${reminderTitle}`;
   }
   return reminderTitle;
 }
-
-function DetailRow({ icon, label, children, className = "" }) {
+function DetailRow({
+  icon,
+  label,
+  children,
+  className = ""
+}) {
   if (children == null || children === "" || children === false) return null;
-  return (
-    <div className={`${styles.row} ${className}`.trim()}>
+  return <div className={`${styles.row} ${className}`.trim()}>
       <div className={styles.rowLabel}>
         {icon ? <Icon icon={icon} aria-hidden /> : null}
         <span>{label}</span>
       </div>
       <div className={styles.rowValue}>{children}</div>
-    </div>
-  );
+    </div>;
 }
-
-function InteractiveValue({ onClick, children }) {
+function InteractiveValue({
+  onClick,
+  children
+}) {
   if (!onClick) return children;
-  return (
-    <button
-      type="button"
-      className={styles.linkValue}
-      onClick={(event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        onClick();
-      }}
-    >
+  return <button type="button" className={styles.linkValue} onClick={event => {
+    event.preventDefault();
+    event.stopPropagation();
+    onClick();
+  }}>
       {children}
-    </button>
-  );
+    </button>;
 }
-
 function getPlanningEventLinks(event, onNavigate) {
-  const openTicket = event.ticketId && onNavigate
-    ? () => {
-        onNavigate("TicketDetail", {
-          ticketId: event.ticketId,
-          ticketNumber: event.ticketNumber,
-          title: event.title,
-        });
-      }
-    : null;
-
-  const openClient = event.clientId && onNavigate
-    ? () => {
-        onNavigate("ContratDetail", {
-          clientId: event.clientId,
-          name: event.clientName,
-        });
-      }
-    : null;
-
-  return { openTicket, openClient };
+  const openTicket = event.ticketId && onNavigate ? () => {
+    onNavigate("TicketDetail", {
+      ticketId: event.ticketId,
+      ticketNumber: event.ticketNumber,
+      title: event.title
+    });
+  } : null;
+  const openClient = event.clientId && onNavigate ? () => {
+    onNavigate("ContratDetail", {
+      clientId: event.clientId,
+      name: event.clientName
+    });
+  } : null;
+  return {
+    openTicket,
+    openClient
+  };
 }
-
 function getUserLabel(user, copy) {
-  return user?.name || user?.nom || user?.username || user?.email || copy?.defaults?.user || "Utilisateur";
+  return user?.name || user?.nom || user?.username || user?.email || copy?.defaults?.user || "User";
 }
-
-function useAgentDropdownPosition(isOpen, anchorRef, { offset = 4, preferUp = false } = {}) {
+function useAgentDropdownPosition(isOpen, anchorRef, {
+  offset = 4,
+  preferUp = false
+} = {}) {
   const [style, setStyle] = useState(null);
-
   useLayoutEffect(() => {
     if (!isOpen || !anchorRef?.current) {
       setStyle(null);
       return undefined;
     }
-
     const updatePosition = () => {
       const anchor = anchorRef.current;
       if (!anchor) return;
@@ -138,17 +118,11 @@ function useAgentDropdownPosition(isOpen, anchorRef, { offset = 4, preferUp = fa
       if (left + width > window.innerWidth - 8) {
         left = Math.max(8, window.innerWidth - width - 8);
       }
-
       const spaceBelow = window.innerHeight - rect.bottom - offset - 8;
       const spaceAbove = rect.top - offset - 8;
       const preferredHeight = 150;
-      const openUp =
-        preferUp || (spaceBelow < preferredHeight + 8 && spaceAbove > spaceBelow);
-      const maxHeight = Math.max(
-        96,
-        Math.min(preferredHeight, openUp ? spaceAbove : spaceBelow)
-      );
-
+      const openUp = preferUp || spaceBelow < preferredHeight + 8 && spaceAbove > spaceBelow;
+      const maxHeight = Math.max(96, Math.min(preferredHeight, openUp ? spaceAbove : spaceBelow));
       setStyle({
         position: "fixed",
         top: openUp ? rect.top - offset : rect.bottom + offset,
@@ -157,10 +131,9 @@ function useAgentDropdownPosition(isOpen, anchorRef, { offset = 4, preferUp = fa
         maxHeight,
         transform: openUp ? "translateY(-100%)" : undefined,
         zIndex: 2147483647,
-        pointerEvents: "auto",
+        pointerEvents: "auto"
       });
     };
-
     updatePosition();
     window.addEventListener("resize", updatePosition);
     window.addEventListener("scroll", updatePosition, true);
@@ -169,10 +142,8 @@ function useAgentDropdownPosition(isOpen, anchorRef, { offset = 4, preferUp = fa
       window.removeEventListener("scroll", updatePosition, true);
     };
   }, [isOpen, anchorRef, offset, preferUp]);
-
   return style;
 }
-
 function AgentSuggestDropdownPortal({
   isOpen,
   style,
@@ -182,62 +153,37 @@ function AgentSuggestDropdownPortal({
   assignedUserId,
   onHighlight,
   onPick,
-  copy,
+  copy
 }) {
   if (!isOpen || !style) return null;
-
-  return createPortal(
-    <div
-      className={styles.agentSuggestDropdownPortal}
-      style={style}
-      role="listbox"
-      data-planning-agent-dropdown
-    >
-      {!hasQuery ? (
-        <div className={styles.agentSuggestHint}>
-          {copy?.assignee?.typeToSearch || "Saisissez un caractère pour rechercher"}
-        </div>
-      ) : filteredUsers.length === 0 ? (
-        <div className={styles.agentSuggestHint}>
-          {copy?.assignee?.noAgentFound || "Aucun agent trouvé"}
-        </div>
-      ) : (
-        filteredUsers.map((user, index) => {
-          const uid = String(user.id);
-          const label = getUserLabel(user, copy);
-          return (
-            <button
-              key={user.id}
-              type="button"
-              role="option"
-              aria-selected={highlight === index}
-              className={`${styles.agentSuggestOption} ${
-                highlight === index ? styles.agentSuggestOptionActive : ""
-              } ${uid === assignedUserId ? styles.agentSuggestOptionCurrent : ""}`}
-              onMouseEnter={() => onHighlight(index)}
-              onMouseDown={(mouseEvent) => mouseEvent.preventDefault()}
-              onClick={(clickEvent) => {
-                clickEvent.preventDefault();
-                clickEvent.stopPropagation();
-                onPick(user);
-              }}
-            >
-              <span
-                className={styles.agentSuggestOptionDot}
-                style={{ backgroundColor: getAgentColor(user.id) }}
-                aria-hidden
-              />
+  return createPortal(<div className={styles.agentSuggestDropdownPortal} style={style} role="listbox" data-planning-agent-dropdown>
+      {!hasQuery ? <div className={styles.agentSuggestHint}>
+          {copy?.assignee?.typeToSearch || "Type a character to search"}
+        </div> : filteredUsers.length === 0 ? <div className={styles.agentSuggestHint}>
+          {copy?.assignee?.noAgentFound || "No assignee found"}
+        </div> : filteredUsers.map((user, index) => {
+      const uid = String(user.id);
+      const label = getUserLabel(user, copy);
+      return <button key={user.id} type="button" role="option" aria-selected={highlight === index} className={`${styles.agentSuggestOption} ${highlight === index ? styles.agentSuggestOptionActive : ""} ${uid === assignedUserId ? styles.agentSuggestOptionCurrent : ""}`} onMouseEnter={() => onHighlight(index)} onMouseDown={mouseEvent => mouseEvent.preventDefault()} onClick={clickEvent => {
+        clickEvent.preventDefault();
+        clickEvent.stopPropagation();
+        onPick(user);
+      }}>
+              <span className={styles.agentSuggestOptionDot} style={{
+          backgroundColor: getAgentColor(user.id)
+        }} aria-hidden />
               <span>{label}</span>
-            </button>
-          );
-        })
-      )}
-    </div>,
-    document.body
-  );
+            </button>;
+    })}
+    </div>, document.body);
 }
-
-function AgentAssignField({ event, users, onAssignAgent, disabled = false, copy }) {
+function AgentAssignField({
+  event,
+  users,
+  onAssignAgent,
+  disabled = false,
+  copy
+}) {
   const wrapRef = useRef(null);
   const suggestWrapRef = useRef(null);
   const inputRef = useRef(null);
@@ -248,14 +194,12 @@ function AgentAssignField({ event, users, onAssignAgent, disabled = false, copy 
   const [search, setSearch] = useState("");
   const [assignedUserId, setAssignedUserId] = useState(() => getEventPrimaryAgentId(event) || "");
   const [assignedUserName, setAssignedUserName] = useState(() => event?.assignedUserName || "");
-
   const closeEditor = () => {
     setEditing(false);
     setOpen(false);
     setSearch("");
     setHighlight(0);
   };
-
   useEffect(() => {
     setAssignedUserId(getEventPrimaryAgentId(event) || "");
     setAssignedUserName(event?.assignedUserName || "");
@@ -264,9 +208,8 @@ function AgentAssignField({ event, users, onAssignAgent, disabled = false, copy 
     setSearch("");
     setHighlight(0);
   }, [event]);
-
   useEffect(() => {
-    const onDocClick = (docEvent) => {
+    const onDocClick = docEvent => {
       if (wrapRef.current?.contains(docEvent.target)) return;
       if (docEvent.target.closest("[data-planning-agent-dropdown]")) return;
       closeEditor();
@@ -274,25 +217,19 @@ function AgentAssignField({ event, users, onAssignAgent, disabled = false, copy 
     document.addEventListener("mousedown", onDocClick);
     return () => document.removeEventListener("mousedown", onDocClick);
   }, []);
-
   const filteredUsers = useMemo(() => {
     const query = search.trim().toLowerCase();
     if (query.length < 1) return [];
-    const pool = [...(users || [])].sort((a, b) =>
-      getUserLabel(a, copy).localeCompare(getUserLabel(b, copy), copy?.locale || "fr", {
-        sensitivity: "base",
-      })
-    );
-    return pool
-      .filter((user) => {
-        const label = getUserLabel(user, copy).toLowerCase();
-        const email = String(user.email || "").toLowerCase();
-        return label.includes(query) || email.includes(query);
-      })
-      .slice(0, 12);
+    const pool = [...(users || [])].sort((a, b) => getUserLabel(a, copy).localeCompare(getUserLabel(b, copy), copy?.locale || "fr", {
+      sensitivity: "base"
+    }));
+    return pool.filter(user => {
+      const label = getUserLabel(user, copy).toLowerCase();
+      const email = String(user.email || "").toLowerCase();
+      return label.includes(query) || email.includes(query);
+    }).slice(0, 12);
   }, [users, search, copy]);
-
-  const pickUser = async (user) => {
+  const pickUser = async user => {
     if (!user?.id || !onAssignAgent) return;
     const nextId = String(user.id);
     if (nextId === assignedUserId) {
@@ -316,8 +253,7 @@ function AgentAssignField({ event, users, onAssignAgent, disabled = false, copy 
       setSaving(false);
     }
   };
-
-  const startEditing = (pointerEvent) => {
+  const startEditing = pointerEvent => {
     pointerEvent.stopPropagation();
     if (disabled || saving) return;
     setEditing(true);
@@ -327,24 +263,21 @@ function AgentAssignField({ event, users, onAssignAgent, disabled = false, copy 
       inputRef.current?.select();
     });
   };
-
-  const handleInputChange = (changeEvent) => {
+  const handleInputChange = changeEvent => {
     changeEvent.stopPropagation();
     const value = changeEvent.target.value;
     setSearch(value);
     setHighlight(0);
     setOpen(true);
   };
-
-  const handleFocus = (focusEvent) => {
+  const handleFocus = focusEvent => {
     focusEvent.stopPropagation();
     setOpen(true);
     if (!search.trim()) {
       requestAnimationFrame(() => focusEvent.target.select());
     }
   };
-
-  const handleKeyDown = (keyEvent) => {
+  const handleKeyDown = keyEvent => {
     keyEvent.stopPropagation();
     if (keyEvent.key === "Escape") {
       closeEditor();
@@ -354,126 +287,70 @@ function AgentAssignField({ event, users, onAssignAgent, disabled = false, copy 
     if (!open || filteredUsers.length === 0) return;
     if (keyEvent.key === "ArrowDown") {
       keyEvent.preventDefault();
-      setHighlight((h) => Math.min(h + 1, filteredUsers.length - 1));
+      setHighlight(h => Math.min(h + 1, filteredUsers.length - 1));
     } else if (keyEvent.key === "ArrowUp") {
       keyEvent.preventDefault();
-      setHighlight((h) => Math.max(h - 1, 0));
+      setHighlight(h => Math.max(h - 1, 0));
     } else if (keyEvent.key === "Enter") {
       keyEvent.preventDefault();
       const picked = filteredUsers[highlight];
       if (picked) pickUser(picked);
     }
   };
-
   const inputValue = search.length > 0 ? search : assignedUserName;
   const showDropdown = Boolean(users?.length) && editing && open && !saving;
   const hasQuery = search.trim().length >= 1;
   const dropdownStyle = useAgentDropdownPosition(showDropdown, suggestWrapRef, {
-    preferUp: true,
+    preferUp: true
   });
-
   if (!users?.length) {
     return assignedUserName || "-";
   }
-
-  return (
-    <div className={styles.agentAssignWrap} ref={wrapRef}>
-      <span
-        className={styles.agentAssignDot}
-        style={{ backgroundColor: getAgentColor(assignedUserId) }}
-        aria-hidden
-      />
-      {!editing ? (
-        <button
-          type="button"
-          className={`${styles.agentDisplayBtn} ${
-            !assignedUserName ? styles.agentDisplayBtnEmpty : ""
-          }`}
-          onClick={startEditing}
-          disabled={disabled || saving}
-          aria-label={copy?.assignee?.change || "Changer l'agent assigné"}
-        >
-          {assignedUserName || copy?.assignee?.choose || "Choisir…"}
-        </button>
-      ) : (
-        <div className={styles.agentSuggestWrap} ref={suggestWrapRef}>
-          <input
-            ref={inputRef}
-            type="text"
-            className={styles.agentSuggestInput}
-            value={inputValue}
-            onChange={handleInputChange}
-            onFocus={handleFocus}
-            onBlur={() => {
-              window.setTimeout(() => {
-                const active = document.activeElement;
-                if (wrapRef.current?.contains(active)) return;
-                if (active?.closest("[data-planning-agent-dropdown]")) return;
-                closeEditor();
-              }, 120);
-            }}
-            onKeyDown={handleKeyDown}
-            onClick={(clickEvent) => clickEvent.stopPropagation()}
-            disabled={disabled || saving}
-            placeholder={copy?.assignee?.search || "Rechercher…"}
-            aria-label={copy?.assignee?.change || "Changer l'agent assigné"}
-            aria-expanded={showDropdown}
-            aria-haspopup="listbox"
-            autoComplete="off"
-          />
-          <AgentSuggestDropdownPortal
-            isOpen={showDropdown}
-            style={dropdownStyle}
-            hasQuery={hasQuery}
-            filteredUsers={filteredUsers}
-            highlight={highlight}
-            assignedUserId={assignedUserId}
-            onHighlight={setHighlight}
-            onPick={pickUser}
-            copy={copy}
-          />
-        </div>
-      )}
+  return <div className={styles.agentAssignWrap} ref={wrapRef}>
+      <span className={styles.agentAssignDot} style={{
+      backgroundColor: getAgentColor(assignedUserId)
+    }} aria-hidden />
+      {!editing ? <button type="button" className={`${styles.agentDisplayBtn} ${!assignedUserName ? styles.agentDisplayBtnEmpty : ""}`} onClick={startEditing} disabled={disabled || saving} aria-label={copy?.assignee?.change || "Change assignee"}>
+          {assignedUserName || copy?.assignee?.choose || "Choose…"}
+        </button> : <div className={styles.agentSuggestWrap} ref={suggestWrapRef}>
+          <input ref={inputRef} type="text" className={styles.agentSuggestInput} value={inputValue} onChange={handleInputChange} onFocus={handleFocus} onBlur={() => {
+        window.setTimeout(() => {
+          const active = document.activeElement;
+          if (wrapRef.current?.contains(active)) return;
+          if (active?.closest("[data-planning-agent-dropdown]")) return;
+          closeEditor();
+        }, 120);
+      }} onKeyDown={handleKeyDown} onClick={clickEvent => clickEvent.stopPropagation()} disabled={disabled || saving} placeholder={copy?.assignee?.search || "Search…"} aria-label={copy?.assignee?.change || "Change assignee"} aria-expanded={showDropdown} aria-haspopup="listbox" autoComplete="off" />
+          <AgentSuggestDropdownPortal isOpen={showDropdown} style={dropdownStyle} hasQuery={hasQuery} filteredUsers={filteredUsers} highlight={highlight} assignedUserId={assignedUserId} onHighlight={setHighlight} onPick={pickUser} copy={copy} />
+        </div>}
       {saving ? <span className={styles.agentAssignSaving}>…</span> : null}
-    </div>
-  );
+    </div>;
 }
-
-function CardFooter({ isCampaign, onEdit, onClose, copy }) {
+function CardFooter({
+  isCampaign,
+  onEdit,
+  onClose,
+  copy
+}) {
   if (!onEdit) return null;
-  return (
-    <div className={styles.footer}>
-      {onClose ? (
-        <button
-          type="button"
-          className={styles.footerBtnSecondary}
-          onClick={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            onClose();
-          }}
-        >
-          {copy?.footer?.close || "Fermer"}
-        </button>
-      ) : null}
-      <button
-        type="button"
-        className={styles.footerBtnPrimary}
-        onClick={(event) => {
-          event.preventDefault();
-          event.stopPropagation();
-          onEdit();
-        }}
-      >
+  return <div className={styles.footer}>
+      {onClose ? <button type="button" className={styles.footerBtnSecondary} onClick={event => {
+      event.preventDefault();
+      event.stopPropagation();
+      onClose();
+    }}>
+          {copy?.footer?.close || "Close"}
+        </button> : null}
+      <button type="button" className={styles.footerBtnPrimary} onClick={event => {
+      event.preventDefault();
+      event.stopPropagation();
+      onEdit();
+    }}>
         <Icon icon={isCampaign ? "mdi:arrow-right" : "mdi:pencil-outline"} aria-hidden />
-        {isCampaign
-          ? copy?.footer?.viewCampaign || "Voir la campagne"
-          : copy?.footer?.edit || "Modifier"}
+        {isCampaign ? copy?.footer?.viewCampaign || "View campaign" : copy?.footer?.edit || "Edit"}
       </button>
-    </div>
-  );
+    </div>;
 }
-
 function TicketReminderCard({
   event,
   scheduleDetails,
@@ -485,14 +362,15 @@ function TicketReminderCard({
   users,
   onAssignAgent,
   canAssignAgent,
-  copy,
+  copy
 }) {
-  const { openTicket, openClient } = getPlanningEventLinks(event, onNavigate);
+  const {
+    openTicket,
+    openClient
+  } = getPlanningEventLinks(event, onNavigate);
   const ticketTypeLabel = getTicketTypeSupportLabel(event.ticketType);
   const ticketTypeIcon = getTicketTypeIcon(event.ticketType);
-
-  return (
-    <div className={styles.card}>
+  return <div className={styles.card}>
       <div className={styles.header}>
         <span className={`${styles.typeBadge} ${styles.type_ticket_reminder}`}>
           <Icon icon={ticketTypeIcon} aria-hidden />
@@ -508,9 +386,7 @@ function TicketReminderCard({
       <div className={styles.body}>
         <DetailRow icon="mdi:clock-outline" label={copy?.labels?.date || "Date"}>
           {formatDateRange(event)}
-          {scheduleDetails.length > 0 && (
-            <div className={styles.subValue}>{scheduleDetails.join(" · ")}</div>
-          )}
+          {scheduleDetails.length > 0 && <div className={styles.subValue}>{scheduleDetails.join(" · ")}</div>}
         </DetailRow>
 
         <DetailRow icon="mdi:office-building-outline" label={copy?.labels?.client || "Client"}>
@@ -519,53 +395,31 @@ function TicketReminderCard({
           </InteractiveValue>
         </DetailRow>
 
-        <DetailRow
-          icon="mdi:account-group-outline"
-          label={copy?.labels?.agent || "Agent"}
-          className={styles.rowAgent}
-        >
-          {canAssignAgent && onAssignAgent ? (
-            <AgentAssignField
-              event={event}
-              users={users}
-              onAssignAgent={onAssignAgent}
-              copy={copy}
-            />
-          ) : (
-            event.assignedUserName
-          )}
+        <DetailRow icon="mdi:account-group-outline" label={copy?.labels?.agent || "Agent"} className={styles.rowAgent}>
+          {canAssignAgent && onAssignAgent ? <AgentAssignField event={event} users={users} onAssignAgent={onAssignAgent} copy={copy} /> : event.assignedUserName}
         </DetailRow>
 
-        <DetailRow icon="mdi:calendar-plus" label={copy?.labels?.creation || "Création"}>
+        <DetailRow icon="mdi:calendar-plus" label={copy?.labels?.creation || "Created"}>
           {event.createdAt ? moment(event.createdAt).format("DD/MM/YYYY HH:mm") : null}
         </DetailRow>
 
-        <DetailRow icon="mdi:calendar-edit" label={copy?.labels?.updated || "Modification"}>
+        <DetailRow icon="mdi:calendar-edit" label={copy?.labels?.updated || "Updated"}>
           {event.updatedAt ? moment(event.updatedAt).format("DD/MM/YYYY HH:mm") : null}
         </DetailRow>
 
-        {hasDescription && (
-          <div className={styles.section}>
+        {hasDescription && <div className={styles.section}>
             <div className={styles.sectionTitle}>
               <Icon icon="mdi:text-box-outline" aria-hidden />
               {copy?.labels?.description || "Description"}
             </div>
-            {isRichHtml(description) ? (
-              <div
-                className={styles.richText}
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(description) }}
-              />
-            ) : (
-              <div className={styles.richText}>{description}</div>
-            )}
-          </div>
-        )}
+            {isRichHtml(description) ? <div className={styles.richText} dangerouslySetInnerHTML={{
+          __html: sanitizeHtml(description)
+        }} /> : <div className={styles.richText}>{description}</div>}
+          </div>}
       </div>
       <CardFooter isCampaign={false} onEdit={onEdit} onClose={onClose} copy={copy} />
-    </div>
-  );
+    </div>;
 }
-
 export default function PlanningEventHoverCard({
   event,
   onNavigate,
@@ -573,18 +427,16 @@ export default function PlanningEventHoverCard({
   onClose,
   users = [],
   onAssignAgent,
-  copy: copyProp,
+  copy: copyProp
 }) {
   const copy = copyProp || getPlanningEventHoverCardCopy("fr");
-  const { openClient } = getPlanningEventLinks(event || {}, onNavigate);
-
+  const {
+    openClient
+  } = getPlanningEventLinks(event || {}, onNavigate);
   if (!event) return null;
-
   const isCampaign = Boolean(event._isCampaign);
   const isTicketReminder = Boolean(event.isTicketReminder || event.ticketId);
-  const canAssignAgent = Boolean(
-    onAssignAgent && !isCampaign && getPlanningEventId(event)
-  );
+  const canAssignAgent = Boolean(onAssignAgent && !isCampaign && getPlanningEventId(event));
   const campaign = event._campaignData || {};
   const typeKey = event.resource || event.type || "other";
   const typeLabel = copy.getEventTypeLabel(typeKey);
@@ -594,7 +446,6 @@ export default function PlanningEventHoverCard({
   const notes = Array.isArray(event.notes) ? event.notes : [];
   const description = (event.description || "").trim();
   const hasDescription = hasHtmlContent(description);
-
   const scheduleDetails = [];
   if (allDay) {
     scheduleDetails.push(copy.schedule.allDay);
@@ -605,27 +456,10 @@ export default function PlanningEventHoverCard({
       scheduleDetails.push(copy.formatDurationDays(event.schedule.durationDays));
     }
   }
-
   if (isTicketReminder && !isCampaign) {
-    return (
-      <TicketReminderCard
-        event={event}
-        scheduleDetails={scheduleDetails}
-        hasDescription={hasDescription}
-        description={description}
-        onNavigate={onNavigate}
-        onEdit={onEdit}
-        onClose={onClose}
-        users={users}
-        onAssignAgent={onAssignAgent}
-        canAssignAgent={canAssignAgent}
-        copy={copy}
-      />
-    );
+    return <TicketReminderCard event={event} scheduleDetails={scheduleDetails} hasDescription={hasDescription} description={description} onNavigate={onNavigate} onEdit={onEdit} onClose={onClose} users={users} onAssignAgent={onAssignAgent} canAssignAgent={canAssignAgent} copy={copy} />;
   }
-
-  return (
-    <div className={styles.card}>
+  return <div className={styles.card}>
       <div className={styles.header}>
         <span className={`${styles.typeBadge} ${styles[`type_${typeKey}`] || ""}`}>
           <Icon icon={isCampaign ? "mdi:shield-lock" : "mdi:calendar-text-outline"} aria-hidden />
@@ -637,179 +471,115 @@ export default function PlanningEventHoverCard({
       <div className={styles.body}>
         <DetailRow icon="mdi:clock-outline" label={copy.labels.dates}>
           {formatDateRange(event)}
-          {scheduleDetails.length > 0 && (
-            <div className={styles.subValue}>{scheduleDetails.join(" · ")}</div>
-          )}
+          {scheduleDetails.length > 0 && <div className={styles.subValue}>{scheduleDetails.join(" · ")}</div>}
         </DetailRow>
 
-        {event.clientName && (
-          <DetailRow icon="mdi:office-building-outline" label={copy.labels.client}>
+        {event.clientName && <DetailRow icon="mdi:office-building-outline" label={copy.labels.client}>
             <InteractiveValue onClick={openClient}>
               {event.clientName}
             </InteractiveValue>
-          </DetailRow>
-        )}
+          </DetailRow>}
 
-        {(canAssignAgent || event.assignedUserName) && (
-          <DetailRow icon="mdi:account-group-outline" label={copy.labels.agent} className={styles.rowAgent}>
-            {canAssignAgent ? (
-              <AgentAssignField
-                event={event}
-                users={users}
-                onAssignAgent={onAssignAgent}
-                copy={copy}
-              />
-            ) : (
-              event.assignedUserName
-            )}
-          </DetailRow>
-        )}
+        {(canAssignAgent || event.assignedUserName) && <DetailRow icon="mdi:account-group-outline" label={copy.labels.agent} className={styles.rowAgent}>
+            {canAssignAgent ? <AgentAssignField event={event} users={users} onAssignAgent={onAssignAgent} copy={copy} /> : event.assignedUserName}
+          </DetailRow>}
 
-        {isCampaign && (
-          <>
-            {campaign.status && (
-              <DetailRow icon="mdi:flag-outline" label={copy.labels.campaignStatus}>
+        {isCampaign && <>
+            {campaign.status && <DetailRow icon="mdi:flag-outline" label={copy.labels.campaignStatus}>
                 {copy.getCampaignStatusLabel(campaign.status)}
-              </DetailRow>
-            )}
-            {campaign.type && (
-              <DetailRow icon="mdi:shield-outline" label={copy.labels.campaignType}>
+              </DetailRow>}
+            {campaign.type && <DetailRow icon="mdi:shield-outline" label={copy.labels.campaignType}>
                 {copy.getCampaignTypeLabel(campaign.type)}
-              </DetailRow>
-            )}
-            {typeof campaign.global_progress === "number" && (
-              <DetailRow icon="mdi:progress-check" label={copy.labels.progress}>
+              </DetailRow>}
+            {typeof campaign.global_progress === "number" && <DetailRow icon="mdi:progress-check" label={copy.labels.progress}>
                 {Math.round(campaign.global_progress)} %
-              </DetailRow>
-            )}
-          </>
-        )}
+              </DetailRow>}
+          </>}
 
-        {event.equipmentName && (
-          <DetailRow icon="mdi:server-outline" label={copy.labels.equipment}>
+        {event.equipmentName && <DetailRow icon="mdi:server-outline" label={copy.labels.equipment}>
             {event.equipmentName}
-          </DetailRow>
-        )}
+          </DetailRow>}
 
-        {event.serviceName && (
-          <DetailRow icon="mdi:cloud-outline" label={copy.labels.service}>
+        {event.serviceName && <DetailRow icon="mdi:cloud-outline" label={copy.labels.service}>
             {event.serviceName}
-          </DetailRow>
-        )}
+          </DetailRow>}
 
-        {linkedItems.length > 0 && (
-          <div className={styles.section}>
+        {linkedItems.length > 0 && <div className={styles.section}>
             <div className={styles.sectionTitle}>
               <Icon icon="mdi:cube-outline" aria-hidden />
               {copy.formatLinkedObjects(linkedItems.length)}
             </div>
             <ul className={styles.objectList}>
-              {linkedItems.map((item, index) => (
-                <li key={`${item.id}-${index}`} className={styles.objectItem}>
+              {linkedItems.map((item, index) => <li key={`${item.id}-${index}`} className={styles.objectItem}>
                   <Icon icon={getLinkedItemIcon(item)} aria-hidden />
                   <span className={styles.objectLabel}>{item.label || item.id}</span>
                   <span className={styles.objectMeta}>
                     {[item.type, item.group].filter(Boolean).join(" · ")}
                   </span>
-                </li>
-              ))}
+                </li>)}
             </ul>
-          </div>
-        )}
+          </div>}
 
-        {event.equipmentId && linkedItems.length === 0 && !event.equipmentName && !event.serviceName && (
-          <DetailRow icon="mdi:tag-outline" label={copy.labels.mainObject}>
+        {event.equipmentId && linkedItems.length === 0 && !event.equipmentName && !event.serviceName && <DetailRow icon="mdi:tag-outline" label={copy.labels.mainObject}>
             {String(event.equipmentId)}
-          </DetailRow>
-        )}
+          </DetailRow>}
 
-        {event.creatorUserName && (
-          <DetailRow icon="mdi:account-edit-outline" label={copy.labels.createdBy}>
+        {event.creatorUserName && <DetailRow icon="mdi:account-edit-outline" label={copy.labels.createdBy}>
             {event.creatorUserName}
-          </DetailRow>
-        )}
+          </DetailRow>}
 
-        {event.createdAt && (
-          <DetailRow icon="mdi:calendar-plus" label={copy.labels.creation}>
+        {event.createdAt && <DetailRow icon="mdi:calendar-plus" label={copy.labels.creation}>
             {moment(event.createdAt).format("DD/MM/YYYY HH:mm")}
-          </DetailRow>
-        )}
+          </DetailRow>}
 
-        {event.updatedAt && (
-          <DetailRow icon="mdi:calendar-edit" label={copy.labels.updated}>
+        {event.updatedAt && <DetailRow icon="mdi:calendar-edit" label={copy.labels.updated}>
             {moment(event.updatedAt).format("DD/MM/YYYY HH:mm")}
-          </DetailRow>
-        )}
+          </DetailRow>}
 
-        {hasDescription && (
-          <div className={styles.section}>
+        {hasDescription && <div className={styles.section}>
             <div className={styles.sectionTitle}>
               <Icon icon="mdi:text-box-outline" aria-hidden />
               {copy.labels.description}
             </div>
-            {isRichHtml(description) ? (
-              <div
-                className={styles.richText}
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(description) }}
-              />
-            ) : (
-              <div className={styles.richText}>{description}</div>
-            )}
-          </div>
-        )}
+            {isRichHtml(description) ? <div className={styles.richText} dangerouslySetInnerHTML={{
+          __html: sanitizeHtml(description)
+        }} /> : <div className={styles.richText}>{description}</div>}
+          </div>}
 
-        {todos.length > 0 && (
-          <div className={styles.section}>
+        {todos.length > 0 && <div className={styles.section}>
             <div className={styles.sectionTitle}>
               <Icon icon="mdi:format-list-checks" aria-hidden />
-              {copy.formatTodos(
-                todos.filter((t) => t.done).length,
-                todos.length
-              )}
+              {copy.formatTodos(todos.filter(t => t.done).length, todos.length)}
             </div>
             <ul className={styles.todoList}>
-              {todos.map((todo) => (
-                <li
-                  key={todo.id || todo.text}
-                  className={`${styles.todoItem} ${todo.done ? styles.todoDone : ""}`}
-                  style={{ "--todo-color": todo.color || "#15d1a0" }}
-                >
+              {todos.map(todo => <li key={todo.id || todo.text} className={`${styles.todoItem} ${todo.done ? styles.todoDone : ""}`} style={{
+            "--todo-color": todo.color || "#15d1a0"
+          }}>
                   <span className={styles.todoMark} aria-hidden />
                   <span>{todo.text}</span>
-                </li>
-              ))}
+                </li>)}
             </ul>
-          </div>
-        )}
+          </div>}
 
-        {notes.length > 0 && (
-          <div className={styles.section}>
+        {notes.length > 0 && <div className={styles.section}>
             <div className={styles.sectionTitle}>
               <Icon icon="mdi:note-text-outline" aria-hidden />
               {copy.formatNotes(notes.length)}
             </div>
             <ul className={styles.noteList}>
-              {notes.map((note) => (
-                <li key={note.id || note.text} className={styles.noteItem}>
+              {notes.map(note => <li key={note.id || note.text} className={styles.noteItem}>
                   <p>{note.text}</p>
-                  {note.createdAt && (
-                    <span className={styles.noteDate}>
+                  {note.createdAt && <span className={styles.noteDate}>
                       {moment(note.createdAt).format("DD/MM/YYYY HH:mm")}
-                    </span>
-                  )}
-                </li>
-              ))}
+                    </span>}
+                </li>)}
             </ul>
-          </div>
-        )}
+          </div>}
 
-        {!isCampaign && event.id && (
-          <DetailRow icon="mdi:identifier" label={copy.labels.reference}>
+        {!isCampaign && event.id && <DetailRow icon="mdi:identifier" label={copy.labels.reference}>
             #{event.id}
-          </DetailRow>
-        )}
+          </DetailRow>}
       </div>
       <CardFooter isCampaign={isCampaign} onEdit={onEdit} onClose={onClose} copy={copy} />
-    </div>
-  );
+    </div>;
 }

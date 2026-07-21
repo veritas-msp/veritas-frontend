@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import API_BASE_URL from "../config";
 import { getEnvEdition, isCommunityEdition } from "../config/edition";
-
 export function useVeritasEdition() {
   const [edition, setEdition] = useState(getEnvEdition());
   const [limits, setLimits] = useState(null);
   const [loaded, setLoaded] = useState(false);
-
   useEffect(() => {
     let cancelled = false;
     const fetchEdition = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/edition`, { credentials: "include" });
+        const res = await fetch(`${API_BASE_URL}/edition`, {
+          credentials: "include"
+        });
         if (!res.ok) throw new Error("edition unavailable");
         const data = await res.json();
         if (cancelled) return;
@@ -21,10 +21,7 @@ export function useVeritasEdition() {
         if (process.env.NODE_ENV !== "production") {
           const envEd = getEnvEdition();
           if (envEd !== resolved) {
-            console.warn(
-              `[Veritas] Édition frontend (.env=${envEd}) ≠ backend (/api/edition=${resolved}). ` +
-                "Le backend fait foi · alignez REACT_APP_VERITAS_EDITION."
-            );
+            console.warn(`[Veritas] Frontend edition (.env=${envEd}) ≠ backend (/api/edition=${resolved}). ` + "The backend is authoritative · align REACT_APP_VERITAS_EDITION.");
           }
         }
       } catch {
@@ -41,12 +38,11 @@ export function useVeritasEdition() {
       cancelled = true;
     };
   }, []);
-
   return {
     edition,
     limits,
     loaded,
     isCommunity: isCommunityEdition(edition),
-    isPro: edition === "pro",
+    isPro: edition === "pro"
   };
 }

@@ -1,4 +1,4 @@
-/* Modal Overlay */
+
 .modalOverlay {
   position: fixed;
   inset: 0;
@@ -12,7 +12,7 @@
   animation: fadeIn 0.2s ease-out;
 }
 
-/* Modal Content */
+
 .modalContent {
   background-color: var(--bg-primary, #ffffff);
   border-radius: 8px;
@@ -24,7 +24,7 @@
   animation: slideIn 0.2s ease-out;
 }
 
-/* Modal Header */
+
 .modalHeader {
   display: flex;
   align-items: center;
@@ -59,14 +59,14 @@
   color: var(--text-primary, #333);
 }
 
-/* Modal Body */
+
 .modalBody {
   padding: 1.5rem;
   max-height: calc(90vh - 120px);
   overflow-y: auto;
 }
 
-/* Table Styles */
+
 .domainsTable table {
   width: 100%;
   border-collapse: collapse;
@@ -99,7 +99,7 @@
   color: var(--primary-color, #007bff);
 }
 
-/* Status Badge */
+
 .statusBadge {
   display: inline-flex;
   align-items: center;
@@ -129,7 +129,7 @@
   border: 1px solid var(--warning-border, #ffeaa7);
 }
 
-/* No Data State */
+
 .noData {
   display: flex;
   flex-direction: column;
@@ -151,7 +151,7 @@
   font-size: 1rem;
 }
 
-/* Animations */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -172,7 +172,7 @@
   }
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .modalContent {
     width: 95vw;

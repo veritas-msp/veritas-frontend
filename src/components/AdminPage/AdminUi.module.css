@@ -1,4 +1,4 @@
-/* Kit UI administration · thème Veritas (login) */
+
 
 .page {
   display: flex;
@@ -13,13 +13,18 @@
   box-sizing: border-box;
 }
 
+.page > .pageFillLock,
+.page:has(> [data-page-fill]) {
+  overflow: hidden;
+}
+
 .adminMutedText {
   color: var(--msp-muted);
   padding: 12px 0;
   font-size: 0.84rem;
 }
 
-/* ── Sous-onglets ── */
+
 .subTabs {
   display: flex;
   flex-wrap: wrap;
@@ -92,7 +97,7 @@
   opacity: 0.58;
 }
 
-/* ── Carte ── */
+
 .card {
   background: var(--msp-surface);
   border: 1px solid var(--msp-border);
@@ -107,6 +112,13 @@
 .cardFill {
   flex: 1;
   min-height: 0;
+}
+
+.cardFillNoScroll .cardBody,
+.cardFillNoScroll .cardBodyFlush {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .cardOverflowVisible {
@@ -158,7 +170,7 @@
   flex-direction: column;
 }
 
-/* ── Recherche admin (réf. Agents) ── */
+
 .toolRow {
   display: flex;
   align-items: center;
@@ -204,7 +216,7 @@
   white-space: nowrap;
 }
 
-/* ── Toolbar ── */
+
 .toolbar {
   display: flex;
   align-items: center;
@@ -292,7 +304,7 @@
   white-space: nowrap;
 }
 
-/* ── Boutons ── */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -357,7 +369,7 @@
 .btnIcon:disabled { opacity: 0.4; cursor: not-allowed; }
 .btnIcon_danger:hover:not(:disabled) { color: #dc2626; border-color: #fecaca; background: #fef2f2; }
 
-/* ── Table ── */
+
 .tableSection {
   flex: 1;
   min-height: 0;
@@ -426,7 +438,7 @@
   color: var(--msp-muted-light);
 }
 
-/* ── Pagination ── */
+
 .pagination {
   display: flex;
   align-items: center;
@@ -463,7 +475,7 @@
   flex-shrink: 0;
 }
 
-/* ── Modal ── */
+
 .modalOverlay {
   position: fixed;
   inset: 0;
@@ -764,7 +776,7 @@
   margin: 24px 0;
 }
 
-/* ── Formulaire modale épuré ── */
+
 .modalForm {
   display: flex;
   flex-direction: column;
@@ -965,7 +977,7 @@
   line-height: 1.55;
 }
 
-/* Champs dans modales · priorité sur styles globaux AdminPanel */
+
 .modal .input,
 .modal .select,
 .modal .textarea {
@@ -989,7 +1001,7 @@
   box-shadow: 0 0 0 3px rgba(43, 95, 171, 0.12);
 }
 
-/* ── Formulaires ── */
+
 .field {
   display: flex;
   flex-direction: column;
@@ -1315,7 +1327,7 @@
   cursor: not-allowed;
 }
 
-/* ── Badge ── */
+
 .badge {
   display: inline-block;
   padding: 2px 8px;
@@ -1329,7 +1341,7 @@
 .badge_muted { background: var(--msp-surface-3); color: var(--msp-muted-light); }
 .badge_warn { background: #fef3c7; color: #b45309; }
 
-/* ── Switch ── */
+
 .switch {
   display: inline-flex;
   align-items: center;
@@ -1376,7 +1388,7 @@
   cursor: not-allowed;
 }
 
-/* ── Liste profils ── */
+
 .listItem {
   display: flex;
   align-items: center;
@@ -1406,7 +1418,7 @@
   flex-shrink: 0;
 }
 
-/* ── Grille intégrations ── */
+
 .integrationGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -1447,7 +1459,7 @@
   text-align: center;
 }
 
-/* ── Matrice accès ── */
+
 .accessMatrix {
   overflow-x: auto;
 }
@@ -1496,7 +1508,7 @@
   .cardHeader { flex-direction: column; }
 }
 
-/* ── Table row action buttons (dark-mode safe) ── */
+
 .tableActions {
   display: flex;
   align-items: center;

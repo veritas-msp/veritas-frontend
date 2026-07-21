@@ -1,4 +1,4 @@
-/* Fiche entreprise MSP · thème clair moderne */
+
 
 .contratDetailPage {
   --msp-accent: #2b5fab;
@@ -43,7 +43,7 @@
   z-index: 1;
 }
 
-/* ── Hero ── */
+
 .pageHero {
   position: sticky;
   top: 0;
@@ -479,7 +479,7 @@
   cursor: not-allowed;
 }
 
-/* ── Hero compact (fiches détail entreprise & contact) ── */
+
 .enterpriseDetailPage .pageHero,
 .contactDetailPage .pageHero {
   padding: 0.5rem 1.5rem 0.4rem;
@@ -624,7 +624,7 @@
   padding-bottom: 0.25rem;
 }
 
-/* ── Layout ── */
+
 .pageBody {
   position: relative;
   z-index: 1;
@@ -682,7 +682,7 @@
   border-radius: 4px;
 }
 
-/* ── Panels ── */
+
 .panel {
   position: relative;
   z-index: 1;
@@ -754,7 +754,7 @@
   overflow: visible;
 }
 
-/* ── Toolbar équipements ── */
+
 .searchBarContainer {
   display: flex;
   align-items: center;
@@ -900,7 +900,7 @@
   color: var(--msp-accent);
 }
 
-/* ── Services grid ── */
+
 .cybersecurityStats {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -960,7 +960,7 @@
   color: var(--msp-text);
 }
 
-/* Skeletons */
+
 .skeleton {
   background: linear-gradient(
     90deg,
@@ -1095,7 +1095,7 @@
   height: 1.75rem;
 }
 
-/* ── Tables unifiées (fiche client) ── */
+
 .dataTableBlock {
   width: 100%;
 }
@@ -1186,12 +1186,12 @@
   white-space: nowrap;
 }
 
-/* ── Campagnes ── */
+
 .campaignsTableBlock {
   width: 100%;
 }
 
-/* ── Activité & planning ── */
+
 .activityGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1249,6 +1249,13 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
+}
+
+.activityBlockHeaderActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .activityBlockTitle {
@@ -1499,7 +1506,7 @@
   }
 }
 
-/* ── Sidebar ── */
+
 .rightSidebarContent {
   display: flex;
   flex-direction: column;
@@ -2351,7 +2358,7 @@ button.sidebarOptionIcon:hover {
   font-variant-numeric: tabular-nums;
 }
 
-/* Contacts sidebar */
+
 .sidebarContactsList {
   list-style: none;
   margin: 0;
@@ -2538,7 +2545,7 @@ button.sidebarOptionIcon:hover {
   opacity: 0.6;
 }
 
-/* ── États ── */
+
 .loading,
 .error {
   display: flex;
@@ -2574,7 +2581,7 @@ button.sidebarOptionIcon:hover {
   color: var(--msp-accent);
 }
 
-/* ── Modales ── */
+
 .modalOverlay {
   position: fixed;
   inset: 0;
@@ -2691,7 +2698,7 @@ button.sidebarOptionIcon:hover {
   color: var(--msp-muted-light);
 }
 
-/* Modales détails */
+
 .securityDetailsGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2907,7 +2914,7 @@ button.sidebarOptionIcon:hover {
   align-items: center;
 }
 
-/* Legacy aliases kept for JS compatibility */
+
 .twoColumnLayout,
 .leftColumn,
 .content,
@@ -2928,10 +2935,10 @@ button.sidebarOptionIcon:hover {
 .rightSidebar,
 .rightSidebarColumn,
 .statsGroup {
-  /* remapped via new layout · no-op */
+  
 }
 
-/* ── Responsive ── */
+
 @media (max-width: 1200px) {
   .pageGrid {
     grid-template-columns: 1fr;
@@ -3001,7 +3008,7 @@ button.sidebarOptionIcon:hover {
   }
 }
 
-/* Mode sombre */
+
 :global(html.dark) .contratDetailPage {
   --msp-accent: #4a8fd4;
   --msp-accent-dark: #2b5fab;

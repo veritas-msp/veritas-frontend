@@ -1,6 +1,4 @@
-/* ──────────────────────────────
-   🎨 Container principal
-   ────────────────────────────── */
+
 .loginWrapper {
   display: flex;
   justify-content: center;
@@ -40,7 +38,7 @@
   }
 }
 
-/* 🔧 Vignettes de statut - Position fixe en bas à droite de la page */
+
 .statusGroup {
   position: fixed;
   bottom: 20px;
@@ -93,7 +91,7 @@
   box-shadow: 0 4px 12px rgba(21, 209, 160, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08) !important;
 }
 
-/* 📝 Modal d'enregistrement de licence */
+
 .licenseModal {
   position: fixed;
   top: 0;

@@ -1,47 +1,28 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 const TAB_KEYS = ["overview", "antivirus", "antispam", "campaigns"];
-
 const TAB_ICONS = {
   overview: "mdi:lightning-bolt",
   antivirus: "mdi:shield-search",
   antispam: "mdi:email-secure",
-  campaigns: "mdi:shield-lock",
+  campaigns: "mdi:shield-lock"
 };
-
 const STATUS_FILTER_IDS = ["all", "actif", "expire_bientot", "inactif"];
-
 const STATUS_META_KEYS = ["actif", "expire_bientot", "inactif", "inconnu"];
-
-const CAMPAIGN_TYPE_KEYS = [
-  "microsoft_security",
-  "cybersecurity_training",
-  "rgpd_audit",
-  "penetration_test",
-  "phishing_simulation",
-  "vulnerability_scan",
-  "incident_response",
-  "compliance_audit",
-];
-
+const CAMPAIGN_TYPE_KEYS = ["microsoft_security", "cybersecurity_training", "rgpd_audit", "penetration_test", "phishing_simulation", "vulnerability_scan", "incident_response", "compliance_audit"];
 const CAMPAIGN_STATUS_KEYS = ["en_preparation", "active", "suspendue", "inactive"];
-
 const CAMPAIGN_STATUS_COLORS = {
   en_preparation: "#fbbf24",
   active: "#10b981",
   suspendue: "#ef4444",
-  inactive: "#6b7280",
+  inactive: "#6b7280"
 };
-
 const CAMPAIGN_STATUS_TONES = {
   en_preparation: "warn",
   active: "good",
   suspendue: "bad",
-  inactive: "neutral",
+  inactive: "neutral"
 };
-
 const CAMPAIGN_STATUS_FILTER_IDS = ["all", "en_preparation", "active", "suspendue", "inactive"];
-
 const CYBERSECURITE_PAGE_COPY = {
   fr: {
     eyebrow: "Services managés",
@@ -54,15 +35,14 @@ const CYBERSECURITE_PAGE_COPY = {
       overview: "À traiter",
       antivirus: "Antivirus",
       antispam: "Antispam",
-      campaigns: "Campagnes",
+      campaigns: "Campagnes"
     },
     overview: {
       priorityTitle: "À traiter en priorité",
       portfolioAlerts: "{count} alerte sur le portefeuille",
       portfolioAlertsPlural: "{count} alertes sur le portefeuille",
       emptyTitle: "Aucune alerte sécurité",
-      emptyText:
-        "Les solutions antivirus et antispam du portefeuille sont dans un état nominal.",
+      emptyText: "Les solutions antivirus et antispam du portefeuille sont dans un état nominal.",
       treat: "Traiter",
       viewFleet: "Voir le parc",
       actions: {
@@ -72,7 +52,7 @@ const CYBERSECURITE_PAGE_COPY = {
         asExpired: "Antispam expiré ou inactif",
         asSoon: "Antispam bientôt expiré",
         campaignSuspended: "Campagne suspendue",
-        campaignFallback: "Campagne",
+        campaignFallback: "Campagne"
       },
       hexTitle: "Vue d'ensemble",
       hexKpi: {
@@ -82,7 +62,7 @@ const CYBERSECURITE_PAGE_COPY = {
         campaigns: "Campagnes",
         avSolutions: "Sol. AV",
         asSolutions: "Sol. AS",
-        health: "Santé (%)",
+        health: "Santé (%)"
       },
       kpi: {
         solutions: "Solutions",
@@ -92,7 +72,7 @@ const CYBERSECURITE_PAGE_COPY = {
         users: "Utilisateurs",
         domains: "Domaines",
         todo: "À traiter",
-        health: "Santé (%)",
+        health: "Santé (%)"
       },
       av: {
         eyebrow: "Antivirus",
@@ -103,15 +83,15 @@ const CYBERSECURITE_PAGE_COPY = {
         descStatsClients: "{clients} entreprise couverte",
         descStatsClientsPlural: "{clients} entreprises couvertes",
         descStatsProviders: "{providers} fournisseur",
-        descStatsProvidersPlural: "{providers} fournisseurs",
+        descStatsProvidersPlural: "{providers} fournisseurs"
       },
       as: {
         eyebrow: "Antispam",
         title: "Solutions antispam",
         descEmpty: "Aucune solution antispam enregistrée",
         descStats: "{clients} entreprise couverte · {providers} fournisseur",
-        descStatsPlural: "{clients} entreprises couvertes · {providers} fournisseurs",
-      },
+        descStatsPlural: "{clients} entreprises couvertes · {providers} fournisseurs"
+      }
     },
     msp: {
       heroTitle: "Parc multi-entreprises",
@@ -138,13 +118,13 @@ const CYBERSECURITE_PAGE_COPY = {
         all: "Tous",
         actif: "Actifs",
         expire_bientot: "Expire bientôt",
-        inactif: "Inactifs",
+        inactif: "Inactifs"
       },
       statusMeta: {
         actif: "Actif",
         expire_bientot: "Expire bientôt",
         inactif: "Inactif",
-        inconnu: "Non renseigné",
+        inconnu: "Non renseigné"
       },
       table: {
         enterprise: "Entreprise",
@@ -154,13 +134,13 @@ const CYBERSECURITE_PAGE_COPY = {
         status: "Statut",
         expiration: "Expiration",
         coverage: "Couverture",
-        lastSync: "Dernière sync",
+        lastSync: "Dernière sync"
       },
       kpi: {
         solutions: "Solutions",
         enterprises: "Entreprises",
         active: "Actives",
-        todo: "À traiter",
+        todo: "À traiter"
       },
       antivirus: {
         eyebrow: "Antivirus",
@@ -174,9 +154,8 @@ const CYBERSECURITE_PAGE_COPY = {
         loading: "Chargement du parc antivirus…",
         emptyTitle: "Aucune solution antivirus",
         noResultsTitle: "Aucun résultat",
-        emptyText:
-          "Configurez les solutions dans les fiches entreprises ou ajoutez-en une depuis ce tableau de bord.",
-        noResultsText: "Ajustez les filtres ou la recherche pour afficher des solutions.",
+        emptyText: "Configurez les solutions dans les fiches entreprises ou ajoutez-en une depuis ce tableau de bord.",
+        noResultsText: "Ajustez les filtres ou la recherche pour afficher des solutions."
       },
       antispam: {
         eyebrow: "Antispam",
@@ -190,10 +169,9 @@ const CYBERSECURITE_PAGE_COPY = {
         loading: "Chargement du parc antispam…",
         emptyTitle: "Aucune solution antispam",
         noResultsTitle: "Aucun résultat",
-        emptyText:
-          "Configurez les solutions dans les fiches entreprises ou ajoutez-en une depuis ce tableau de bord.",
-        noResultsText: "Ajustez les filtres ou la recherche pour afficher des solutions.",
-      },
+        emptyText: "Configurez les solutions dans les fiches entreprises ou ajoutez-en une depuis ce tableau de bord.",
+        noResultsText: "Ajustez les filtres ou la recherche pour afficher des solutions."
+      }
     },
     campaigns: {
       eyebrow: "Campagnes",
@@ -209,16 +187,17 @@ const CYBERSECURITE_PAGE_COPY = {
         all: "Toutes",
         en_preparation: "En préparation",
         active: "Actives",
-        suspendue: "Suspendues",
-        inactive: "Terminées",
+        suspendue: "En pause",
+        inactive: "Terminées"
       },
       totalTitle: "Cliquez pour afficher toutes les campagnes",
       filterTitle: "Cliquez pour filtrer : {label}",
       sectionTitle: "Campagnes de cybersécurité",
-      addTitle: "Ajouter une campagne",
+      addTitle: "Ajouter une campagne MFA",
       loading: "Chargement des campagnes…",
       emptyTitle: "Aucune campagne",
-      emptyText: "Créez votre première campagne de cybersécurité",
+      emptyText: "Créez votre première campagne MFA Microsoft",
+      emptyCta: "Créer une campagne MFA",
       viewClient: "Voir la fiche client",
       rowsPerPage: "Lignes par page",
       prevPage: "Page précédente",
@@ -232,33 +211,54 @@ const CYBERSECURITE_PAGE_COPY = {
         startDate: "Date début",
         endDate: "Date fin",
         progress: "Progression",
-        createdAt: "Créé le",
+        createdAt: "Créé le"
       },
       types: {
-        microsoft_security: "Sécurité Microsoft",
+        microsoft_security: "Sécurité Microsoft (MFA)",
         cybersecurity_training: "Formation cybersécurité",
         rgpd_audit: "Audit conformité RGPD",
         penetration_test: "Test de pénétration",
         phishing_simulation: "Simulation de phishing",
         vulnerability_scan: "Scan de vulnérabilités",
         incident_response: "Réponse aux incidents",
-        compliance_audit: "Audit de conformité",
+        compliance_audit: "Audit de conformité"
       },
       statuses: {
         en_preparation: "En préparation",
         active: "Active",
-        suspendue: "Suspendue",
-        inactive: "Terminée",
+        suspendue: "En pause",
+        inactive: "Terminée"
       },
       modal: {
         editTitle: "Modifier la campagne",
-        createTitle: "Nouvelle campagne",
-        eyebrow: "Campagnes",
-        createSubtitle:
-          "Définissez l'entreprise, le type et la période de la campagne.",
-        editSubtitle: "Modifiez les informations de la campagne.",
+        createTitle: "Nouvelle campagne MFA",
+        eyebrow: "Campagnes MFA",
+        createSubtitle: "Campagne d'adoption MFA basée sur les données du tenant Microsoft.",
+        editSubtitle: "Modifiez les informations de la campagne MFA.",
         sectionTitle: "Informations générales",
-        sectionDesc: "Client, nom, type et période du rapport de campagne.",
+        sectionDesc: "Client, nom et type. Les étapes MFA et les snapshots seront générés automatiquement.",
+        sectionsNavAria: "Sections du formulaire campagne",
+        footerHint: "Les champs marqués * sont obligatoires",
+        sections: {
+          general: {
+            navLabel: "Général",
+            navHint: "Entreprise et type",
+            title: "Informations générales",
+            desc: "Sélectionnez l'entreprise et nommez la campagne MFA Microsoft."
+          },
+          dates: {
+            navLabel: "Dates",
+            navHint: "Période de campagne",
+            title: "Période",
+            desc: "Définissez la fenêtre de démarrage et de fin de la campagne."
+          },
+          details: {
+            navLabel: "Détails",
+            navHint: "Contexte et notes",
+            title: "Spécificités",
+            desc: "Ajoutez le contexte, les attentes ou les contraintes de la campagne."
+          }
+        },
         close: "Fermer",
         namePlaceholder: "Ex. Campagne MFA T2 2026",
         enterprise: "Entreprise *",
@@ -266,31 +266,45 @@ const CYBERSECURITE_PAGE_COPY = {
         noEnterprise: "Aucune entreprise trouvée",
         name: "Nom de la campagne *",
         type: "Type *",
+        provider: "Provider *",
+        providerMicrosoft: "Microsoft",
+        providerGoogle: "Google Workspace",
+        providerOkta: "Okta",
+        providerComingSoon: "Ce provider sera bientôt disponible",
+        badgeSoon: "Soon",
+        tenant: "Tenant *",
+        tenantLoading: "Chargement du tenant Microsoft…",
+        tenantFallbackLabel: "Tenant Microsoft",
+        needMicrosoftTenant: "Configurez d’abord un tenant Microsoft Entra pour cette entreprise avant de créer une campagne MFA.",
         startDate: "Date de début",
         endDate: "Date de fin",
         specificity: "Spécificité",
-        specificityPlaceholder:
-          "Spécificités de la campagne (contexte, attentes, contraintes…)",
+        specificityPlaceholder: "Spécificités de la campagne (contexte, attentes, contraintes…)",
         saveEdit: "Modifier la campagne",
         saveCreate: "Créer la campagne",
+        status: "Statut",
+        adoptionGoal: "Objectif d'adoption (%)",
+        adoptionGoalPlaceholder: "Ex. : 90",
+        delete: "Supprimer",
+        deleting: "Suppression…"
       },
       delete: {
         title: "Supprimer la campagne",
-        message:
-          "Êtes-vous sûr de vouloir supprimer cette campagne ? Cette action est irréversible.",
+        message: "Êtes-vous sûr de vouloir supprimer cette campagne ? Cette action est irréversible.",
         confirmLabel: 'Tapez "JE CONFIRME" pour valider :',
         confirmPlaceholder: "JE CONFIRME",
-        confirmWord: "JE CONFIRME",
+        confirmWord: "JE CONFIRME"
       },
       toasts: {
         requiredFields: "Le client, le nom et le type de campagne sont requis",
+        needMicrosoftTenant: "Un tenant Microsoft Entra doit être configuré pour créer une campagne MFA",
         updated: "Campagne mise à jour avec succès",
         created: "Campagne créée avec succès",
         saveError: "Erreur lors de la sauvegarde de la campagne",
         confirmDelete: 'Veuillez écrire "JE CONFIRME" pour valider la suppression',
         deleted: "Campagne supprimée avec succès",
-        deleteError: "Erreur lors de la suppression de la campagne",
-      },
+        deleteError: "Erreur lors de la suppression de la campagne"
+      }
     },
     sync: {
       preparing: "Préparation…",
@@ -300,8 +314,8 @@ const CYBERSECURITE_PAGE_COPY = {
       success: "Synchronisation terminée: {success} licence(s) mise(s) à jour{errors}",
       successErrors: ", {count} erreur(s)",
       failed: "Synchronisation échouée: {count} erreur(s)",
-      error: "Erreur lors de la synchronisation des licences Bitdefender",
-    },
+      error: "Erreur lors de la synchronisation des licences Bitdefender"
+    }
   },
   en: {
     eyebrow: "Managed services",
@@ -314,7 +328,7 @@ const CYBERSECURITE_PAGE_COPY = {
       overview: "To do",
       antivirus: "Antivirus",
       antispam: "Antispam",
-      campaigns: "Campaigns",
+      campaigns: "Campaigns"
     },
     overview: {
       priorityTitle: "Priority items",
@@ -331,7 +345,7 @@ const CYBERSECURITE_PAGE_COPY = {
         asExpired: "Antispam expired or inactive",
         asSoon: "Antispam expiring soon",
         campaignSuspended: "Campaign suspended",
-        campaignFallback: "Campaign",
+        campaignFallback: "Campaign"
       },
       hexTitle: "Overview",
       hexKpi: {
@@ -341,7 +355,7 @@ const CYBERSECURITE_PAGE_COPY = {
         campaigns: "Campaigns",
         avSolutions: "AV sol.",
         asSolutions: "AS sol.",
-        health: "Health (%)",
+        health: "Health (%)"
       },
       kpi: {
         solutions: "Solutions",
@@ -351,7 +365,7 @@ const CYBERSECURITE_PAGE_COPY = {
         users: "Users",
         domains: "Domains",
         todo: "To do",
-        health: "Health (%)",
+        health: "Health (%)"
       },
       av: {
         eyebrow: "Antivirus",
@@ -362,15 +376,15 @@ const CYBERSECURITE_PAGE_COPY = {
         descStatsClients: "{clients} company covered",
         descStatsClientsPlural: "{clients} companies covered",
         descStatsProviders: "{providers} provider",
-        descStatsProvidersPlural: "{providers} providers",
+        descStatsProvidersPlural: "{providers} providers"
       },
       as: {
         eyebrow: "Antispam",
         title: "Antispam solutions",
         descEmpty: "No antispam solution registered",
         descStats: "{clients} company covered · {providers} provider",
-        descStatsPlural: "{clients} companies covered · {providers} providers",
-      },
+        descStatsPlural: "{clients} companies covered · {providers} providers"
+      }
     },
     msp: {
       heroTitle: "Multi-company fleet",
@@ -397,13 +411,13 @@ const CYBERSECURITE_PAGE_COPY = {
         all: "All",
         actif: "Active",
         expire_bientot: "Expiring soon",
-        inactif: "Inactive",
+        inactif: "Inactive"
       },
       statusMeta: {
         actif: "Active",
         expire_bientot: "Expiring soon",
         inactif: "Inactive",
-        inconnu: "Not specified",
+        unknown: "Not specified"
       },
       table: {
         enterprise: "Company",
@@ -413,13 +427,13 @@ const CYBERSECURITE_PAGE_COPY = {
         status: "Status",
         expiration: "Expiration",
         coverage: "Coverage",
-        lastSync: "Last sync",
+        lastSync: "Last sync"
       },
       kpi: {
         solutions: "Solutions",
         enterprises: "Companies",
         active: "Active",
-        todo: "To do",
+        todo: "To do"
       },
       antivirus: {
         eyebrow: "Antivirus",
@@ -433,9 +447,8 @@ const CYBERSECURITE_PAGE_COPY = {
         loading: "Loading antivirus fleet…",
         emptyTitle: "No antivirus solution",
         noResultsTitle: "No results",
-        emptyText:
-          "Configure solutions in company records or add one from this dashboard.",
-        noResultsText: "Adjust filters or search to display solutions.",
+        emptyText: "Configure solutions in company records or add one from this dashboard.",
+        noResultsText: "Adjust filters or search to display solutions."
       },
       antispam: {
         eyebrow: "Antispam",
@@ -449,10 +462,9 @@ const CYBERSECURITE_PAGE_COPY = {
         loading: "Loading antispam fleet…",
         emptyTitle: "No antispam solution",
         noResultsTitle: "No results",
-        emptyText:
-          "Configure solutions in company records or add one from this dashboard.",
-        noResultsText: "Adjust filters or search to display solutions.",
-      },
+        emptyText: "Configure solutions in company records or add one from this dashboard.",
+        noResultsText: "Adjust filters or search to display solutions."
+      }
     },
     campaigns: {
       eyebrow: "Campaigns",
@@ -468,16 +480,17 @@ const CYBERSECURITE_PAGE_COPY = {
         all: "All",
         en_preparation: "In preparation",
         active: "Active",
-        suspendue: "Suspended",
-        inactive: "Completed",
+        suspendue: "Paused",
+        inactive: "Completed"
       },
       totalTitle: "Click to show all campaigns",
       filterTitle: "Click to filter: {label}",
       sectionTitle: "Cybersecurity campaigns",
-      addTitle: "Add a campaign",
+      addTitle: "Add an MFA campaign",
       loading: "Loading campaigns…",
       emptyTitle: "No campaigns",
-      emptyText: "Create your first cybersecurity campaign",
+      emptyText: "Create your first Microsoft MFA campaign",
+      emptyCta: "Create MFA campaign",
       viewClient: "View company record",
       rowsPerPage: "Rows per page",
       prevPage: "Previous page",
@@ -491,32 +504,54 @@ const CYBERSECURITE_PAGE_COPY = {
         startDate: "Start date",
         endDate: "End date",
         progress: "Progress",
-        createdAt: "Created on",
+        createdAt: "Created on"
       },
       types: {
-        microsoft_security: "Microsoft security",
+        microsoft_security: "Microsoft security (MFA)",
         cybersecurity_training: "Cybersecurity training",
         rgpd_audit: "GDPR compliance audit",
         penetration_test: "Penetration test",
         phishing_simulation: "Phishing simulation",
         vulnerability_scan: "Vulnerability scan",
         incident_response: "Incident response",
-        compliance_audit: "Compliance audit",
+        compliance_audit: "Compliance audit"
       },
       statuses: {
         en_preparation: "In preparation",
         active: "Active",
-        suspendue: "Suspended",
-        inactive: "Completed",
+        suspendue: "Paused",
+        inactive: "Completed"
       },
       modal: {
         editTitle: "Edit campaign",
-        createTitle: "New campaign",
-        eyebrow: "Campaigns",
-        createSubtitle: "Set the company, type, and campaign period.",
-        editSubtitle: "Update the campaign information.",
+        createTitle: "New MFA campaign",
+        eyebrow: "MFA campaigns",
+        createSubtitle: "MFA adoption campaign based on Microsoft tenant data.",
+        editSubtitle: "Update the MFA campaign information.",
         sectionTitle: "General information",
-        sectionDesc: "Client, name, type, and campaign report period.",
+        sectionDesc: "Client, name, and type. MFA steps and snapshots are created automatically.",
+        sectionsNavAria: "Campaign form sections",
+        footerHint: "Fields marked * are required",
+        sections: {
+          general: {
+            navLabel: "General",
+            navHint: "Company and type",
+            title: "General information",
+            desc: "Select the company and name the Microsoft MFA campaign."
+          },
+          dates: {
+            navLabel: "Dates",
+            navHint: "Campaign period",
+            title: "Period",
+            desc: "Set the campaign start and end window."
+          },
+          details: {
+            navLabel: "Details",
+            navHint: "Context and notes",
+            title: "Specifics",
+            desc: "Add context, expectations, or constraints for the campaign."
+          }
+        },
         close: "Close",
         namePlaceholder: "E.g. MFA campaign Q2 2026",
         enterprise: "Company *",
@@ -524,29 +559,45 @@ const CYBERSECURITE_PAGE_COPY = {
         noEnterprise: "No company found",
         name: "Campaign name *",
         type: "Type *",
+        provider: "Provider *",
+        providerMicrosoft: "Microsoft",
+        providerGoogle: "Google Workspace",
+        providerOkta: "Okta",
+        providerComingSoon: "This provider will be available soon",
+        badgeSoon: "Soon",
+        tenant: "Tenant *",
+        tenantLoading: "Loading Microsoft tenant…",
+        tenantFallbackLabel: "Microsoft tenant",
+        needMicrosoftTenant: "Configure a Microsoft Entra tenant for this company before creating an MFA campaign.",
         startDate: "Start date",
         endDate: "End date",
         specificity: "Specifics",
         specificityPlaceholder: "Campaign specifics (context, expectations, constraints…)",
         saveEdit: "Update campaign",
         saveCreate: "Create campaign",
+        status: "Status",
+        adoptionGoal: "Adoption goal (%)",
+        adoptionGoalPlaceholder: "E.g. 90",
+        delete: "Delete",
+        deleting: "Deleting…"
       },
       delete: {
         title: "Delete campaign",
         message: "Are you sure you want to delete this campaign? This action cannot be undone.",
         confirmLabel: 'Type "I CONFIRM" to validate:',
         confirmPlaceholder: "I CONFIRM",
-        confirmWord: "I CONFIRM",
+        confirmWord: "I CONFIRM"
       },
       toasts: {
         requiredFields: "Client, name, and campaign type are required",
+        needMicrosoftTenant: "A Microsoft Entra tenant must be configured to create an MFA campaign",
         updated: "Campaign updated successfully",
         created: "Campaign created successfully",
         saveError: "Error saving campaign",
         confirmDelete: 'Please type "I CONFIRM" to validate deletion',
         deleted: "Campaign deleted successfully",
-        deleteError: "Error deleting campaign",
-      },
+        deleteError: "Error deleting campaign"
+      }
     },
     sync: {
       preparing: "Preparing…",
@@ -556,8 +607,8 @@ const CYBERSECURITE_PAGE_COPY = {
       success: "Sync complete: {success} license(s) updated{errors}",
       successErrors: ", {count} error(s)",
       failed: "Sync failed: {count} error(s)",
-      error: "Error syncing Bitdefender licenses",
-    },
+      error: "Error syncing Bitdefender licenses"
+    }
   },
   de: {
     eyebrow: "Managed Services",
@@ -570,7 +621,7 @@ const CYBERSECURITE_PAGE_COPY = {
       overview: "Zu erledigen",
       antivirus: "Antivirus",
       antispam: "Antispam",
-      campaigns: "Kampagnen",
+      campaigns: "Kampagnen"
     },
     overview: {
       priorityTitle: "Priorität",
@@ -587,7 +638,7 @@ const CYBERSECURITE_PAGE_COPY = {
         asExpired: "Antispam abgelaufen oder inaktiv",
         asSoon: "Antispam läuft bald ab",
         campaignSuspended: "Kampagne ausgesetzt",
-        campaignFallback: "Kampagne",
+        campaignFallback: "Kampagne"
       },
       hexTitle: "Übersicht",
       hexKpi: {
@@ -597,7 +648,7 @@ const CYBERSECURITE_PAGE_COPY = {
         campaigns: "Kampagnen",
         avSolutions: "AV-Lös.",
         asSolutions: "AS-Lös.",
-        health: "Gesundheit (%)",
+        health: "Gesundheit (%)"
       },
       kpi: {
         solutions: "Lösungen",
@@ -607,7 +658,7 @@ const CYBERSECURITE_PAGE_COPY = {
         users: "Benutzer",
         domains: "Domains",
         todo: "Zu erledigen",
-        health: "Gesundheit (%)",
+        health: "Gesundheit (%)"
       },
       av: {
         eyebrow: "Antivirus",
@@ -618,15 +669,15 @@ const CYBERSECURITE_PAGE_COPY = {
         descStatsClients: "{clients} Unternehmen abgedeckt",
         descStatsClientsPlural: "{clients} Unternehmen abgedeckt",
         descStatsProviders: "{providers} Anbieter",
-        descStatsProvidersPlural: "{providers} Anbieter",
+        descStatsProvidersPlural: "{providers} Anbieter"
       },
       as: {
         eyebrow: "Antispam",
         title: "Antispam-Lösungen",
         descEmpty: "Keine Antispam-Lösung erfasst",
         descStats: "{clients} Unternehmen abgedeckt · {providers} Anbieter",
-        descStatsPlural: "{clients} Unternehmen abgedeckt · {providers} Anbieter",
-      },
+        descStatsPlural: "{clients} Unternehmen abgedeckt · {providers} Anbieter"
+      }
     },
     msp: {
       heroTitle: "Multi-Unternehmens-Bestand",
@@ -653,13 +704,13 @@ const CYBERSECURITE_PAGE_COPY = {
         all: "Alle",
         actif: "Aktiv",
         expire_bientot: "Läuft bald ab",
-        inactif: "Inaktiv",
+        inactif: "Inaktiv"
       },
       statusMeta: {
         actif: "Aktiv",
         expire_bientot: "Läuft bald ab",
         inactif: "Inaktiv",
-        inconnu: "Nicht angegeben",
+        inconnu: "Nicht angegeben"
       },
       table: {
         enterprise: "Unternehmen",
@@ -669,13 +720,13 @@ const CYBERSECURITE_PAGE_COPY = {
         status: "Status",
         expiration: "Ablauf",
         coverage: "Abdeckung",
-        lastSync: "Letzte Sync",
+        lastSync: "Letzte Sync"
       },
       kpi: {
         solutions: "Lösungen",
         enterprises: "Unternehmen",
         active: "Aktiv",
-        todo: "Zu erledigen",
+        todo: "Zu erledigen"
       },
       antivirus: {
         eyebrow: "Antivirus",
@@ -689,9 +740,8 @@ const CYBERSECURITE_PAGE_COPY = {
         loading: "Antivirus-Bestand wird geladen…",
         emptyTitle: "Keine Antivirus-Lösung",
         noResultsTitle: "Keine Ergebnisse",
-        emptyText:
-          "Konfigurieren Sie Lösungen in den Unternehmensakten oder fügen Sie eine über dieses Dashboard hinzu.",
-        noResultsText: "Passen Sie Filter oder Suche an, um Lösungen anzuzeigen.",
+        emptyText: "Konfigurieren Sie Lösungen in den Unternehmensakten oder fügen Sie eine über dieses Dashboard hinzu.",
+        noResultsText: "Passen Sie Filter oder Suche an, um Lösungen anzuzeigen."
       },
       antispam: {
         eyebrow: "Antispam",
@@ -705,10 +755,9 @@ const CYBERSECURITE_PAGE_COPY = {
         loading: "Antispam-Bestand wird geladen…",
         emptyTitle: "Keine Antispam-Lösung",
         noResultsTitle: "Keine Ergebnisse",
-        emptyText:
-          "Konfigurieren Sie Lösungen in den Unternehmensakten oder fügen Sie eine über dieses Dashboard hinzu.",
-        noResultsText: "Passen Sie Filter oder Suche an, um Lösungen anzuzeigen.",
-      },
+        emptyText: "Konfigurieren Sie Lösungen in den Unternehmensakten oder fügen Sie eine über dieses Dashboard hinzu.",
+        noResultsText: "Passen Sie Filter oder Suche an, um Lösungen anzuzeigen."
+      }
     },
     campaigns: {
       eyebrow: "Kampagnen",
@@ -724,16 +773,17 @@ const CYBERSECURITE_PAGE_COPY = {
         all: "Alle",
         en_preparation: "In Vorbereitung",
         active: "Aktiv",
-        suspendue: "Ausgesetzt",
-        inactive: "Abgeschlossen",
+        suspendue: "Pausiert",
+        inactive: "Abgeschlossen"
       },
       totalTitle: "Klicken, um alle Kampagnen anzuzeigen",
       filterTitle: "Klicken zum Filtern: {label}",
       sectionTitle: "Cybersicherheitskampagnen",
-      addTitle: "Kampagne hinzufügen",
+      addTitle: "MFA-Kampagne hinzufügen",
       loading: "Kampagnen werden geladen…",
       emptyTitle: "Keine Kampagnen",
-      emptyText: "Erstellen Sie Ihre erste Cybersicherheitskampagne",
+      emptyText: "Erstellen Sie Ihre erste Microsoft-MFA-Kampagne",
+      emptyCta: "MFA-Kampagne erstellen",
       viewClient: "Unternehmensakte anzeigen",
       rowsPerPage: "Zeilen pro Seite",
       prevPage: "Vorherige Seite",
@@ -747,32 +797,54 @@ const CYBERSECURITE_PAGE_COPY = {
         startDate: "Startdatum",
         endDate: "Enddatum",
         progress: "Fortschritt",
-        createdAt: "Erstellt am",
+        createdAt: "Erstellt am"
       },
       types: {
-        microsoft_security: "Microsoft-Sicherheit",
+        microsoft_security: "Microsoft-Sicherheit (MFA)",
         cybersecurity_training: "Cybersicherheitsschulung",
         rgpd_audit: "DSGVO-Compliance-Audit",
         penetration_test: "Penetrationstest",
         phishing_simulation: "Phishing-Simulation",
         vulnerability_scan: "Schwachstellen-Scan",
         incident_response: "Incident Response",
-        compliance_audit: "Compliance-Audit",
+        compliance_audit: "Compliance-Audit"
       },
       statuses: {
         en_preparation: "In Vorbereitung",
         active: "Aktiv",
-        suspendue: "Ausgesetzt",
-        inactive: "Abgeschlossen",
+        suspendue: "Pausiert",
+        inactive: "Abgeschlossen"
       },
       modal: {
         editTitle: "Kampagne bearbeiten",
-        createTitle: "Neue Kampagne",
-        eyebrow: "Kampagnen",
-        createSubtitle: "Unternehmen, Typ und Zeitraum der Kampagne festlegen.",
-        editSubtitle: "Kampagneninformationen bearbeiten.",
+        createTitle: "Neue MFA-Kampagne",
+        eyebrow: "MFA-Kampagnen",
+        createSubtitle: "MFA-Adoptionkampagne auf Basis der Microsoft-Tenant-Daten.",
+        editSubtitle: "MFA-Kampagneninformationen bearbeiten.",
         sectionTitle: "Allgemeine Informationen",
-        sectionDesc: "Kunde, Name, Typ und Berichtszeitraum der Kampagne.",
+        sectionDesc: "Kunde, Name und Typ. MFA-Schritte und Snapshots werden automatisch erstellt.",
+        sectionsNavAria: "Abschnitte des Kampagnenformulars",
+        footerHint: "Mit * markierte Felder sind Pflichtfelder",
+        sections: {
+          general: {
+            navLabel: "Allgemein",
+            navHint: "Unternehmen und Typ",
+            title: "Allgemeine Informationen",
+            desc: "Wählen Sie das Unternehmen und benennen Sie die Microsoft-MFA-Kampagne."
+          },
+          dates: {
+            navLabel: "Daten",
+            navHint: "Kampagnenzeitraum",
+            title: "Zeitraum",
+            desc: "Legen Sie Start- und Endfenster der Kampagne fest."
+          },
+          details: {
+            navLabel: "Details",
+            navHint: "Kontext und Notizen",
+            title: "Besonderheiten",
+            desc: "Fügen Sie Kontext, Erwartungen oder Einschränkungen hinzu."
+          }
+        },
         close: "Schließen",
         namePlaceholder: "z. B. MFA-Kampagne Q2 2026",
         enterprise: "Unternehmen *",
@@ -780,30 +852,45 @@ const CYBERSECURITE_PAGE_COPY = {
         noEnterprise: "Kein Unternehmen gefunden",
         name: "Kampagnenname *",
         type: "Typ *",
+        provider: "Provider *",
+        providerMicrosoft: "Microsoft",
+        providerGoogle: "Google Workspace",
+        providerOkta: "Okta",
+        providerComingSoon: "Dieser Provider wird bald verfügbar sein",
+        badgeSoon: "Soon",
+        tenant: "Tenant *",
+        tenantLoading: "Microsoft-Tenant wird geladen…",
+        tenantFallbackLabel: "Microsoft-Tenant",
+        needMicrosoftTenant: "Konfigurieren Sie zuerst einen Microsoft Entra-Tenant für dieses Unternehmen, bevor Sie eine MFA-Kampagne erstellen.",
         startDate: "Startdatum",
         endDate: "Enddatum",
         specificity: "Besonderheiten",
         specificityPlaceholder: "Besonderheiten der Kampagne (Kontext, Erwartungen, Einschränkungen…)",
         saveEdit: "Kampagne aktualisieren",
         saveCreate: "Kampagne erstellen",
+        status: "Status",
+        adoptionGoal: "Adoptionsziel (%)",
+        adoptionGoalPlaceholder: "z. B. 90",
+        delete: "Löschen",
+        deleting: "Wird gelöscht…"
       },
       delete: {
         title: "Kampagne löschen",
-        message:
-          "Möchten Sie diese Kampagne wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+        message: "Möchten Sie diese Kampagne wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
         confirmLabel: 'Geben Sie "ICH BESTÄTIGE" ein:',
         confirmPlaceholder: "ICH BESTÄTIGE",
-        confirmWord: "ICH BESTÄTIGE",
+        confirmWord: "ICH BESTÄTIGE"
       },
       toasts: {
         requiredFields: "Kunde, Name und Kampagnentyp sind erforderlich",
+        needMicrosoftTenant: "Ein Microsoft Entra-Tenant muss konfiguriert sein, um eine MFA-Kampagne zu erstellen",
         updated: "Kampagne erfolgreich aktualisiert",
         created: "Kampagne erfolgreich erstellt",
         saveError: "Fehler beim Speichern der Kampagne",
         confirmDelete: 'Bitte geben Sie "ICH BESTÄTIGE" ein, um die Löschung zu bestätigen',
         deleted: "Kampagne erfolgreich gelöscht",
-        deleteError: "Fehler beim Löschen der Kampagne",
-      },
+        deleteError: "Fehler beim Löschen der Kampagne"
+      }
     },
     sync: {
       preparing: "Vorbereitung…",
@@ -813,8 +900,8 @@ const CYBERSECURITE_PAGE_COPY = {
       success: "Synchronisation abgeschlossen: {success} Lizenz(en) aktualisiert{errors}",
       successErrors: ", {count} Fehler",
       failed: "Synchronisation fehlgeschlagen: {count} Fehler",
-      error: "Fehler bei der Synchronisation der Bitdefender-Lizenzen",
-    },
+      error: "Fehler bei der Synchronisation der Bitdefender-Lizenzen"
+    }
   },
   it: {
     eyebrow: "Servizi gestiti",
@@ -827,7 +914,7 @@ const CYBERSECURITE_PAGE_COPY = {
       overview: "Da trattare",
       antivirus: "Antivirus",
       antispam: "Antispam",
-      campaigns: "Campagne",
+      campaigns: "Campagne"
     },
     overview: {
       priorityTitle: "Priorità",
@@ -844,7 +931,7 @@ const CYBERSECURITE_PAGE_COPY = {
         asExpired: "Antispam scaduto o inattivo",
         asSoon: "Antispam in scadenza",
         campaignSuspended: "Campagna sospesa",
-        campaignFallback: "Campagna",
+        campaignFallback: "Campagna"
       },
       hexTitle: "Panoramica",
       hexKpi: {
@@ -854,7 +941,7 @@ const CYBERSECURITE_PAGE_COPY = {
         campaigns: "Campagne",
         avSolutions: "Sol. AV",
         asSolutions: "Sol. AS",
-        health: "Salute (%)",
+        health: "Salute (%)"
       },
       kpi: {
         solutions: "Soluzioni",
@@ -864,7 +951,7 @@ const CYBERSECURITE_PAGE_COPY = {
         users: "Utenti",
         domains: "Domini",
         todo: "Da trattare",
-        health: "Salute (%)",
+        health: "Salute (%)"
       },
       av: {
         eyebrow: "Antivirus",
@@ -875,15 +962,15 @@ const CYBERSECURITE_PAGE_COPY = {
         descStatsClients: "{clients} azienda coperta",
         descStatsClientsPlural: "{clients} aziende coperte",
         descStatsProviders: "{providers} fornitore",
-        descStatsProvidersPlural: "{providers} fornitori",
+        descStatsProvidersPlural: "{providers} fornitori"
       },
       as: {
         eyebrow: "Antispam",
         title: "Soluzioni antispam",
         descEmpty: "Nessuna soluzione antispam registrata",
         descStats: "{clients} azienda coperta · {providers} fornitore",
-        descStatsPlural: "{clients} aziende coperte · {providers} fornitori",
-      },
+        descStatsPlural: "{clients} aziende coperte · {providers} fornitori"
+      }
     },
     msp: {
       heroTitle: "Parco multi-azienda",
@@ -910,13 +997,13 @@ const CYBERSECURITE_PAGE_COPY = {
         all: "Tutti",
         actif: "Attivi",
         expire_bientot: "In scadenza",
-        inactif: "Inattivi",
+        inactif: "Inattivi"
       },
       statusMeta: {
         actif: "Attivo",
         expire_bientot: "In scadenza",
         inactif: "Inattivo",
-        inconnu: "Non indicato",
+        inconnu: "Non indicato"
       },
       table: {
         enterprise: "Azienda",
@@ -926,13 +1013,13 @@ const CYBERSECURITE_PAGE_COPY = {
         status: "Stato",
         expiration: "Scadenza",
         coverage: "Copertura",
-        lastSync: "Ultima sync",
+        lastSync: "Ultima sync"
       },
       kpi: {
         solutions: "Soluzioni",
         enterprises: "Aziende",
         active: "Attive",
-        todo: "Da trattare",
+        todo: "Da trattare"
       },
       antivirus: {
         eyebrow: "Antivirus",
@@ -946,9 +1033,8 @@ const CYBERSECURITE_PAGE_COPY = {
         loading: "Caricamento parco antivirus…",
         emptyTitle: "Nessuna soluzione antivirus",
         noResultsTitle: "Nessun risultato",
-        emptyText:
-          "Configurate le soluzioni nelle schede azienda o aggiungetene una da questa dashboard.",
-        noResultsText: "Modificate filtri o ricerca per visualizzare le soluzioni.",
+        emptyText: "Configurate le soluzioni nelle schede azienda o aggiungetene una da questa dashboard.",
+        noResultsText: "Modificate filtri o ricerca per visualizzare le soluzioni."
       },
       antispam: {
         eyebrow: "Antispam",
@@ -962,10 +1048,9 @@ const CYBERSECURITE_PAGE_COPY = {
         loading: "Caricamento parco antispam…",
         emptyTitle: "Nessuna soluzione antispam",
         noResultsTitle: "Nessun risultato",
-        emptyText:
-          "Configurate le soluzioni nelle schede azienda o aggiungetene una da questa dashboard.",
-        noResultsText: "Modificate filtri o ricerca per visualizzare le soluzioni.",
-      },
+        emptyText: "Configurate le soluzioni nelle schede azienda o aggiungetene una da questa dashboard.",
+        noResultsText: "Modificate filtri o ricerca per visualizzare le soluzioni."
+      }
     },
     campaigns: {
       eyebrow: "Campagne",
@@ -981,16 +1066,17 @@ const CYBERSECURITE_PAGE_COPY = {
         all: "Tutte",
         en_preparation: "In preparazione",
         active: "Attive",
-        suspendue: "Sospese",
-        inactive: "Completate",
+        suspendue: "In pausa",
+        inactive: "Completate"
       },
       totalTitle: "Clicca per mostrare tutte le campagne",
       filterTitle: "Clicca per filtrare: {label}",
       sectionTitle: "Campagne di cybersicurezza",
-      addTitle: "Aggiungi campagna",
+      addTitle: "Aggiungi campagna MFA",
       loading: "Caricamento campagne…",
       emptyTitle: "Nessuna campagna",
-      emptyText: "Create la vostra prima campagna di cybersicurezza",
+      emptyText: "Create la vostra prima campagna MFA Microsoft",
+      emptyCta: "Crea campagna MFA",
       viewClient: "Vedi scheda cliente",
       rowsPerPage: "Righe per pagina",
       prevPage: "Pagina precedente",
@@ -1004,32 +1090,54 @@ const CYBERSECURITE_PAGE_COPY = {
         startDate: "Data inizio",
         endDate: "Data fine",
         progress: "Avanzamento",
-        createdAt: "Creato il",
+        createdAt: "Creato il"
       },
       types: {
-        microsoft_security: "Sicurezza Microsoft",
+        microsoft_security: "Sicurezza Microsoft (MFA)",
         cybersecurity_training: "Formazione cybersicurezza",
         rgpd_audit: "Audit conformità GDPR",
         penetration_test: "Test di penetrazione",
         phishing_simulation: "Simulazione phishing",
         vulnerability_scan: "Scansione vulnerabilità",
         incident_response: "Risposta agli incidenti",
-        compliance_audit: "Audit di conformità",
+        compliance_audit: "Audit di conformità"
       },
       statuses: {
         en_preparation: "In preparazione",
         active: "Attiva",
-        suspendue: "Sospesa",
-        inactive: "Completata",
+        suspendue: "In pausa",
+        inactive: "Completata"
       },
       modal: {
         editTitle: "Modifica campagna",
-        createTitle: "Nuova campagna",
-        eyebrow: "Campagne",
-        createSubtitle: "Definisci azienda, tipo e periodo della campagna.",
-        editSubtitle: "Modifica le informazioni della campagna.",
+        createTitle: "Nuova campagna MFA",
+        eyebrow: "Campagne MFA",
+        createSubtitle: "Campagna di adozione MFA basata sui dati del tenant Microsoft.",
+        editSubtitle: "Modifica le informazioni della campagna MFA.",
         sectionTitle: "Informazioni generali",
-        sectionDesc: "Cliente, nome, tipo e periodo del report di campagna.",
+        sectionDesc: "Cliente, nome e tipo. Passi MFA e snapshot vengono creati automaticamente.",
+        sectionsNavAria: "Sezioni del modulo campagna",
+        footerHint: "I campi contrassegnati con * sono obbligatori",
+        sections: {
+          general: {
+            navLabel: "Generale",
+            navHint: "Azienda e tipo",
+            title: "Informazioni generali",
+            desc: "Seleziona l'azienda e assegna un nome alla campagna MFA Microsoft."
+          },
+          dates: {
+            navLabel: "Date",
+            navHint: "Periodo campagna",
+            title: "Periodo",
+            desc: "Definisci la finestra di inizio e fine della campagna."
+          },
+          details: {
+            navLabel: "Dettagli",
+            navHint: "Contesto e note",
+            title: "Specificità",
+            desc: "Aggiungi contesto, aspettative o vincoli della campagna."
+          }
+        },
         close: "Chiudi",
         namePlaceholder: "Es. Campagna MFA T2 2026",
         enterprise: "Azienda *",
@@ -1037,30 +1145,45 @@ const CYBERSECURITE_PAGE_COPY = {
         noEnterprise: "Nessuna azienda trovata",
         name: "Nome campagna *",
         type: "Tipo *",
+        provider: "Provider *",
+        providerMicrosoft: "Microsoft",
+        providerGoogle: "Google Workspace",
+        providerOkta: "Okta",
+        providerComingSoon: "Questo provider sarà presto disponibile",
+        badgeSoon: "Soon",
+        tenant: "Tenant *",
+        tenantLoading: "Caricamento del tenant Microsoft…",
+        tenantFallbackLabel: "Tenant Microsoft",
+        needMicrosoftTenant: "Configura prima un tenant Microsoft Entra per questa azienda prima di creare una campagna MFA.",
         startDate: "Data di inizio",
         endDate: "Data di fine",
         specificity: "Specificità",
         specificityPlaceholder: "Specificità della campagna (contesto, aspettative, vincoli…)",
         saveEdit: "Aggiorna campagna",
         saveCreate: "Crea campagna",
+        status: "Stato",
+        adoptionGoal: "Obiettivo di adozione (%)",
+        adoptionGoalPlaceholder: "Es. 90",
+        delete: "Elimina",
+        deleting: "Eliminazione…"
       },
       delete: {
         title: "Elimina campagna",
-        message:
-          "Eliminare questa campagna? Questa azione è irreversibile.",
+        message: "Eliminare questa campagna? Questa azione è irreversibile.",
         confirmLabel: 'Digitare "CONFERMO" per validare:',
         confirmPlaceholder: "CONFERMO",
-        confirmWord: "CONFERMO",
+        confirmWord: "CONFERMO"
       },
       toasts: {
         requiredFields: "Cliente, nome e tipo di campagna sono obbligatori",
+        needMicrosoftTenant: "Un tenant Microsoft Entra deve essere configurato per creare una campagna MFA",
         updated: "Campagna aggiornata con successo",
         created: "Campagna creata con successo",
         saveError: "Errore durante il salvataggio della campagna",
         confirmDelete: 'Digitare "CONFERMO" per validare l\'eliminazione',
         deleted: "Campagna eliminata con successo",
-        deleteError: "Errore durante l'eliminazione della campagna",
-      },
+        deleteError: "Errore durante l'eliminazione della campagna"
+      }
     },
     sync: {
       preparing: "Preparazione…",
@@ -1070,8 +1193,8 @@ const CYBERSECURITE_PAGE_COPY = {
       success: "Sincronizzazione completata: {success} licenza/e aggiornata/e{errors}",
       successErrors: ", {count} errore/i",
       failed: "Sincronizzazione fallita: {count} errore/i",
-      error: "Errore durante la sincronizzazione delle licenze Bitdefender",
-    },
+      error: "Errore durante la sincronizzazione delle licenze Bitdefender"
+    }
   },
   es: {
     eyebrow: "Servicios gestionados",
@@ -1084,15 +1207,14 @@ const CYBERSECURITE_PAGE_COPY = {
       overview: "Por tratar",
       antivirus: "Antivirus",
       antispam: "Antispam",
-      campaigns: "Campañas",
+      campaigns: "Campañas"
     },
     overview: {
       priorityTitle: "Prioridad",
       portfolioAlerts: "{count} alerta en la cartera",
       portfolioAlertsPlural: "{count} alertas en la cartera",
       emptyTitle: "Sin alertas de seguridad",
-      emptyText:
-        "Las soluciones antivirus y antispam de la cartera están en estado nominal.",
+      emptyText: "Las soluciones antivirus y antispam de la cartera están en estado nominal.",
       treat: "Gestionar",
       viewFleet: "Ver parque",
       actions: {
@@ -1102,7 +1224,7 @@ const CYBERSECURITE_PAGE_COPY = {
         asExpired: "Antispam caducado o inactivo",
         asSoon: "Antispam próximo a caducar",
         campaignSuspended: "Campaña suspendida",
-        campaignFallback: "Campaña",
+        campaignFallback: "Campaña"
       },
       hexTitle: "Resumen",
       hexKpi: {
@@ -1112,7 +1234,7 @@ const CYBERSECURITE_PAGE_COPY = {
         campaigns: "Campañas",
         avSolutions: "Sol. AV",
         asSolutions: "Sol. AS",
-        health: "Salud (%)",
+        health: "Salud (%)"
       },
       kpi: {
         solutions: "Soluciones",
@@ -1122,7 +1244,7 @@ const CYBERSECURITE_PAGE_COPY = {
         users: "Usuarios",
         domains: "Dominios",
         todo: "Por tratar",
-        health: "Salud (%)",
+        health: "Salud (%)"
       },
       av: {
         eyebrow: "Antivirus",
@@ -1133,15 +1255,15 @@ const CYBERSECURITE_PAGE_COPY = {
         descStatsClients: "{clients} empresa cubierta",
         descStatsClientsPlural: "{clients} empresas cubiertas",
         descStatsProviders: "{providers} proveedor",
-        descStatsProvidersPlural: "{providers} proveedores",
+        descStatsProvidersPlural: "{providers} proveedores"
       },
       as: {
         eyebrow: "Antispam",
         title: "Soluciones antispam",
         descEmpty: "Ninguna solución antispam registrada",
         descStats: "{clients} empresa cubierta · {providers} proveedor",
-        descStatsPlural: "{clients} empresas cubiertas · {providers} proveedores",
-      },
+        descStatsPlural: "{clients} empresas cubiertas · {providers} proveedores"
+      }
     },
     msp: {
       heroTitle: "Parque multiempresa",
@@ -1168,13 +1290,13 @@ const CYBERSECURITE_PAGE_COPY = {
         all: "Todos",
         actif: "Activos",
         expire_bientot: "Caduca pronto",
-        inactif: "Inactivos",
+        inactif: "Inactivos"
       },
       statusMeta: {
         actif: "Activo",
         expire_bientot: "Caduca pronto",
         inactif: "Inactivo",
-        inconnu: "No indicado",
+        inconnu: "No indicado"
       },
       table: {
         enterprise: "Empresa",
@@ -1184,13 +1306,13 @@ const CYBERSECURITE_PAGE_COPY = {
         status: "Estado",
         expiration: "Caducidad",
         coverage: "Cobertura",
-        lastSync: "Última sync",
+        lastSync: "Última sync"
       },
       kpi: {
         solutions: "Soluciones",
         enterprises: "Empresas",
         active: "Activas",
-        todo: "Por tratar",
+        todo: "Por tratar"
       },
       antivirus: {
         eyebrow: "Antivirus",
@@ -1204,9 +1326,8 @@ const CYBERSECURITE_PAGE_COPY = {
         loading: "Cargando parque antivirus…",
         emptyTitle: "Ninguna solución antivirus",
         noResultsTitle: "Sin resultados",
-        emptyText:
-          "Configure las soluciones en las fichas de empresa o añada una desde este panel.",
-        noResultsText: "Ajuste los filtros o la búsqueda para mostrar soluciones.",
+        emptyText: "Configure las soluciones en las fichas de empresa o añada una desde este panel.",
+        noResultsText: "Ajuste los filtros o la búsqueda para mostrar soluciones."
       },
       antispam: {
         eyebrow: "Antispam",
@@ -1220,10 +1341,9 @@ const CYBERSECURITE_PAGE_COPY = {
         loading: "Cargando parque antispam…",
         emptyTitle: "Ninguna solución antispam",
         noResultsTitle: "Sin resultados",
-        emptyText:
-          "Configure las soluciones en las fichas de empresa o añada una desde este panel.",
-        noResultsText: "Ajuste los filtros o la búsqueda para mostrar soluciones.",
-      },
+        emptyText: "Configure las soluciones en las fichas de empresa o añada una desde este panel.",
+        noResultsText: "Ajuste los filtros o la búsqueda para mostrar soluciones."
+      }
     },
     campaigns: {
       eyebrow: "Campañas",
@@ -1239,16 +1359,17 @@ const CYBERSECURITE_PAGE_COPY = {
         all: "Todas",
         en_preparation: "En preparación",
         active: "Activas",
-        suspendue: "Suspendidas",
-        inactive: "Finalizadas",
+        suspendue: "En pausa",
+        inactive: "Finalizadas"
       },
       totalTitle: "Clic para mostrar todas las campañas",
       filterTitle: "Clic para filtrar: {label}",
       sectionTitle: "Campañas de ciberseguridad",
-      addTitle: "Añadir campaña",
+      addTitle: "Añadir campaña MFA",
       loading: "Cargando campañas…",
       emptyTitle: "Ninguna campaña",
-      emptyText: "Cree su primera campaña de ciberseguridad",
+      emptyText: "Cree su primera campaña MFA Microsoft",
+      emptyCta: "Crear campaña MFA",
       viewClient: "Ver ficha cliente",
       rowsPerPage: "Filas por página",
       prevPage: "Página anterior",
@@ -1262,32 +1383,54 @@ const CYBERSECURITE_PAGE_COPY = {
         startDate: "Fecha inicio",
         endDate: "Fecha fin",
         progress: "Progreso",
-        createdAt: "Creado el",
+        createdAt: "Creado el"
       },
       types: {
-        microsoft_security: "Seguridad Microsoft",
+        microsoft_security: "Seguridad Microsoft (MFA)",
         cybersecurity_training: "Formación en ciberseguridad",
         rgpd_audit: "Auditoría conformidad RGPD",
         penetration_test: "Prueba de penetración",
         phishing_simulation: "Simulación de phishing",
         vulnerability_scan: "Escaneo de vulnerabilidades",
         incident_response: "Respuesta a incidentes",
-        compliance_audit: "Auditoría de conformidad",
+        compliance_audit: "Auditoría de conformidad"
       },
       statuses: {
         en_preparation: "En preparación",
         active: "Activa",
-        suspendue: "Suspendida",
-        inactive: "Finalizada",
+        suspendue: "En pausa",
+        inactive: "Finalizada"
       },
       modal: {
         editTitle: "Modificar campaña",
-        createTitle: "Nueva campaña",
-        eyebrow: "Campañas",
-        createSubtitle: "Defina la empresa, el tipo y el periodo de la campaña.",
-        editSubtitle: "Modifique la información de la campaña.",
+        createTitle: "Nueva campaña MFA",
+        eyebrow: "Campañas MFA",
+        createSubtitle: "Campaña de adopción MFA basada en los datos del tenant Microsoft.",
+        editSubtitle: "Modifique la información de la campaña MFA.",
         sectionTitle: "Información general",
-        sectionDesc: "Cliente, nombre, tipo y periodo del informe de campaña.",
+        sectionDesc: "Cliente, nombre y tipo. Los pasos MFA y los snapshots se crean automáticamente.",
+        sectionsNavAria: "Secciones del formulario de campaña",
+        footerHint: "Los campos marcados con * son obligatorios",
+        sections: {
+          general: {
+            navLabel: "General",
+            navHint: "Empresa y tipo",
+            title: "Información general",
+            desc: "Seleccione la empresa y asigne un nombre a la campaña MFA Microsoft."
+          },
+          dates: {
+            navLabel: "Fechas",
+            navHint: "Periodo de campaña",
+            title: "Periodo",
+            desc: "Defina la ventana de inicio y fin de la campaña."
+          },
+          details: {
+            navLabel: "Detalles",
+            navHint: "Contexto y notas",
+            title: "Especificidades",
+            desc: "Añada contexto, expectativas o restricciones de la campaña."
+          }
+        },
         close: "Cerrar",
         namePlaceholder: "Ej. Campaña MFA T2 2026",
         enterprise: "Empresa *",
@@ -1295,31 +1438,45 @@ const CYBERSECURITE_PAGE_COPY = {
         noEnterprise: "Ninguna empresa encontrada",
         name: "Nombre de la campaña *",
         type: "Tipo *",
+        provider: "Provider *",
+        providerMicrosoft: "Microsoft",
+        providerGoogle: "Google Workspace",
+        providerOkta: "Okta",
+        providerComingSoon: "Este provider estará disponible pronto",
+        badgeSoon: "Soon",
+        tenant: "Tenant *",
+        tenantLoading: "Cargando el tenant Microsoft…",
+        tenantFallbackLabel: "Tenant Microsoft",
+        needMicrosoftTenant: "Configure primero un tenant Microsoft Entra para esta empresa antes de crear una campaña MFA.",
         startDate: "Fecha de inicio",
         endDate: "Fecha de fin",
         specificity: "Especificidad",
-        specificityPlaceholder:
-          "Especificidades de la campaña (contexto, expectativas, restricciones…)",
+        specificityPlaceholder: "Especificidades de la campaña (contexto, expectativas, restricciones…)",
         saveEdit: "Modificar campaña",
         saveCreate: "Crear campaña",
+        status: "Estado",
+        adoptionGoal: "Objetivo de adopción (%)",
+        adoptionGoalPlaceholder: "Ej.: 90",
+        delete: "Eliminar",
+        deleting: "Eliminando…"
       },
       delete: {
         title: "Eliminar campaña",
-        message:
-          "¿Eliminar esta campaña? Esta acción es irreversible.",
+        message: "¿Eliminar esta campaña? Esta acción es irreversible.",
         confirmLabel: 'Escriba "CONFIRMO" para validar:',
         confirmPlaceholder: "CONFIRMO",
-        confirmWord: "CONFIRMO",
+        confirmWord: "CONFIRMO"
       },
       toasts: {
         requiredFields: "El cliente, el nombre y el tipo de campaña son obligatorios",
+        needMicrosoftTenant: "Debe configurarse un tenant Microsoft Entra para crear una campaña MFA",
         updated: "Campaña actualizada correctamente",
         created: "Campaña creada correctamente",
         saveError: "Error al guardar la campaña",
         confirmDelete: 'Escriba "CONFIRMO" para validar la eliminación',
         deleted: "Campaña eliminada correctamente",
-        deleteError: "Error al eliminar la campaña",
-      },
+        deleteError: "Error al eliminar la campaña"
+      }
     },
     sync: {
       preparing: "Preparación…",
@@ -1329,11 +1486,10 @@ const CYBERSECURITE_PAGE_COPY = {
       success: "Sincronización completada: {success} licencia(s) actualizada(s){errors}",
       successErrors: ", {count} error(es)",
       failed: "Sincronización fallida: {count} error(es)",
-      error: "Error al sincronizar las licencias Bitdefender",
-    },
-  },
+      error: "Error al sincronizar las licencias Bitdefender"
+    }
+  }
 };
-
 function buildFleetDescription(stats, section, locale) {
   const t = pickLocaleMessages(CYBERSECURITE_PAGE_COPY, locale);
   const s = t.overview[section];
@@ -1344,113 +1500,113 @@ function buildFleetDescription(stats, section, locale) {
     const template = clients > 1 || providers > 1 ? s.descStatsPlural : s.descStats;
     return interpolate(template, {
       clients: String(clients),
-      providers: String(providers),
+      providers: String(providers)
     });
   }
   return s.descEmpty;
 }
-
 export function getCybersecuritePageCopy(locale) {
   const t = pickLocaleMessages(CYBERSECURITE_PAGE_COPY, locale);
-
   const statusMeta = STATUS_META_KEYS.reduce((acc, key) => {
     const label = t.msp.statusMeta[key];
-    const tone =
-      key === "actif" ? "good" : key === "expire_bientot" ? "warn" : key === "inactif" ? "bad" : "neutral";
-    acc[key] = { label, tone };
+    const tone = key === "actif" ? "good" : key === "expire_bientot" ? "warn" : key === "inactif" ? "bad" : "neutral";
+    acc[key] = {
+      label,
+      tone
+    };
     return acc;
   }, {});
-
   return {
     ...t,
     locale,
-    tabs: TAB_KEYS.map((key) => ({
+    tabs: TAB_KEYS.map(key => ({
       key,
       label: t.tabs[key],
       icon: TAB_ICONS[key],
-      proOnly: key === "campaigns",
+      proOnly: key === "campaigns"
     })),
-    statusFilters: STATUS_FILTER_IDS.map((id) => ({
+    statusFilters: STATUS_FILTER_IDS.map(id => ({
       id,
-      label: t.msp.statusFilters[id],
+      label: t.msp.statusFilters[id]
     })),
     statusMeta,
-    campaignTypes: CAMPAIGN_TYPE_KEYS.map((value) => ({
+    campaignTypes: CAMPAIGN_TYPE_KEYS.map(value => ({
       value,
-      label: t.campaigns.types[value],
+      label: t.campaigns.types[value]
     })),
-    campaignStatuses: CAMPAIGN_STATUS_KEYS.map((value) => ({
+    campaignStatuses: CAMPAIGN_STATUS_KEYS.map(value => ({
       value,
       label: t.campaigns.statuses[value],
-      color: CAMPAIGN_STATUS_COLORS[value],
+      color: CAMPAIGN_STATUS_COLORS[value]
     })),
-    campaignStatusFilters: CAMPAIGN_STATUS_FILTER_IDS.map((id) => ({
+    campaignStatusFilters: CAMPAIGN_STATUS_FILTER_IDS.map(id => ({
       id,
-      label: t.campaigns.statusFilters[id],
+      label: t.campaigns.statusFilters[id]
     })),
-    getCampaignStatusMeta: (status) => ({
+    getCampaignStatusMeta: status => ({
       label: t.campaigns.statuses[status] || status,
-      tone: CAMPAIGN_STATUS_TONES[status] || "neutral",
+      tone: CAMPAIGN_STATUS_TONES[status] || "neutral"
     }),
-    formatPortfolioAlerts: (count) =>
-      interpolate(count === 1 ? t.overview.portfolioAlerts : t.overview.portfolioAlertsPlural, {
-        count: String(count),
-      }),
-    formatAlertCount: (count) =>
-      interpolate(count === 1 ? t.msp.alertCount : t.msp.alertCountPlural, {
-        count: String(count),
-      }),
-    formatSolutionCount: (count) =>
-      interpolate(count === 1 ? t.msp.solutionCount : t.msp.solutionCountPlural, {
-        count: String(count),
-      }),
-    formatEndpointCount: (count) => interpolate(t.msp.endpointCount, { count: String(count) }),
-    formatUserCount: (count) => interpolate(t.msp.userCount, { count: String(count) }),
-    formatCoverageUsers: (count) =>
-      interpolate(
-        Number(count) === 1 ? t.msp.coverageUsers : t.msp.coverageUsersPlural,
-        { count: String(count) }
-      ),
-    formatCoverageDomains: (count) =>
-      interpolate(
-        Number(count) === 1 ? t.msp.coverageDomains : t.msp.coverageDomainsPlural,
-        { count: String(count) }
-      ),
-    formatLicensesTitle: (used, total) =>
-      interpolate(t.msp.licensesTitle, { used: String(used ?? 0), total: String(total) }),
+    formatPortfolioAlerts: count => interpolate(count === 1 ? t.overview.portfolioAlerts : t.overview.portfolioAlertsPlural, {
+      count: String(count)
+    }),
+    formatAlertCount: count => interpolate(count === 1 ? t.msp.alertCount : t.msp.alertCountPlural, {
+      count: String(count)
+    }),
+    formatSolutionCount: count => interpolate(count === 1 ? t.msp.solutionCount : t.msp.solutionCountPlural, {
+      count: String(count)
+    }),
+    formatEndpointCount: count => interpolate(t.msp.endpointCount, {
+      count: String(count)
+    }),
+    formatUserCount: count => interpolate(t.msp.userCount, {
+      count: String(count)
+    }),
+    formatCoverageUsers: count => interpolate(Number(count) === 1 ? t.msp.coverageUsers : t.msp.coverageUsersPlural, {
+      count: String(count)
+    }),
+    formatCoverageDomains: count => interpolate(Number(count) === 1 ? t.msp.coverageDomains : t.msp.coverageDomainsPlural, {
+      count: String(count)
+    }),
+    formatLicensesTitle: (used, total) => interpolate(t.msp.licensesTitle, {
+      used: String(used ?? 0),
+      total: String(total)
+    }),
     formatHeroIssues: (kind, count) => {
       const section = t.msp[kind];
       const template = count === 1 ? section.heroDescIssues : section.heroDescIssuesPlural;
-      return interpolate(template, { count: String(count) });
+      return interpolate(template, {
+        count: String(count)
+      });
     },
-    formatAvFleetDescription: (stats) => buildFleetDescription(stats, "av", locale),
-    formatAsFleetDescription: (stats) => buildFleetDescription(stats, "as", locale),
-    getCampaignTypeLabel: (type) => t.campaigns.types[type] || type,
-    getCampaignStatusLabel: (status) => t.campaigns.statuses[status] || status,
-    getStatusMeta: (status) => statusMeta[status] || statusMeta.inconnu,
-    formatCampaignCount: (count) =>
-      interpolate(count === 1 ? t.campaigns.campaignCount : t.campaigns.campaignCountPlural, {
-        count: String(count),
-      }),
-    formatCampaignHeroIssues: (count) =>
-      interpolate(
-        count === 1 ? t.campaigns.heroDescIssues : t.campaigns.heroDescIssuesPlural,
-        { count: String(count) }
-      ),
-    formatSyncProgress: (current, total, name) =>
-      interpolate(t.sync.progress, {
-        current: String(current),
-        total: String(total),
-        name: name || "",
-      }),
-    formatSyncSuccess: (success, errorCount) =>
-      interpolate(t.sync.success, {
-        success: String(success),
-        errors:
-          errorCount > 0 ? interpolate(t.sync.successErrors, { count: String(errorCount) }) : "",
-      }),
-    formatSyncFailed: (count) => interpolate(t.sync.failed, { count: String(count) }),
-    formatCampaignPageInfo: (page, total) =>
-      interpolate(t.campaigns.pageInfo, { page: String(page), total: String(total) }),
+    formatAvFleetDescription: stats => buildFleetDescription(stats, "av", locale),
+    formatAsFleetDescription: stats => buildFleetDescription(stats, "as", locale),
+    getCampaignTypeLabel: type => t.campaigns.types[type] || type,
+    getCampaignStatusLabel: status => t.campaigns.statuses[status] || status,
+    getStatusMeta: status => statusMeta[status] || statusMeta.inconnu,
+    formatCampaignCount: count => interpolate(count === 1 ? t.campaigns.campaignCount : t.campaigns.campaignCountPlural, {
+      count: String(count)
+    }),
+    formatCampaignHeroIssues: count => interpolate(count === 1 ? t.campaigns.heroDescIssues : t.campaigns.heroDescIssuesPlural, {
+      count: String(count)
+    }),
+    formatSyncProgress: (current, total, name) => interpolate(t.sync.progress, {
+      current: String(current),
+      total: String(total),
+      name: name || ""
+    }),
+    formatSyncSuccess: (success, errorCount) => interpolate(t.sync.success, {
+      success: String(success),
+      errors: errorCount > 0 ? interpolate(t.sync.successErrors, {
+        count: String(errorCount)
+      }) : ""
+    }),
+    formatSyncFailed: count => interpolate(t.sync.failed, {
+      count: String(count)
+    }),
+    formatCampaignPageInfo: (page, total) => interpolate(t.campaigns.pageInfo, {
+      page: String(page),
+      total: String(total)
+    })
   };
 }

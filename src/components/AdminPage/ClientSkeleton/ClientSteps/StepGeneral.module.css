@@ -395,7 +395,7 @@
 }
 
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .gridTwo,
   .gridThree {
@@ -415,7 +415,7 @@
   }
 }
 
-/* Styles pour les sites (anciennement dans StepSites.module.css) */
+
 .sitesContainer {
   display: flex;
   flex-direction: column;

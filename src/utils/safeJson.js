@@ -11,11 +11,9 @@ function createJsonReplacer() {
     return value;
   };
 }
-
 export function safeJsonStringify(value) {
   return JSON.stringify(value, createJsonReplacer());
 }
-
 export function safeJsonClone(value) {
   return JSON.parse(safeJsonStringify(value));
 }

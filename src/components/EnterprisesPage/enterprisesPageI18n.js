@@ -1,23 +1,28 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 const STATUS_FILTER_KEYS = ["active", "expiring", "expired", "suspended"];
-
 const STATUS_FILTER_META = {
-  active: { icon: "mdi:check-circle", color: "#2b5fab", kpiTone: "blue" },
-  expiring: { icon: "mdi:clock-alert", color: "#d97706", kpiTone: "amber" },
-  expired: { icon: "mdi:alert-circle", color: "#dc2626", kpiTone: "red" },
-  suspended: { icon: "mdi:pause-circle", color: "#f59e0b", kpiTone: "orange" },
+  active: {
+    icon: "mdi:check-circle",
+    color: "#2b5fab",
+    kpiTone: "blue"
+  },
+  expiring: {
+    icon: "mdi:clock-alert",
+    color: "#d97706",
+    kpiTone: "amber"
+  },
+  expired: {
+    icon: "mdi:alert-circle",
+    color: "#dc2626",
+    kpiTone: "red"
+  },
+  suspended: {
+    icon: "mdi:pause-circle",
+    color: "#f59e0b",
+    kpiTone: "orange"
+  }
 };
-
-const SORT_OPTION_VALUES = [
-  "name:asc",
-  "name:desc",
-  "expiration:asc",
-  "expiration:desc",
-  "commercial:asc",
-  "status:asc",
-];
-
+const SORT_OPTION_VALUES = ["name:asc", "name:desc", "expiration:asc", "expiration:desc", "commercial:asc", "status:asc"];
 const ENTERPRISES_COPY = {
   fr: {
     eyebrow: "Portefeuille clients",
@@ -48,18 +53,27 @@ const ENTERPRISES_COPY = {
     prevPage: "Page précédente",
     nextPage: "Page suivante",
     pageInfo: "Page {current} / {total}",
+    table: {
+      company: "Entreprise",
+      primaryContact: "Contact principal",
+      commercial: "Commercial",
+      modules: "Modules",
+      expiration: "Expiration",
+      equipment: "Équipements",
+      tags: "Étiquettes"
+    },
     statusFilters: {
       active: "Actifs",
       expiring: "Expire bientôt",
       expired: "Expirés",
-      suspended: "Suspendus",
+      suspended: "Suspendus"
     },
     contractStatus: {
       suspended: "Suspendu",
       unknown: "Non renseigné",
       expired: "Expiré",
       expiring: "Expire bientôt",
-      active: "Actif",
+      active: "Actif"
     },
     sortOptions: {
       "name:asc": "Ordre alphabétique croissant",
@@ -67,7 +81,7 @@ const ENTERPRISES_COPY = {
       "expiration:asc": "Expiration · plus proche",
       "expiration:desc": "Expiration · plus lointaine",
       "commercial:asc": "Commercial · ordre croissant",
-      "status:asc": "Statut du contrat",
+      "status:asc": "Statut du contrat"
     },
     export: {
       filename: "entreprises.csv",
@@ -75,9 +89,9 @@ const ENTERPRISES_COPY = {
         name: "Nom",
         contractOptions: "Options du contrat",
         expiration: "Date d'expiration",
-        commercial: "Commercial",
-      },
-    },
+        commercial: "Commercial"
+      }
+    }
   },
   en: {
     eyebrow: "Client portfolio",
@@ -108,18 +122,27 @@ const ENTERPRISES_COPY = {
     prevPage: "Previous page",
     nextPage: "Next page",
     pageInfo: "Page {current} / {total}",
+    table: {
+      company: "Company",
+      primaryContact: "Primary contact",
+      commercial: "Account manager",
+      modules: "Modules",
+      expiration: "Expiration",
+      equipment: "Equipment",
+      tags: "Tags"
+    },
     statusFilters: {
       active: "Active",
       expiring: "Expiring soon",
       expired: "Expired",
-      suspended: "Suspended",
+      suspended: "Suspended"
     },
     contractStatus: {
       suspended: "Suspended",
       unknown: "Not specified",
       expired: "Expired",
       expiring: "Expiring soon",
-      active: "Active",
+      active: "Active"
     },
     sortOptions: {
       "name:asc": "Alphabetical A → Z",
@@ -127,7 +150,7 @@ const ENTERPRISES_COPY = {
       "expiration:asc": "Expiration · soonest",
       "expiration:desc": "Expiration · latest",
       "commercial:asc": "Account manager · A → Z",
-      "status:asc": "Contract status",
+      "status:asc": "Contract status"
     },
     export: {
       filename: "companies.csv",
@@ -135,9 +158,9 @@ const ENTERPRISES_COPY = {
         name: "Name",
         contractOptions: "Contract options",
         expiration: "Expiration date",
-        commercial: "Account manager",
-      },
-    },
+        commercial: "Account manager"
+      }
+    }
   },
   de: {
     eyebrow: "Kundenportfolio",
@@ -168,18 +191,27 @@ const ENTERPRISES_COPY = {
     prevPage: "Vorherige Seite",
     nextPage: "Nächste Seite",
     pageInfo: "Seite {current} / {total}",
+    table: {
+      company: "Unternehmen",
+      primaryContact: "Hauptkontakt",
+      commercial: "Vertrieb",
+      modules: "Module",
+      expiration: "Ablauf",
+      equipment: "Geräte",
+      tags: "Tags"
+    },
     statusFilters: {
       active: "Aktiv",
       expiring: "Läuft bald ab",
       expired: "Abgelaufen",
-      suspended: "Ausgesetzt",
+      suspended: "Ausgesetzt"
     },
     contractStatus: {
       suspended: "Ausgesetzt",
       unknown: "Nicht angegeben",
       expired: "Abgelaufen",
       expiring: "Läuft bald ab",
-      active: "Aktiv",
+      active: "Aktiv"
     },
     sortOptions: {
       "name:asc": "Alphabetisch A → Z",
@@ -187,7 +219,7 @@ const ENTERPRISES_COPY = {
       "expiration:asc": "Ablauf · nächster",
       "expiration:desc": "Ablauf · spätester",
       "commercial:asc": "Vertrieb · A → Z",
-      "status:asc": "Vertragsstatus",
+      "status:asc": "Vertragsstatus"
     },
     export: {
       filename: "unternehmen.csv",
@@ -195,9 +227,9 @@ const ENTERPRISES_COPY = {
         name: "Name",
         contractOptions: "Vertragsoptionen",
         expiration: "Ablaufdatum",
-        commercial: "Vertrieb",
-      },
-    },
+        commercial: "Vertrieb"
+      }
+    }
   },
   it: {
     eyebrow: "Portafoglio clienti",
@@ -228,18 +260,27 @@ const ENTERPRISES_COPY = {
     prevPage: "Pagina precedente",
     nextPage: "Pagina successiva",
     pageInfo: "Pagina {current} / {total}",
+    table: {
+      company: "Azienda",
+      primaryContact: "Contatto principale",
+      commercial: "Commerciale",
+      modules: "Moduli",
+      expiration: "Scadenza",
+      equipment: "Attrezzature",
+      tags: "Etichette"
+    },
     statusFilters: {
       active: "Attive",
       expiring: "In scadenza",
       expired: "Scadute",
-      suspended: "Sospese",
+      suspended: "Sospese"
     },
     contractStatus: {
       suspended: "Sospeso",
       unknown: "Non indicato",
       expired: "Scaduto",
       expiring: "In scadenza",
-      active: "Attivo",
+      active: "Attivo"
     },
     sortOptions: {
       "name:asc": "Ordine alfabetico crescente",
@@ -247,7 +288,7 @@ const ENTERPRISES_COPY = {
       "expiration:asc": "Scadenza · più vicina",
       "expiration:desc": "Scadenza · più lontana",
       "commercial:asc": "Commerciale · ordine crescente",
-      "status:asc": "Stato contratto",
+      "status:asc": "Stato contratto"
     },
     export: {
       filename: "aziende.csv",
@@ -255,9 +296,9 @@ const ENTERPRISES_COPY = {
         name: "Nome",
         contractOptions: "Opzioni contratto",
         expiration: "Data scadenza",
-        commercial: "Commerciale",
-      },
-    },
+        commercial: "Commerciale"
+      }
+    }
   },
   es: {
     eyebrow: "Cartera de clientes",
@@ -288,18 +329,27 @@ const ENTERPRISES_COPY = {
     prevPage: "Página anterior",
     nextPage: "Página siguiente",
     pageInfo: "Página {current} / {total}",
+    table: {
+      company: "Empresa",
+      primaryContact: "Contacto principal",
+      commercial: "Comercial",
+      modules: "Módulos",
+      expiration: "Vencimiento",
+      equipment: "Equipos",
+      tags: "Etiquetas"
+    },
     statusFilters: {
       active: "Activas",
       expiring: "Por vencer",
       expired: "Vencidas",
-      suspended: "Suspendidas",
+      suspended: "Suspendidas"
     },
     contractStatus: {
       suspended: "Suspendido",
       unknown: "No indicado",
       expired: "Vencido",
       expiring: "Por vencer",
-      active: "Activo",
+      active: "Activo"
     },
     sortOptions: {
       "name:asc": "Orden alfabético ascendente",
@@ -307,7 +357,7 @@ const ENTERPRISES_COPY = {
       "expiration:asc": "Vencimiento · más próximo",
       "expiration:desc": "Vencimiento · más lejano",
       "commercial:asc": "Comercial · orden ascendente",
-      "status:asc": "Estado del contrato",
+      "status:asc": "Estado del contrato"
     },
     export: {
       filename: "empresas.csv",
@@ -315,91 +365,87 @@ const ENTERPRISES_COPY = {
         name: "Nombre",
         contractOptions: "Opciones de contrato",
         expiration: "Fecha de vencimiento",
-        commercial: "Comercial",
-      },
-    },
-  },
+        commercial: "Comercial"
+      }
+    }
+  }
 };
-
 const CONTRACT_STATUS_COLORS = {
   suspended: "#f59e0b",
   unknown: "#9ca3af",
   expired: "#f87171",
   expiring: "#fbbf24",
-  active: "#2b5fab",
+  active: "#2b5fab"
 };
-
 export function getEnterprisesPageCopy(locale) {
   const t = pickLocaleMessages(ENTERPRISES_COPY, locale);
-
   return {
     ...t,
-    statusFilterItems: STATUS_FILTER_KEYS.map((key) => ({
+    statusFilterItems: STATUS_FILTER_KEYS.map(key => ({
       key,
       label: t.statusFilters[key],
-      ...STATUS_FILTER_META[key],
+      ...STATUS_FILTER_META[key]
     })),
-    sortOptions: SORT_OPTION_VALUES.map((value) => ({
+    sortOptions: SORT_OPTION_VALUES.map(value => ({
       value,
-      label: t.sortOptions[value],
+      label: t.sortOptions[value]
     })),
     formatSubtitle: (filteredCount, total) => {
       const filtered = String(filteredCount);
       const totalStr = String(total);
       const template = filteredCount > 1 ? t.subtitlePlural : t.subtitle;
-      return interpolate(template, { filtered, total: totalStr });
+      return interpolate(template, {
+        filtered,
+        total: totalStr
+      });
     },
-    formatPageInfo: (current, total) =>
-      interpolate(t.pageInfo, { current: String(current), total: String(total) }),
-    formatLoadErrorStatus: (status) => interpolate(t.loadErrorStatus, { status: String(status) }),
+    formatPageInfo: (current, total) => interpolate(t.pageInfo, {
+      current: String(current),
+      total: String(total)
+    }),
+    formatLoadErrorStatus: status => interpolate(t.loadErrorStatus, {
+      status: String(status)
+    }),
     getContractStatus: (expirationDate, isSuspended = false) => {
       if (isSuspended) {
         return {
           status: "suspended",
           label: t.contractStatus.suspended,
-          color: CONTRACT_STATUS_COLORS.suspended,
+          color: CONTRACT_STATUS_COLORS.suspended
         };
       }
       if (!expirationDate) {
         return {
           status: "unknown",
           label: t.contractStatus.unknown,
-          color: CONTRACT_STATUS_COLORS.unknown,
+          color: CONTRACT_STATUS_COLORS.unknown
         };
       }
-
       const expiration = new Date(expirationDate);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       expiration.setHours(0, 0, 0, 0);
       const diffDays = Math.ceil((expiration - today) / (1000 * 60 * 60 * 24));
-
       if (diffDays < 0) {
         return {
           status: "expired",
           label: t.contractStatus.expired,
-          color: CONTRACT_STATUS_COLORS.expired,
+          color: CONTRACT_STATUS_COLORS.expired
         };
       }
       if (diffDays <= 30) {
         return {
           status: "expiring",
           label: t.contractStatus.expiring,
-          color: CONTRACT_STATUS_COLORS.expiring,
+          color: CONTRACT_STATUS_COLORS.expiring
         };
       }
       return {
         status: "active",
         label: t.contractStatus.active,
-        color: CONTRACT_STATUS_COLORS.active,
+        color: CONTRACT_STATUS_COLORS.active
       };
     },
-    getCsvHeaders: (equipmentColumns) => [
-      t.export.headers.name,
-      t.export.headers.contractOptions,
-      t.export.headers.expiration,
-      t.export.headers.commercial,
-      ...equipmentColumns.map((col) => col.label),
-    ],
+    getCsvHeaders: equipmentColumns => [t.export.headers.name, t.export.headers.contractOptions, t.export.headers.expiration, t.export.headers.commercial, ...equipmentColumns.map(col => col.label)]
   };
 }

@@ -1,46 +1,34 @@
-/**
- * Template HTML unifié pour les exports de rapports monitoring (ZIP / HTML).
- */
-
 export const REPORT_META = {
   infrastructure: {
-    label: "Rapport d'infrastructure",
-    shortLabel: "Infrastructure",
+    label: "Infrastructure report",
+    shortLabel: "Infrastructure"
   },
   cybersecurite: {
-    label: "Rapport de cybersécurité",
-    shortLabel: "Cybersécurité",
+    label: "Cybersecurity report",
+    shortLabel: "Cybersecurity"
   },
   services: {
-    label: "Rapport des services",
-    shortLabel: "Services",
-  },
+    label: "Services report",
+    shortLabel: "Services"
+  }
 };
-
 function escapeHtml(value) {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+  return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
-
 export function formatReportDate(value) {
   if (!value) return "";
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return String(value);
-  return d.toLocaleDateString("fr-FR");
+  return d.toLocaleDateString("en-US");
 }
-
 export function buildReportPeriodLabel(client) {
   const startLabel = formatReportDate(client?.reportStartDate);
   const endLabel = formatReportDate(client?.reportEndDate);
   if (startLabel && endLabel) {
-    return `Période du ${startLabel} au ${endLabel}`;
+    return `Period from ${startLabel} to ${endLabel}`;
   }
   return "";
 }
-
 export function buildExportPrintStyles() {
   return `
     :root {
@@ -183,7 +171,7 @@ export function buildExportPrintStyles() {
       border-color: var(--vex-border) !important;
     }
 
-    /* ── Commentaires ── */
+    /* ── Comments ── */
     .vex-comments,
     [data-export-comments="true"] {
       margin-top: 2rem !important;
@@ -329,9 +317,14 @@ export function buildExportPrintStyles() {
     }
   `;
 }
-
-export function buildExportHeaderHtml({ clientName, periodLabel, reportType }) {
-  const meta = REPORT_META[reportType] || { label: "Rapport de monitoring" };
+export function buildExportHeaderHtml({
+  clientName,
+  periodLabel,
+  reportType
+}) {
+  const meta = REPORT_META[reportType] || {
+    label: "Monitoring report"
+  };
   return `
   <header class="vex-header">
     <div class="vex-header-inner">
@@ -342,9 +335,8 @@ export function buildExportHeaderHtml({ clientName, periodLabel, reportType }) {
     </div>
   </header>`;
 }
-
 export function buildExportFooterHtml() {
-  const generatedAt = new Date().toLocaleString("fr-FR");
+  const generatedAt = new Date().toLocaleString("en-US");
   return `
   <footer class="vex-footer">
     <div class="vex-footer-inner">
@@ -367,30 +359,28 @@ export function buildExportFooterHtml() {
           <iconify-icon icon="simple-icons:x" width="20" height="20"></iconify-icon>
         </a>
       </div>
-      <p class="vex-footer-note">Document généré le ${escapeHtml(generatedAt)}</p>
+      <p class="vex-footer-note">Document generated on ${escapeHtml(generatedAt)}</p>
     </div>
   </footer>`;
 }
-
 export function buildExportCommentsEmptyHtml() {
   return `
   <section class="vex-comments" data-export-comments="true">
     <div class="vex-comments-head">
       <iconify-icon icon="mdi:comment-text-multiple-outline" width="20" height="20"></iconify-icon>
-      <h2 class="vex-comments-title">Commentaires du rapport</h2>
+      <h2 class="vex-comments-title">Report comments</h2>
     </div>
-    <div class="vex-comments-empty">Aucun commentaire n'a été ajouté pour cette période.</div>
+    <div class="vex-comments-empty">No comments were added for this period.</div>
   </section>`;
 }
-
 export function buildReportDocumentHtml({
   documentTitle,
   collectedCss = "",
   bodyContent,
-  commentsHtml = "",
+  commentsHtml = ""
 }) {
   return `<!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -1,22 +1,20 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 const STATUS_FILTER_KEYS = ["active", "inactive", "unknown"];
-
 const STATUS_FILTER_META = {
-  active: { icon: "mdi:check-circle", kpiTone: "blue" },
-  inactive: { icon: "mdi:pause-circle", kpiTone: "orange" },
-  unknown: { icon: "mdi:help-circle", kpiTone: "amber" },
+  active: {
+    icon: "mdi:check-circle",
+    kpiTone: "blue"
+  },
+  inactive: {
+    icon: "mdi:pause-circle",
+    kpiTone: "orange"
+  },
+  unknown: {
+    icon: "mdi:help-circle",
+    kpiTone: "amber"
+  }
 };
-
-const SORT_OPTION_VALUES = [
-  "nom:asc",
-  "nom:desc",
-  "prenom:asc",
-  "client:asc",
-  "email:asc",
-  "poste:asc",
-];
-
+const SORT_OPTION_VALUES = ["nom:asc", "nom:desc", "prenom:asc", "client:asc", "email:asc", "poste:asc"];
 const CONTACTS_COPY = {
   fr: {
     eyebrow: "Répertoire",
@@ -37,15 +35,24 @@ const CONTACTS_COPY = {
     tagsAria: "Étiquettes",
     enterprise: "Entreprise",
     civility: "Civilité",
+    table: {
+      contact: "Contact",
+      enterprise: "Entreprise",
+      role: "Poste",
+      email: "Email",
+      phone: "Téléphone",
+      portal: "Portail",
+      actions: "Actions"
+    },
     statusFilters: {
       active: "Actifs",
       inactive: "Inactifs",
-      unknown: "Non renseigné",
+      unknown: "Non renseigné"
     },
     contactStatus: {
       active: "Actif",
       inactive: "Inactif",
-      unknown: "Non renseigné",
+      unknown: "Non renseigné"
     },
     sortOptions: {
       "nom:asc": "Nom (A → Z)",
@@ -53,18 +60,18 @@ const CONTACTS_COPY = {
       "prenom:asc": "Prénom (A → Z)",
       "client:asc": "Entreprise (A → Z)",
       "email:asc": "Email (A → Z)",
-      "poste:asc": "Poste (A → Z)",
+      "poste:asc": "Poste (A → Z)"
     },
     portal: {
       active: "Portail actif",
       inactive: "Portail désactivé",
       none: "Aucun accès portail",
-      label: "Portail",
+      label: "Portail"
     },
     clipboard: {
       unavailable: "{label} indisponible",
       copied: "{label} copié",
-      copyFailed: "Impossible de copier {label}",
+      copyFailed: "Impossible de copier {label}"
     },
     share: {
       unavailable: "Partage non disponible sur ce navigateur",
@@ -75,12 +82,12 @@ const CONTACTS_COPY = {
         enterprise: "Entreprise",
         role: "Poste",
         phone: "Téléphone",
-        email: "Email",
-      },
+        email: "Email"
+      }
     },
     clipboardLabels: {
       email: "Email",
-      phone: "Téléphone",
+      phone: "Téléphone"
     },
     actions: {
       copyEmail: "Copier l'email",
@@ -88,13 +95,15 @@ const CONTACTS_COPY = {
       copyCard: "Copier la fiche",
       copyCardAria: "Copier la fiche contact",
       shareCard: "Fiche contact",
+      share: "Partager",
+      shareAria: "Partager la fiche contact"
     },
     export: {
       filename: "contacts.csv",
-      headers: ["Nom", "Prénom", "Statut", "Entreprise", "Poste", "Email", "Téléphone"],
+      headers: ["Nom", "Prénom", "Statut", "Entreprise", "Poste", "Email", "Téléphone"]
     },
     clientPrefix: "Client #",
-    unnamed: "Sans nom",
+    unnamed: "Sans nom"
   },
   en: {
     eyebrow: "Directory",
@@ -115,15 +124,24 @@ const CONTACTS_COPY = {
     tagsAria: "Tags",
     enterprise: "Company",
     civility: "Title",
+    table: {
+      contact: "Contact",
+      enterprise: "Company",
+      role: "Job title",
+      email: "Email",
+      phone: "Phone",
+      portal: "Portal",
+      actions: "Actions"
+    },
     statusFilters: {
       active: "Active",
       inactive: "Inactive",
-      unknown: "Not specified",
+      unknown: "Not specified"
     },
     contactStatus: {
       active: "Active",
       inactive: "Inactive",
-      unknown: "Not specified",
+      unknown: "Not specified"
     },
     sortOptions: {
       "nom:asc": "Last name (A → Z)",
@@ -131,18 +149,18 @@ const CONTACTS_COPY = {
       "prenom:asc": "First name (A → Z)",
       "client:asc": "Company (A → Z)",
       "email:asc": "Email (A → Z)",
-      "poste:asc": "Job title (A → Z)",
+      "poste:asc": "Job title (A → Z)"
     },
     portal: {
       active: "Portal active",
       inactive: "Portal disabled",
       none: "No portal access",
-      label: "Portal",
+      label: "Portal"
     },
     clipboard: {
       unavailable: "{label} unavailable",
       copied: "{label} copied",
-      copyFailed: "Unable to copy {label}",
+      copyFailed: "Unable to copy {label}"
     },
     share: {
       unavailable: "Sharing not available in this browser",
@@ -153,25 +171,28 @@ const CONTACTS_COPY = {
         enterprise: "Company",
         role: "Job title",
         phone: "Phone",
-        email: "Email",
-      },
+        email: "Email"
+      }
     },
     clipboardLabels: {
       email: "Email",
-      phone: "Phone",
+      phone: "Phone"
     },
     actions: {
       copyEmail: "Copy email",
       copyPhone: "Copy phone number",
       copyCard: "Copy card",
+      copyCardAria: "Copy contact card",
       shareCard: "Contact card",
+      share: "Share",
+      shareAria: "Share contact card"
     },
     export: {
       filename: "contacts.csv",
-      headers: ["Last name", "First name", "Status", "Company", "Job title", "Email", "Phone"],
+      headers: ["Last name", "First name", "Status", "Company", "Job title", "Email", "Phone"]
     },
     clientPrefix: "Client #",
-    unnamed: "Unnamed",
+    unnamed: "Unnamed"
   },
   de: {
     eyebrow: "Verzeichnis",
@@ -192,15 +213,24 @@ const CONTACTS_COPY = {
     tagsAria: "Tags",
     enterprise: "Unternehmen",
     civility: "Anrede",
+    table: {
+      contact: "Kontakt",
+      enterprise: "Unternehmen",
+      role: "Position",
+      email: "E-Mail",
+      phone: "Telefon",
+      portal: "Portal",
+      actions: "Aktionen"
+    },
     statusFilters: {
       active: "Aktiv",
       inactive: "Inaktiv",
-      unknown: "Nicht angegeben",
+      unknown: "Nicht angegeben"
     },
     contactStatus: {
       active: "Aktiv",
       inactive: "Inaktiv",
-      unknown: "Nicht angegeben",
+      unknown: "Nicht angegeben"
     },
     sortOptions: {
       "nom:asc": "Nachname (A → Z)",
@@ -208,18 +238,18 @@ const CONTACTS_COPY = {
       "prenom:asc": "Vorname (A → Z)",
       "client:asc": "Unternehmen (A → Z)",
       "email:asc": "E-Mail (A → Z)",
-      "poste:asc": "Position (A → Z)",
+      "poste:asc": "Position (A → Z)"
     },
     portal: {
       active: "Portal aktiv",
       inactive: "Portal deaktiviert",
       none: "Kein Portalzugang",
-      label: "Portal",
+      label: "Portal"
     },
     clipboard: {
       unavailable: "{label} nicht verfügbar",
       copied: "{label} kopiert",
-      copyFailed: "{label} konnte nicht kopiert werden",
+      copyFailed: "{label} konnte nicht kopiert werden"
     },
     share: {
       unavailable: "Teilen in diesem Browser nicht verfügbar",
@@ -230,25 +260,28 @@ const CONTACTS_COPY = {
         enterprise: "Unternehmen",
         role: "Position",
         phone: "Telefon",
-        email: "E-Mail",
-      },
+        email: "E-Mail"
+      }
     },
     clipboardLabels: {
       email: "E-Mail",
-      phone: "Telefon",
+      phone: "Telefon"
     },
     actions: {
       copyEmail: "E-Mail kopieren",
       copyPhone: "Telefonnummer kopieren",
       copyCard: "Karte kopieren",
+      copyCardAria: "Kontaktkarte kopieren",
       shareCard: "Kontaktkarte",
+      share: "Teilen",
+      shareAria: "Kontaktkarte teilen"
     },
     export: {
       filename: "contacts.csv",
-      headers: ["Nachname", "Vorname", "Status", "Unternehmen", "Position", "E-Mail", "Telefon"],
+      headers: ["Nachname", "Vorname", "Status", "Unternehmen", "Position", "E-Mail", "Telefon"]
     },
     clientPrefix: "Kunde #",
-    unnamed: "Ohne Name",
+    unnamed: "Ohne Name"
   },
   it: {
     eyebrow: "Rubrica",
@@ -269,15 +302,24 @@ const CONTACTS_COPY = {
     tagsAria: "Etichette",
     enterprise: "Azienda",
     civility: "Titolo",
+    table: {
+      contact: "Contatto",
+      enterprise: "Azienda",
+      role: "Ruolo",
+      email: "Email",
+      phone: "Telefono",
+      portal: "Portale",
+      actions: "Azioni"
+    },
     statusFilters: {
       active: "Attivi",
       inactive: "Inattivi",
-      unknown: "Non indicato",
+      unknown: "Non indicato"
     },
     contactStatus: {
       active: "Attivo",
       inactive: "Inattivo",
-      unknown: "Non indicato",
+      unknown: "Non indicato"
     },
     sortOptions: {
       "nom:asc": "Cognome (A → Z)",
@@ -285,18 +327,18 @@ const CONTACTS_COPY = {
       "prenom:asc": "Nome (A → Z)",
       "client:asc": "Azienda (A → Z)",
       "email:asc": "Email (A → Z)",
-      "poste:asc": "Ruolo (A → Z)",
+      "poste:asc": "Ruolo (A → Z)"
     },
     portal: {
       active: "Portale attivo",
       inactive: "Portale disattivato",
       none: "Nessun accesso al portale",
-      label: "Portale",
+      label: "Portale"
     },
     clipboard: {
       unavailable: "{label} non disponibile",
       copied: "{label} copiato",
-      copyFailed: "Impossibile copiare {label}",
+      copyFailed: "Impossibile copiare {label}"
     },
     share: {
       unavailable: "Condivisione non disponibile in questo browser",
@@ -307,25 +349,28 @@ const CONTACTS_COPY = {
         enterprise: "Azienda",
         role: "Ruolo",
         phone: "Telefono",
-        email: "Email",
-      },
+        email: "Email"
+      }
     },
     clipboardLabels: {
       email: "Email",
-      phone: "Telefono",
+      phone: "Telefono"
     },
     actions: {
       copyEmail: "Copia email",
       copyPhone: "Copia numero",
       copyCard: "Copia scheda",
+      copyCardAria: "Copia scheda contatto",
       shareCard: "Scheda contatto",
+      share: "Condividi",
+      shareAria: "Condividi scheda contatto"
     },
     export: {
       filename: "contacts.csv",
-      headers: ["Cognome", "Nome", "Stato", "Azienda", "Ruolo", "Email", "Telefono"],
+      headers: ["Cognome", "Nome", "Stato", "Azienda", "Ruolo", "Email", "Telefono"]
     },
     clientPrefix: "Cliente #",
-    unnamed: "Senza nome",
+    unnamed: "Senza nome"
   },
   es: {
     eyebrow: "Directorio",
@@ -346,15 +391,24 @@ const CONTACTS_COPY = {
     tagsAria: "Etiquetas",
     enterprise: "Empresa",
     civility: "Tratamiento",
+    table: {
+      contact: "Contacto",
+      enterprise: "Empresa",
+      role: "Puesto",
+      email: "Email",
+      phone: "Teléfono",
+      portal: "Portal",
+      actions: "Acciones"
+    },
     statusFilters: {
       active: "Activos",
       inactive: "Inactivos",
-      unknown: "No indicado",
+      unknown: "No indicado"
     },
     contactStatus: {
       active: "Activo",
       inactive: "Inactivo",
-      unknown: "No indicado",
+      unknown: "No indicado"
     },
     sortOptions: {
       "nom:asc": "Apellido (A → Z)",
@@ -362,18 +416,18 @@ const CONTACTS_COPY = {
       "prenom:asc": "Nombre (A → Z)",
       "client:asc": "Empresa (A → Z)",
       "email:asc": "Email (A → Z)",
-      "poste:asc": "Puesto (A → Z)",
+      "poste:asc": "Puesto (A → Z)"
     },
     portal: {
       active: "Portal activo",
       inactive: "Portal desactivado",
       none: "Sin acceso al portal",
-      label: "Portal",
+      label: "Portal"
     },
     clipboard: {
       unavailable: "{label} no disponible",
       copied: "{label} copiado",
-      copyFailed: "No se pudo copiar {label}",
+      copyFailed: "No se pudo copiar {label}"
     },
     share: {
       unavailable: "Compartir no disponible en este navegador",
@@ -384,66 +438,69 @@ const CONTACTS_COPY = {
         enterprise: "Empresa",
         role: "Puesto",
         phone: "Teléfono",
-        email: "Email",
-      },
+        email: "Email"
+      }
     },
     clipboardLabels: {
       email: "Email",
-      phone: "Teléfono",
+      phone: "Teléfono"
     },
     actions: {
       copyEmail: "Copiar email",
       copyPhone: "Copiar teléfono",
       copyCard: "Copiar ficha",
+      copyCardAria: "Copiar ficha de contacto",
       shareCard: "Ficha contacto",
+      share: "Compartir",
+      shareAria: "Compartir ficha de contacto"
     },
     export: {
       filename: "contactos.csv",
-      headers: ["Apellido", "Nombre", "Estado", "Empresa", "Puesto", "Email", "Teléfono"],
+      headers: ["Apellido", "Nombre", "Estado", "Empresa", "Puesto", "Email", "Teléfono"]
     },
     clientPrefix: "Cliente #",
-    unnamed: "Sin nombre",
-  },
+    unnamed: "Sin nombre"
+  }
 };
-
 const STATUS_COLORS = {
   active: "#2b5fab",
   inactive: "#d97706",
-  unknown: "#94a3b8",
+  unknown: "#94a3b8"
 };
-
 export function getContactPageCopy(locale) {
   const t = pickLocaleMessages(CONTACTS_COPY, locale);
   return {
     ...t,
-    statusFilters: STATUS_FILTER_KEYS.map((key) => ({
+    statusFilters: STATUS_FILTER_KEYS.map(key => ({
       key,
       label: t.statusFilters[key],
-      ...STATUS_FILTER_META[key],
+      ...STATUS_FILTER_META[key]
     })),
-    sortOptions: SORT_OPTION_VALUES.map((value) => ({
+    sortOptions: SORT_OPTION_VALUES.map(value => ({
       value,
-      label: t.sortOptions[value],
+      label: t.sortOptions[value]
     })),
     formatSubtitle: (filtered, total) => {
       const template = filtered === 1 ? t.subtitle : t.subtitlePlural;
-      return interpolate(template, { filtered: String(filtered), total: String(total) });
+      return interpolate(template, {
+        filtered: String(filtered),
+        total: String(total)
+      });
     },
-    getContactStatus: (statut) => {
+    getContactStatus: statut => {
       const key = normalizeStatusKey(statut);
       return {
         key,
         label: t.contactStatus[key] || t.contactStatus.unknown,
-        color: STATUS_COLORS[key] || STATUS_COLORS.unknown,
+        color: STATUS_COLORS[key] || STATUS_COLORS.unknown
       };
     },
     getClientLabel: (clientId, clientName) => {
       if (clientName) return clientName;
       return clientId ? `${t.clientPrefix}${clientId}` : "";
-    },
+    }
   };
 }
-
 function normalizeStatusKey(value) {
   if (!value) return "unknown";
   const v = String(value).toLowerCase();
@@ -451,5 +508,4 @@ function normalizeStatusKey(value) {
   if (v.includes("act")) return "active";
   return "unknown";
 }
-
 export { normalizeStatusKey as normalizeContactStatusKey };

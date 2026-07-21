@@ -1,22 +1,12 @@
 import { interpolate, normalizeLocale, pickLocaleMessages } from "../../i18n/translate";
-
 const LOCALE_BCP47 = {
   fr: "fr-FR",
   en: "en-GB",
   de: "de-DE",
   it: "it-IT",
-  es: "es-ES",
+  es: "es-ES"
 };
-
-const CATEGORY_KEYS = [
-  "Facture",
-  "Notice / Guide",
-  "Rapport",
-  "Contrat",
-  "Procédure",
-  "Autre",
-];
-
+const CATEGORY_KEYS = ["Facture", "Notice / Guide", "Rapport", "Contrat", "Procédure", "Autre"];
 const ENTERPRISE_VAULT_COPY = {
   fr: {
     categories: {
@@ -25,32 +15,30 @@ const ENTERPRISE_VAULT_COPY = {
       Rapport: "Rapport",
       Contrat: "Contrat",
       Procédure: "Procédure",
-      Autre: "Autre",
+      Autre: "Autre"
     },
     panel: {
       sectionTitle: "Coffre-fort documentaire",
       addToVault: "Ajouter au coffre-fort",
-      intro:
-        "Factures, notices, guides et rapports partagés avec le contact sur son portail client.",
+      intro: "Factures, notices, guides et rapports partagés avec le contact sur son portail client.",
       sharedCountOne: " {count} document visible côté client.",
       sharedCountMany: " {count} documents visibles côté client.",
       searchPlaceholder: "Rechercher un document…",
       clearSearchAria: "Effacer",
       allTypes: "Tous les types",
       loading: "Chargement du coffre-fort…",
-      empty: "Aucun document dans le coffre-fort.",
+      empty: "Aucun document dans le coffre-fort."
     },
     card: {
       previewTitle: "Prévisualiser",
       visiblePortal: "Visible portail",
       notShared: "Non partagé",
-      notSharedTitle:
-        "Document réservé aux agents · cliquer pour le partager sur le portail client",
+      notSharedTitle: "Document réservé aux agents · cliquer pour le partager sur le portail client",
       noDescription: "Aucune description",
       downloadTitle: "Télécharger",
       editDescriptionTitle: "Modifier la description",
       editDescriptionAria: "Modifier la description",
-      removeTitle: "Retirer",
+      removeTitle: "Retirer"
     },
     uploadModal: {
       eyebrow: "Coffre-fort documentaire",
@@ -64,15 +52,14 @@ const ENTERPRISE_VAULT_COPY = {
       dropHint: "Glisser-déposer ou cliquer pour sélectionner",
       dropFormats: "PDF, images, Word, Excel · max 20 Mo",
       visiblePortalLabel: "Visible sur le portail client",
-      visiblePortalHint:
-        "Activé : le contact peut consulter le document. Désactivé : réservé aux agents.",
+      visiblePortalHint: "Activé : le contact peut consulter le document. Désactivé : réservé aux agents.",
       visibleOn: "Visible",
       visibleOff: "Masqué",
       footerRequired: "Les champs * sont obligatoires",
       cancel: "Annuler",
       upload: "Ajouter au coffre-fort",
       uploading: "Envoi…",
-      closeAria: "Fermer",
+      closeAria: "Fermer"
     },
     editModal: {
       eyebrow: "Coffre-fort documentaire",
@@ -80,15 +67,14 @@ const ENTERPRISE_VAULT_COPY = {
       descriptionLabel: "Description",
       descriptionPlaceholder: "Ex. : Facture matériel Q1 2026, Guide utilisateur VPN…",
       visiblePortalLabel: "Visible sur le portail client",
-      visiblePortalHint:
-        "Activé : le contact peut consulter le document. Désactivé : réservé aux agents.",
+      visiblePortalHint: "Activé : le contact peut consulter le document. Désactivé : réservé aux agents.",
       visibleOn: "Visible",
       visibleOff: "Masqué",
       footerHint: "Description et visibilité portail",
       cancel: "Annuler",
       save: "Enregistrer",
       saving: "Enregistrement…",
-      closeAria: "Fermer",
+      closeAria: "Fermer"
     },
     previewModal: {
       download: "Télécharger",
@@ -96,9 +82,13 @@ const ENTERPRISE_VAULT_COPY = {
       unsupported: "Aperçu non disponible pour ce type de fichier.",
       noDescription: "Aucune description",
       editDescriptionTitle: "Modifier la description",
-      editDescriptionAria: "Modifier la description",
+      editDescriptionAria: "Modifier la description"
     },
-    size: { bytes: "{value} o", kb: "{value} Ko", mb: "{value} Mo" },
+    size: {
+      bytes: "{value} o",
+      kb: "{value} Ko",
+      mb: "{value} Mo"
+    },
     confirmDelete: "Retirer « {name} » du coffre-fort ?",
     toast: {
       loadError: "Impossible de charger le coffre-fort.",
@@ -113,17 +103,17 @@ const ENTERPRISE_VAULT_COPY = {
       uploadedInternal: "Document ajouté au coffre-fort (masqué pour le client).",
       clientNotFound: "Entreprise introuvable.",
       fileRequired: "Sélectionnez un fichier.",
-      uploadError: "Erreur lors de l'upload.",
-    },
+      uploadError: "Erreur lors de l'upload."
+    }
   },
   en: {
     categories: {
       Facture: "Invoice",
       "Notice / Guide": "Manual / guide",
-      Rapport: "Report",
+      Report: "Report",
       Contrat: "Contract",
       Procédure: "Procedure",
-      Autre: "Other",
+      Autre: "Other"
     },
     panel: {
       sectionTitle: "Document vault",
@@ -135,7 +125,7 @@ const ENTERPRISE_VAULT_COPY = {
       clearSearchAria: "Clear",
       allTypes: "All types",
       loading: "Loading document vault…",
-      empty: "No documents in the vault.",
+      empty: "No documents in the vault."
     },
     card: {
       previewTitle: "Preview",
@@ -146,7 +136,7 @@ const ENTERPRISE_VAULT_COPY = {
       downloadTitle: "Download",
       editDescriptionTitle: "Edit description",
       editDescriptionAria: "Edit description",
-      removeTitle: "Remove",
+      removeTitle: "Remove"
     },
     uploadModal: {
       eyebrow: "Document vault",
@@ -167,7 +157,7 @@ const ENTERPRISE_VAULT_COPY = {
       cancel: "Cancel",
       upload: "Add to vault",
       uploading: "Uploading…",
-      closeAria: "Close",
+      closeAria: "Close"
     },
     editModal: {
       eyebrow: "Document vault",
@@ -182,7 +172,7 @@ const ENTERPRISE_VAULT_COPY = {
       cancel: "Cancel",
       save: "Save",
       saving: "Saving…",
-      closeAria: "Close",
+      closeAria: "Close"
     },
     previewModal: {
       download: "Download",
@@ -190,9 +180,13 @@ const ENTERPRISE_VAULT_COPY = {
       unsupported: "Preview not available for this file type.",
       noDescription: "No description",
       editDescriptionTitle: "Edit description",
-      editDescriptionAria: "Edit description",
+      editDescriptionAria: "Edit description"
     },
-    size: { bytes: "{value} B", kb: "{value} KB", mb: "{value} MB" },
+    size: {
+      bytes: "{value} B",
+      kb: "{value} KB",
+      mb: "{value} MB"
+    },
     confirmDelete: "Remove « {name} » from the vault?",
     toast: {
       loadError: "Unable to load document vault.",
@@ -207,8 +201,8 @@ const ENTERPRISE_VAULT_COPY = {
       uploadedInternal: "Document added to vault (hidden from client).",
       clientNotFound: "Company not found.",
       fileRequired: "Select a file.",
-      uploadError: "Error uploading file.",
-    },
+      uploadError: "Error uploading file."
+    }
   },
   de: {
     categories: {
@@ -217,7 +211,7 @@ const ENTERPRISE_VAULT_COPY = {
       Rapport: "Bericht",
       Contrat: "Vertrag",
       Procédure: "Verfahren",
-      Autre: "Sonstiges",
+      Autre: "Sonstiges"
     },
     panel: {
       sectionTitle: "Dokumententresor",
@@ -229,7 +223,7 @@ const ENTERPRISE_VAULT_COPY = {
       clearSearchAria: "Löschen",
       allTypes: "Alle Typen",
       loading: "Dokumententresor wird geladen…",
-      empty: "Keine Dokumente im Tresor.",
+      empty: "Keine Dokumente im Tresor."
     },
     card: {
       previewTitle: "Vorschau",
@@ -240,7 +234,7 @@ const ENTERPRISE_VAULT_COPY = {
       downloadTitle: "Herunterladen",
       editDescriptionTitle: "Beschreibung bearbeiten",
       editDescriptionAria: "Beschreibung bearbeiten",
-      removeTitle: "Entfernen",
+      removeTitle: "Entfernen"
     },
     uploadModal: {
       eyebrow: "Dokumententresor",
@@ -261,7 +255,7 @@ const ENTERPRISE_VAULT_COPY = {
       cancel: "Abbrechen",
       upload: "Zum Tresor hinzufügen",
       uploading: "Senden…",
-      closeAria: "Schließen",
+      closeAria: "Schließen"
     },
     editModal: {
       eyebrow: "Dokumententresor",
@@ -276,7 +270,7 @@ const ENTERPRISE_VAULT_COPY = {
       cancel: "Abbrechen",
       save: "Speichern",
       saving: "Speichern…",
-      closeAria: "Schließen",
+      closeAria: "Schließen"
     },
     previewModal: {
       download: "Herunterladen",
@@ -284,9 +278,13 @@ const ENTERPRISE_VAULT_COPY = {
       unsupported: "Vorschau für diesen Dateityp nicht verfügbar.",
       noDescription: "Keine Beschreibung",
       editDescriptionTitle: "Beschreibung bearbeiten",
-      editDescriptionAria: "Beschreibung bearbeiten",
+      editDescriptionAria: "Beschreibung bearbeiten"
     },
-    size: { bytes: "{value} B", kb: "{value} KB", mb: "{value} MB" },
+    size: {
+      bytes: "{value} B",
+      kb: "{value} KB",
+      mb: "{value} MB"
+    },
     confirmDelete: "« {name} » aus dem Tresor entfernen?",
     toast: {
       loadError: "Dokumententresor konnte nicht geladen werden.",
@@ -301,8 +299,8 @@ const ENTERPRISE_VAULT_COPY = {
       uploadedInternal: "Dokument zum Tresor hinzugefügt (für Kunde verborgen).",
       clientNotFound: "Unternehmen nicht gefunden.",
       fileRequired: "Datei auswählen.",
-      uploadError: "Fehler beim Hochladen.",
-    },
+      uploadError: "Fehler beim Hochladen."
+    }
   },
   it: {
     categories: {
@@ -311,7 +309,7 @@ const ENTERPRISE_VAULT_COPY = {
       Rapport: "Report",
       Contrat: "Contratto",
       Procédure: "Procedura",
-      Autre: "Altro",
+      Autre: "Altro"
     },
     panel: {
       sectionTitle: "Cassaforte documenti",
@@ -323,7 +321,7 @@ const ENTERPRISE_VAULT_COPY = {
       clearSearchAria: "Cancella",
       allTypes: "Tutti i tipi",
       loading: "Caricamento cassaforte documenti…",
-      empty: "Nessun documento nella cassaforte.",
+      empty: "Nessun documento nella cassaforte."
     },
     card: {
       previewTitle: "Anteprima",
@@ -334,7 +332,7 @@ const ENTERPRISE_VAULT_COPY = {
       downloadTitle: "Scarica",
       editDescriptionTitle: "Modifica descrizione",
       editDescriptionAria: "Modifica descrizione",
-      removeTitle: "Rimuovi",
+      removeTitle: "Rimuovi"
     },
     uploadModal: {
       eyebrow: "Cassaforte documenti",
@@ -355,7 +353,7 @@ const ENTERPRISE_VAULT_COPY = {
       cancel: "Annulla",
       upload: "Aggiungi alla cassaforte",
       uploading: "Invio…",
-      closeAria: "Chiudi",
+      closeAria: "Chiudi"
     },
     editModal: {
       eyebrow: "Cassaforte documenti",
@@ -370,7 +368,7 @@ const ENTERPRISE_VAULT_COPY = {
       cancel: "Annulla",
       save: "Salva",
       saving: "Salvataggio…",
-      closeAria: "Chiudi",
+      closeAria: "Chiudi"
     },
     previewModal: {
       download: "Scarica",
@@ -378,9 +376,13 @@ const ENTERPRISE_VAULT_COPY = {
       unsupported: "Anteprima non disponibile per questo tipo di file.",
       noDescription: "Nessuna descrizione",
       editDescriptionTitle: "Modifica descrizione",
-      editDescriptionAria: "Modifica descrizione",
+      editDescriptionAria: "Modifica descrizione"
     },
-    size: { bytes: "{value} B", kb: "{value} KB", mb: "{value} MB" },
+    size: {
+      bytes: "{value} B",
+      kb: "{value} KB",
+      mb: "{value} MB"
+    },
     confirmDelete: "Rimuovere « {name} » dalla cassaforte?",
     toast: {
       loadError: "Impossibile caricare la cassaforte documenti.",
@@ -395,8 +397,8 @@ const ENTERPRISE_VAULT_COPY = {
       uploadedInternal: "Documento aggiunto alla cassaforte (nascosto al cliente).",
       clientNotFound: "Azienda non trovata.",
       fileRequired: "Seleziona un file.",
-      uploadError: "Errore durante il caricamento.",
-    },
+      uploadError: "Errore durante il caricamento."
+    }
   },
   es: {
     categories: {
@@ -405,7 +407,7 @@ const ENTERPRISE_VAULT_COPY = {
       Rapport: "Informe",
       Contrat: "Contrato",
       Procédure: "Procedimiento",
-      Autre: "Otro",
+      Autre: "Otro"
     },
     panel: {
       sectionTitle: "Caja fuerte documental",
@@ -417,7 +419,7 @@ const ENTERPRISE_VAULT_COPY = {
       clearSearchAria: "Borrar",
       allTypes: "Todos los tipos",
       loading: "Cargando caja fuerte documental…",
-      empty: "Ningún documento en la caja fuerte.",
+      empty: "Ningún documento en la caja fuerte."
     },
     card: {
       previewTitle: "Vista previa",
@@ -428,7 +430,7 @@ const ENTERPRISE_VAULT_COPY = {
       downloadTitle: "Descargar",
       editDescriptionTitle: "Editar descripción",
       editDescriptionAria: "Editar descripción",
-      removeTitle: "Retirar",
+      removeTitle: "Retirar"
     },
     uploadModal: {
       eyebrow: "Caja fuerte documental",
@@ -449,7 +451,7 @@ const ENTERPRISE_VAULT_COPY = {
       cancel: "Cancelar",
       upload: "Añadir a la caja fuerte",
       uploading: "Enviando…",
-      closeAria: "Cerrar",
+      closeAria: "Cerrar"
     },
     editModal: {
       eyebrow: "Caja fuerte documental",
@@ -464,7 +466,7 @@ const ENTERPRISE_VAULT_COPY = {
       cancel: "Cancelar",
       save: "Guardar",
       saving: "Guardando…",
-      closeAria: "Cerrar",
+      closeAria: "Cerrar"
     },
     previewModal: {
       download: "Descargar",
@@ -472,9 +474,13 @@ const ENTERPRISE_VAULT_COPY = {
       unsupported: "Vista previa no disponible para este tipo de archivo.",
       noDescription: "Sin descripción",
       editDescriptionTitle: "Editar descripción",
-      editDescriptionAria: "Editar descripción",
+      editDescriptionAria: "Editar descripción"
     },
-    size: { bytes: "{value} B", kb: "{value} KB", mb: "{value} MB" },
+    size: {
+      bytes: "{value} B",
+      kb: "{value} KB",
+      mb: "{value} MB"
+    },
     confirmDelete: "¿Retirar « {name} » de la caja fuerte?",
     toast: {
       loadError: "No se pudo cargar la caja fuerte documental.",
@@ -489,11 +495,10 @@ const ENTERPRISE_VAULT_COPY = {
       uploadedInternal: "Documento añadido a la caja fuerte (oculto para el cliente).",
       clientNotFound: "Empresa no encontrada.",
       fileRequired: "Seleccione un archivo.",
-      uploadError: "Error al subir el archivo.",
-    },
-  },
+      uploadError: "Error al subir el archivo."
+    }
+  }
 };
-
 export function getEnterpriseVaultCopy(locale) {
   const code = normalizeLocale(locale);
   const t = pickLocaleMessages(ENTERPRISE_VAULT_COPY, code);
@@ -501,25 +506,35 @@ export function getEnterpriseVaultCopy(locale) {
   return {
     ...t,
     categoryKeys: CATEGORY_KEYS,
-    getCategoryLabel: (category) => t.categories[category] || category,
-    formatIntroSharedCount: (count) => {
+    getCategoryLabel: category => t.categories[category] || category,
+    formatIntroSharedCount: count => {
       if (count <= 0) return "";
       const template = count > 1 ? t.panel.sharedCountMany : t.panel.sharedCountOne;
-      return interpolate(template, { count: String(count) });
+      return interpolate(template, {
+        count: String(count)
+      });
     },
-    formatSize: (bytes) => {
+    formatSize: bytes => {
       const value = Number(bytes) || 0;
-      if (value < 1024) return interpolate(t.size.bytes, { value: String(value) });
+      if (value < 1024) return interpolate(t.size.bytes, {
+        value: String(value)
+      });
       if (value < 1024 * 1024) {
-        return interpolate(t.size.kb, { value: (value / 1024).toFixed(1) });
+        return interpolate(t.size.kb, {
+          value: (value / 1024).toFixed(1)
+        });
       }
-      return interpolate(t.size.mb, { value: (value / (1024 * 1024)).toFixed(1) });
+      return interpolate(t.size.mb, {
+        value: (value / (1024 * 1024)).toFixed(1)
+      });
     },
-    formatDate: (value) => {
+    formatDate: value => {
       if (!value) return "-";
       const d = new Date(value);
       return Number.isNaN(d.getTime()) ? "-" : d.toLocaleDateString(bcp47);
     },
-    formatDeleteConfirm: (name) => interpolate(t.confirmDelete, { name: String(name || "") }),
+    formatDeleteConfirm: name => interpolate(t.confirmDelete, {
+      name: String(name || "")
+    })
   };
 }

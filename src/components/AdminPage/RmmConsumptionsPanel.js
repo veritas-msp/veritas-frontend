@@ -3,20 +3,17 @@ import { Icon } from "@iconify/react";
 import { NumberStepper } from "./AdminUi";
 import { RmmMetricsEstimatePanel } from "./RmmSettingsBlocks";
 import { DEFAULT_METRICS } from "./rmmMetricsStorageUtils";
-import {
-  buildRmmStorageProjection,
-  estimateRmmClientImpact,
-  estimateRmmNetworkImpact,
-  estimateRmmServerImpact,
-  formatStorageBytes,
-  formatStorageNumber,
-} from "./rmmCostEstimates";
+import { buildRmmStorageProjection, estimateRmmClientImpact, estimateRmmNetworkImpact, estimateRmmServerImpact, formatStorageBytes, formatStorageNumber } from "./rmmCostEstimates";
 import { interpolate, mapCostImpactRows } from "./adminRmmI18n";
 import styles from "./AdminRmm.module.css";
-
-function ImpactCard({ icon, title, subtitle, rows, copy }) {
-  return (
-    <article className={styles.consumptionImpactCard}>
+function ImpactCard({
+  icon,
+  title,
+  subtitle,
+  rows,
+  copy
+}) {
+  return <article className={styles.consumptionImpactCard}>
       <header className={styles.consumptionImpactHead}>
         <Icon icon={icon} aria-hidden />
         <div>
@@ -33,28 +30,24 @@ function ImpactCard({ icon, title, subtitle, rows, copy }) {
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
-              <tr key={row.label}>
+            {rows.map(row => <tr key={row.label}>
                 <td>
                   <span className={styles.costTooltipMetric}>{row.label}</span>
                   {row.note ? <span className={styles.costTooltipNote}>{row.note}</span> : null}
                 </td>
                 <td className={styles.costTooltipValue}>{row.value}</td>
-              </tr>
-            ))}
+              </tr>)}
           </tbody>
         </table>
       </div>
-    </article>
-  );
+    </article>;
 }
-
 export default function RmmConsumptionsPanel({
   copy,
   locale = "fr",
   settings,
   agentCount = 0,
-  metricsStorage = null,
+  metricsStorage = null
 }) {
   const c = copy.consumptions;
   const heartbeatMinutes = settings?.heartbeatIntervalMinutes ?? 5;
@@ -63,108 +56,68 @@ export default function RmmConsumptionsPanel({
   const avgDisks = metricsStorage?.stats?.avgDisksPerAgent ?? 3;
   const activeAgents = Math.max(0, Number(agentCount) || 0);
   const storageStats = metricsStorage?.stats ?? null;
-
   const [projectionAgents, setProjectionAgents] = useState(activeAgents);
-
   useEffect(() => {
     setProjectionAgents(activeAgents);
   }, [activeAgents]);
-
-  const clientImpact = useMemo(
-    () => estimateRmmClientImpact({ heartbeatIntervalMinutes: heartbeatMinutes }),
-    [heartbeatMinutes]
-  );
-  const serverImpact = useMemo(
-    () =>
-      estimateRmmServerImpact({
-        agentCount: projectionAgents,
-        heartbeatIntervalMinutes: heartbeatMinutes,
-      }),
-    [projectionAgents, heartbeatMinutes]
-  );
-  const networkImpact = useMemo(
-    () =>
-      estimateRmmNetworkImpact({
-        agentCount: projectionAgents,
-        heartbeatIntervalMinutes: heartbeatMinutes,
-      }),
-    [projectionAgents, heartbeatMinutes]
-  );
-
+  const clientImpact = useMemo(() => estimateRmmClientImpact({
+    heartbeatIntervalMinutes: heartbeatMinutes
+  }), [heartbeatMinutes]);
+  const serverImpact = useMemo(() => estimateRmmServerImpact({
+    agentCount: projectionAgents,
+    heartbeatIntervalMinutes: heartbeatMinutes
+  }), [projectionAgents, heartbeatMinutes]);
+  const networkImpact = useMemo(() => estimateRmmNetworkImpact({
+    agentCount: projectionAgents,
+    heartbeatIntervalMinutes: heartbeatMinutes
+  }), [projectionAgents, heartbeatMinutes]);
   const storageProjection = useMemo(() => {
     const baseCounts = buildRmmStorageProjection({
       retentionDays: metrics.retentionDays ?? DEFAULT_METRICS.retentionDays,
       collectors,
-      avgDisksPerAgent: avgDisks,
+      avgDisksPerAgent: avgDisks
     });
-    const counts = new Set(baseCounts.map((row) => row.agentCount));
+    const counts = new Set(baseCounts.map(row => row.agentCount));
     if (projectionAgents > 0 && !counts.has(projectionAgents)) {
       const extra = buildRmmStorageProjection({
         agentCounts: [projectionAgents],
         retentionDays: metrics.retentionDays ?? DEFAULT_METRICS.retentionDays,
         collectors,
-        avgDisksPerAgent: avgDisks,
+        avgDisksPerAgent: avgDisks
       });
       return [...extra, ...baseCounts].sort((a, b) => a.agentCount - b.agentCount);
     }
     return baseCounts;
   }, [metrics.retentionDays, collectors, avgDisks, projectionAgents]);
-
-  const rowsPerAgentDay =
-    storageProjection.find((row) => row.agentCount === projectionAgents)?.rowsPerAgentDay ??
-    storageProjection[0]?.rowsPerAgentDay;
-
+  const rowsPerAgentDay = storageProjection.find(row => row.agentCount === projectionAgents)?.rowsPerAgentDay ?? storageProjection[0]?.rowsPerAgentDay;
   const intervalLabel = `${heartbeatMinutes} ${copy.common.minSuffix}`;
   const retentionLabel = `${metrics.retentionDays ?? DEFAULT_METRICS.retentionDays} ${copy.common.daysSuffix}`;
   const projectionLabel = `${formatStorageNumber(projectionAgents, locale)} ${copy.common.workstationsSuffix}`;
-
   const agentLabel = activeAgents > 1 ? c.agentPlural : c.agentSingular;
-
   const introText = interpolate(c.intro, {
     interval: intervalLabel,
     retention: retentionLabel,
     agentCount: activeAgents,
     agentLabel,
-    settingsTab: c.settingsTab,
+    settingsTab: c.settingsTab
   });
-
-  const clientRows = useMemo(
-    () => mapCostImpactRows(clientImpact.rows, copy.cost.client, copy),
-    [clientImpact.rows, copy]
-  );
-  const serverRows = useMemo(
-    () =>
-      mapCostImpactRows(serverImpact.rows, copy.cost.server, copy, {
-        agents: projectionAgents,
-      }),
-    [serverImpact.rows, copy, projectionAgents]
-  );
-  const networkRows = useMemo(
-    () => mapCostImpactRows(networkImpact.rows, copy.cost.network, copy),
-    [networkImpact.rows, copy]
-  );
-
+  const clientRows = useMemo(() => mapCostImpactRows(clientImpact.rows, copy.cost.client, copy), [clientImpact.rows, copy]);
+  const serverRows = useMemo(() => mapCostImpactRows(serverImpact.rows, copy.cost.server, copy, {
+    agents: projectionAgents
+  }), [serverImpact.rows, copy, projectionAgents]);
+  const networkRows = useMemo(() => mapCostImpactRows(networkImpact.rows, copy.cost.network, copy), [networkImpact.rows, copy]);
   const projectionHint = interpolate(c.projectionSectionHint, {
     retention: retentionLabel,
-    currentMetrics:
-      storageStats?.totalBytes != null
-        ? interpolate(c.currentMetrics, { size: formatStorageBytes(storageStats.totalBytes) })
-        : "",
+    currentMetrics: storageStats?.totalBytes != null ? interpolate(c.currentMetrics, {
+      size: formatStorageBytes(storageStats.totalBytes)
+    }) : ""
   });
-
-  return (
-    <div className={styles.consumptionsLayout}>
+  return <div className={styles.consumptionsLayout}>
       <section className={styles.consumptionsIntro}>
         <p className={styles.consumptionsIntroText}>{introText}</p>
         <div className={styles.consumptionsProjectionControl}>
           <span className={styles.metricsProjectionLabel}>{c.projectionLabel}</span>
-          <NumberStepper
-            value={projectionAgents}
-            onChange={setProjectionAgents}
-            min={0}
-            max={50000}
-            suffix={copy.common.workstationsSuffix}
-          />
+          <NumberStepper value={projectionAgents} onChange={setProjectionAgents} min={0} max={50000} suffix={copy.common.workstationsSuffix} />
         </div>
       </section>
 
@@ -172,46 +125,23 @@ export default function RmmConsumptionsPanel({
         <h2 className={styles.consumptionsSectionTitle}>{c.heartbeatSectionTitle}</h2>
         <p className={styles.consumptionsSectionHint}>{c.heartbeatSectionHint}</p>
         <div className={styles.consumptionImpactGrid}>
-          <ImpactCard
-            copy={copy}
-            icon="mdi:laptop"
-            title={c.clientCardTitle}
-            subtitle={interpolate(c.clientCardSubtitle, { interval: intervalLabel })}
-            rows={clientRows}
-          />
-          <ImpactCard
-            copy={copy}
-            icon="mdi:server"
-            title={c.serverCardTitle}
-            subtitle={interpolate(c.serverCardSubtitle, {
-              projection: projectionLabel,
-              interval: intervalLabel,
-            })}
-            rows={serverRows}
-          />
-          <ImpactCard
-            copy={copy}
-            icon="mdi:lan-connect"
-            title={c.networkCardTitle}
-            subtitle={interpolate(c.networkCardSubtitle, { projection: projectionLabel })}
-            rows={networkRows}
-          />
+          <ImpactCard copy={copy} icon="mdi:laptop" title={c.clientCardTitle} subtitle={interpolate(c.clientCardSubtitle, {
+          interval: intervalLabel
+        })} rows={clientRows} />
+          <ImpactCard copy={copy} icon="mdi:server" title={c.serverCardTitle} subtitle={interpolate(c.serverCardSubtitle, {
+          projection: projectionLabel,
+          interval: intervalLabel
+        })} rows={serverRows} />
+          <ImpactCard copy={copy} icon="mdi:lan-connect" title={c.networkCardTitle} subtitle={interpolate(c.networkCardSubtitle, {
+          projection: projectionLabel
+        })} rows={networkRows} />
         </div>
       </section>
 
       <section className={styles.consumptionsSection}>
         <h2 className={styles.consumptionsSectionTitle}>{c.storageSectionTitle}</h2>
         <p className={styles.consumptionsSectionHint}>{c.storageSectionHint}</p>
-        <RmmMetricsEstimatePanel
-          copy={copy}
-          locale={locale}
-          metrics={metrics}
-          collectors={collectors}
-          agentCount={projectionAgents}
-          avgDisksPerAgent={avgDisks}
-          storageStats={storageStats}
-          hideProjectionControl
-        />
+        <RmmMetricsEstimatePanel copy={copy} locale={locale} metrics={metrics} collectors={collectors} agentCount={projectionAgents} avgDisksPerAgent={avgDisks} storageStats={storageStats} hideProjectionControl />
       </section>
 
       <section className={styles.consumptionsSection}>
@@ -234,18 +164,12 @@ export default function RmmConsumptionsPanel({
               </tr>
             </thead>
             <tbody>
-              {storageProjection.map((row) => {
-                const highlight = row.agentCount === projectionAgents;
-                return (
-                  <tr
-                    key={row.agentCount}
-                    className={highlight ? styles.agentsStorageRowActive : undefined}
-                  >
+              {storageProjection.map(row => {
+              const highlight = row.agentCount === projectionAgents;
+              return <tr key={row.agentCount} className={highlight ? styles.agentsStorageRowActive : undefined}>
                     <td>
                       {formatStorageNumber(row.agentCount, locale)}
-                      {highlight ? (
-                        <span className={styles.agentsStorageRowBadge}>{c.projectionBadge}</span>
-                      ) : null}
+                      {highlight ? <span className={styles.agentsStorageRowBadge}>{c.projectionBadge}</span> : null}
                     </td>
                     <td>{formatStorageBytes(row.metricsBytes)}</td>
                     <td>{formatStorageBytes(row.inventoryBytes)}</td>
@@ -253,19 +177,17 @@ export default function RmmConsumptionsPanel({
                       <strong>{formatStorageBytes(row.totalBytes)}</strong>
                     </td>
                     <td>{formatStorageNumber(row.steadyStateRows, locale)}</td>
-                  </tr>
-                );
-              })}
+                  </tr>;
+            })}
             </tbody>
           </table>
         </div>
         <p className={styles.agentsStorageFootnote}>
           {interpolate(c.footnote, {
-            rowsPerDay: formatStorageNumber(rowsPerAgentDay, locale),
-            sampleInterval: metrics.sampleIntervalMinutes ?? 60,
-          })}
+          rowsPerDay: formatStorageNumber(rowsPerAgentDay, locale),
+          sampleInterval: metrics.sampleIntervalMinutes ?? 60
+        })}
         </p>
       </section>
-    </div>
-  );
+    </div>;
 }

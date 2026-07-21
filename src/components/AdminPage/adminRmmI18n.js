@@ -3,7 +3,6 @@ import { COLLECTOR_GROUPS, COLLECTORS } from "./rmmConstants";
 import { METRICS_FIELDS } from "./rmmMetricsStorageUtils";
 import { RMM_DURATION_UNITS } from "./rmmDurationUtils";
 import { RMM_TOKEN_FORM_SECTIONS } from "./rmmTokenConstants";
-
 const ADMIN_RMM_COPY = {
   "fr": {
     "common": {
@@ -2281,52 +2280,46 @@ const ADMIN_RMM_COPY = {
     }
   }
 };
-
 export const getAdminRmmCopy = createLocaleGetter(ADMIN_RMM_COPY);
-
 export function formatRmmClientLabel(id, copy) {
-  return interpolate(copy.common.clientLabel, { id });
+  return interpolate(copy.common.clientLabel, {
+    id
+  });
 }
-
 export function getLocalizedCollectors(copy) {
-  return COLLECTORS.map((c) => ({
+  return COLLECTORS.map(c => ({
     ...c,
     label: copy.collectors.items[c.key]?.label ?? c.label,
-    description: copy.collectors.items[c.key]?.description ?? c.description,
+    description: copy.collectors.items[c.key]?.description ?? c.description
   }));
 }
-
 export function getLocalizedCollectorGroups(copy) {
-  return Object.fromEntries(
-    Object.keys(COLLECTOR_GROUPS).map((key) => [key, copy.collectors.groups[key] ?? COLLECTOR_GROUPS[key]])
-  );
+  return Object.fromEntries(Object.keys(COLLECTOR_GROUPS).map(key => [key, copy.collectors.groups[key] ?? COLLECTOR_GROUPS[key]]));
 }
-
 export function getLocalizedMetricsFields(copy) {
-  return METRICS_FIELDS.map((field) => ({
+  return METRICS_FIELDS.map(field => ({
     ...field,
     label: copy.metricsStorage.fields[field.key]?.label ?? field.label,
-    hint: copy.metricsStorage.fields[field.key]?.hint ?? field.hint,
+    hint: copy.metricsStorage.fields[field.key]?.hint ?? field.hint
   }));
 }
-
 export function getLocalizedDurationUnits(copy) {
-  return RMM_DURATION_UNITS.map((entry) => ({
+  return RMM_DURATION_UNITS.map(entry => ({
     ...entry,
-    optionLabel: copy.durationUnits[entry.key] ?? entry.optionLabel,
+    optionLabel: copy.durationUnits[entry.key] ?? entry.optionLabel
   }));
 }
-
 export function getLocalizedTokenFormSections(copy) {
-  return RMM_TOKEN_FORM_SECTIONS.map((section) => ({
+  return RMM_TOKEN_FORM_SECTIONS.map(section => ({
     ...section,
     label: copy.tokenForm.sections[section.id]?.label ?? section.label,
-    description: copy.tokenForm.sections[section.id]?.description ?? section.description,
+    description: copy.tokenForm.sections[section.id]?.description ?? section.description
   }));
 }
-
-export function mapCostImpactRows(rows, sectionCopy, copy, { agents = 0 } = {}) {
-  return rows.map((row) => {
+export function mapCostImpactRows(rows, sectionCopy, copy, {
+  agents = 0
+} = {}) {
+  return rows.map(row => {
     const meta = sectionCopy[row.key] || {};
     let note = meta.note || "";
     if (row.key === "avgLoad") {
@@ -2337,11 +2330,10 @@ export function mapCostImpactRows(rows, sectionCopy, copy, { agents = 0 } = {}) 
     return {
       label: meta.label || row.key,
       value: row.value,
-      note: note || undefined,
+      note: note || undefined
     };
   });
 }
-
 export function formatRmmDateTime(value, locale = "fr") {
   if (!value) return "-";
   const date = value instanceof Date ? value : new Date(value);
@@ -2352,10 +2344,9 @@ export function formatRmmDateTime(value, locale = "fr") {
     month: "2-digit",
     year: "numeric",
     hour: "2-digit",
-    minute: "2-digit",
+    minute: "2-digit"
   });
 }
-
 export function formatRmmDate(value, locale = "fr") {
   if (!value) return "-";
   const date = value instanceof Date ? value : new Date(value);
@@ -2363,5 +2354,4 @@ export function formatRmmDate(value, locale = "fr") {
   const tag = `${locale}-${locale.toUpperCase()}`;
   return date.toLocaleDateString(tag);
 }
-
 export { interpolate };

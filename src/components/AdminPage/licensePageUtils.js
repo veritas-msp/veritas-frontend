@@ -1,4 +1,8 @@
-export function resolveLicenseStatusMessage({ isValid, status, copy }) {
+export function resolveLicenseStatusMessage({
+  isValid,
+  status,
+  copy
+}) {
   if (isValid) return copy.validMessage;
   if (status === "missing") return copy.missingMessage;
   if (status === "past_due") return copy.pastDueMessage;
@@ -6,7 +10,6 @@ export function resolveLicenseStatusMessage({ isValid, status, copy }) {
   if (mapped) return mapped;
   return copy.defaultMessage;
 }
-
 export function resolveLicenseApiError(error, copy, fallbackKey = "loadError") {
   const payload = error?.payload || error;
   const code = payload?.error || payload?.code || error?.code;

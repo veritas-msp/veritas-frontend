@@ -1,8 +1,6 @@
-/* ──────────────────────────────
-   🎨 Monitoring Home - Même layout que EnterprisesPage
-   ────────────────────────────── */
 
-/* Page container (style EntreprisesPage) */
+
+
 .pageWrapper {
   display: flex;
   height: 100%;
@@ -35,7 +33,7 @@
   z-index: 1;
 }
 
-/* Sidebar (style EntreprisesPage) */
+
 .sidebar {
   width: 220px;
   background-color: var(--bg-secondary, #1a1a2e);
@@ -190,7 +188,7 @@
   color: #ffffff;
 }
 
-/* Main content */
+
 .mainContent {
   flex: 1;
   display: flex;
@@ -314,7 +312,7 @@
   color: #ffffff;
 }
 
-/* Tables container & KPI cards */
+
 .tablesContainer {
   flex: 1;
   overflow-y: auto;
@@ -502,7 +500,7 @@
   height: 1.2rem;
 }
 
-/* Sidebar search */
+
 .sidebarSearchBox {
   position: relative;
   display: flex;
@@ -568,7 +566,7 @@
   color: #ef4444;
 }
 
-/* État vide */
+
 .emptyState {
   display: flex;
   flex-direction: column;
@@ -591,7 +589,7 @@
   margin: 0;
 }
 
-/* Pagination */
+
 .pagination {
   display: flex;
   justify-content: space-between;
@@ -634,9 +632,7 @@
   font-weight: 500;
 }
 
-/* ──────────────────────────────
-   Modal création rapport (client + dates + lancer)
-   ────────────────────────────── */
+
 
 .modalOverlay {
   position: fixed;
@@ -810,7 +806,7 @@
   flex-shrink: 0;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .tableHeader {
     flex-direction: column;

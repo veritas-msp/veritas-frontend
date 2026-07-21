@@ -1,21 +1,14 @@
-import {
-  getDnsIntegrations,
-  getIntegrationById,
-  isIntegrationConfigured,
-} from "../AdminPage/integrationsCatalog";
-
+import { getDnsIntegrations, getIntegrationById, isIntegrationConfigured } from "../AdminPage/integrationsCatalog";
 export const DNS_MANUAL_PROVIDER = {
   id: "manual",
   integrationId: null,
-  label: "Autre registrar",
+  label: "Other registrar",
   icon: "mdi:web-plus",
-  description:
-    "Enregistrement manuel sans synchronisation API (nom de domaine, expiration).",
+  description: "Manual entry without API synchronization (domain name, expiration).",
   status: "available",
   isManual: true,
-  supportsGlobal: false,
+  supportsGlobal: false
 };
-
 export function catalogIntegrationToDnsProvider(integration) {
   return {
     id: integration.id,
@@ -28,21 +21,15 @@ export function catalogIntegrationToDnsProvider(integration) {
     status: integration.status === "comingSoon" ? "comingSoon" : "available",
     proOnly: Boolean(integration.proOnly),
     supportsGlobal: integration.status === "available",
-    catalogIntegration: integration,
+    catalogIntegration: integration
   };
 }
-
 export function getDnsProviderOptions() {
-  return [
-    ...getDnsIntegrations().map(catalogIntegrationToDnsProvider),
-    DNS_MANUAL_PROVIDER,
-  ];
+  return [...getDnsIntegrations().map(catalogIntegrationToDnsProvider), DNS_MANUAL_PROVIDER];
 }
-
 export function getDnsProvider(providerId) {
-  return getDnsProviderOptions().find((provider) => provider.id === providerId) || null;
+  return getDnsProviderOptions().find(provider => provider.id === providerId) || null;
 }
-
 export function resolveProviderGlobalConfigured(providerId, settingsMap = {}, apiGlobalStatus = {}) {
   if (!providerId) return false;
   if (providerId === "ovh") {
@@ -51,7 +38,6 @@ export function resolveProviderGlobalConfigured(providerId, settingsMap = {}, ap
   const integration = getIntegrationById(providerId);
   return isIntegrationConfigured(integration, settingsMap);
 }
-
 export function inferProviderIdFromDomain(domain) {
   if (!domain) return null;
   if (domain.providerId === "manual" || domain.isManual) return "manual";
@@ -59,60 +45,49 @@ export function inferProviderIdFromDomain(domain) {
   const registrar = (domain.registrar || "").toLowerCase();
   if (registrar.includes("ovh")) return "ovh";
   if (registrar.includes("autre")) return "manual";
-  const match = getDnsIntegrations().find(
-    (integration) =>
-      registrar.includes(integration.id) || registrar.includes(integration.name.toLowerCase())
-  );
+  const match = getDnsIntegrations().find(integration => registrar.includes(integration.id) || registrar.includes(integration.name.toLowerCase()));
   return match?.id || null;
 }
-
 export function buildDnsNavSections({
   selectedProviderId,
   globalConfigured = false,
-  showProviderGuide = false,
+  showProviderGuide = false
 }) {
-  const sections = [
-    {
-      id: "overview",
-      label: "Solution enregistrée",
-      description: "Pour ce client",
-      icon: "mdi:view-list-outline",
-    },
-    {
-      id: "provider",
-      label: "Solution paramétrable",
-      description: "Fournisseurs",
-      icon: "mdi:web",
-    },
-  ];
-
+  const sections = [{
+    id: "overview",
+    label: "Solution saved",
+    description: "Pour ce client",
+    icon: "mdi:view-list-outline"
+  }, {
+    id: "provider",
+    label: "Configurable solution",
+    description: "Fournisseurs",
+    icon: "mdi:web"
+  }];
   const provider = getDnsProvider(selectedProviderId);
   if (selectedProviderId === "ovh" && provider?.supportsGlobal && globalConfigured) {
     sections.push({
       id: "import",
-      label: "Importer depuis OVH",
-      description: "Sélectionner les domaines à rattacher",
-      icon: "mdi:cloud-download-outline",
+      label: "Import from OVH",
+      description: "Select the domains to attach",
+      icon: "mdi:cloud-download-outline"
     });
   }
-
   if (showProviderGuide && selectedProviderId === "ovh") {
     sections.push({
       id: "guide",
       label: "Guide",
-      description: "Obtenir les clés API",
-      icon: "mdi:book-open-outline",
+      description: "Get API keys",
+      icon: "mdi:book-open-outline"
     });
   }
-
   if (selectedProviderId === "manual") {
     sections.push({
       id: "manual",
       label: "Saisie manuelle",
-      description: "Nom de domaine et expiration",
-      icon: "mdi:form-textbox",
+      description: "Domain name and expiration",
+      icon: "mdi:form-textbox"
     });
   }
-
   return sections;
 }

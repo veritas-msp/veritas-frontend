@@ -5,15 +5,16 @@ import { showError, showSuccess } from "../../utils/toast";
 import { useAppLocale } from "../../hooks/useAppGeneralSettings";
 import { getMfaEnrollmentCopy } from "./mfaEnrollmentI18n";
 import styles from "./MfaEnrollmentModal.module.css";
-
-export default function MfaEnrollmentModal({ onClose, onEnabled }) {
+export default function MfaEnrollmentModal({
+  onClose,
+  onEnabled
+}) {
   const locale = useAppLocale();
   const copy = useMemo(() => getMfaEnrollmentCopy(locale), [locale]);
   const [step, setStep] = useState("prompt");
   const [loading, setLoading] = useState(false);
   const [setupData, setSetupData] = useState(null);
   const [code, setCode] = useState("");
-
   const handleStartSetup = async () => {
     setLoading(true);
     try {
@@ -26,8 +27,7 @@ export default function MfaEnrollmentModal({ onClose, onEnabled }) {
       setLoading(false);
     }
   };
-
-  const handleVerify = async (e) => {
+  const handleVerify = async e => {
     e.preventDefault();
     if (!code.trim()) return;
     setLoading(true);
@@ -42,12 +42,9 @@ export default function MfaEnrollmentModal({ onClose, onEnabled }) {
       setLoading(false);
     }
   };
-
-  return (
-    <div className={styles.overlay} role="dialog" aria-modal="true" aria-labelledby="mfa-modal-title">
+  return <div className={styles.overlay} role="dialog" aria-modal="true" aria-labelledby="mfa-modal-title">
       <div className={styles.modal}>
-        {step === "prompt" && (
-          <>
+        {step === "prompt" && <>
             <div className={styles.iconWrap}>
               <Icon icon="mdi:shield-key" className={styles.icon} aria-hidden />
             </div>
@@ -57,28 +54,16 @@ export default function MfaEnrollmentModal({ onClose, onEnabled }) {
             <p className={styles.text}>{copy.prompt.text}</p>
             <p className={styles.hint}>{copy.prompt.hint}</p>
             <div className={styles.actions}>
-              <button
-                type="button"
-                className={styles.btnPrimary}
-                onClick={handleStartSetup}
-                disabled={loading}
-              >
+              <button type="button" className={styles.btnPrimary} onClick={handleStartSetup} disabled={loading}>
                 {loading ? copy.prompt.loading : copy.prompt.configure}
               </button>
-              <button
-                type="button"
-                className={styles.btnGhost}
-                onClick={onClose}
-                disabled={loading}
-              >
+              <button type="button" className={styles.btnGhost} onClick={onClose} disabled={loading}>
                 {copy.prompt.later}
               </button>
             </div>
-          </>
-        )}
+          </>}
 
-        {step === "setup" && setupData && (
-          <>
+        {step === "setup" && setupData && <>
             <h2 className={styles.title}>{copy.setup.title}</h2>
             <p className={styles.text}>{copy.setup.text}</p>
             <div className={styles.qrWrap}>
@@ -88,38 +73,20 @@ export default function MfaEnrollmentModal({ onClose, onEnabled }) {
               {copy.setup.manualKey} <code>{setupData.secret}</code>
             </p>
             <form className={styles.form} onSubmit={handleVerify}>
-              <input
-                type="text"
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                maxLength={6}
-                placeholder={copy.setup.codePlaceholder}
-                value={code}
-                onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
-                className={styles.codeInput}
-                disabled={loading}
-                required
-              />
+              <input type="text" inputMode="numeric" autoComplete="one-time-code" maxLength={6} placeholder={copy.setup.codePlaceholder} value={code} onChange={e => setCode(e.target.value.replace(/\D/g, ""))} className={styles.codeInput} disabled={loading} required />
               <div className={styles.actions}>
                 <button type="submit" className={styles.btnPrimary} disabled={loading || code.length < 6}>
                   {loading ? copy.setup.verifying : copy.setup.activate}
                 </button>
-                <button
-                  type="button"
-                  className={styles.btnGhost}
-                  onClick={() => {
-                    setStep("prompt");
-                    setCode("");
-                  }}
-                  disabled={loading}
-                >
+                <button type="button" className={styles.btnGhost} onClick={() => {
+              setStep("prompt");
+              setCode("");
+            }} disabled={loading}>
                   {copy.setup.back}
                 </button>
               </div>
             </form>
-          </>
-        )}
+          </>}
       </div>
-    </div>
-  );
+    </div>;
 }

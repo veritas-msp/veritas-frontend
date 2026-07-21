@@ -1,8 +1,6 @@
-/* ──────────────────────────────
-   🎨 AntispamDetailPage · même style que EnterpriseDetailPage / CybersecuritePage
-   ────────────────────────────── */
 
-/* LAYOUT - fond sombre pleine page */
+
+
 .detailPage {
   height: 100%;
   min-height: 0;
@@ -22,7 +20,7 @@
   padding-bottom: 3rem;
 }
 
-/* HEADER · même structure que AntivirusDetailPage */
+
 .header {
   display: flex;
   align-items: center;
@@ -71,7 +69,7 @@
   margin: 0 0.125rem;
 }
 
-/* Barre de recherche utilisateurs dans le header (comme AntivirusDetailPage) */
+
 .headerSearchBarContainer {
   flex: 0 0 auto;
   display: flex;
@@ -246,7 +244,7 @@
   color: white;
 }
 
-/* Sélecteur de période (date début / date fin) · en haut du contenu, compact */
+
 .dateRangeBlock {
   display: flex;
   align-items: center;
@@ -300,7 +298,7 @@
   flex-shrink: 0;
 }
 
-/* SECTIONS · même style que AntivirusDetailPage */
+
 .twoColRow {
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.2fr);
@@ -334,7 +332,7 @@
   gap: 0.5rem;
 }
 
-/* KPI · même style que AntivirusDetailPage / EnterprisesPage */
+
 .statsCards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -429,7 +427,7 @@
   color: var(--text-primary, #f9fafb);
 }
 
-/* BOUTON EXTERNE - accent */
+
 .externalButton {
   display: inline-flex;
   align-items: center;
@@ -451,7 +449,7 @@
   box-shadow: 0 4px 12px rgba(21, 209, 160, 0.25);
 }
 
-/* EMPTY STATE - fond sombre */
+
 .emptyState {
   display: flex;
   flex-direction: column;
@@ -488,7 +486,7 @@
   color: var(--text-muted, #9ca3af);
 }
 
-/* Modal de confirmation de suppression */
+
 .modalOverlay {
   position: fixed;
   inset: 0;
@@ -593,7 +591,7 @@
   cursor: not-allowed;
 }
 
-/* Bouton Enregistrer (modal édition) */
+
 .modalSaveButton {
   padding: 0.5rem 1.25rem;
   background-color: #13BA8E;
@@ -609,7 +607,7 @@
   cursor: not-allowed;
 }
 
-/* Champs du formulaire d'édition */
+
 .editField {
   margin-bottom: 1rem;
 }
@@ -632,7 +630,7 @@
   font-size: 0.875rem;
 }
 
-/* Section données brutes */
+
 .rawDataSection {
   background-color: var(--bg-secondary, #1a1a2e);
   border: 1px solid var(--border-primary, #2a2a4a);
@@ -689,7 +687,7 @@
   color: var(--text-primary, #f9fafb);
 }
 
-/* Table Utilisateurs · même style que table Endpoints (AntivirusDetailPage) */
+
 .tableContainer {
   overflow-x: auto;
   background-color: var(--bg-secondary, #1a1a2e);
@@ -748,7 +746,7 @@
   color: #15D1A0;
 }
 
-/* En-tête section Utilisateurs : titre + barre de recherche */
+
 .usersSectionHeader {
   display: flex;
   flex-wrap: wrap;
@@ -840,7 +838,7 @@
   color: var(--text-primary, #f9fafb);
 }
 
-/* Badges de statut (même style que Endpoints : fond plein, texte blanc) */
+
 .statusBadge {
   display: inline-flex;
   align-items: center;
@@ -867,7 +865,7 @@
   background-color: #6b7280;
 }
 
-/* Statistiques · métriques (même style qu'AntispamStep, thème sombre) */
+
 .statsMetricsRow {
   display: flex;
   flex-wrap: wrap;
@@ -920,7 +918,7 @@
   color: var(--text-muted, #9ca3af);
 }
 
-/* Évolution par période · même style qu'AntispamStep */
+
 .evolutionBlock {
   margin-top: 0.5rem;
 }
@@ -982,7 +980,7 @@
   height: 280px;
 }
 
-/* Carte graphique (legacy) */
+
 .chartCard {
   background-color: var(--bg-secondary, #1a1a2e);
   border: 1px solid var(--border-primary, #2a2a4a);

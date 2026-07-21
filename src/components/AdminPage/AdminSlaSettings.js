@@ -6,29 +6,19 @@ import { getTimezoneOptions } from "../../i18n/timezoneOptions";
 import { useCommonCopy } from "../../hooks/useCommonCopy";
 import { useAdminCommonCopy } from "../../hooks/useAdminCopy";
 import { useAppLocale } from "../../hooks/useAppGeneralSettings";
-import {
-  DEFAULT_SLA_SETTINGS,
-  SLA_TIME_MODES,
-  createDefaultWeekSchedule,
-} from "../../utils/slaSettingsUtils";
-import {
-  formatWeekScheduleSummaryLocalized,
-  getSlaCopy,
-  getSlaTimeModeHint,
-  getSlaTimeModeLabel,
-  getWeekdayLabel,
-} from "./adminSlaI18n";
+import { DEFAULT_SLA_SETTINGS, SLA_TIME_MODES, createDefaultWeekSchedule } from "../../utils/slaSettingsUtils";
+import { formatWeekScheduleSummaryLocalized, getSlaCopy, getSlaTimeModeHint, getSlaTimeModeLabel, getWeekdayLabel } from "./adminSlaI18n";
 import { Page, Card, Field, Select, Btn, FormGrid } from "./AdminUi";
 import adminUi from "./AdminUi.module.css";
 import styles from "./AdminSlaSettings.module.css";
-
 function cloneSettings(data) {
   return {
     ...data,
-    weekSchedule: (data.weekSchedule || []).map((row) => ({ ...row })),
+    weekSchedule: (data.weekSchedule || []).map(row => ({
+      ...row
+    }))
   };
 }
-
 export default function AdminSlaSettings() {
   const locale = useAppLocale();
   const copy = useMemo(() => getSlaCopy(locale), [locale]);
@@ -37,43 +27,43 @@ export default function AdminSlaSettings() {
   const [form, setForm] = useState(() => cloneSettings(DEFAULT_SLA_SETTINGS));
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-
   useEffect(() => {
-    fetchSlaSettings()
-      .then((data) => setForm(cloneSettings({ ...DEFAULT_SLA_SETTINGS, ...data })))
-      .catch(() => toast.error(copy.loadError))
-      .finally(() => setLoading(false));
+    fetchSlaSettings().then(data => setForm(cloneSettings({
+      ...DEFAULT_SLA_SETTINGS,
+      ...data
+    }))).catch(() => toast.error(copy.loadError)).finally(() => setLoading(false));
   }, [copy.loadError]);
-
   const scheduleSummary = useMemo(() => formatWeekScheduleSummaryLocalized(form, locale), [form, locale]);
-  const timezoneGroups = useMemo(
-    () => getTimezoneOptions(form.timezone).groups,
-    [form.timezone]
-  );
-
-  const setTimeMode = (timeMode) => setForm((prev) => ({ ...prev, timeMode }));
-  const setTimezone = (timezone) => setForm((prev) => ({ ...prev, timezone }));
-
+  const timezoneGroups = useMemo(() => getTimezoneOptions(form.timezone).groups, [form.timezone]);
+  const setTimeMode = timeMode => setForm(prev => ({
+    ...prev,
+    timeMode
+  }));
+  const setTimezone = timezone => setForm(prev => ({
+    ...prev,
+    timezone
+  }));
   const patchDay = (day, patch) => {
-    setForm((prev) => ({
+    setForm(prev => ({
       ...prev,
-      weekSchedule: (prev.weekSchedule || []).map((row) =>
-        row.day === day ? { ...row, ...patch } : row
-      ),
+      weekSchedule: (prev.weekSchedule || []).map(row => row.day === day ? {
+        ...row,
+        ...patch
+      } : row)
     }));
   };
-
   const applyWeekdaysTemplate = () => {
-    setForm((prev) => ({
+    setForm(prev => ({
       ...prev,
-      weekSchedule: createDefaultWeekSchedule(),
+      weekSchedule: createDefaultWeekSchedule()
     }));
   };
-
   const save = async () => {
     setSaving(true);
     try {
-      const { settings } = await updateSlaSettings(form);
+      const {
+        settings
+      } = await updateSlaSettings(form);
       setForm(cloneSettings(settings || form));
       toast.success(copy.saveSuccess);
     } catch (err) {
@@ -82,42 +72,33 @@ export default function AdminSlaSettings() {
       setSaving(false);
     }
   };
-
   if (loading) {
-    return (
-      <Page>
+    return <Page>
         <p className={adminUi.adminMutedText}>{copy.loading}</p>
-      </Page>
-    );
+      </Page>;
   }
-
   const showSchedule = form.timeMode !== "calendar";
-
-  return (
-    <Page>
+  return <Page>
       <Card title={copy.modeTitle} description={copy.modeDescription}>
         <FormGrid cols={2}>
           <Field label={copy.timeModeLabel}>
-            <Select value={form.timeMode} onChange={(e) => setTimeMode(e.target.value)}>
-              {SLA_TIME_MODES.map((mode) => (
-                <option key={mode} value={mode}>
+            <Select value={form.timeMode} onChange={e => setTimeMode(e.target.value)}>
+              {SLA_TIME_MODES.map(mode => <option key={mode} value={mode}>
                   {getSlaTimeModeLabel(locale, mode)}
-                </option>
-              ))}
+                </option>)}
             </Select>
           </Field>
 
           <Field label={copy.timezoneLabel} hint={copy.timezoneHint}>
-            <Select value={form.timezone} onChange={(e) => setTimezone(e.target.value)}>
-              {timezoneGroups.map((group) => (
-                <optgroup key={group.offsetLabel} label={group.offsetLabel}>
-                  {group.options.map(({ value, label }) => (
-                    <option key={value} value={value}>
+            <Select value={form.timezone} onChange={e => setTimezone(e.target.value)}>
+              {timezoneGroups.map(group => <optgroup key={group.offsetLabel} label={group.offsetLabel}>
+                  {group.options.map(({
+                value,
+                label
+              }) => <option key={value} value={value}>
                       {label}
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
+                    </option>)}
+                </optgroup>)}
             </Select>
           </Field>
         </FormGrid>
@@ -128,16 +109,9 @@ export default function AdminSlaSettings() {
         </p>
       </Card>
 
-      {showSchedule && (
-        <Card
-          title={copy.scheduleTitle}
-          description={copy.scheduleDescription}
-          action={
-            <Btn variant="secondary" size="sm" icon="mdi:calendar-week" onClick={applyWeekdaysTemplate}>
+      {showSchedule && <Card title={copy.scheduleTitle} description={copy.scheduleDescription} action={<Btn variant="secondary" size="sm" icon="mdi:calendar-week" onClick={applyWeekdaysTemplate}>
               {copy.weekdaysTemplate}
-            </Btn>
-          }
-        >
+            </Btn>}>
           <div className={styles.scheduleWrap}>
             <table className={styles.scheduleTable}>
               <thead>
@@ -149,47 +123,35 @@ export default function AdminSlaSettings() {
                 </tr>
               </thead>
               <tbody>
-                {[1, 2, 3, 4, 5, 6, 0].map((day) => {
-                  const row = (form.weekSchedule || []).find((item) => item.day === day) || {
-                    day,
-                    enabled: false,
-                    open: "09:00",
-                    close: "18:00",
-                  };
-                  return (
-                    <tr key={day} className={row.enabled ? "" : styles.scheduleRowOff}>
+                {[1, 2, 3, 4, 5, 6, 0].map(day => {
+              const row = (form.weekSchedule || []).find(item => item.day === day) || {
+                day,
+                enabled: false,
+                open: "09:00",
+                close: "18:00"
+              };
+              return <tr key={day} className={row.enabled ? "" : styles.scheduleRowOff}>
                       <td className={styles.dayCell}>{getWeekdayLabel(locale, day)}</td>
                       <td>
                         <label className={styles.toggleCell}>
-                          <input
-                            type="checkbox"
-                            checked={Boolean(row.enabled)}
-                            onChange={(e) => patchDay(day, { enabled: e.target.checked })}
-                          />
+                          <input type="checkbox" checked={Boolean(row.enabled)} onChange={e => patchDay(day, {
+                      enabled: e.target.checked
+                    })} />
                           <span>{row.enabled ? adminCopy.yes : adminCopy.closed}</span>
                         </label>
                       </td>
                       <td>
-                        <input
-                          type="time"
-                          className={styles.timeInput}
-                          value={row.open}
-                          disabled={!row.enabled}
-                          onChange={(e) => patchDay(day, { open: e.target.value })}
-                        />
+                        <input type="time" className={styles.timeInput} value={row.open} disabled={!row.enabled} onChange={e => patchDay(day, {
+                    open: e.target.value
+                  })} />
                       </td>
                       <td>
-                        <input
-                          type="time"
-                          className={styles.timeInput}
-                          value={row.close}
-                          disabled={!row.enabled}
-                          onChange={(e) => patchDay(day, { close: e.target.value })}
-                        />
+                        <input type="time" className={styles.timeInput} value={row.close} disabled={!row.enabled} onChange={e => patchDay(day, {
+                    close: e.target.value
+                  })} />
                       </td>
-                    </tr>
-                  );
-                })}
+                    </tr>;
+            })}
               </tbody>
             </table>
           </div>
@@ -198,8 +160,7 @@ export default function AdminSlaSettings() {
             <Icon icon="mdi:clock-outline" aria-hidden />
             {scheduleSummary}
           </p>
-        </Card>
-      )}
+        </Card>}
 
       <Card title={copy.applicationTitle} description={copy.applicationDescription}>
         <ul className={styles.bulletList}>
@@ -214,6 +175,5 @@ export default function AdminSlaSettings() {
           {saving ? commonCopy.saving : copy.saveBtn}
         </Btn>
       </div>
-    </Page>
-  );
+    </Page>;
 }

@@ -1,15 +1,8 @@
 import React from "react";
 import { Icon } from "@iconify/react";
-
 import InfrastructureEquipmentTable from "../InfrastructureEquipmentTable";
 import equipmentStyles from "../../../EquipementPage/EquipmentPage.module.css";
-import {
-  formatDateFr as formatMaintenanceDateFr,
-  getExpirationStatus,
-  getExpirationStatusColor,
-  getMaintenanceLicenceExpiration,
-} from "../../../EquipementPage/constants/firewallLicenceUtils";
-
+import { formatDateFr as formatMaintenanceDateFr, getExpirationStatus, getExpirationStatusColor, getMaintenanceLicenseExpiration } from "../../../EquipementPage/constants/firewallLicenceUtils";
 function formatDateFr(value) {
   if (!value) return "-";
   try {
@@ -27,22 +20,27 @@ function formatDateFr(value) {
     return String(value);
   }
 }
-
-function ExpirationDateCell({ value, formatFn = formatDateFr }) {
+function ExpirationDateCell({
+  value,
+  formatFn = formatDateFr
+}) {
   const label = formatFn(value);
   if (!label || label === "-") return "-";
-
   const status = getExpirationStatus(value);
   const color = getExpirationStatusColor(status);
   if (!color) return label;
-
-  return <span style={{ color, fontWeight: 500 }}>{label}</span>;
+  return <span style={{
+    color,
+    fontWeight: 500
+  }}>{label}</span>;
 }
-
 function normalizeFirewall(fw) {
   if (!fw) return fw;
   if (fw.data && typeof fw.data === "object") {
-    const { id: _dataId, ...rest } = fw.data;
+    const {
+      id: _dataId,
+      ...rest
+    } = fw.data;
     return {
       id: fw.id,
       ...rest,
@@ -56,7 +54,7 @@ function normalizeFirewall(fw) {
       is_active: fw.is_active,
       checkmk_host_name: fw.checkmk_host_name ?? null,
       checkmk_site: fw.checkmk_site ?? null,
-      checkmk_service_name: fw.checkmk_service_name ?? null,
+      checkmk_service_name: fw.checkmk_service_name ?? null
     };
   }
   return {
@@ -65,10 +63,9 @@ function normalizeFirewall(fw) {
     location: fw.site ?? fw.location ?? "",
     manufacturer: fw.fabricant ?? fw.marque ?? "",
     model: fw.modele ?? "",
-    serial: fw.numeroSerie ?? fw.sn ?? "",
+    serial: fw.numeroSerie ?? fw.sn ?? ""
   };
 }
-
 export default function FirewallStep({
   client,
   onOpenComments,
@@ -81,102 +78,57 @@ export default function FirewallStep({
   highlightedEquipmentKey,
   reportPeriod,
   monitoringSyncStatus,
-  syncingEquipmentKey,
+  syncingEquipmentKey
 }) {
-  const raw = Array.isArray(client?.equipements?.Firewalls)
-    ? client.equipements.Firewalls
-    : [];
+  const raw = Array.isArray(client?.equipements?.Firewalls) ? client.equipements.Firewalls : [];
   const firewalls = raw.map(normalizeFirewall);
-
-  const columns = [
-    {
-      id: "name",
-      label: "Nom",
-      render: (fw) => (
-        <div className={equipmentStyles.nameCell}>
+  const columns = [{
+    id: "name",
+    label: "Name",
+    render: fw => <div className={equipmentStyles.nameCell}>
           <Icon icon="mdi:shield-outline" className={equipmentStyles.typeIconSmall} width={16} height={16} />
           <span className={equipmentStyles.internetCellBold}>
             {fw.name || fw.nom || "-"}
           </span>
         </div>
-      ),
-    },
-    {
-      id: "location",
-      label: "Site",
-      render: (fw) => fw.location || fw.site || "-",
-    },
-    {
-      id: "ip",
-      label: "Adresse IP",
-      render: (fw) => fw.ip || "-",
-    },
-    {
-      id: "vlan",
-      label: "Vlan",
-      render: (fw) => fw.vlan || "-",
-    },
-    {
-      id: "manufacturer",
-      label: "Marque",
-      render: (fw) => fw.manufacturer || fw.fabricant || fw.marque || "-",
-    },
-    {
-      id: "model",
-      label: "Modèle",
-      render: (fw) => (
-        <span className={equipmentStyles.internetCellBold}>
+  }, {
+    id: "location",
+    label: "Site",
+    render: fw => fw.location || fw.site || "-"
+  }, {
+    id: "ip",
+    label: "IP address",
+    render: fw => fw.ip || "-"
+  }, {
+    id: "vlan",
+    label: "Vlan",
+    render: fw => fw.vlan || "-"
+  }, {
+    id: "manufacturer",
+    label: "Marque",
+    render: fw => fw.manufacturer || fw.fabricant || fw.marque || "-"
+  }, {
+    id: "model",
+    label: "Model",
+    render: fw => <span className={equipmentStyles.internetCellBold}>
           {fw.model || fw.modele || "-"}
         </span>
-      ),
-    },
-    {
-      id: "serial",
-      label: "SN",
-      render: (fw) => fw.serial || fw.numeroSerie || fw.sn || "-",
-    },
-    {
-      id: "firmware",
-      label: "Firmware",
-      render: (fw) => fw.firmware || "-",
-    },
-    {
-      id: "expirationGarantie",
-      label: "Date de garantie",
-      render: (fw) => (
-        <ExpirationDateCell value={fw.expirationGarantie || fw.garantie} />
-      ),
-    },
-    {
-      id: "maintenanceLicence",
-      label: "Date de licence maintenance",
-      render: (fw) => (
-        <ExpirationDateCell
-          value={getMaintenanceLicenceExpiration(fw.licences)}
-          formatFn={(v) => formatMaintenanceDateFr(v) || "-"}
-        />
-      ),
-    },
-  ];
-
-  return (
-    <InfrastructureEquipmentTable
-      title="Firewalls"
-      moduleKey="Firewall"
-      equipments={firewalls}
-      columns={columns}
-      onOpenComments={onOpenComments}
-      onCreateTicket={onTicketCreatedForEquipment}
-      onOpenCheckMKDetail={onOpenCheckMKDetail}
-      clientId={client?.id ?? client?.uuid}
-      onSyncCheckMK={onSyncCheckMK}
-      syncingEquipmentKey={syncingEquipmentKey}
-      commentCounts={commentCounts}
-      ticketCounts={ticketCounts}
-      highlightedEquipmentKey={highlightedEquipmentKey}
-      reportPeriod={reportPeriod}
-      monitoringSyncStatus={monitoringSyncStatus}
-      onEditEquipment={onEditEquipment}
-    />
-  );
+  }, {
+    id: "serial",
+    label: "SN",
+    render: fw => fw.serial || fw.numeroSerie || fw.sn || "-"
+  }, {
+    id: "firmware",
+    label: "Firmware",
+    render: fw => fw.firmware || "-"
+  }, {
+    id: "expirationGarantie",
+    label: "Date de garantie",
+    render: fw => <ExpirationDateCell value={fw.expirationGarantie || fw.garantie} />
+  }, {
+    id: "maintenanceLicense",
+    label: "Maintenance license date",
+    render: fw => <ExpirationDateCell value={getMaintenanceLicenseExpiration(fw.licences)} formatFn={v => formatMaintenanceDateFr(v) || "-"} />
+  }];
+  return <InfrastructureEquipmentTable title="Firewalls" moduleKey="Firewall" equipments={firewalls} columns={columns} onOpenComments={onOpenComments} onCreateTicket={onTicketCreatedForEquipment} onOpenCheckMKDetail={onOpenCheckMKDetail} clientId={client?.id ?? client?.uuid} onSyncCheckMK={onSyncCheckMK} syncingEquipmentKey={syncingEquipmentKey} commentCounts={commentCounts} ticketCounts={ticketCounts} highlightedEquipmentKey={highlightedEquipmentKey} reportPeriod={reportPeriod} monitoringSyncStatus={monitoringSyncStatus} onEditEquipment={onEditEquipment} />;
 }

@@ -183,7 +183,7 @@
   color: var(--text-primary, #111827);
 }
 
-/* Disponibilité */
+
 .availabilityBlock {
   display: flex;
   align-items: center;
@@ -223,7 +223,7 @@
   min-width: 3.5rem;
 }
 
-/* Services */
+
 .serviceList {
   margin: 0;
   padding: 0;
@@ -271,7 +271,7 @@
   color: #991b1b;
 }
 
-/* Événements */
+
 .eventList {
   margin: 0;
   padding: 0;

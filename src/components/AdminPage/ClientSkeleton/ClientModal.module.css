@@ -1,4 +1,4 @@
-/* Wrapper global pour toutes les modals */
+
 .modalWrapper {
   position: fixed;
   inset: 0;
@@ -12,7 +12,7 @@
   backdrop-filter: blur(4px);
 }
 
-/* Overlay sombre semi-transparent */
+
 .modalOverlayClient {
   position: fixed;
   inset: 0;
@@ -121,7 +121,7 @@
   background-color: var(--border-primary);
 }
 
-/* Animation d'entrée */
+
 @keyframes fadeInScale {
   0% {
     opacity: 0;
@@ -133,7 +133,7 @@
   }
 }
 
-/* Responsive */
+
 @media (max-width: 1024px) {
   .modalClient {
     width: 95vw;

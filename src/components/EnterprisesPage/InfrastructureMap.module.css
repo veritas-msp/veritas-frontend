@@ -318,14 +318,14 @@
   }
 }
 
-/* Conteneur visible · dimensions calculées dynamiquement */
+
 .hexClusterViewport {
   position: relative;
   flex-shrink: 0;
   margin: 0 auto;
 }
 
-/* Nid d'abeille radial : 1 centre + anneaux */
+
 .hexCluster {
   --hex-layout-scale: 1;
   --hex-w: calc(6.25rem * var(--hex-layout-scale));
@@ -551,7 +551,7 @@
   background: rgba(239, 68, 68, 0.06);
 }
 
-/* Skeleton */
+
 .skeleton {
   display: flex;
   flex-direction: column;

@@ -1,5 +1,4 @@
 import { createLocaleGetter } from "../../i18n/translate";
-
 const DASHBOARD_COPY = {
   fr: {
     eyebrow: "Pilotage",
@@ -29,7 +28,7 @@ const DASHBOARD_COPY = {
       activeClient: "Entreprise : {name}",
       activeContact: "Contact : {name}",
       filteredBadge: "Périmètre filtré",
-      infrastructureHint: "L'infrastructure reste affichée au niveau global.",
+      infrastructureHint: "L'infrastructure reste affichée au niveau global."
     },
     generatedAt: "Données au {date}",
     generatedAtRange: "Période du {start} au {end} · généré le {date}",
@@ -52,8 +51,8 @@ const DASHBOARD_COPY = {
       closeAria: "Fermer",
       errors: {
         missingCustomDates: "Renseignez la date et l'heure de début et de fin.",
-        invalidRange: "La date de début doit être antérieure à la date de fin.",
-      },
+        invalidRange: "La date de début doit être antérieure à la date de fin."
+      }
     },
     tabsAria: "Catégories de statistiques",
     tabs: {
@@ -62,14 +61,14 @@ const DASHBOARD_COPY = {
       planning: "Planning & interventions",
       crm: "CRM & contrats",
       reports: "Rapports",
-      infrastructure: "Infrastructure",
+      infrastructure: "Infrastructure"
     },
     periods: {
       "30d": "30 jours",
       "90d": "90 jours",
       "365d": "12 mois",
       ytd: "Année en cours",
-      all: "Tout",
+      all: "Tout"
     },
     sections: {
       summary: "Vue d'ensemble",
@@ -77,7 +76,7 @@ const DASHBOARD_COPY = {
       planning: "Planning & interventions",
       crm: "CRM & contrats",
       reports: "Rapports",
-      infrastructure: "Infrastructure",
+      infrastructure: "Infrastructure"
     },
     summary: {
       ticketsCreated: "Tickets créés",
@@ -90,13 +89,13 @@ const DASHBOARD_COPY = {
       clientsTotal: "Entreprises (période)",
       reportsInPeriod: "Rapports générés",
       equipMonitored: "Équipements suivis",
-      satisfactionAvg: "Satisfaction moyenne",
+      satisfactionAvg: "Satisfaction moyenne"
     },
     units: {
       hours: "{value} h",
       percent: "{value} %",
       stars: "{value} / 5",
-      none: "-",
+      none: "-"
     },
     support: {
       closureRate: "Taux de clôture",
@@ -137,8 +136,8 @@ const DASHBOARD_COPY = {
         open: "Ouverts",
         resolution: "Résol. moy.",
         rating: "Note moy.",
-        responses: "Réponses",
-      },
+        responses: "Réponses"
+      }
     },
     planning: {
       total: "Événements sur la période",
@@ -148,21 +147,21 @@ const DASHBOARD_COPY = {
       byType: "Répartition par type",
       byAgent: "Interventions par agent",
       monthlyTrend: "Activité mensuelle",
-      unavailable: "Module planning non disponible.",
+      unavailable: "Module planning non disponible."
     },
     crm: {
       clients: "Entreprises actives (période)",
       contacts: "Contacts",
       contactsNew: "Nouveaux contacts",
       contractsExpiring: "Contrats à échéance (30 j)",
-      contractsExpired: "Contrats expirés",
+      contractsExpired: "Contrats expirés"
     },
     reports: {
       total: "Rapports (historique)",
       inPeriod: "Rapports (période)",
       byType: "Par type",
       monthlyTrend: "Production mensuelle",
-      unavailable: "Aucun rapport enregistré.",
+      unavailable: "Aucun rapport enregistré."
     },
     infrastructure: {
       monitored: "Équipements monitorés",
@@ -170,11 +169,15 @@ const DASHBOARD_COPY = {
       rmmAgents: "Agents RMM actifs",
       mspAgents: "Agents MSP actifs",
       families: "Parc par famille",
-      familyColumns: { family: "Famille", total: "Total", monitored: "Supervisés" },
+      familyColumns: {
+        family: "Famille",
+        total: "Total",
+        monitored: "Supervisés"
+      }
     },
     empty: "Aucune donnée sur cette période.",
     trendWeek: "Sem. {date}",
-    trendMonth: "{date}",
+    trendMonth: "{date}"
   },
   en: {
     eyebrow: "Operations",
@@ -204,7 +207,7 @@ const DASHBOARD_COPY = {
       activeClient: "Company: {name}",
       activeContact: "Contact: {name}",
       filteredBadge: "Filtered scope",
-      infrastructureHint: "Infrastructure metrics remain global.",
+      infrastructureHint: "Infrastructure metrics remain global."
     },
     generatedAt: "Data as of {date}",
     generatedAtRange: "Period from {start} to {end} · generated on {date}",
@@ -227,8 +230,8 @@ const DASHBOARD_COPY = {
       closeAria: "Close",
       errors: {
         missingCustomDates: "Enter both start and end date/time.",
-        invalidRange: "Start must be before end.",
-      },
+        invalidRange: "Start must be before end."
+      }
     },
     tabsAria: "Statistics categories",
     tabs: {
@@ -237,14 +240,14 @@ const DASHBOARD_COPY = {
       planning: "Scheduling & interventions",
       crm: "CRM & contracts",
       reports: "Reports",
-      infrastructure: "Infrastructure",
+      infrastructure: "Infrastructure"
     },
     periods: {
       "30d": "30 days",
       "90d": "90 days",
       "365d": "12 months",
       ytd: "Year to date",
-      all: "All time",
+      all: "All time"
     },
     sections: {
       summary: "Overview",
@@ -252,7 +255,7 @@ const DASHBOARD_COPY = {
       planning: "Scheduling & interventions",
       crm: "CRM & contracts",
       reports: "Reports",
-      infrastructure: "Infrastructure",
+      infrastructure: "Infrastructure"
     },
     summary: {
       ticketsCreated: "Tickets created",
@@ -265,13 +268,13 @@ const DASHBOARD_COPY = {
       clientsTotal: "Companies (period)",
       reportsInPeriod: "Reports generated",
       equipMonitored: "Monitored assets",
-      satisfactionAvg: "Avg. satisfaction",
+      satisfactionAvg: "Avg. satisfaction"
     },
     units: {
       hours: "{value} h",
       percent: "{value}%",
       stars: "{value}/5",
-      none: "-",
+      none: "-"
     },
     support: {
       closureRate: "Closure rate",
@@ -312,8 +315,8 @@ const DASHBOARD_COPY = {
         open: "Open",
         resolution: "Avg. resolution",
         rating: "Avg. rating",
-        responses: "Responses",
-      },
+        responses: "Responses"
+      }
     },
     planning: {
       total: "Events in period",
@@ -323,36 +326,38 @@ const DASHBOARD_COPY = {
       byType: "By type",
       byAgent: "Interventions by agent",
       monthlyTrend: "Monthly activity",
-      unavailable: "Scheduling module unavailable.",
+      unavailable: "Scheduling module unavailable."
     },
     crm: {
       clients: "Active companies (period)",
       contacts: "Contacts",
       contactsNew: "New contacts",
       contractsExpiring: "Contracts expiring (30d)",
-      contractsExpired: "Expired contracts",
+      contractsExpired: "Expired contracts"
     },
     reports: {
       total: "Reports (all time)",
       inPeriod: "Reports (period)",
       byType: "By type",
       monthlyTrend: "Monthly output",
-      unavailable: "No reports recorded.",
+      unavailable: "No reports recorded."
     },
     infrastructure: {
       monitored: "Monitored equipment",
-      surveillance: "Supervision rate",
+      surveillance: "Monitoring rate",
       rmmAgents: "Active RMM agents",
       mspAgents: "Active MSP agents",
       families: "Fleet by family",
-      familyColumns: { family: "Family", total: "Total", monitored: "Monitored" },
+      familyColumns: {
+        family: "Family",
+        total: "Total",
+        monitored: "Monitored"
+      }
     },
     empty: "No data for this period.",
     trendWeek: "Wk {date}",
-    trendMonth: "{date}",
-  },
+    trendMonth: "{date}"
+  }
 };
-
 export const getDashboardPageCopy = createLocaleGetter(DASHBOARD_COPY);
-
 export const DASHBOARD_PERIOD_OPTIONS = ["30d", "90d", "365d", "ytd", "all"];

@@ -1,35 +1,17 @@
 const envEdition = String(process.env.REACT_APP_VERITAS_EDITION || "").trim().toLowerCase();
-
 export function getEnvEdition() {
   return envEdition === "pro" ? "pro" : "community";
 }
-
 export const COMMUNITY_SIDEBAR_KEYS = new Set(["Contrat", "Contact", "Ticket", "Hardware", "Mon", "Cybersecurite", "Service"]);
-
-export const COMMUNITY_ADMIN_KEYS = new Set([
-  "general",
-  "users",
-  "clients",
-  "tickets",
-  "mail-collect",
-  "notifications-inapp",
-  "rmm",
-  "maintenance",
-  "client-portal",
-  "license",
-  "integrations",
-]);
-
+export const COMMUNITY_ADMIN_KEYS = new Set(["general", "users", "permissions", "clients", "tickets", "mail-collect", "notifications-inapp", "rmm", "maintenance", "client-portal", "license", "integrations", "ai"]);
 export function isCommunityEdition(edition) {
   return String(edition || getEnvEdition()).toLowerCase() !== "pro";
 }
-
 export const COMMUNITY_SITES_PER_CLIENT = 3;
 export const COMMUNITY_TICKET_TEMPLATES_LIMIT = 3;
 export const COMMUNITY_TICKET_MACROS_LIMIT = 3;
 export const COMMUNITY_MSP_AGENTS_LIMIT = 5;
 export const COMMUNITY_CLIENT_PORTAL_LIMIT = 3;
-
 export function getCommunityMspAgentsLimit(limits) {
   const fromApi = limits?.mspAgents;
   if (Number.isFinite(Number(fromApi)) && Number(fromApi) > 0) {
@@ -37,7 +19,6 @@ export function getCommunityMspAgentsLimit(limits) {
   }
   return COMMUNITY_MSP_AGENTS_LIMIT;
 }
-
 export function getCommunityClientPortalLimit(limits) {
   const fromApi = limits?.clientPortalUsers;
   if (Number.isFinite(Number(fromApi)) && Number(fromApi) > 0) {
@@ -45,7 +26,6 @@ export function getCommunityClientPortalLimit(limits) {
   }
   return COMMUNITY_CLIENT_PORTAL_LIMIT;
 }
-
 export function getCommunitySitesLimit(limits) {
   const fromApi = limits?.sitesPerClient;
   if (Number.isFinite(Number(fromApi)) && Number(fromApi) > 0) {
@@ -53,7 +33,6 @@ export function getCommunitySitesLimit(limits) {
   }
   return COMMUNITY_SITES_PER_CLIENT;
 }
-
 export function getCommunityTicketTemplatesLimit(limits) {
   const fromApi = limits?.ticketTemplates;
   if (Number.isFinite(Number(fromApi)) && Number(fromApi) > 0) {
@@ -61,7 +40,6 @@ export function getCommunityTicketTemplatesLimit(limits) {
   }
   return COMMUNITY_TICKET_TEMPLATES_LIMIT;
 }
-
 export function getCommunityTicketMacrosLimit(limits) {
   const fromApi = limits?.ticketMacros;
   if (Number.isFinite(Number(fromApi)) && Number(fromApi) > 0) {
@@ -69,25 +47,13 @@ export function getCommunityTicketMacrosLimit(limits) {
   }
   return COMMUNITY_TICKET_MACROS_LIMIT;
 }
-
-export const PRO_ONLY_DOC_TYPES = new Set([
-  "CampaignDetail",
-  "Planning",
-  "Dashboard",
-  "TicketSales",
-  "TicketSalesCreate",
-  "Rapport",
-  "DocumentsHub",
-]);
-
+export const PRO_ONLY_DOC_TYPES = new Set(["CampaignDetail", "Planning", "Dashboard", "TicketSales", "TicketSalesCreate", "Rapport", "DocumentsHub"]);
 export function isCampaignFeatureLocked(edition) {
   return isCommunityEdition(edition);
 }
-
 export function isProOnlyDocType(docType) {
   return PRO_ONLY_DOC_TYPES.has(String(docType || ""));
 }
-
 export function filterAccessForEdition(access, edition) {
   if (!isCommunityEdition(edition)) return access;
   const next = {};

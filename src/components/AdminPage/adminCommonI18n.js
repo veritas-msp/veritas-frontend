@@ -1,5 +1,4 @@
 import { createLocaleGetter, interpolate } from "../../i18n/translate";
-
 const ADMIN_COMMON = {
   fr: {
     active: "Actif",
@@ -58,18 +57,18 @@ const ADMIN_COMMON = {
       deleteError: "Erreur lors de la suppression",
       deleteSuccess: "Élément supprimé",
       updateError: "Erreur lors de la mise à jour",
-      addError: "Erreur lors de l'ajout",
+      addError: "Erreur lors de l'ajout"
     },
     colors: {
       blue: "Bleu",
       orange: "Orange",
       red: "Rouge",
       gray: "Gris",
-      custom: "Couleur personnalisée",
+      custom: "Couleur personnalisée"
     },
     directions: {
       left: "Droite → gauche",
-      right: "Gauche → droite",
+      right: "Gauche → droite"
     },
     visible: "Visible",
     hidden: "Masquée",
@@ -87,7 +86,7 @@ const ADMIN_COMMON = {
     removeField: "Supprimer le champ",
     creating: "Création…",
     testConnection: "Tester la connexion",
-    testing: "Test en cours…",
+    testing: "Test en cours…"
   },
   en: {
     active: "Active",
@@ -146,18 +145,18 @@ const ADMIN_COMMON = {
       deleteError: "Error while deleting",
       deleteSuccess: "Item deleted",
       updateError: "Error while updating",
-      addError: "Error while adding",
+      addError: "Error while adding"
     },
     colors: {
       blue: "Blue",
       orange: "Orange",
       red: "Red",
       gray: "Gray",
-      custom: "Custom color",
+      custom: "Custom color"
     },
     directions: {
       left: "Right → left",
-      right: "Left → right",
+      right: "Left → right"
     },
     visible: "Visible",
     hidden: "Hidden",
@@ -175,7 +174,7 @@ const ADMIN_COMMON = {
     removeField: "Remove field",
     creating: "Creating…",
     testConnection: "Test connection",
-    testing: "Testing…",
+    testing: "Testing…"
   },
   de: {
     active: "Aktiv",
@@ -234,18 +233,18 @@ const ADMIN_COMMON = {
       deleteError: "Fehler beim Löschen",
       deleteSuccess: "Element gelöscht",
       updateError: "Fehler beim Aktualisieren",
-      addError: "Fehler beim Hinzufügen",
+      addError: "Fehler beim Hinzufügen"
     },
     colors: {
       blue: "Blau",
       orange: "Orange",
       red: "Rot",
       gray: "Grau",
-      custom: "Benutzerdefinierte Farbe",
+      custom: "Benutzerdefinierte Farbe"
     },
     directions: {
       left: "Rechts → links",
-      right: "Links → rechts",
+      right: "Links → rechts"
     },
     visible: "Sichtbar",
     hidden: "Ausgeblendet",
@@ -263,7 +262,7 @@ const ADMIN_COMMON = {
     removeField: "Feld entfernen",
     creating: "Erstellen…",
     testConnection: "Verbindung testen",
-    testing: "Test läuft…",
+    testing: "Test läuft…"
   },
   it: {
     active: "Attivo",
@@ -322,18 +321,18 @@ const ADMIN_COMMON = {
       deleteError: "Errore durante l'eliminazione",
       deleteSuccess: "Elemento eliminato",
       updateError: "Errore durante l'aggiornamento",
-      addError: "Errore durante l'aggiunta",
+      addError: "Errore durante l'aggiunta"
     },
     colors: {
       blue: "Blu",
       orange: "Arancione",
       red: "Rosso",
       gray: "Grigio",
-      custom: "Colore personalizzato",
+      custom: "Colore personalizzato"
     },
     directions: {
       left: "Destra → sinistra",
-      right: "Sinistra → destra",
+      right: "Sinistra → destra"
     },
     visible: "Visibile",
     hidden: "Nascosta",
@@ -351,7 +350,7 @@ const ADMIN_COMMON = {
     removeField: "Rimuovi campo",
     creating: "Creazione…",
     testConnection: "Testa connessione",
-    testing: "Test in corso…",
+    testing: "Test in corso…"
   },
   es: {
     active: "Activo",
@@ -410,18 +409,18 @@ const ADMIN_COMMON = {
       deleteError: "Error al eliminar",
       deleteSuccess: "Elemento eliminado",
       updateError: "Error al actualizar",
-      addError: "Error al añadir",
+      addError: "Error al añadir"
     },
     colors: {
       blue: "Azul",
       orange: "Naranja",
       red: "Rojo",
       gray: "Gris",
-      custom: "Color personalizado",
+      custom: "Color personalizado"
     },
     directions: {
       left: "Derecha → izquierda",
-      right: "Izquierda → derecha",
+      right: "Izquierda → derecha"
     },
     visible: "Visible",
     hidden: "Oculta",
@@ -439,12 +438,10 @@ const ADMIN_COMMON = {
     removeField: "Eliminar campo",
     creating: "Creando…",
     testConnection: "Probar conexión",
-    testing: "Prueba en curso…",
-  },
+    testing: "Prueba en curso…"
+  }
 };
-
 export const getAdminCommonCopy = createLocaleGetter(ADMIN_COMMON);
-
 export function adminInterpolate(template, params, locale) {
   return interpolate(template, params);
 }

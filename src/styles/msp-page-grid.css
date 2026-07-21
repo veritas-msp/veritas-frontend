@@ -1,8 +1,4 @@
-/**
- * Quadrillage de fond MSP · partagé entre accueil, entreprises, contacts, support,
- * supervision, cybersécurité et services.
- * (KPI, documents et rapports utilisent msp-page-insight.css.)
- */
+
 .msp-page-grid {
   position: relative;
 }
@@ -31,7 +27,7 @@
   z-index: 0;
 }
 
-/* Contenu au-dessus du quadrillage (évite la transparence des cartes) */
+
 .msp-page-grid > *,
 .msp-page-grid .mspLayout,
 .msp-page-grid .mspMain,
@@ -44,7 +40,7 @@
   z-index: 50;
 }
 
-/* Surfaces opaques : le quadrillage ne doit pas « baver » sur l'anti-aliasing des coins */
+
 .msp-page-grid :where(.card, .kpiCard, .toolbar, .mspHero, .stateBox, .emptyState) {
   background-color: var(--msp-surface, #fff);
   isolation: isolate;

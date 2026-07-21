@@ -1,4 +1,4 @@
-/* Centre de supervision périphériques · thème MSP Veritas */
+
 
 .commandCenter {
   display: flex;
@@ -11,7 +11,7 @@
   gap: 0.85rem;
 }
 
-/* Page header (vue globale) */
+
 .pageHeader {
   display: flex;
   flex-wrap: wrap;
@@ -114,7 +114,7 @@
   background: var(--msp-page-bg, #f8fafc);
 }
 
-/* Hero */
+
 .hero {
   display: grid;
   grid-template-columns: 1fr;
@@ -288,7 +288,7 @@
 .kpiTile_bad .kpiIcon { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
 .kpiTile_warn .kpiIcon { color: #f59e0b; background: rgba(245, 158, 11, 0.12); }
 
-/* MK bar */
+
 .mkBar {
   display: flex;
   flex-wrap: wrap;
@@ -377,7 +377,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* Action queue */
+
 .actionQueue {
   border-radius: 14px;
   border: 1px solid rgba(43, 95, 171, 0.2);
@@ -474,7 +474,7 @@
   gap: 0.65rem;
 }
 
-/* Section mode · familles à gauche */
+
 .sectionLayout {
   display: flex;
   align-items: stretch;
@@ -588,7 +588,7 @@
   padding-bottom: 1rem;
 }
 
-/* Toolbar */
+
 .toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -815,7 +815,7 @@
   width: 100%;
 }
 
-/* Pillars & cards */
+
 .pillar {
   border-radius: 14px;
   border: 1px solid var(--msp-border, #e2e8f0);
@@ -857,7 +857,7 @@
   color: var(--msp-text-muted, #94a3b8);
 }
 
-/* Fleet list · vue aérée centre de supervision */
+
 .fleetToolbarMeta {
   display: flex;
   flex-wrap: wrap;
@@ -1536,7 +1536,7 @@
   color: #fff;
 }
 
-/* Skeleton */
+
 .skeletonHero,
 .skeletonGrid > div {
   border-radius: 14px;
@@ -1559,7 +1559,7 @@
 
 .skeletonGrid > div { height: 110px; }
 
-/* ── Dark mode ── */
+
 :global(html.dark) .commandCenter {
   --msp-text-muted: var(--msp-muted, #8fa8c4);
 }

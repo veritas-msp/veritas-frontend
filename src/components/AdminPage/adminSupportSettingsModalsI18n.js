@@ -1,4 +1,3 @@
-/** Modal copy for Support Settings (templates, macros, ITIL, solution catalog). */
 export const SUPPORT_SETTINGS_MODALS = {
   fr: {
     template: {
@@ -44,7 +43,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Annuler",
       saving: "Enregistrement…",
       createBtn: "Créer le template",
-      saveBtn: "Enregistrer",
+      saveBtn: "Enregistrer"
     },
     macro: {
       eyebrow: "Macros tickets",
@@ -60,8 +59,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       nameLabel: "Nom de la macro",
       namePlaceholder: "Escalade MSP + communication",
       chainTitle: "Enchaînement",
-      chainDesc:
-        "Glissez-déposez les étapes pour les réordonner, puis sélectionnez-en une pour la configurer.",
+      chainDesc: "Glissez-déposez les étapes pour les réordonner, puis sélectionnez-en une pour la configurer.",
       emptyActions: "Aucune action pour le moment.",
       selectAction: "Sélectionnez une action dans la liste.",
       stepsHeader: "{count} étape",
@@ -76,7 +74,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Annuler",
       saving: "Enregistrement…",
       createBtn: "Créer la macro",
-      saveBtn: "Enregistrer",
+      saveBtn: "Enregistrer"
     },
     itilCategory: {
       eyebrow: "Arborescence ITIL",
@@ -93,8 +91,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       nameLabel: "Nom de la catégorie",
       namePlaceholder: "Ex. Incident réseau",
       detailsTitle: "Détails",
-      detailsDesc:
-        "Décrivez la catégorie et indiquez si elle est disponible à la création de ticket.",
+      detailsDesc: "Décrivez la catégorie et indiquez si elle est disponible à la création de ticket.",
       activeLabel: "Catégorie active",
       activeHint: "Les catégories inactives ne sont plus proposées lors de la création de ticket.",
       activeOn: "Active",
@@ -105,7 +102,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Annuler",
       saving: "Enregistrement…",
       createBtn: "Créer la catégorie",
-      saveBtn: "Enregistrer",
+      saveBtn: "Enregistrer"
     },
     itilSection: {
       eyebrow: "Arborescence ITIL",
@@ -117,8 +114,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       sectionsAria: "Sections du formulaire ITIL",
       closeAria: "Fermer",
       generalTitle: "Informations",
-      generalDesc:
-        "Le nom de section apparaît dans l'arborescence ITIL et lors de la création de ticket.",
+      generalDesc: "Le nom de section apparaît dans l'arborescence ITIL et lors de la création de ticket.",
       activeLabel: "Section active",
       activeHint: "Les sections inactives masquent leurs catégories associées.",
       activeOn: "Active",
@@ -133,7 +129,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Annuler",
       saving: "Enregistrement…",
       createBtn: "Créer la section",
-      saveBtn: "Enregistrer",
+      saveBtn: "Enregistrer"
     },
     solution: {
       eyebrow: "Support",
@@ -143,8 +139,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       editFallback: "l'entrée",
       categoryIntervention: "Type d'intervention",
       categoryAction: "Type d'action",
-      subtitle:
-        "Options proposées lors de la résolution d'un ticket pour alimenter les statistiques.",
+      subtitle: "Options proposées lors de la résolution d'un ticket pour alimenter les statistiques.",
       closeAria: "Fermer",
       labelField: "Libellé",
       labelPlaceholder: "Ex. Sur site, Configuration, Réparation…",
@@ -156,8 +151,8 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Annuler",
       saving: "Enregistrement…",
       createBtn: "Créer",
-      saveBtn: "Enregistrer",
-    },
+      saveBtn: "Enregistrer"
+    }
   },
   en: {
     template: {
@@ -203,7 +198,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Cancel",
       saving: "Saving…",
       createBtn: "Create template",
-      saveBtn: "Save",
+      saveBtn: "Save"
     },
     macro: {
       eyebrow: "Ticket macros",
@@ -234,7 +229,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Cancel",
       saving: "Saving…",
       createBtn: "Create macro",
-      saveBtn: "Save",
+      saveBtn: "Save"
     },
     itilCategory: {
       eyebrow: "ITIL tree",
@@ -262,7 +257,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Cancel",
       saving: "Saving…",
       createBtn: "Create category",
-      saveBtn: "Save",
+      saveBtn: "Save"
     },
     itilSection: {
       eyebrow: "ITIL tree",
@@ -289,7 +284,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Cancel",
       saving: "Saving…",
       createBtn: "Create section",
-      saveBtn: "Save",
+      saveBtn: "Save"
     },
     solution: {
       eyebrow: "Support",
@@ -311,8 +306,8 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Cancel",
       saving: "Saving…",
       createBtn: "Create",
-      saveBtn: "Save",
-    },
+      saveBtn: "Save"
+    }
   },
   de: {
     template: {
@@ -358,7 +353,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Abbrechen",
       saving: "Speichern…",
       createBtn: "Template erstellen",
-      saveBtn: "Speichern",
+      saveBtn: "Speichern"
     },
     macro: {
       eyebrow: "Ticket-Makros",
@@ -389,7 +384,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Abbrechen",
       saving: "Speichern…",
       createBtn: "Makro erstellen",
-      saveBtn: "Speichern",
+      saveBtn: "Speichern"
     },
     itilCategory: {
       eyebrow: "ITIL-Baum",
@@ -417,7 +412,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Abbrechen",
       saving: "Speichern…",
       createBtn: "Kategorie erstellen",
-      saveBtn: "Speichern",
+      saveBtn: "Speichern"
     },
     itilSection: {
       eyebrow: "ITIL-Baum",
@@ -444,7 +439,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Abbrechen",
       saving: "Speichern…",
       createBtn: "Abschnitt erstellen",
-      saveBtn: "Speichern",
+      saveBtn: "Speichern"
     },
     solution: {
       eyebrow: "Support",
@@ -466,8 +461,8 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Abbrechen",
       saving: "Speichern…",
       createBtn: "Erstellen",
-      saveBtn: "Speichern",
-    },
+      saveBtn: "Speichern"
+    }
   },
   it: {
     template: {
@@ -513,7 +508,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Annulla",
       saving: "Salvataggio…",
       createBtn: "Crea template",
-      saveBtn: "Salva",
+      saveBtn: "Salva"
     },
     macro: {
       eyebrow: "Macro ticket",
@@ -544,7 +539,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Annulla",
       saving: "Salvataggio…",
       createBtn: "Crea macro",
-      saveBtn: "Salva",
+      saveBtn: "Salva"
     },
     itilCategory: {
       eyebrow: "Albero ITIL",
@@ -572,7 +567,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Annulla",
       saving: "Salvataggio…",
       createBtn: "Crea categoria",
-      saveBtn: "Salva",
+      saveBtn: "Salva"
     },
     itilSection: {
       eyebrow: "Albero ITIL",
@@ -599,7 +594,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Annulla",
       saving: "Salvataggio…",
       createBtn: "Crea sezione",
-      saveBtn: "Salva",
+      saveBtn: "Salva"
     },
     solution: {
       eyebrow: "Supporto",
@@ -621,8 +616,8 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Annulla",
       saving: "Salvataggio…",
       createBtn: "Crea",
-      saveBtn: "Salva",
-    },
+      saveBtn: "Salva"
+    }
   },
   es: {
     template: {
@@ -668,7 +663,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Cancelar",
       saving: "Guardando…",
       createBtn: "Crear plantilla",
-      saveBtn: "Guardar",
+      saveBtn: "Guardar"
     },
     macro: {
       eyebrow: "Macros de tickets",
@@ -699,7 +694,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Cancelar",
       saving: "Guardando…",
       createBtn: "Crear macro",
-      saveBtn: "Guardar",
+      saveBtn: "Guardar"
     },
     itilCategory: {
       eyebrow: "Árbol ITIL",
@@ -727,7 +722,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Cancelar",
       saving: "Guardando…",
       createBtn: "Crear categoría",
-      saveBtn: "Guardar",
+      saveBtn: "Guardar"
     },
     itilSection: {
       eyebrow: "Árbol ITIL",
@@ -754,7 +749,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Cancelar",
       saving: "Guardando…",
       createBtn: "Crear sección",
-      saveBtn: "Guardar",
+      saveBtn: "Guardar"
     },
     solution: {
       eyebrow: "Soporte",
@@ -776,7 +771,7 @@ export const SUPPORT_SETTINGS_MODALS = {
       cancel: "Cancelar",
       saving: "Guardando…",
       createBtn: "Crear",
-      saveBtn: "Guardar",
-    },
-  },
+      saveBtn: "Guardar"
+    }
+  }
 };

@@ -1,6 +1,6 @@
-/* ───────────── STYLES INDÉPENDANTS POUR LE MODULE INTERNET ───────────── */
 
-/* ───────────── CONTAINER PRINCIPAL ───────────── */
+
+
 .container {
   max-width: 1400px;
   margin: 0 auto;
@@ -12,7 +12,7 @@
   transition: all 0.3s ease;
 }
 
-/* ───────────── GROUPES PAR SITE ───────────── */
+
 .siteGroup {
   display: flex;
   flex-direction: column;
@@ -54,7 +54,7 @@
   opacity: 0.6;
 }
 
-/* ───────────── GRILLE DES CARTES INTERNET ───────────── */
+
 .internetGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -64,7 +64,7 @@
   margin: 0 auto;
 }
 
-/* ───────────── CARTES INTERNET ───────────── */
+
 .internetCard {
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
@@ -95,7 +95,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* ───────────── EN-TÊTE DE CARTE ───────────── */
+
 .cardHeader {
   display: flex;
   justify-content: space-between;
@@ -111,7 +111,7 @@
   min-width: 0;
 }
 
-/* ───────────── BOUTONS ───────────── */
+
 .commentToggleButton {
   background: var(--bg-primary);
   border: 2px solid var(--border-secondary);
@@ -131,7 +131,7 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Aligné sur le style des boutons du header EnterpriseDetailPage */
+
 .editButton {
   display: inline-flex;
   align-items: center;
@@ -153,7 +153,7 @@
   color: #0f172a;
 }
 
-/* ───────────── ÉTAT VIDE ───────────── */
+
 .emptyState {
   text-align: center;
   padding: 3rem 1rem;
@@ -171,7 +171,7 @@
   border-color: #4a4a6a;
 }
 
-/* ───────────── MODAL D'ÉDITION ───────────── */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -222,7 +222,7 @@
   animation: fadeInScale 0.3s ease-out;
 }
 
-/* ───────────── CLASSES SPÉCIFIQUES À INTERNET ───────────── */
+
 .internetInfo {
   display: flex;
   flex-direction: column;
@@ -299,7 +299,7 @@
   line-height: 1.5;
 }
 
-/* ───────────── TYPE INTERNET (LABEL EN HAUT À DROITE) ───────────── */
+
 .internetType {
   display: flex;
   flex-direction: row;
@@ -326,7 +326,7 @@
   top: 1px;
 }
 
-/* ───────────── CATÉGORIE (PRIMAIRE / BACKUP) ───────────── */
+
 .connectionCategory {
   font-size: 10px;
   font-weight: 600;
@@ -347,7 +347,7 @@
   color: #b91c1c;
 }
 
-/* ───────────── MODAL D'ÉDITION ───────────── */
+
 .editModalHeader {
   display: flex;
   justify-content: space-between;
@@ -514,7 +514,7 @@
   flex: 1;
 }
 
-/* ───────────── RESPONSIVE DESIGN ───────────── */
+
 @media (max-width: 1200px) {
   .internetGrid {
     grid-template-columns: repeat(2, 1fr);

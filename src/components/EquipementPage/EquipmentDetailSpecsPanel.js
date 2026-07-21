@@ -15,148 +15,104 @@ import { shouldShowRemoteAccessFieldAction } from "./equipmentDetailRemoteAccess
 import { useAppLocale } from "../../hooks/useAppGeneralSettings";
 import { getEquipmentDetailCopy } from "./equipmentDetailPageI18n";
 import styles from "./EquipmentDetailSpecsPanel.module.css";
-
 const DEBIT_FIELD_KEYS = new Set(["debit", "debitDownload", "debitUpload"]);
-
 function mergeInternetDisplaySections(sections) {
-  const typeSection = sections.find((section) => section.id === "internetType");
-  const linkSection = sections.find((section) => section.id === "internetLink");
+  const typeSection = sections.find(section => section.id === "internetType");
+  const linkSection = sections.find(section => section.id === "internetLink");
   if (!typeSection || !linkSection) return sections;
-
-  return sections
-    .filter((section) => section.id !== "internetType")
-    .map((section) =>
-      section.id === "internetLink"
-        ? { ...section, fields: [...typeSection.fields, ...section.fields] }
-        : section
-    );
+  return sections.filter(section => section.id !== "internetType").map(section => section.id === "internetLink" ? {
+    ...section,
+    fields: [...typeSection.fields, ...section.fields]
+  } : section);
 }
-
 function resolveSectionsGridClass(count) {
-  if (count === 4 || (count > 3 && count % 3 === 1)) return styles.sectionsGrid2;
+  if (count === 4 || count > 3 && count % 3 === 1) return styles.sectionsGrid2;
   return styles.sectionsGrid3;
 }
-
-function SourceBadge({ source, copy }) {
+function SourceBadge({
+  source,
+  copy
+}) {
   const metaBySource = {
-    manual: { label: copy.specs.sourceManual, icon: "mdi:pencil-outline" },
-    rmm: { label: copy.specs.sourceRmm, icon: "mdi:remote-desktop" },
-    checkmk: { label: copy.specs.sourceCheckmk, icon: "simple-icons:checkmk" },
+    manual: {
+      label: copy.specs.sourceManual,
+      icon: "mdi:pencil-outline"
+    },
+    rmm: {
+      label: copy.specs.sourceRmm,
+      icon: "mdi:remote-desktop"
+    },
+    checkmk: {
+      label: copy.specs.sourceCheckmk,
+      icon: "simple-icons:checkmk"
+    }
   };
   const meta = metaBySource[source] || metaBySource.manual;
-  return (
-    <span className={`${styles.sourceBadge} ${styles[`sourceBadge_${source}`] || ""}`} title={meta.label}>
+  return <span className={`${styles.sourceBadge} ${styles[`sourceBadge_${source}`] || ""}`} title={meta.label}>
       <Icon icon={meta.icon} width={11} aria-hidden />
       {meta.label}
-    </span>
-  );
+    </span>;
 }
-
-function SpecField({ field, remoteAccessAction, equipmentLink, layout = "grid", copy }) {
+function SpecField({
+  field,
+  remoteAccessAction,
+  equipmentLink,
+  layout = "grid",
+  copy
+}) {
   const showRemoteAction = shouldShowRemoteAccessFieldAction(field.key, remoteAccessAction);
-
   const renderValue = () => {
     if (equipmentLink) {
       if (field.key === "firewallHAName") {
-        return (
-          <button
-            type="button"
-            className={styles.haPeerLink}
-            onClick={equipmentLink.onClick}
-            title={equipmentLink.title}
-          >
+        return <button type="button" className={styles.haPeerLink} onClick={equipmentLink.onClick} title={equipmentLink.title}>
             <Icon icon="mdi:shield-sync" width={14} aria-hidden />
             <span className={styles.haPeerLinkLabel}>{field.value}</span>
             <Icon icon="mdi:arrow-right" width={14} className={styles.haPeerLinkArrow} aria-hidden />
-          </button>
-        );
+          </button>;
       }
-      return (
-        <button
-          type="button"
-          className={`${styles.fieldValue} ${styles.fieldLink} ${field.mono ? styles.fieldValueMono : ""}`}
-          onClick={equipmentLink.onClick}
-          title={equipmentLink.title}
-        >
+      return <button type="button" className={`${styles.fieldValue} ${styles.fieldLink} ${field.mono ? styles.fieldValueMono : ""}`} onClick={equipmentLink.onClick} title={equipmentLink.title}>
           {field.value}
-        </button>
-      );
+        </button>;
     }
-    return (
-      <span className={`${styles.fieldValue} ${field.mono ? styles.fieldValueMono : ""}`}>
+    return <span className={`${styles.fieldValue} ${field.mono ? styles.fieldValueMono : ""}`}>
         {field.value}
-      </span>
-    );
+      </span>;
   };
-
   if (layout === "inline") {
-    return (
-      <div className={styles.inlineField}>
+    return <div className={styles.inlineField}>
         <span className={styles.inlineFieldLabel}>{field.label}</span>
         <div className={styles.fieldValueWrap}>
           {renderValue()}
-          {field.source && field.source !== "manual" && field.source !== "rmm" ? (
-            <SourceBadge source={field.source} copy={copy} />
-          ) : null}
-          {showRemoteAction ? (
-            <EquipmentRemoteAccessLaunchButton
-              variant="inline"
-              label={remoteAccessAction.label}
-              icon={remoteAccessAction.icon}
-              title={remoteAccessAction.tooltip}
-              onClick={remoteAccessAction.launch}
-            />
-          ) : null}
+          {field.source && field.source !== "manual" && field.source !== "rmm" ? <SourceBadge source={field.source} copy={copy} /> : null}
+          {showRemoteAction ? <EquipmentRemoteAccessLaunchButton variant="inline" label={remoteAccessAction.label} icon={remoteAccessAction.icon} title={remoteAccessAction.tooltip} onClick={remoteAccessAction.launch} /> : null}
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className={styles.field}>
+  return <div className={styles.field}>
       <span className={styles.fieldLabel}>{field.label}</span>
       <div className={styles.fieldValueWrap}>
         {renderValue()}
-        {field.source && field.source !== "manual" && field.source !== "rmm" ? (
-          <SourceBadge source={field.source} copy={copy} />
-        ) : null}
-        {showRemoteAction ? (
-          <EquipmentRemoteAccessLaunchButton
-            variant="inline"
-            label={remoteAccessAction.label}
-            icon={remoteAccessAction.icon}
-            title={remoteAccessAction.tooltip}
-            onClick={remoteAccessAction.launch}
-          />
-        ) : null}
+        {field.source && field.source !== "manual" && field.source !== "rmm" ? <SourceBadge source={field.source} copy={copy} /> : null}
+        {showRemoteAction ? <EquipmentRemoteAccessLaunchButton variant="inline" label={remoteAccessAction.label} icon={remoteAccessAction.icon} title={remoteAccessAction.tooltip} onClick={remoteAccessAction.launch} /> : null}
       </div>
-    </div>
-  );
+    </div>;
 }
-
-function SiteLocationVignette({ site, locationLabel }) {
+function SiteLocationVignette({
+  site,
+  locationLabel
+}) {
   const address = buildSiteAddress(site);
   const label = getSiteDisplayName(site) || locationLabel;
-
-  return (
-    <div className={styles.siteVignette}>
+  return <div className={styles.siteVignette}>
       <div className={styles.siteVignetteMap}>
-        <SiteMapPreview
-          latitude={site.latitude}
-          longitude={site.longitude}
-          label={label}
-          address={address}
-          compact
-        />
+        <SiteMapPreview latitude={site.latitude} longitude={site.longitude} label={label} address={address} compact />
       </div>
       <div className={styles.siteVignetteText}>
         <span className={styles.siteVignetteName}>{label}</span>
         {address ? <span className={styles.siteVignetteAddress}>{address}</span> : null}
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export default function EquipmentDetailSpecsPanel({
   equipment,
   formData,
@@ -166,7 +122,7 @@ export default function EquipmentDetailSpecsPanel({
   onOpenEquipment,
   remoteAccessAction = null,
   compact = false,
-  title,
+  title
 }) {
   const locale = useAppLocale();
   const copy = useMemo(() => getEquipmentDetailCopy(locale), [locale]);
@@ -176,15 +132,24 @@ export default function EquipmentDetailSpecsPanel({
     if (equipment?.type !== "BorneWifi") return formData;
     const raw = equipment?.rawData?.data || equipment?.rawData || equipment || {};
     const persistedSsids = formData?.ssids ?? raw.ssids ?? equipment?.ssids ?? [];
-    const rebuilt = buildBorneWifiSsidFormState(
-      { ...equipment, ssids: persistedSsids, rawData: { ...equipment?.rawData, data: { ...raw, ssids: persistedSsids } } },
-      { ssids: clientSsids }
-    );
+    const rebuilt = buildBorneWifiSsidFormState({
+      ...equipment,
+      ssids: persistedSsids,
+      rawData: {
+        ...equipment?.rawData,
+        data: {
+          ...raw,
+          ssids: persistedSsids
+        }
+      }
+    }, {
+      ssids: clientSsids
+    });
     return {
       ...formData,
       ssids: persistedSsids,
       clientSsids: rebuilt.clientSsids,
-      assignedSsidIds: rebuilt.assignedSsidIds,
+      assignedSsidIds: rebuilt.assignedSsidIds
     };
   }, [equipment, formData, clientSsids]);
   const haPeer = useMemo(() => {
@@ -192,61 +157,57 @@ export default function EquipmentDetailSpecsPanel({
     return resolveFirewallHaPeer(equipment, peerFirewalls);
   }, [equipment, formData?.modeHA, peerFirewalls]);
   const showStorageDiskBays = useMemo(() => {
-    if (equipment?.type !== "NAS" && equipment?.type !== "Stockage") return false;
+    if (equipment?.type !== "NAS" && equipment?.type !== "Storage") return false;
     const profile = getStorageFormProfile(displayFormData?.storageType || displayFormData?.type);
-    return shouldShowStorageDiskBays(displayFormData, { showDisques: profile.showDisques });
+    return shouldShowStorageDiskBays(displayFormData, {
+      showDisques: profile.showDisques
+    });
   }, [equipment?.type, displayFormData]);
   const rawSections = buildEquipmentDetailSections(equipment, displayFormData, locale);
-  const baseSections =
-    equipment?.type === "Internet" ? mergeInternetDisplaySections(rawSections) : rawSections;
+  const baseSections = equipment?.type === "Internet" ? mergeInternetDisplaySections(rawSections) : rawSections;
   const sections = useMemo(() => {
     if (!haPeer || equipment?.type !== "Firewalls") return baseSections;
     const peerName = getFirewallDisplayName(haPeer);
     if (!peerName) return baseSections;
-
-    return baseSections.map((section) => {
+    return baseSections.map(section => {
       if (section.id !== "ha") return section;
-      const peerFieldIndex = section.fields.findIndex((field) => field.key === "firewallHAName");
+      const peerFieldIndex = section.fields.findIndex(field => field.key === "firewallHAName");
       if (peerFieldIndex >= 0) {
         return {
           ...section,
-          fields: section.fields.map((field, index) =>
-            index === peerFieldIndex ? { ...field, value: peerName } : field
-          ),
+          fields: section.fields.map((field, index) => index === peerFieldIndex ? {
+            ...field,
+            value: peerName
+          } : field)
         };
       }
-
-      const roleIndex = section.fields.findIndex((field) => field.key === "roleHA");
+      const roleIndex = section.fields.findIndex(field => field.key === "roleHA");
       const peerField = {
         key: "firewallHAName",
         label: copy.fields.firewallHAName,
         value: peerName,
         mono: false,
-        source: "manual",
+        source: "manual"
       };
       const fields = [...section.fields];
-      if (roleIndex >= 0) fields.splice(roleIndex + 1, 0, peerField);
-      else fields.push(peerField);
-      return { ...section, fields };
+      if (roleIndex >= 0) fields.splice(roleIndex + 1, 0, peerField);else fields.push(peerField);
+      return {
+        ...section,
+        fields
+      };
     });
   }, [baseSections, haPeer, equipment?.type, copy.fields.firewallHAName]);
   const sectionsGridClass = resolveSectionsGridClass(sections.length);
-  const rmmManagedComputer =
-    equipment?.type === "Ordinateurs" && isRmmManagedEquipment(equipment);
+  const rmmManagedComputer = equipment?.type === "Ordinateurs" && isRmmManagedEquipment(equipment);
   const rmmInlineFields = useMemo(() => {
     if (!rmmManagedComputer) return [];
-    return sections.flatMap((section) => section.fields);
+    return sections.flatMap(section => section.fields);
   }, [rmmManagedComputer, sections]);
   const locationName = String(formData?.location || equipment?.location || "").trim();
-  const resolvedSite = useMemo(
-    () => (locationName ? findClientSiteByLocation(clientSites, locationName) : null),
-    [clientSites, locationName]
-  );
+  const resolvedSite = useMemo(() => locationName ? findClientSiteByLocation(clientSites, locationName) : null, [clientSites, locationName]);
   const showSiteVignette = Boolean(locationName && locationName !== "Sans site");
-
   if (!sections.length) {
-    return (
-      <section className={`${styles.panel} ${compact ? styles.panelCompact : ""}`}>
+    return <section className={`${styles.panel} ${compact ? styles.panelCompact : ""}`}>
         <header className={styles.panelHeader}>
           <h2 className={styles.panelTitle}>
             <Icon icon="mdi:clipboard-text-outline" className={styles.panelTitleIcon} aria-hidden />
@@ -254,16 +215,12 @@ export default function EquipmentDetailSpecsPanel({
           </h2>
         </header>
         <p className={styles.empty}>{copy.specs.empty}</p>
-      </section>
-    );
+      </section>;
   }
-
   if (rmmManagedComputer && !compact) {
     const showLocationMap = showSiteVignette;
-    const inlineFields = rmmInlineFields.filter((field) => field.key !== "location" || !showLocationMap);
-
-    return (
-      <section className={`${styles.panel} ${styles.panelRmmSlim}`}>
+    const inlineFields = rmmInlineFields.filter(field => field.key !== "location" || !showLocationMap);
+    return <section className={`${styles.panel} ${styles.panelRmmSlim}`}>
         <header className={styles.panelHeader}>
           <div>
             <h2 className={styles.panelTitle}>
@@ -275,40 +232,20 @@ export default function EquipmentDetailSpecsPanel({
         </header>
 
         <div className={styles.rmmVeritasStrip}>
-          {showLocationMap ? (
-            <SiteLocationVignette
-              site={resolvedSite || { name: locationName }}
-              locationLabel={locationName}
-            />
-          ) : null}
+          {showLocationMap ? <SiteLocationVignette site={resolvedSite || {
+          name: locationName
+        }} locationLabel={locationName} /> : null}
           <div className={styles.rmmVeritasFields}>
-            {inlineFields.map((field) => (
-              <SpecField
-                key={field.key}
-                field={field}
-                remoteAccessAction={remoteAccessAction}
-                equipmentLink={
-                  field.key === "firewallHAName" && haPeer && onOpenEquipment
-                    ? {
-                        onClick: () => onOpenEquipment(haPeer),
-                        title: copy.specs.openHaPeer,
-                      }
-                    : null
-                }
-                layout="inline"
-                copy={copy}
-              />
-            ))}
+            {inlineFields.map(field => <SpecField key={field.key} field={field} remoteAccessAction={remoteAccessAction} equipmentLink={field.key === "firewallHAName" && haPeer && onOpenEquipment ? {
+            onClick: () => onOpenEquipment(haPeer),
+            title: copy.specs.openHaPeer
+          } : null} layout="inline" copy={copy} />)}
           </div>
         </div>
-      </section>
-    );
+      </section>;
   }
-
-  return (
-    <section className={`${styles.panel} ${compact ? styles.panelCompact : ""}`}>
-      {!compact ? (
-        <header className={styles.panelHeader}>
+  return <section className={`${styles.panel} ${compact ? styles.panelCompact : ""}`}>
+      {!compact ? <header className={styles.panelHeader}>
           <div>
             <h2 className={styles.panelTitle}>
               <Icon icon="mdi:clipboard-text-outline" className={styles.panelTitleIcon} aria-hidden />
@@ -318,99 +255,49 @@ export default function EquipmentDetailSpecsPanel({
               {rmmManagedComputer ? copy.specs.manualFields : copy.specs.manualOrIntegrations}
             </p>
           </div>
-        </header>
-      ) : null}
+        </header> : null}
 
-      <div
-        className={`${styles.sections} ${compact ? styles.sectionsCompact : ""} ${
-          compact ? "" : sectionsGridClass
-        }`}
-      >
-        {sections.map((section) => {
-          const isInternetLink = section.id === "internetLink";
-          const hasDebitGauges =
-            isInternetLink &&
-            (formData?.debitDownload || formData?.debitUpload || formData?.debit);
-          const showLocationMap = section.id === "identity" && showSiteVignette;
-          const visibleFields = (() => {
-            let fields = hasDebitGauges
-              ? section.fields.filter((field) => !DEBIT_FIELD_KEYS.has(field.key))
-              : section.fields;
-            if (showLocationMap) {
-              fields = fields.filter((field) => field.key !== "location");
-            }
-            return fields;
-          })();
-
-          const isRemoteSection = section.id === "remote" && remoteAccessAction?.kind === "server";
-          const showSectionRemoteAction =
-            isRemoteSection &&
-            !visibleFields.some((field) => shouldShowRemoteAccessFieldAction(field.key, remoteAccessAction));
-
-          return (
-            <article key={section.id} className={styles.sectionCard}>
+      <div className={`${styles.sections} ${compact ? styles.sectionsCompact : ""} ${compact ? "" : sectionsGridClass}`}>
+        {sections.map(section => {
+        const isInternetLink = section.id === "internetLink";
+        const hasDebitGauges = isInternetLink && (formData?.debitDownload || formData?.debitUpload || formData?.debit);
+        const showLocationMap = section.id === "identity" && showSiteVignette;
+        const visibleFields = (() => {
+          let fields = hasDebitGauges ? section.fields.filter(field => !DEBIT_FIELD_KEYS.has(field.key)) : section.fields;
+          if (showLocationMap) {
+            fields = fields.filter(field => field.key !== "location");
+          }
+          return fields;
+        })();
+        const isRemoteSection = section.id === "remote" && remoteAccessAction?.kind === "server";
+        const showSectionRemoteAction = isRemoteSection && !visibleFields.some(field => shouldShowRemoteAccessFieldAction(field.key, remoteAccessAction));
+        return <article key={section.id} className={styles.sectionCard}>
               <header className={styles.sectionHeader}>
                 <Icon icon={section.icon || "mdi:information-outline"} className={styles.sectionIcon} aria-hidden />
                 <div className={styles.sectionHeadText}>
                   <h3 className={styles.sectionTitle}>{section.label}</h3>
                 </div>
-                {showSectionRemoteAction ? (
-                  <EquipmentRemoteAccessLaunchButton
-                    variant="inline"
-                    className={styles.sectionHeaderAction}
-                    label={remoteAccessAction.label}
-                    icon={remoteAccessAction.icon}
-                    title={remoteAccessAction.tooltip}
-                    onClick={remoteAccessAction.launch}
-                  />
-                ) : null}
+                {showSectionRemoteAction ? <EquipmentRemoteAccessLaunchButton variant="inline" className={styles.sectionHeaderAction} label={remoteAccessAction.label} icon={remoteAccessAction.icon} title={remoteAccessAction.tooltip} onClick={remoteAccessAction.launch} /> : null}
               </header>
 
-              {showLocationMap ? (
-                <SiteLocationVignette
-                  site={resolvedSite || { name: locationName }}
-                  locationLabel={locationName}
-                />
-              ) : null}
+              {showLocationMap ? <SiteLocationVignette site={resolvedSite || {
+            name: locationName
+          }} locationLabel={locationName} /> : null}
 
-              {hasDebitGauges ? (
-                <InternetDebitCounters
-                  download={formData?.debitDownload}
-                  upload={formData?.debitUpload}
-                  combined={formData?.debit}
-                />
-              ) : null}
+              {hasDebitGauges ? <InternetDebitCounters download={formData?.debitDownload} upload={formData?.debitUpload} combined={formData?.debit} /> : null}
 
-              {visibleFields.length > 0 ? (
-                <div className={`${styles.fieldGrid} ${compact ? styles.fieldGridCompact : ""}`}>
-                  {visibleFields.map((field) => (
-                    <SpecField
-                      key={field.key}
-                      field={field}
-                      remoteAccessAction={remoteAccessAction}
-                      equipmentLink={
-                        field.key === "firewallHAName" && haPeer && onOpenEquipment
-                          ? {
-                              onClick: () => onOpenEquipment(haPeer),
-                              title: copy.specs.openHaPeer,
-                            }
-                          : null
-                      }
-                      copy={copy}
-                    />
-                  ))}
-                </div>
-              ) : null}
+              {visibleFields.length > 0 ? <div className={`${styles.fieldGrid} ${compact ? styles.fieldGridCompact : ""}`}>
+                  {visibleFields.map(field => <SpecField key={field.key} field={field} remoteAccessAction={remoteAccessAction} equipmentLink={field.key === "firewallHAName" && haPeer && onOpenEquipment ? {
+              onClick: () => onOpenEquipment(haPeer),
+              title: copy.specs.openHaPeer
+            } : null} copy={copy} />)}
+                </div> : null}
 
-              {section.id === "storage" && showStorageDiskBays ? (
-                <div className={styles.storageDiskDisplay}>
+              {section.id === "storage" && showStorageDiskBays ? <div className={styles.storageDiskDisplay}>
                   <StorageDiskBayDisplay formData={displayFormData} widgetsCopy={diskBayCopy} />
-                </div>
-              ) : null}
-            </article>
-          );
-        })}
+                </div> : null}
+            </article>;
+      })}
       </div>
-    </section>
-  );
+    </section>;
 }

@@ -1,6 +1,6 @@
-/* ────────────────────────────── */
-/* 🎭 Modal de confirmation       */
-/* ────────────────────────────── */
+
+
+
 
 .modalOverlay {
   position: fixed;
@@ -50,7 +50,7 @@
 }
 
 .modalCancel {
-  background-color: #f3f4f6; /* gris clair comme les secondaryButton */
+  background-color: #f3f4f6; 
   color: #374151;
   border: 1px solid #e5e7eb;
   padding: 0.625rem 1.25rem;
@@ -83,7 +83,7 @@
   transition: all 0.2s ease;
   color: white;
   min-width: 80px;
-  background-color: #1A529A; /* bleu primary comme primaryButton */
+  background-color: #1A529A; 
   box-shadow: 0 2px 8px rgba(26, 82, 154, 0.25);
 }
 
@@ -138,7 +138,7 @@
   transform: translateY(0);
 }
 
-/* Responsive */
+
 @media (max-width: 480px) {
   .modalOverlay {
     padding: 0.75rem;
@@ -190,14 +190,14 @@
   }
 }
 
-/* Focus states pour l'accessibilité */
+
 .modalCancel:focus,
 .modalConfirm:focus {
   outline: 2px solid var(--accent-primary);
   outline-offset: 2px;
 }
 
-/* Animation d'entrée plus fluide */
+
 @keyframes modalFadeIn {
   from {
     opacity: 0;

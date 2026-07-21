@@ -1,16 +1,5 @@
 import { pickLocaleMessages } from "./translate";
-
-/** Options de contrat intégrées Veritas (clés stables). */
-export const SYSTEM_CONTRACT_MODULE_KEYS = new Set([
-  "Support",
-  "Curatif",
-  "Preventif",
-  "Monitoring",
-  "Hebergement",
-  "MagicInfo",
-  "Videosurveillance",
-]);
-
+export const SYSTEM_CONTRACT_MODULE_KEYS = new Set(["Support", "Curatif", "Preventif", "Monitoring", "Hebergement", "MagicInfo", "Videosurveillance"]);
 const MODULE_LABELS = {
   fr: {
     Support: "Support",
@@ -19,7 +8,7 @@ const MODULE_LABELS = {
     Monitoring: "Monitoring",
     Hebergement: "Hébergement",
     MagicInfo: "MagicInfo",
-    Videosurveillance: "Vidéosurveillance",
+    Videosurveillance: "Vidéosurveillance"
   },
   en: {
     Support: "Support",
@@ -28,7 +17,7 @@ const MODULE_LABELS = {
     Monitoring: "Monitoring",
     Hebergement: "Hosting",
     MagicInfo: "MagicInfo",
-    Videosurveillance: "Video surveillance",
+    Videosurveillance: "Video surveillance"
   },
   de: {
     Support: "Support",
@@ -37,7 +26,7 @@ const MODULE_LABELS = {
     Monitoring: "Monitoring",
     Hebergement: "Hosting",
     MagicInfo: "MagicInfo",
-    Videosurveillance: "Videoüberwachung",
+    Videosurveillance: "Videoüberwachung"
   },
   it: {
     Support: "Support",
@@ -46,7 +35,7 @@ const MODULE_LABELS = {
     Monitoring: "Monitoring",
     Hebergement: "Hosting",
     MagicInfo: "MagicInfo",
-    Videosurveillance: "Videosorveglianza",
+    Videosurveillance: "Videosorveglianza"
   },
   es: {
     Support: "Soporte",
@@ -55,10 +44,9 @@ const MODULE_LABELS = {
     Monitoring: "Monitorización",
     Hebergement: "Alojamiento",
     MagicInfo: "MagicInfo",
-    Videosurveillance: "Videovigilancia",
-  },
+    Videosurveillance: "Videovigilancia"
+  }
 };
-
 export function getContractModuleLabel(moduleKey, locale, fallback) {
   const key = String(moduleKey || "").trim();
   if (!key || !SYSTEM_CONTRACT_MODULE_KEYS.has(key)) {
@@ -67,23 +55,18 @@ export function getContractModuleLabel(moduleKey, locale, fallback) {
   const labels = pickLocaleMessages(MODULE_LABELS, locale);
   return labels[key] || MODULE_LABELS.fr[key] || fallback || key;
 }
-
 export function localizeContractModule(module, locale) {
   if (!module) return module;
   const moduleKey = module.moduleKey || module.key;
   return {
     ...module,
-    label: getContractModuleLabel(moduleKey, locale, module.label),
+    label: getContractModuleLabel(moduleKey, locale, module.label)
   };
 }
-
 export function localizeContractModules(modules, locale) {
-  return (Array.isArray(modules) ? modules : []).map((module) =>
-    localizeContractModule(module, locale)
-  );
+  return (Array.isArray(modules) ? modules : []).map(module => localizeContractModule(module, locale));
 }
-
 export function getLocalizedModuleLabel(modules, moduleKey, locale) {
-  const fallback = (modules || []).find((m) => m.moduleKey === moduleKey)?.label || moduleKey;
+  const fallback = (modules || []).find(m => m.moduleKey === moduleKey)?.label || moduleKey;
   return getContractModuleLabel(moduleKey, locale, fallback);
 }

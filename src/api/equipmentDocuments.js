@@ -1,16 +1,18 @@
 import API_BASE_URL from "../config";
-
 const BASE = `${API_BASE_URL}/equipment-files`;
-
-export async function fetchEquipmentDocuments({ equipmentId, clientId } = {}) {
+export async function fetchEquipmentDocuments({
+  equipmentId,
+  clientId
+} = {}) {
   const params = new URLSearchParams();
   if (equipmentId) params.set("equipmentId", equipmentId);
   if (clientId) params.set("clientId", clientId);
-  const res = await fetch(`${BASE}?${params}`, { credentials: "include" });
-  if (!res.ok) throw new Error(`Erreur ${res.status}`);
+  const res = await fetch(`${BASE}?${params}`, {
+    credentials: "include"
+  });
+  if (!res.ok) throw new Error(`Error ${res.status}`);
   return res.json();
 }
-
 export async function uploadEquipmentDocument({
   clientId,
   equipmentId,
@@ -18,7 +20,7 @@ export async function uploadEquipmentDocument({
   equipmentName,
   category,
   description,
-  file,
+  file
 }) {
   const form = new FormData();
   form.append("file", file);
@@ -28,32 +30,28 @@ export async function uploadEquipmentDocument({
   if (equipmentName) form.append("equipmentName", equipmentName);
   if (category) form.append("category", category);
   if (description) form.append("description", description);
-
   const res = await fetch(BASE, {
     method: "POST",
     credentials: "include",
-    body: form,
+    body: form
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.error || `Erreur ${res.status}`);
+    throw new Error(err.error || `Error ${res.status}`);
   }
   return res.json();
 }
-
 export async function deleteEquipmentDocument(id) {
   const res = await fetch(`${BASE}/${id}`, {
     method: "DELETE",
-    credentials: "include",
+    credentials: "include"
   });
-  if (!res.ok) throw new Error(`Erreur ${res.status}`);
+  if (!res.ok) throw new Error(`Error ${res.status}`);
   return res.json();
 }
-
 export function getEquipmentDocumentPreviewUrl(id) {
   return `${BASE}/${id}/preview`;
 }
-
 export function getEquipmentDocumentDownloadUrl(id) {
   return `${BASE}/${id}/download`;
 }

@@ -1,6 +1,5 @@
 import { getDnsProvider } from "./dnsFormConfig";
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 const DOMAINS_MODAL_COPY = {
   fr: {
     bcp47: "fr-FR",
@@ -11,34 +10,41 @@ const DOMAINS_MODAL_COPY = {
     navAria: "Sections configuration NDD",
     loading: "Chargement…",
     sections: {
-      overview: { label: "Solution enregistrée", description: "Pour ce client" },
-      provider: { label: "Solution paramétrable", description: "Fournisseurs" },
+      overview: {
+        label: "Solution enregistrée",
+        description: "Pour ce client"
+      },
+      provider: {
+        label: "Solution paramétrable",
+        description: "Fournisseurs"
+      },
       import: {
         label: "Importer depuis OVH",
-        description: "Sélectionner les domaines à rattacher",
+        description: "Sélectionner les domaines à rattacher"
       },
-      guide: { label: "Guide", description: "Obtenir les clés API" },
-      manual: { label: "Saisie manuelle", description: "Nom de domaine et expiration" },
+      guide: {
+        label: "Guide",
+        description: "Obtenir les clés API"
+      },
+      manual: {
+        label: "Saisie manuelle",
+        description: "Nom de domaine et expiration"
+      }
     },
     provider: {
       title: "Solution paramétrable",
       description: "Fournisseurs disponibles.",
       connectionTitle: "Connexion {provider}",
-      globalDetected:
-        "Compte registrar global détecté en administration. Importez les domaines à rattacher à ce client.",
-      globalNotActive:
-        "Le paramétrage global OVH n'est pas actif. Activez l'intégration en administration ou consultez le guide.",
+      globalDetected: "Compte registrar global détecté en administration. Importez les domaines à rattacher à ce client.",
+      globalNotActive: "Le paramétrage global OVH n'est pas actif. Activez l'intégration en administration ou consultez le guide.",
       globalAccountTitle: "Compte registrar global",
-      globalAccountDescActive:
-        "Importer les domaines depuis le compte OVH configuré en administration.",
-      globalAccountDescInactive:
-        "Activez OVH en administration pour utiliser le compte registrar global.",
+      globalAccountDescActive: "Importer les domaines depuis le compte OVH configuré en administration.",
+      globalAccountDescInactive: "Activez OVH en administration pour utiliser le compte registrar global.",
       importAction: "Importer",
       activateInAdmin: "À activer en administration",
       guideTitle: "Guide API OVH",
-      guideDesc:
-        "Étapes pour créer les clés API et activer l'intégration en administration.",
-      consult: "Consulter",
+      guideDesc: "Étapes pour créer les clés API et activer l'intégration en administration.",
+      consult: "Consulter"
     },
     badges: {
       soon: "Bientôt",
@@ -47,7 +53,7 @@ const DOMAINS_MODAL_COPY = {
       alreadyLinked: "Déjà lié",
       selected: "Sélectionné",
       dnsZone: "Zone DNS",
-      available: "Disponible",
+      available: "Disponible"
     },
     overview: {
       title: "Solution enregistrée",
@@ -61,7 +67,7 @@ const DOMAINS_MODAL_COPY = {
       removeAria: "Retirer {label}",
       removeTitle: "Retirer",
       editTitle: "Éditer",
-      editAria: "Éditer {label}",
+      editAria: "Éditer {label}"
     },
     manual: {
       title: "Autre registrar · saisie manuelle",
@@ -69,47 +75,46 @@ const DOMAINS_MODAL_COPY = {
       domainName: "Nom de domaine",
       registrar: "Registrar (optionnel)",
       registrarPlaceholder: "Ex. Gandi, Ionos…",
-      expiration: "Date d'expiration",
+      expiration: "Date d'expiration"
     },
     manualProvider: {
       label: "Autre registrar",
-      description: "Enregistrement manuel sans synchronisation API.",
+      description: "Enregistrement manuel sans synchronisation API."
     },
     import: {
       title: "Importer depuis OVH",
       description: "Sélectionnez les domaines du compte OVH à rattacher à cette entreprise.",
-      hint:
-        "Chargement optimisé (expiration et renouvellement uniquement). Utilisez « Actualiser » pour forcer une nouvelle synchronisation avec OVH.",
+      hint: "Chargement optimisé (expiration et renouvellement uniquement). Utilisez « Actualiser » pour forcer une nouvelle synchronisation avec OVH.",
       searchPlaceholder: "Rechercher un domaine…",
       refresh: "Actualiser",
       selectAll: "Tout sélectionner",
       clear: "Effacer",
       loading: "Chargement des domaines OVH…",
       empty: "Aucun domaine disponible dans le compte OVH.",
-      selectAria: "Sélectionner {domain}",
+      selectAria: "Sélectionner {domain}"
     },
     table: {
       selectionAria: "Sélection",
       domain: "Domaine",
       expiration: "Expiration",
       renewal: "Renouvellement",
-      state: "État",
+      state: "État"
     },
     renewal: {
       automatic: "Automatique",
-      manual: "Manuel",
+      manual: "Manuel"
     },
     renewalMode: {
       automatic: "Automatique",
       manual: "Manuel",
-      unknown: "Inconnu",
+      unknown: "Inconnu"
     },
     domainSummary: {
       fallbackLabel: "Domaine",
       expireOn: "Expire le {date}",
       autoRenew: "Renouvellement auto",
       manualRenew: "Renouvellement manuel",
-      dnsZone: "Zone DNS OVH",
+      dnsZone: "Zone DNS OVH"
     },
     counts: {
       domainOne: "{count} domaine",
@@ -119,16 +124,16 @@ const DOMAINS_MODAL_COPY = {
       monitoredOne: "{count} domaine surveillé",
       monitoredMany: "{count} domaines surveillés",
       selectedOne: "{count} sélectionné",
-      selectedMany: "{count} sélectionnés",
+      selectedMany: "{count} sélectionnés"
     },
     footer: {
-      registrar: "Registrar : {provider}",
+      registrar: "Registrar : {provider}"
     },
     actions: {
       back: "Retour",
       attach: "Rattacher ({count})",
       attaching: "Import…",
-      saveManual: "Enregistrer le domaine",
+      saveManual: "Enregistrer le domaine"
     },
     proFallback: "Cette intégration",
     comingSoon: "{provider} sera bientôt disponible dans Veritas.",
@@ -143,8 +148,8 @@ const DOMAINS_MODAL_COPY = {
       deleteError: "Erreur lors de la suppression.",
       domainNotFound: "Domaine introuvable.",
       domainNameRequired: "Indiquez un nom de domaine.",
-      domainDuplicate: "Ce nom de domaine est déjà enregistré pour ce client.",
-    },
+      domainDuplicate: "Ce nom de domaine est déjà enregistré pour ce client."
+    }
   },
   en: {
     bcp47: "en-GB",
@@ -155,33 +160,41 @@ const DOMAINS_MODAL_COPY = {
     navAria: "Domain configuration sections",
     loading: "Loading…",
     sections: {
-      overview: { label: "Saved solution", description: "For this client" },
-      provider: { label: "Configurable solution", description: "Providers" },
+      overview: {
+        label: "Saved solution",
+        description: "For this client"
+      },
+      provider: {
+        label: "Configurable solution",
+        description: "Providers"
+      },
       import: {
         label: "Import from OVH",
-        description: "Select domains to link",
+        description: "Select domains to link"
       },
-      guide: { label: "Guide", description: "Get API keys" },
-      manual: { label: "Manual entry", description: "Domain name and expiration" },
+      guide: {
+        label: "Guide",
+        description: "Get API keys"
+      },
+      manual: {
+        label: "Manual entry",
+        description: "Domain name and expiration"
+      }
     },
     provider: {
       title: "Configurable solution",
       description: "Available providers.",
       connectionTitle: "Connect {provider}",
-      globalDetected:
-        "Global registrar account detected in administration. Import domains to link to this client.",
-      globalNotActive:
-        "Global OVH setup is not active. Enable the integration in administration or read the guide.",
+      globalDetected: "Global registrar account detected in administration. Import domains to link to this client.",
+      globalNotActive: "Global OVH setup is not active. Enable the integration in administration or read the guide.",
       globalAccountTitle: "Global registrar account",
-      globalAccountDescActive:
-        "Import domains from the OVH account configured in administration.",
-      globalAccountDescInactive:
-        "Enable OVH in administration to use the global registrar account.",
+      globalAccountDescActive: "Import domains from the OVH account configured in administration.",
+      globalAccountDescInactive: "Enable OVH in administration to use the global registrar account.",
       importAction: "Import",
       activateInAdmin: "Enable in administration",
       guideTitle: "OVH API guide",
       guideDesc: "Steps to create API keys and enable the integration in administration.",
-      consult: "View guide",
+      consult: "View guide"
     },
     badges: {
       soon: "Soon",
@@ -190,7 +203,7 @@ const DOMAINS_MODAL_COPY = {
       alreadyLinked: "Already linked",
       selected: "Selected",
       dnsZone: "DNS zone",
-      available: "Available",
+      available: "Available"
     },
     overview: {
       title: "Saved solution",
@@ -204,7 +217,7 @@ const DOMAINS_MODAL_COPY = {
       removeAria: "Remove {label}",
       removeTitle: "Remove",
       editTitle: "Edit",
-      editAria: "Edit {label}",
+      editAria: "Edit {label}"
     },
     manual: {
       title: "Other registrar · manual entry",
@@ -212,47 +225,46 @@ const DOMAINS_MODAL_COPY = {
       domainName: "Domain name",
       registrar: "Registrar (optional)",
       registrarPlaceholder: "e.g. Gandi, Ionos…",
-      expiration: "Expiration date",
+      expiration: "Expiration date"
     },
     manualProvider: {
       label: "Other registrar",
-      description: "Manual entry without API sync.",
+      description: "Manual entry without API sync."
     },
     import: {
       title: "Import from OVH",
       description: "Select OVH account domains to link to this company.",
-      hint:
-        "Optimised loading (expiration and renewal only). Use « Refresh » to force a new sync with OVH.",
+      hint: "Optimised loading (expiration and renewal only). Use « Refresh » to force a new sync with OVH.",
       searchPlaceholder: "Search a domain…",
       refresh: "Refresh",
       selectAll: "Select all",
       clear: "Clear",
       loading: "Loading OVH domains…",
       empty: "No domain available in the OVH account.",
-      selectAria: "Select {domain}",
+      selectAria: "Select {domain}"
     },
     table: {
       selectionAria: "Selection",
       domain: "Domain",
       expiration: "Expiration",
       renewal: "Renewal",
-      state: "Status",
+      state: "Status"
     },
     renewal: {
       automatic: "Automatic",
-      manual: "Manual",
+      manual: "Manual"
     },
     renewalMode: {
       automatic: "Automatic",
       manual: "Manual",
-      unknown: "Unknown",
+      unknown: "Unknown"
     },
     domainSummary: {
       fallbackLabel: "Domain",
       expireOn: "Expires on {date}",
       autoRenew: "Auto renewal",
       manualRenew: "Manual renewal",
-      dnsZone: "OVH DNS zone",
+      dnsZone: "OVH DNS zone"
     },
     counts: {
       domainOne: "{count} domain",
@@ -262,16 +274,16 @@ const DOMAINS_MODAL_COPY = {
       monitoredOne: "{count} monitored domain",
       monitoredMany: "{count} monitored domains",
       selectedOne: "{count} selected",
-      selectedMany: "{count} selected",
+      selectedMany: "{count} selected"
     },
     footer: {
-      registrar: "Registrar: {provider}",
+      registrar: "Registrar: {provider}"
     },
     actions: {
       back: "Back",
       attach: "Link ({count})",
       attaching: "Importing…",
-      saveManual: "Save domain",
+      saveManual: "Save domain"
     },
     proFallback: "This integration",
     comingSoon: "{provider} will be available in Veritas soon.",
@@ -284,8 +296,8 @@ const DOMAINS_MODAL_COPY = {
       removed: "Domain removed.",
       manualSaved: "Domain name saved.",
       deleteError: "Error while deleting.",
-      domainNotFound: "Domain not found.",
-    },
+      domainNotFound: "Domain not found."
+    }
   },
   de: {
     bcp47: "de-DE",
@@ -296,34 +308,41 @@ const DOMAINS_MODAL_COPY = {
     navAria: "Domain-Konfigurationsbereiche",
     loading: "Laden…",
     sections: {
-      overview: { label: "Gespeicherte Lösung", description: "Für diesen Kunden" },
-      provider: { label: "Konfigurierbare Lösung", description: "Anbieter" },
+      overview: {
+        label: "Gespeicherte Lösung",
+        description: "Für diesen Kunden"
+      },
+      provider: {
+        label: "Konfigurierbare Lösung",
+        description: "Anbieter"
+      },
       import: {
         label: "Import aus OVH",
-        description: "Zu verknüpfende Domains auswählen",
+        description: "Zu verknüpfende Domains auswählen"
       },
-      guide: { label: "Anleitung", description: "API-Schlüssel erhalten" },
-      manual: { label: "Manuelle Eingabe", description: "Domainname und Ablauf" },
+      guide: {
+        label: "Anleitung",
+        description: "API-Schlüssel erhalten"
+      },
+      manual: {
+        label: "Manuelle Eingabe",
+        description: "Domainname und Ablauf"
+      }
     },
     provider: {
       title: "Konfigurierbare Lösung",
       description: "Verfügbare Anbieter.",
       connectionTitle: "Verbindung {provider}",
-      globalDetected:
-        "Globales Registrar-Konto in der Administration erkannt. Importieren Sie Domains zur Verknüpfung mit diesem Kunden.",
-      globalNotActive:
-        "Die globale OVH-Konfiguration ist nicht aktiv. Aktivieren Sie die Integration in der Administration oder lesen Sie die Anleitung.",
+      globalDetected: "Globales Registrar-Konto in der Administration erkannt. Importieren Sie Domains zur Verknüpfung mit diesem Kunden.",
+      globalNotActive: "Die globale OVH-Konfiguration ist nicht aktiv. Aktivieren Sie die Integration in der Administration oder lesen Sie die Anleitung.",
       globalAccountTitle: "Globales Registrar-Konto",
-      globalAccountDescActive:
-        "Domains aus dem in der Administration konfigurierten OVH-Konto importieren.",
-      globalAccountDescInactive:
-        "Aktivieren Sie OVH in der Administration, um das globale Registrar-Konto zu nutzen.",
+      globalAccountDescActive: "Domains aus dem in der Administration konfigurierten OVH-Konto importieren.",
+      globalAccountDescInactive: "Aktivieren Sie OVH in der Administration, um das globale Registrar-Konto zu nutzen.",
       importAction: "Importieren",
       activateInAdmin: "In Administration aktivieren",
       guideTitle: "OVH-API-Anleitung",
-      guideDesc:
-        "Schritte zum Erstellen von API-Schlüsseln und Aktivieren der Integration in der Administration.",
-      consult: "Anleitung ansehen",
+      guideDesc: "Schritte zum Erstellen von API-Schlüsseln und Aktivieren der Integration in der Administration.",
+      consult: "Anleitung ansehen"
     },
     badges: {
       soon: "Demnächst",
@@ -332,7 +351,7 @@ const DOMAINS_MODAL_COPY = {
       alreadyLinked: "Bereits verknüpft",
       selected: "Ausgewählt",
       dnsZone: "DNS-Zone",
-      available: "Verfügbar",
+      available: "Verfügbar"
     },
     overview: {
       title: "Gespeicherte Lösung",
@@ -346,7 +365,7 @@ const DOMAINS_MODAL_COPY = {
       removeAria: "{label} entfernen",
       removeTitle: "Entfernen",
       editTitle: "Bearbeiten",
-      editAria: "{label} bearbeiten",
+      editAria: "{label} bearbeiten"
     },
     manual: {
       title: "Anderer Registrar · manuelle Eingabe",
@@ -354,48 +373,46 @@ const DOMAINS_MODAL_COPY = {
       domainName: "Domainname",
       registrar: "Registrar (optional)",
       registrarPlaceholder: "z. B. Gandi, Ionos…",
-      expiration: "Ablaufdatum",
+      expiration: "Ablaufdatum"
     },
     manualProvider: {
       label: "Anderer Registrar",
-      description: "Manuelle Erfassung ohne API-Synchronisation.",
+      description: "Manuelle Erfassung ohne API-Synchronisation."
     },
     import: {
       title: "Import aus OVH",
-      description:
-        "Wählen Sie OVH-Domains aus, die mit diesem Unternehmen verknüpft werden sollen.",
-      hint:
-        "Optimiertes Laden (nur Ablauf und Verlängerung). « Aktualisieren » erzwingt eine neue Synchronisation mit OVH.",
+      description: "Wählen Sie OVH-Domains aus, die mit diesem Unternehmen verknüpft werden sollen.",
+      hint: "Optimiertes Laden (nur Ablauf und Verlängerung). « Aktualisieren » erzwingt eine neue Synchronisation mit OVH.",
       searchPlaceholder: "Domain suchen…",
       refresh: "Aktualisieren",
       selectAll: "Alle auswählen",
       clear: "Leeren",
       loading: "OVH-Domains werden geladen…",
       empty: "Keine Domain im OVH-Konto verfügbar.",
-      selectAria: "{domain} auswählen",
+      selectAria: "{domain} auswählen"
     },
     table: {
       selectionAria: "Auswahl",
       domain: "Domain",
       expiration: "Ablauf",
       renewal: "Verlängerung",
-      state: "Status",
+      state: "Status"
     },
     renewal: {
       automatic: "Automatisch",
-      manual: "Manuell",
+      manual: "Manuell"
     },
     renewalMode: {
       automatic: "Automatisch",
       manual: "Manuell",
-      unknown: "Unbekannt",
+      unknown: "Unbekannt"
     },
     domainSummary: {
       fallbackLabel: "Domain",
       expireOn: "Läuft ab am {date}",
       autoRenew: "Auto-Verlängerung",
       manualRenew: "Manuelle Verlängerung",
-      dnsZone: "OVH-DNS-Zone",
+      dnsZone: "OVH-DNS-Zone"
     },
     counts: {
       domainOne: "{count} Domain",
@@ -405,16 +422,16 @@ const DOMAINS_MODAL_COPY = {
       monitoredOne: "{count} überwachte Domain",
       monitoredMany: "{count} überwachte Domains",
       selectedOne: "{count} ausgewählt",
-      selectedMany: "{count} ausgewählt",
+      selectedMany: "{count} ausgewählt"
     },
     footer: {
-      registrar: "Registrar: {provider}",
+      registrar: "Registrar: {provider}"
     },
     actions: {
       back: "Zurück",
       attach: "Verknüpfen ({count})",
       attaching: "Import…",
-      saveManual: "Domain speichern",
+      saveManual: "Domain speichern"
     },
     proFallback: "Diese Integration",
     comingSoon: "{provider} wird bald in Veritas verfügbar sein.",
@@ -427,8 +444,8 @@ const DOMAINS_MODAL_COPY = {
       removed: "Domain entfernt.",
       manualSaved: "Domainname gespeichert.",
       deleteError: "Fehler beim Löschen.",
-      domainNotFound: "Domain nicht gefunden.",
-    },
+      domainNotFound: "Domain nicht gefunden."
+    }
   },
   it: {
     bcp47: "it-IT",
@@ -439,34 +456,41 @@ const DOMAINS_MODAL_COPY = {
     navAria: "Sezioni configurazione domini",
     loading: "Caricamento…",
     sections: {
-      overview: { label: "Soluzione registrata", description: "Per questo cliente" },
-      provider: { label: "Soluzione configurabile", description: "Fornitori" },
+      overview: {
+        label: "Soluzione registrata",
+        description: "Per questo cliente"
+      },
+      provider: {
+        label: "Soluzione configurabile",
+        description: "Fornitori"
+      },
       import: {
         label: "Importa da OVH",
-        description: "Seleziona i domini da collegare",
+        description: "Seleziona i domini da collegare"
       },
-      guide: { label: "Guida", description: "Ottieni le chiavi API" },
-      manual: { label: "Inserimento manuale", description: "Nome di dominio e scadenza" },
+      guide: {
+        label: "Guida",
+        description: "Ottieni le chiavi API"
+      },
+      manual: {
+        label: "Inserimento manuale",
+        description: "Nome di dominio e scadenza"
+      }
     },
     provider: {
       title: "Soluzione configurabile",
       description: "Fornitori disponibili.",
       connectionTitle: "Connessione {provider}",
-      globalDetected:
-        "Account registrar globale rilevato in amministrazione. Importa i domini da collegare a questo cliente.",
-      globalNotActive:
-        "La configurazione globale OVH non è attiva. Attiva l'integrazione in amministrazione o consulta la guida.",
+      globalDetected: "Account registrar globale rilevato in amministrazione. Importa i domini da collegare a questo cliente.",
+      globalNotActive: "La configurazione globale OVH non è attiva. Attiva l'integrazione in amministrazione o consulta la guida.",
       globalAccountTitle: "Account registrar globale",
-      globalAccountDescActive:
-        "Importa i domini dall'account OVH configurato in amministrazione.",
-      globalAccountDescInactive:
-        "Attiva OVH in amministrazione per usare l'account registrar globale.",
+      globalAccountDescActive: "Importa i domini dall'account OVH configurato in amministrazione.",
+      globalAccountDescInactive: "Attiva OVH in amministrazione per usare l'account registrar globale.",
       importAction: "Importa",
       activateInAdmin: "Da attivare in amministrazione",
       guideTitle: "Guida API OVH",
-      guideDesc:
-        "Passaggi per creare le chiavi API e attivare l'integrazione in amministrazione.",
-      consult: "Consulta",
+      guideDesc: "Passaggi per creare le chiavi API e attivare l'integrazione in amministrazione.",
+      consult: "Consulta"
     },
     badges: {
       soon: "Presto",
@@ -475,7 +499,7 @@ const DOMAINS_MODAL_COPY = {
       alreadyLinked: "Già collegato",
       selected: "Selezionato",
       dnsZone: "Zona DNS",
-      available: "Disponibile",
+      available: "Disponibile"
     },
     overview: {
       title: "Soluzione registrata",
@@ -489,7 +513,7 @@ const DOMAINS_MODAL_COPY = {
       removeAria: "Rimuovi {label}",
       removeTitle: "Rimuovi",
       editTitle: "Modifica",
-      editAria: "Modifica {label}",
+      editAria: "Modifica {label}"
     },
     manual: {
       title: "Altro registrar · inserimento manuale",
@@ -497,47 +521,46 @@ const DOMAINS_MODAL_COPY = {
       domainName: "Nome di dominio",
       registrar: "Registrar (opzionale)",
       registrarPlaceholder: "Es. Gandi, Ionos…",
-      expiration: "Data di scadenza",
+      expiration: "Data di scadenza"
     },
     manualProvider: {
       label: "Altro registrar",
-      description: "Registrazione manuale senza sincronizzazione API.",
+      description: "Registrazione manuale senza sincronizzazione API."
     },
     import: {
       title: "Importa da OVH",
       description: "Seleziona i domini dell'account OVH da collegare a questa azienda.",
-      hint:
-        "Caricamento ottimizzato (solo scadenza e rinnovo). Usa « Aggiorna » per forzare una nuova sincronizzazione con OVH.",
+      hint: "Caricamento ottimizzato (solo scadenza e rinnovo). Usa « Aggiorna » per forzare una nuova sincronizzazione con OVH.",
       searchPlaceholder: "Cerca un dominio…",
       refresh: "Aggiorna",
       selectAll: "Seleziona tutto",
       clear: "Cancella",
       loading: "Caricamento domini OVH…",
       empty: "Nessun dominio disponibile nell'account OVH.",
-      selectAria: "Seleziona {domain}",
+      selectAria: "Seleziona {domain}"
     },
     table: {
       selectionAria: "Selezione",
       domain: "Dominio",
       expiration: "Scadenza",
       renewal: "Rinnovo",
-      state: "Stato",
+      state: "Stato"
     },
     renewal: {
       automatic: "Automatico",
-      manual: "Manuale",
+      manual: "Manuale"
     },
     renewalMode: {
       automatic: "Automatico",
       manual: "Manuale",
-      unknown: "Sconosciuto",
+      unknown: "Sconosciuto"
     },
     domainSummary: {
       fallbackLabel: "Dominio",
       expireOn: "Scade il {date}",
       autoRenew: "Rinnovo automatico",
       manualRenew: "Rinnovo manuale",
-      dnsZone: "Zona DNS OVH",
+      dnsZone: "Zona DNS OVH"
     },
     counts: {
       domainOne: "{count} dominio",
@@ -547,16 +570,16 @@ const DOMAINS_MODAL_COPY = {
       monitoredOne: "{count} dominio monitorato",
       monitoredMany: "{count} domini monitorati",
       selectedOne: "{count} selezionato",
-      selectedMany: "{count} selezionati",
+      selectedMany: "{count} selezionati"
     },
     footer: {
-      registrar: "Registrar: {provider}",
+      registrar: "Registrar: {provider}"
     },
     actions: {
       back: "Indietro",
       attach: "Collega ({count})",
       attaching: "Importazione…",
-      saveManual: "Salva dominio",
+      saveManual: "Salva dominio"
     },
     proFallback: "Questa integrazione",
     comingSoon: "{provider} sarà presto disponibile in Veritas.",
@@ -569,8 +592,8 @@ const DOMAINS_MODAL_COPY = {
       removed: "Dominio rimosso.",
       manualSaved: "Nome di dominio salvato.",
       deleteError: "Errore durante l'eliminazione.",
-      domainNotFound: "Dominio non trovato.",
-    },
+      domainNotFound: "Dominio non trovato."
+    }
   },
   es: {
     bcp47: "es-ES",
@@ -581,34 +604,41 @@ const DOMAINS_MODAL_COPY = {
     navAria: "Secciones de configuración de dominios",
     loading: "Cargando…",
     sections: {
-      overview: { label: "Solución registrada", description: "Para este cliente" },
-      provider: { label: "Solución configurable", description: "Proveedores" },
+      overview: {
+        label: "Solución registrada",
+        description: "Para este cliente"
+      },
+      provider: {
+        label: "Solución configurable",
+        description: "Proveedores"
+      },
       import: {
         label: "Importar desde OVH",
-        description: "Seleccionar dominios para vincular",
+        description: "Seleccionar dominios para vincular"
       },
-      guide: { label: "Guía", description: "Obtener claves API" },
-      manual: { label: "Entrada manual", description: "Nombre de dominio y vencimiento" },
+      guide: {
+        label: "Guía",
+        description: "Obtener claves API"
+      },
+      manual: {
+        label: "Entrada manual",
+        description: "Nombre de dominio y vencimiento"
+      }
     },
     provider: {
       title: "Solución configurable",
       description: "Proveedores disponibles.",
       connectionTitle: "Conexión {provider}",
-      globalDetected:
-        "Cuenta registrar global detectada en administración. Importe dominios para vincularlos a este cliente.",
-      globalNotActive:
-        "La configuración global de OVH no está activa. Active la integración en administración o consulte la guía.",
+      globalDetected: "Cuenta registrar global detectada en administración. Importe dominios para vincularlos a este cliente.",
+      globalNotActive: "La configuración global de OVH no está activa. Active la integración en administración o consulte la guía.",
       globalAccountTitle: "Cuenta registrar global",
-      globalAccountDescActive:
-        "Importar dominios desde la cuenta OVH configurada en administración.",
-      globalAccountDescInactive:
-        "Active OVH en administración para usar la cuenta registrar global.",
+      globalAccountDescActive: "Importar dominios desde la cuenta OVH configurada en administración.",
+      globalAccountDescInactive: "Active OVH en administración para usar la cuenta registrar global.",
       importAction: "Importar",
       activateInAdmin: "Activar en administración",
       guideTitle: "Guía API OVH",
-      guideDesc:
-        "Pasos para crear claves API y activar la integración en administración.",
-      consult: "Consultar",
+      guideDesc: "Pasos para crear claves API y activar la integración en administración.",
+      consult: "Consultar"
     },
     badges: {
       soon: "Pronto",
@@ -617,7 +647,7 @@ const DOMAINS_MODAL_COPY = {
       alreadyLinked: "Ya vinculado",
       selected: "Seleccionado",
       dnsZone: "Zona DNS",
-      available: "Disponible",
+      available: "Disponible"
     },
     overview: {
       title: "Solución registrada",
@@ -631,7 +661,7 @@ const DOMAINS_MODAL_COPY = {
       removeAria: "Retirar {label}",
       removeTitle: "Retirar",
       editTitle: "Editar",
-      editAria: "Editar {label}",
+      editAria: "Editar {label}"
     },
     manual: {
       title: "Otro registrar · entrada manual",
@@ -639,47 +669,46 @@ const DOMAINS_MODAL_COPY = {
       domainName: "Nombre de dominio",
       registrar: "Registrar (opcional)",
       registrarPlaceholder: "Ej. Gandi, Ionos…",
-      expiration: "Fecha de vencimiento",
+      expiration: "Fecha de vencimiento"
     },
     manualProvider: {
       label: "Otro registrar",
-      description: "Registro manual sin sincronización API.",
+      description: "Registro manual sin sincronización API."
     },
     import: {
       title: "Importar desde OVH",
       description: "Seleccione dominios de la cuenta OVH para vincular a esta empresa.",
-      hint:
-        "Carga optimizada (solo vencimiento y renovación). Use « Actualizar » para forzar una nueva sincronización con OVH.",
+      hint: "Carga optimizada (solo vencimiento y renovación). Use « Actualizar » para forzar una nueva sincronización con OVH.",
       searchPlaceholder: "Buscar un dominio…",
       refresh: "Actualizar",
       selectAll: "Seleccionar todo",
       clear: "Borrar",
       loading: "Cargando dominios OVH…",
       empty: "Ningún dominio disponible en la cuenta OVH.",
-      selectAria: "Seleccionar {domain}",
+      selectAria: "Seleccionar {domain}"
     },
     table: {
       selectionAria: "Selección",
       domain: "Dominio",
       expiration: "Vencimiento",
       renewal: "Renovación",
-      state: "Estado",
+      state: "Estado"
     },
     renewal: {
       automatic: "Automático",
-      manual: "Manual",
+      manual: "Manual"
     },
     renewalMode: {
       automatic: "Automático",
       manual: "Manual",
-      unknown: "Desconocido",
+      unknown: "Desconocido"
     },
     domainSummary: {
       fallbackLabel: "Dominio",
       expireOn: "Vence el {date}",
       autoRenew: "Renovación automática",
       manualRenew: "Renovación manual",
-      dnsZone: "Zona DNS OVH",
+      dnsZone: "Zona DNS OVH"
     },
     counts: {
       domainOne: "{count} dominio",
@@ -689,16 +718,16 @@ const DOMAINS_MODAL_COPY = {
       monitoredOne: "{count} dominio supervisado",
       monitoredMany: "{count} dominios supervisados",
       selectedOne: "{count} seleccionado",
-      selectedMany: "{count} seleccionados",
+      selectedMany: "{count} seleccionados"
     },
     footer: {
-      registrar: "Registrar: {provider}",
+      registrar: "Registrar: {provider}"
     },
     actions: {
       back: "Volver",
       attach: "Vincular ({count})",
       attaching: "Importando…",
-      saveManual: "Guardar dominio",
+      saveManual: "Guardar dominio"
     },
     proFallback: "Esta integración",
     comingSoon: "{provider} estará disponible pronto en Veritas.",
@@ -711,69 +740,60 @@ const DOMAINS_MODAL_COPY = {
       removed: "Dominio retirado.",
       manualSaved: "Nombre de dominio guardado.",
       deleteError: "Error al eliminar.",
-      domainNotFound: "Dominio no encontrado.",
-    },
-  },
+      domainNotFound: "Dominio no encontrado."
+    }
+  }
 };
-
 const NAV_ICONS = {
   overview: "mdi:view-list-outline",
   provider: "mdi:web",
   import: "mdi:cloud-download-outline",
   guide: "mdi:book-open-outline",
-  manual: "mdi:form-textbox",
+  manual: "mdi:form-textbox"
 };
-
-function buildNavSections(
-  t,
-  { selectedProviderId, globalConfigured = false, showProviderGuide = false }
-) {
-  const sections = [
-    {
-      id: "overview",
-      label: t.sections.overview.label,
-      description: t.sections.overview.description,
-      icon: NAV_ICONS.overview,
-    },
-    {
-      id: "provider",
-      label: t.sections.provider.label,
-      description: t.sections.provider.description,
-      icon: NAV_ICONS.provider,
-    },
-  ];
-
+function buildNavSections(t, {
+  selectedProviderId,
+  globalConfigured = false,
+  showProviderGuide = false
+}) {
+  const sections = [{
+    id: "overview",
+    label: t.sections.overview.label,
+    description: t.sections.overview.description,
+    icon: NAV_ICONS.overview
+  }, {
+    id: "provider",
+    label: t.sections.provider.label,
+    description: t.sections.provider.description,
+    icon: NAV_ICONS.provider
+  }];
   const provider = getDnsProvider(selectedProviderId);
   if (selectedProviderId === "ovh" && provider?.supportsGlobal && globalConfigured) {
     sections.push({
       id: "import",
       label: t.sections.import.label,
       description: t.sections.import.description,
-      icon: NAV_ICONS.import,
+      icon: NAV_ICONS.import
     });
   }
-
   if (showProviderGuide && selectedProviderId === "ovh") {
     sections.push({
       id: "guide",
       label: t.sections.guide.label,
       description: t.sections.guide.description,
-      icon: NAV_ICONS.guide,
+      icon: NAV_ICONS.guide
     });
   }
-
   if (selectedProviderId === "manual") {
     sections.push({
       id: "manual",
       label: t.sections.manual.label,
       description: t.sections.manual.description,
-      icon: NAV_ICONS.manual,
+      icon: NAV_ICONS.manual
     });
   }
-
   return sections;
 }
-
 function formatDomainCount(t, count, variant = "plain") {
   const plural = count > 1;
   let template;
@@ -784,28 +804,29 @@ function formatDomainCount(t, count, variant = "plain") {
   } else {
     template = plural ? t.counts.domainMany : t.counts.domainOne;
   }
-  return interpolate(template, { count: String(count) });
+  return interpolate(template, {
+    count: String(count)
+  });
 }
-
 function formatSelectedCount(t, count) {
   const template = count > 1 ? t.counts.selectedMany : t.counts.selectedOne;
-  return interpolate(template, { count: String(count) });
+  return interpolate(template, {
+    count: String(count)
+  });
 }
-
 export function getDomainsModalCopy(locale) {
   const t = pickLocaleMessages(DOMAINS_MODAL_COPY, locale);
-
   return {
     ...t,
-    navSections: (params) => buildNavSections(t, params),
+    navSections: params => buildNavSections(t, params),
     renewalModeLabels: t.renewalMode,
-    formatRenewalModeLabel: (mode) => {
+    formatRenewalModeLabel: mode => {
       if (mode === "automatic") return t.renewalMode.automatic;
       if (mode === "manual") return t.renewalMode.manual;
       return t.renewalMode.unknown;
     },
     formatDomainCount: (count, variant) => formatDomainCount(t, count, variant),
-    formatSelectedCount: (count) => formatSelectedCount(t, count),
+    formatSelectedCount: count => formatSelectedCount(t, count),
     formatImportSummary: (total, selected) => {
       let summary = formatDomainCount(t, total, "ovh");
       if (selected > 0) {
@@ -813,31 +834,36 @@ export function getDomainsModalCopy(locale) {
       }
       return summary;
     },
-    formatMonitoredCount: (count) => formatDomainCount(t, count, "monitored"),
-    formatExpireOn: (date) =>
-      interpolate(t.domainSummary.expireOn, {
-        date: new Date(date).toLocaleDateString(t.bcp47),
-      }),
-    formatConnectionTitle: (provider) =>
-      interpolate(t.provider.connectionTitle, { provider }),
-    formatRegistrarFooter: (provider) =>
-      interpolate(t.footer.registrar, { provider }),
-    formatComingSoon: (provider) => interpolate(t.comingSoon, { provider }),
-    formatImportSuccess: (count) =>
-      interpolate(t.toasts.importSuccess, { count: String(count) }),
-    formatRemoveAria: (label) => interpolate(t.overview.removeAria, { label }),
-    formatEditAria: (label) => interpolate(t.overview.editAria, { label }),
-    formatSelectAria: (domain) => interpolate(t.import.selectAria, { domain }),
-    formatModeLabel: (mode) =>
-      interpolate(t.overview.modeLabel, {
-        mode:
-          mode === "automatic"
-            ? t.renewalMode.automatic
-            : mode === "manual"
-              ? t.renewalMode.manual
-              : t.renewalMode.unknown,
-      }),
-    formatAttachAction: (count) =>
-      interpolate(t.actions.attach, { count: String(count) }),
+    formatMonitoredCount: count => formatDomainCount(t, count, "monitored"),
+    formatExpireOn: date => interpolate(t.domainSummary.expireOn, {
+      date: new Date(date).toLocaleDateString(t.bcp47)
+    }),
+    formatConnectionTitle: provider => interpolate(t.provider.connectionTitle, {
+      provider
+    }),
+    formatRegistrarFooter: provider => interpolate(t.footer.registrar, {
+      provider
+    }),
+    formatComingSoon: provider => interpolate(t.comingSoon, {
+      provider
+    }),
+    formatImportSuccess: count => interpolate(t.toasts.importSuccess, {
+      count: String(count)
+    }),
+    formatRemoveAria: label => interpolate(t.overview.removeAria, {
+      label
+    }),
+    formatEditAria: label => interpolate(t.overview.editAria, {
+      label
+    }),
+    formatSelectAria: domain => interpolate(t.import.selectAria, {
+      domain
+    }),
+    formatModeLabel: mode => interpolate(t.overview.modeLabel, {
+      mode: mode === "automatic" ? t.renewalMode.automatic : mode === "manual" ? t.renewalMode.manual : t.renewalMode.unknown
+    }),
+    formatAttachAction: count => interpolate(t.actions.attach, {
+      count: String(count)
+    })
   };
 }

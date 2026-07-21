@@ -4,6 +4,8 @@
 }
 
 .accentBarBitdefender {
+  height: 4px;
+  flex-shrink: 0;
   background: linear-gradient(90deg, #b91c1c 0%, #ed1c24 45%, #f87171 100%);
 }
 

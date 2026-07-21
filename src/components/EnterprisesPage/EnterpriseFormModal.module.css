@@ -221,7 +221,7 @@
   color: var(--msp-accent, #2b5fab);
 }
 
-/* Alias · anciens noms de classes sidebar */
+
 .navText {
   display: flex;
   flex-direction: column;
@@ -406,7 +406,7 @@
   transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
 }
 
-/* Priorité sur les styles globaux (accent vert) des autres pages */
+
 .shell input.input:hover:not(:disabled),
 .shell select.input:hover:not(:disabled),
 .shell textarea.input:hover:not(:disabled) {

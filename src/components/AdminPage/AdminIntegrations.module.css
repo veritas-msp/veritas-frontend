@@ -1,81 +1,84 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 1rem;
 }
 
 .statsRow {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  gap: 0.75rem;
 }
 
 .statCard {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: 10px;
+  gap: 0.85rem;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
   border: 1px solid var(--msp-border, #dde3ed);
-  background: var(--msp-surface-2, #f8fafc);
+  background: var(--msp-surface, #fff);
   min-height: 0;
 }
 
+.statIconWrap {
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.15rem;
+  background: var(--msp-surface-2, #f8fafc);
+  color: var(--msp-accent, #2b5fab);
+}
+
+.statIconActive {
+  background: #ecfdf5;
+  color: #15803d;
+}
+
+.statIconSoon {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
 .statValue {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: var(--msp-text, #0f1c2e);
   line-height: 1;
-  flex-shrink: 0;
 }
 
 .statLabel {
-  margin: 0;
-  font-size: 0.78rem;
+  margin: 0.2rem 0 0;
+  font-size: 0.76rem;
   color: var(--msp-muted, #5c6b82);
-  line-height: 1.35;
+  line-height: 1.3;
 }
 
 .catalogInner {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  overflow: visible;
+  gap: 1.25rem;
 }
 
 .toolbar {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.75rem;
   flex-wrap: wrap;
-}
-
-.search {
-  flex: 1;
-  min-width: 220px;
-  padding: 9px 12px;
-  border: 1px solid var(--msp-border, #dde3ed);
-  border-radius: 8px;
-  font-size: 0.88rem;
-  font-family: inherit;
-  color: var(--msp-text, #0f1c2e);
-  background: var(--msp-surface-2, #f8fafc);
-}
-
-.search:focus {
-  outline: none;
-  border-color: #2b5fab;
-  box-shadow: 0 0 0 3px rgba(43, 95, 171, 0.12);
 }
 
 .filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 0.4rem;
 }
 
 .filterBtn {
-  padding: 7px 12px;
+  padding: 0.45rem 0.85rem;
   border-radius: 999px;
   border: 1px solid var(--msp-border, #dde3ed);
   background: var(--msp-surface, #fff);
@@ -84,6 +87,7 @@
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
 .filterBtn:hover {
@@ -100,125 +104,137 @@
 .sections {
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  overflow: visible;
+  gap: 1.5rem;
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  overflow: visible;
+  gap: 0.75rem;
 }
 
 .sectionHeader {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 0 0 10px;
+  gap: 0.55rem;
+  padding: 0 0 0.65rem;
   margin: 0;
   border-bottom: 1px solid var(--msp-border-light, #eef2f7);
 }
 
 .sectionIcon {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   color: #2b5fab;
 }
 
 .sectionTitle {
   margin: 0;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: var(--msp-text, #0f1c2e);
 }
 
 .sectionCount {
   margin-left: auto;
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   color: var(--msp-muted, #5c6b82);
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 10px;
-  overflow: visible;
-  position: relative;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
 }
 
 .card {
   position: relative;
-  z-index: 1;
-  overflow: visible;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  min-height: 0;
-  padding: 14px 14px 12px;
-  padding-right: 72px;
-  border-radius: 10px;
+  align-items: stretch;
+  gap: 0.65rem;
+  min-height: 9.5rem;
+  padding: 1rem;
+  border-radius: 14px;
   border: 1px solid var(--msp-border, #dde3ed);
   background: var(--msp-surface, #fff);
   text-align: left;
   font-family: inherit;
   cursor: pointer;
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease, background 0.18s ease;
 }
 
-.card:hover:not(:disabled),
-.card:focus-visible,
-.cardComingSoon:hover,
-.cardComingSoon:focus-visible {
-  z-index: 100;
-}
-
-.card:hover:not(:disabled) {
+.card:focus-visible {
+  outline: none;
   border-color: #2b5fab;
-  box-shadow: 0 8px 20px rgba(43, 95, 171, 0.12);
-  transform: translateY(-1px);
+  box-shadow: 0 0 0 3px rgba(43, 95, 171, 0.18);
 }
 
-.card:disabled {
-  cursor: default;
+.cardInteractive:hover {
+  border-color: #2b5fab;
+  box-shadow: 0 10px 24px rgba(43, 95, 171, 0.12);
+  transform: translateY(-2px);
+}
+
+.cardInteractive:hover .cardAction {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cardInteractive:hover .cardDesc {
+  color: var(--msp-text, #0f1c2e);
 }
 
 .cardComingSoon {
-  background: var(--msp-surface-2, #f8fafc);
+  cursor: not-allowed;
+  opacity: 0.62;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--msp-surface-2, #f8fafc),
+    var(--msp-surface-2, #f8fafc) 10px,
+    #f1f5f9 10px,
+    #f1f5f9 20px
+  );
   border-style: dashed;
-}
-
-.cardComingSoon:hover {
-  transform: none;
+  border-color: #cbd5e1;
+  filter: grayscale(0.55);
   box-shadow: none;
-  border-color: #c5d0e0;
+  transform: none;
 }
 
-.cardProLocked {
-  opacity: 0.92;
+.cardComingSoon:hover,
+.cardComingSoon:focus-visible {
+  border-color: #cbd5e1;
+  box-shadow: none;
+  transform: none;
+}
+
+.cardComingSoon .logoWrap,
+.cardComingSoon .logoIcon,
+.cardComingSoon .cardName,
+.cardComingSoon .cardDesc {
+  opacity: 0.85;
 }
 
 .proBadgeWrap {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  top: auto;
-  left: auto;
-  z-index: 1;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
 }
 
-.cardTop {
+.cardHeader {
   display: flex;
-  align-items: center;
-  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.65rem;
 }
 
 .logoWrap {
-  width: 80px;
-  height: 80px;
+  width: 3.25rem;
+  height: 3.25rem;
   border-radius: 12px;
-  border: 1px solid var(--msp-border);
-  background: var(--msp-surface-2);
+  border: 1px solid var(--msp-border, #dde3ed);
+  background: var(--msp-surface-2, #f8fafc);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -226,15 +242,16 @@
 }
 
 .logoIcon {
-  font-size: 2.7rem;
-  color: var(--msp-accent);
+  font-size: 1.55rem;
+  color: var(--msp-accent, #2b5fab);
 }
 
 .logoIcon svg {
   color: var(--integration-icon-color, var(--msp-accent, #2b5fab));
 }
 
-:global(body.dark-mode) .logoIcon svg {
+:global(body.dark-mode) .logoIcon svg,
+:global(html.dark) .logoIcon svg {
   color: color-mix(
     in srgb,
     var(--integration-icon-color, var(--msp-accent, #2b5fab)) 42%,
@@ -243,25 +260,24 @@
 }
 
 .logoImg {
-  width: 52px;
-  height: 52px;
+  width: 1.85rem;
+  height: 1.85rem;
   object-fit: contain;
 }
 
 .badge {
-  position: absolute;
-  top: 10px;
-  right: 10px;
   display: inline-flex;
   align-items: center;
-  padding: 0.18rem 0.45rem;
+  gap: 0.25rem;
+  padding: 0.2rem 0.5rem;
   border-radius: 999px;
   font-size: 0.64rem;
   font-weight: 700;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   white-space: nowrap;
   line-height: 1.2;
+  flex-shrink: 0;
 }
 
 .badgeActive {
@@ -277,64 +293,66 @@
 }
 
 .badgeSoon {
-  background: #fff7ed;
-  color: #c2410c;
-  border: 1px solid #fed7aa;
+  background: #e2e8f0;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .cardName {
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: var(--msp-text, #0f1c2e);
   line-height: 1.3;
-  margin-top: 2px;
 }
 
 .cardDesc {
   margin: 0;
-  font-size: 0.75rem;
+  font-size: 0.76rem;
   color: var(--msp-muted, #5c6b82);
-  line-height: 1.4;
+  line-height: 1.45;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  transition: color 0.15s ease;
 }
 
-.cardTooltip {
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  top: calc(100% + 8px);
-  z-index: 101;
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid var(--msp-border, #dde3ed);
-  background: var(--msp-text, #0f1c2e);
-  color: #f8fafc;
-  font-size: 0.74rem;
-  line-height: 1.45;
-  text-align: left;
-  box-shadow: 0 8px 20px rgba(15, 28, 46, 0.18);
+.cardAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: auto;
+  padding-top: 0.15rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #2b5fab;
   opacity: 0;
-  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
   pointer-events: none;
-  transition: opacity 0.12s ease, visibility 0.12s ease;
 }
 
-.card:hover .cardTooltip,
-.card:focus-visible .cardTooltip {
-  opacity: 1;
-  visibility: visible;
+.cardActionIcon {
+  font-size: 0.95rem;
 }
 
-.cardTooltip::after {
-  content: "";
-  position: absolute;
-  bottom: 100%;
-  left: 24px;
-  border: 6px solid transparent;
-  border-bottom-color: var(--msp-text, #0f1c2e);
+.cardSoonHint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: auto;
+  padding-top: 0.15rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
 }
 
 .modalDesc {
@@ -399,9 +417,34 @@
   .statsRow {
     grid-template-columns: 1fr;
   }
+
+  .cardAction {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-/* Mode sombre · conteneurs d'icônes et cartes */
+:global(html.dark) .statCard,
+:global(html.dark) .card {
+  background: var(--msp-surface);
+  border-color: var(--msp-border);
+}
+
+:global(html.dark) .statIconWrap {
+  background: var(--msp-surface-2);
+  color: var(--msp-accent);
+}
+
+:global(html.dark) .statIconActive {
+  background: rgba(34, 197, 94, 0.12);
+  color: #4ade80;
+}
+
+:global(html.dark) .statIconSoon {
+  background: var(--msp-surface-3);
+  color: var(--msp-muted);
+}
+
 :global(html.dark) .logoWrap {
   background: rgba(255, 255, 255, 0.07);
   border-color: var(--msp-border);
@@ -412,11 +455,15 @@
 }
 
 :global(html.dark) .cardComingSoon {
-  background: var(--msp-surface);
-}
-
-:global(html.dark) .cardComingSoon:hover {
-  border-color: var(--msp-muted-light);
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--msp-surface),
+    var(--msp-surface) 10px,
+    var(--msp-surface-2) 10px,
+    var(--msp-surface-2) 20px
+  );
+  border-color: var(--msp-muted-light, #475569);
+  opacity: 0.55;
 }
 
 :global(html.dark) .filterBtn {
@@ -449,25 +496,21 @@
 }
 
 :global(html.dark) .badgeSoon {
-  background: rgba(251, 146, 60, 0.12);
-  color: #fb923c;
-  border-color: rgba(251, 146, 60, 0.25);
+  background: var(--msp-surface-3);
+  color: var(--msp-muted);
+  border-color: var(--msp-border);
 }
 
 :global(html.dark) .sectionIcon {
   color: var(--msp-accent);
 }
 
-:global(html.dark) .cardTooltip {
-  background: var(--msp-surface-3, #1e293b);
-  border-color: var(--msp-border);
-  color: var(--msp-text);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+:global(html.dark) .cardAction {
+  color: var(--msp-accent);
 }
 
-:global(html.dark) .cardTooltip::after {
-  border-bottom-color: var(--msp-surface-3, #1e293b);
-  border-top-color: transparent;
+:global(html.dark) .cardSoonHint {
+  color: var(--msp-muted);
 }
 
 :global(html.dark) .modalDesc {

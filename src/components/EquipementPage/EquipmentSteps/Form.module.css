@@ -1,18 +1,14 @@
-/*
-  Fichier de style centralisé pour tous les formulaires des modales.
-  Objectif : Uniformiser l'apparence, simplifier la maintenance et garantir
-  la compatibilité light/dark mode.
-*/
 
-/* Conteneur principal pour le contenu d'une étape */
+
+
 .stepContainer {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* Espace vertical entre les sections */
+  gap: 1rem; 
   height: 100%;
 }
 
-/* Palette commune (inspirée des modals Admin) pour inputs/select/textarea dans toutes les steps */
+
 .stepContainer input,
 .stepContainer select,
 .stepContainer textarea {
@@ -31,13 +27,13 @@
   color: #9ca3af;
 }
 
-/* Responsive pour la mise en page en deux colonnes - UNIQUEMENT pour StepModules */
-/* Cette règle ne s'applique que si le conteneur a la classe stepContainer ET qu'il contient des modules */
+
+
 .stepContainer:has(.moduleGrid) > div:first-child {
   display: flex;
   gap: 2rem;
   margin-bottom: 1rem;
-  flex-direction: column; /* Par défaut en colonne sur mobile */
+  flex-direction: column; 
 }
 
 @media (min-width: 768px) {
@@ -58,20 +54,18 @@
   }
 }
 
-/*
-  SECTION: Conteneur pour un groupe de champs (ex: "Infos client")
-*/
+
 .formSection {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem; /* Espace entre le titre et la grille de champs */
+  gap: 0.5rem; 
   flex: 1;
   min-height: 0;
   height: auto;
   overflow: visible;
 }
 
-/* Titre d'une section */
+
 .sectionTitle {
   font-size: 1.1rem;
   font-weight: 600;
@@ -84,7 +78,7 @@
   gap: 0.75rem;
 }
 
-/* Description de section */
+
 .sectionDescription {
   color: var(--text-secondary);
   font-size: 0.9rem;
@@ -92,7 +86,7 @@
   margin: 0 0 1.5rem 0;
 }
 
-/* Hint pour les champs de formulaire */
+
 .fieldHint {
   color: var(--text-secondary);
   font-size: 0.85rem;
@@ -102,35 +96,35 @@
   opacity: 0.8;
 }
 
-/* Sous-titre pour les sous-sections */
+
 .subsectionTitle {
   font-size: 1rem;
   font-weight: 500;
   color: var(--text-primary);
-  margin: 2rem 0 1rem 0; /* Plus d'espace en haut pour éviter la superposition */
-  padding-top: 1rem; /* Espacement supplémentaire */
+  margin: 2rem 0 1rem 0; 
+  padding-top: 1rem; 
 }
 
-/* Responsive pour les sous-titres */
+
 @media (max-width: 768px) {
   .subsectionTitle {
-    margin: 3rem 0 1rem 0; /* Encore plus d'espace sur mobile */
+    margin: 3rem 0 1rem 0; 
     padding-top: 1.5rem;
   }
 }
 
-/* Espacement responsive entre les sections */
+
 .spacingDiv {
   height: 3rem;
 }
 
 @media (max-width: 768px) {
   .spacingDiv {
-    height: 4rem; /* Plus d'espace sur mobile */
+    height: 4rem; 
   }
 }
 
-/* Styles pour les cartes d'équipements TOIP */
+
 .equipmentList {
   display: flex;
   flex-direction: column;
@@ -188,9 +182,7 @@
   transform: scale(1.05);
 }
 
-/*
-  SECTION: Grille de champs de formulaire
-*/
+
 .formGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -210,9 +202,7 @@
   }
 }
 
-/*
-  SECTION: Champs de formulaire individuels
-*/
+
 .formField {
   display: flex;
   flex-direction: column;
@@ -261,7 +251,7 @@
   margin: 0;
 }
 
-/* Masquer l'icône du calendrier dans les champs time */
+
 .formField input[type="time"]::-webkit-calendar-picker-indicator {
   display: none;
 }
@@ -285,9 +275,7 @@
   box-shadow: 0 0 0 2px rgba(var(--accent-primary-rgb), 0.1);
 }
 
-/*
-  SECTION: Cartes et conteneurs
-*/
+
 .card {
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
@@ -312,9 +300,7 @@
   margin: 0;
 }
 
-/*
-  SECTION: Zones de défilement
-*/
+
 .scrollable {
   max-height: none;
   height: 100%;
@@ -347,9 +333,7 @@
   scrollbar-color: var(--border-primary) var(--bg-tertiary);
 }
 
-/*
-  SECTION: Actions d'en-tête
-*/
+
 .headerActions {
   display: flex;
   justify-content: space-between;
@@ -446,9 +430,7 @@
   display: block;
 }
 
-/*
-  SECTION: Messages de chargement
-*/
+
 .loadingMessage {
   display: flex;
   align-items: center;
@@ -459,9 +441,7 @@
   gap: 0.5rem;
 }
 
-/*
-  SECTION: Grille de modules
-*/
+
 .moduleGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -526,7 +506,7 @@
   box-shadow: 0 6px 16px rgba(19, 186, 142, 0.25);
 }
 
-/* Style spécifique aux petites cartes modules (assistant config) */
+
 .moduleCardButton {
   background: #2d2d2d;
   border: 1px solid #3b4254;
@@ -1340,9 +1320,7 @@
   background: var(--accent-secondary);
 }
 
-/*
-  SECTION: Styles spécifiques pour le module Internet
-*/
+
 .existingConnections {
   margin-bottom: 2rem;
 }
@@ -1491,7 +1469,7 @@
   }
 }
 
-/* États vides pour les pages sans contenu */
+
 .emptyState {
   text-align: center;
   padding: 3rem 1rem;
@@ -1518,7 +1496,7 @@
   line-height: 1.5;
 }
 
-/* Message d'erreur */
+
 .errorMessage {
   margin-top: 1rem;
   padding: 0.75rem;
@@ -1534,7 +1512,7 @@
 
 
 
-/* Styles pour les tableaux de données */
+
 .tableContainer {
   margin: 1rem 0;
   overflow-x: auto;
@@ -1577,7 +1555,7 @@
   border-bottom: none;
 }
 
-/* Responsive pour les tableaux */
+
 @media (max-width: 768px) {
   .tableContainer {
     margin: 0.5rem 0;
@@ -1593,7 +1571,7 @@
   }
 }
 
-/* Styles pour la carte des utilisateurs */
+
 .usersCard {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-primary);
@@ -1664,7 +1642,7 @@
   background: var(--text-secondary);
 }
 
-/* Correction du scroll pour le modal */
+
 .stepContainer {
   height: auto;
   overflow: visible;
@@ -1684,7 +1662,7 @@
 
 
 
-/* Styles pour la gestion des licences */
+
 .sectionHeader {
   display: flex;
   justify-content: space-between;
@@ -1731,7 +1709,7 @@
   color: var(--text-secondary);
 }
 
-/* Styles pour le modal de synchronisation UniFi */
+
 .modalOverlay {
   position: fixed;
   inset: 0;
@@ -1951,7 +1929,7 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-/* Responsive pour les nouveaux éléments */
+
 @media (max-width: 768px) {
   .sectionHeader {
     flex-direction: column;
@@ -1965,7 +1943,7 @@
   }
 }
 
-/* Styles pour le modal de sélection du type d'instance */
+
 .modalContent h3 {
   margin: 0 0 1.5rem 0;
   font-size: 1.25rem;
@@ -2060,7 +2038,7 @@
   }
 }
 
-/* Styles pour le checkbox personnalisé */
+
 .checkboxLabel {
   display: flex;
   align-items: center;
@@ -2121,7 +2099,7 @@
   cursor: not-allowed;
 }
 
-/* Styles pour les groupes de sites */
+
 .siteGroup {
   margin-bottom: 2rem;
 }

@@ -1,11 +1,10 @@
 import { createLocaleGetter, interpolate } from "../../i18n/translate";
 import { getAdminPagesExtra } from "./adminPagesI18nExtra";
-
 const ADMIN_PAGES = {
   fr: {
     accessDenied: {
       title: "Accès réservé aux administrateurs",
-      text: "Vous n'avez pas les droits nécessaires pour accéder à l'administration Veritas. Contactez un administrateur si vous pensez qu'il s'agit d'une erreur.",
+      text: "Vous n'avez pas les droits nécessaires pour accéder à l'administration Veritas. Contactez un administrateur si vous pensez qu'il s'agit d'une erreur."
     },
     maintenance: {
       loadError: "Impossible de charger la maintenance",
@@ -25,7 +24,7 @@ const ADMIN_PAGES = {
       speedAria: "Vitesse du bandeau en secondes",
       directionLabel: "Direction",
       colorLabel: "Couleur",
-      previewLabel: "Aperçu",
+      previewLabel: "Aperçu"
     },
     teams: {
       loadTeamsError: "Erreur de chargement des équipes",
@@ -70,13 +69,13 @@ const ADMIN_PAGES = {
       removeMemberTitle: "Retirer de l'équipe",
       removeMemberMessage: "Retirer {agent} de l'équipe « {team} » ?",
       deleteTeamTitle: "Supprimer l'équipe",
-      deleteTeamMessage: "Supprimer l'équipe « {name} » ? Les membres ne seront pas supprimés.",
-    },
+      deleteTeamMessage: "Supprimer l'équipe « {name} » ? Les membres ne seront pas supprimés."
+    }
   },
   en: {
     accessDenied: {
       title: "Administrator access only",
-      text: "You do not have permission to access Veritas administration. Contact an administrator if you believe this is an error.",
+      text: "You do not have permission to access Veritas administration. Contact an administrator if you believe this is an error."
     },
     maintenance: {
       loadError: "Unable to load maintenance settings",
@@ -96,7 +95,7 @@ const ADMIN_PAGES = {
       speedAria: "Banner speed in seconds",
       directionLabel: "Direction",
       colorLabel: "Color",
-      previewLabel: "Preview",
+      previewLabel: "Preview"
     },
     teams: {
       loadTeamsError: "Error loading teams",
@@ -141,13 +140,13 @@ const ADMIN_PAGES = {
       removeMemberTitle: "Remove from team",
       removeMemberMessage: "Remove {agent} from team « {team} »?",
       deleteTeamTitle: "Delete team",
-      deleteTeamMessage: "Delete team « {name} »? Members will not be deleted.",
-    },
+      deleteTeamMessage: "Delete team « {name} »? Members will not be deleted."
+    }
   },
   de: {
     accessDenied: {
       title: "Nur für Administratoren",
-      text: "Sie haben keine Berechtigung für die Veritas-Administration. Wenden Sie sich an einen Administrator, wenn Sie glauben, dass dies ein Fehler ist.",
+      text: "Sie haben keine Berechtigung für die Veritas-Administration. Wenden Sie sich an einen Administrator, wenn Sie glauben, dass dies ein Fehler ist."
     },
     maintenance: {
       loadError: "Wartungseinstellungen konnten nicht geladen werden",
@@ -167,7 +166,7 @@ const ADMIN_PAGES = {
       speedAria: "Bannergeschwindigkeit in Sekunden",
       directionLabel: "Richtung",
       colorLabel: "Farbe",
-      previewLabel: "Vorschau",
+      previewLabel: "Vorschau"
     },
     teams: {
       loadTeamsError: "Fehler beim Laden der Teams",
@@ -212,13 +211,13 @@ const ADMIN_PAGES = {
       removeMemberTitle: "Aus Team entfernen",
       removeMemberMessage: "{agent} aus Team « {team} » entfernen?",
       deleteTeamTitle: "Team löschen",
-      deleteTeamMessage: "Team « {name} » löschen? Mitglieder werden nicht gelöscht.",
-    },
+      deleteTeamMessage: "Team « {name} » löschen? Mitglieder werden nicht gelöscht."
+    }
   },
   it: {
     accessDenied: {
       title: "Accesso riservato agli amministratori",
-      text: "Non hai i permessi necessari per accedere all'amministrazione Veritas. Contatta un amministratore se pensi si tratti di un errore.",
+      text: "Non hai i permessi necessari per accedere all'amministrazione Veritas. Contatta un amministratore se pensi si tratti di un errore."
     },
     maintenance: {
       loadError: "Impossibile caricare la manutenzione",
@@ -238,7 +237,7 @@ const ADMIN_PAGES = {
       speedAria: "Velocità del banner in secondi",
       directionLabel: "Direzione",
       colorLabel: "Colore",
-      previewLabel: "Anteprima",
+      previewLabel: "Anteprima"
     },
     teams: {
       loadTeamsError: "Errore nel caricamento dei team",
@@ -283,13 +282,13 @@ const ADMIN_PAGES = {
       removeMemberTitle: "Rimuovi dal team",
       removeMemberMessage: "Rimuovere {agent} dal team « {team} »?",
       deleteTeamTitle: "Elimina team",
-      deleteTeamMessage: "Eliminare il team « {name} »? I membri non verranno eliminati.",
-    },
+      deleteTeamMessage: "Eliminare il team « {name} »? I membri non verranno eliminati."
+    }
   },
   es: {
     accessDenied: {
       title: "Acceso reservado a administradores",
-      text: "No tiene los permisos necesarios para acceder a la administración de Veritas. Contacte a un administrador si cree que se trata de un error.",
+      text: "No tiene los permisos necesarios para acceder a la administración de Veritas. Contacte a un administrador si cree que se trata de un error."
     },
     maintenance: {
       loadError: "No se pudo cargar el mantenimiento",
@@ -309,7 +308,7 @@ const ADMIN_PAGES = {
       speedAria: "Velocidad del banner en segundos",
       directionLabel: "Dirección",
       colorLabel: "Color",
-      previewLabel: "Vista previa",
+      previewLabel: "Vista previa"
     },
     teams: {
       loadTeamsError: "Error al cargar equipos",
@@ -354,19 +353,19 @@ const ADMIN_PAGES = {
       removeMemberTitle: "Quitar del equipo",
       removeMemberMessage: "¿Quitar a {agent} del equipo « {team} »?",
       deleteTeamTitle: "Eliminar equipo",
-      deleteTeamMessage: "¿Eliminar el equipo « {name} »? Los miembros no se eliminarán.",
-    },
-  },
+      deleteTeamMessage: "¿Eliminar el equipo « {name} »? Los miembros no se eliminarán."
+    }
+  }
 };
-
 const getAdminPagesRoot = createLocaleGetter(ADMIN_PAGES);
-
 export function getAdminPageCopy(locale, pageKey) {
   const root = getAdminPagesRoot(locale);
   const extra = getAdminPagesExtra(locale);
-  return { ...(root[pageKey] || {}), ...(extra[pageKey] || {}) };
+  return {
+    ...(root[pageKey] || {}),
+    ...(extra[pageKey] || {})
+  };
 }
-
 export function adminPageInterpolate(locale, pageKey, messageKey, params = {}) {
   const page = getAdminPageCopy(locale, pageKey);
   return interpolate(page[messageKey] || messageKey, params);

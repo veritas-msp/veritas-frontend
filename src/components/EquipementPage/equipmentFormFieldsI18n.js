@@ -1,5 +1,4 @@
-import { createLocaleGetter, pickLocaleMessages } from "../../i18n/translate";
-
+import { createLocaleGetter } from "../../i18n/translate";
 const FR = {
   fields: {
     name: "Nom",
@@ -106,7 +105,7 @@ const FR = {
     wifiModelPlaceholder: "U6 Pro",
     toipBrandPlaceholder: "3CX",
     dashOption: "-",
-    cpuLabelDefault: "Processeur / vCPU",
+    cpuLabelDefault: "Processeur / vCPU"
   },
   moduleSectionDescriptions: {
     Internet: {
@@ -115,7 +114,7 @@ const FR = {
       internetLink: "Lieux, fournisseur et débits",
       internetNetwork: "IP publique et passerelle",
       internetContract: "Références et support",
-      internetNotes: "Informations complémentaires",
+      internetNotes: "Informations complémentaires"
     },
     Firewalls: {
       identity: "Nom, lieux et type de déploiement",
@@ -123,7 +122,7 @@ const FR = {
       network: "IP, VLAN et URL d'administration",
       ha: "Cluster firewall et pair HA",
       licences: "Licences et dates d'expiration",
-      notes: "Accès, procédures et informations utiles",
+      notes: "Accès, procédures et informations utiles"
     },
     Serveurs: {
       identity: "Nom, lieux et type (Physique / Virtuel)",
@@ -131,28 +130,28 @@ const FR = {
       network: "Adresse IP et VLAN",
       system: "OS, ressources et rôles",
       remote: "Solution distante et identifiant de connexion",
-      notes: "Accès, procédures et informations utiles",
+      notes: "Accès, procédures et informations utiles"
     },
     Stockage: {
       identity: "Nom, lieux et type de stockage",
       hardware: "Marque, modèle et n° de série",
       network: "Adresse IP et VLAN",
       storage: "Rôle, RAID, capacité et disques",
-      notes: "Accès, procédures et informations utiles",
+      notes: "Accès, procédures et informations utiles"
     },
     Switch: {
       identity: "Nom et lieux",
       hardware: "Marque, modèle, firmware et caractéristiques",
       network: "Adresse IP, VLAN et MAC",
       management: "Manageabilité et interface d'administration",
-      notes: "Accès, procédures et informations utiles",
+      notes: "Accès, procédures et informations utiles"
     },
     BorneWifi: {
       identity: "Nom et lieux",
       hardware: "Marque, modèle, n° de série et firmware",
       network: "Adresse IP, VLAN et MAC",
       wifi: "SSID diffusés par la borne",
-      notes: "Accès, procédures et informations utiles",
+      notes: "Accès, procédures et informations utiles"
     },
     Alimentation: {
       identity: "Nom, lieux et type de déploiement (Onduleur / PDU)",
@@ -160,13 +159,13 @@ const FR = {
       power: "Capacité, prises et batterie",
       network: "Adresse IP, VLAN et MAC",
       management: "Gestion réseau et interface web",
-      notes: "Accès, procédures et informations utiles",
+      notes: "Accès, procédures et informations utiles"
     },
     Routeur: {
       identity: "Nom, lieux et type (Routeur / SD-WAN)",
       hardware: "Marque, modèle et caractéristiques",
       network: "IP, VLAN et URL d'administration",
-      notes: "Accès, procédures et informations utiles",
+      notes: "Accès, procédures et informations utiles"
     },
     TOIP: {
       identity: "Nom, lieux et type de déploiement VoIP",
@@ -174,19 +173,19 @@ const FR = {
       voip: "Extensions, domaine SIP et version",
       network: "Adresse IP, VLAN et MAC",
       management: "Console d'administration et supervision",
-      notes: "Accès, procédures et informations utiles",
-    },
+      notes: "Accès, procédures et informations utiles"
+    }
   },
   internetCategories: {
     Principale: "Principale",
-    Backup: "Backup",
+    Backup: "Backup"
   },
   internetConnectionCategories: {
     wired: "Filaire",
     wireless: "Sans fil",
     satellite: "Satellite",
     sdwan: "SD-WAN",
-    other: "Autre",
+    other: "Autre"
   },
   internetConnectionTypes: {
     Fibre: "Fibre",
@@ -199,43 +198,109 @@ const FR = {
     Câble: "Câble",
     Radio: "Radio",
     "SD-WAN": "SD-WAN",
-    Autre: "Autre",
+    Autre: "Autre"
   },
   typeOptions: {
     firewall: {
-      materiel: { label: "Matériel", description: "Appliance physique (FortiGate, Stormshield…)" },
-      virtuel: { label: "Virtuel", description: "Machine virtuelle (FortiGate VM, vSN…)" },
-      cloud: { label: "Cloud", description: "FWaaS / pare-feu managé cloud" },
-      logiciel: { label: "Logiciel", description: "Pare-feu logiciel (pfSense, OPNsense, DynFi…)" },
-      autre: { label: "Autre", description: "Autre mode de déploiement" },
+      materiel: {
+        label: "Matériel",
+        description: "Appliance physique (FortiGate, Stormshield…)"
+      },
+      virtuel: {
+        label: "Virtuel",
+        description: "Machine virtuelle (FortiGate VM, vSN…)"
+      },
+      cloud: {
+        label: "Cloud",
+        description: "FWaaS / pare-feu managé cloud"
+      },
+      logiciel: {
+        label: "Logiciel",
+        description: "Pare-feu logiciel (pfSense, OPNsense, DynFi…)"
+      },
+      autre: {
+        label: "Autre",
+        description: "Autre mode de déploiement"
+      }
     },
     server: {
-      physique: { label: "Physique", description: "Bare-metal, blade ou tour" },
-      virtuel: { label: "Virtuel", description: "Machine virtuelle on-prem ou cloud" },
+      physique: {
+        label: "Physique",
+        description: "Bare-metal, blade ou tour"
+      },
+      virtuel: {
+        label: "Virtuel",
+        description: "Machine virtuelle on-prem ou cloud"
+      }
     },
     storage: {
-      nas: { label: "NAS", description: "Appliance NAS (Synology, QNAP…)" },
-      san: { label: "SAN", description: "Baie SAN ou appliance block storage" },
-      virtuel: { label: "Virtuel", description: "Stockage virtuel, vSAN ou VM dédiée" },
-      cloud: { label: "Cloud", description: "Stockage managé cloud (Azure, AWS…)" },
-      robot: { label: "Robot sauvegarde", description: "Robot de bandes ou librairie RDX" },
-      externe: { label: "Disque externe", description: "Disque USB ou rotation externe" },
+      nas: {
+        label: "NAS",
+        description: "Appliance NAS (Synology, QNAP…)"
+      },
+      san: {
+        label: "SAN",
+        description: "Baie SAN ou appliance block storage"
+      },
+      virtuel: {
+        label: "Virtuel",
+        description: "Stockage virtuel, vSAN ou VM dédiée"
+      },
+      cloud: {
+        label: "Cloud",
+        description: "Stockage managé cloud (Azure, AWS…)"
+      },
+      robot: {
+        label: "Robot sauvegarde",
+        description: "Robot de bandes ou librairie RDX"
+      },
+      externe: {
+        label: "Disque externe",
+        description: "Disque USB ou rotation externe"
+      }
     },
     router: {
-      Routeur: { label: "Routeur", description: "Routeur edge, box opérateur ou appliance" },
-      "SD-WAN": { label: "SD-WAN", description: "Overlay SD-WAN, orchestrateur ou service cloud" },
+      Routeur: {
+        label: "Routeur",
+        description: "Routeur edge, box opérateur ou appliance"
+      },
+      "SD-WAN": {
+        label: "SD-WAN",
+        description: "Overlay SD-WAN, orchestrateur ou service cloud"
+      }
     },
     alimentation: {
-      Onduleur: { label: "Onduleur (UPS sur site)", description: "UPS rack ou tour · offline, line-interactive ou online" },
-      PDU: { label: "PDU (baie rack)", description: "Bandeau de prises en baie · basique, mesuré, commuté ou managé" },
+      Onduleur: {
+        label: "Onduleur (UPS sur site)",
+        description: "UPS rack ou tour · offline, line-interactive ou online"
+      },
+      PDU: {
+        label: "PDU (baie rack)",
+        description: "Bandeau de prises en baie · basique, mesuré, commuté ou managé"
+      }
     },
     toip: {
-      "IP-PBX": { label: "IP-PBX (sur site / VM)", description: "Autocommutateur IP local ou virtualisé (3CX, Yeastar, CUCM…)" },
-      Passerelle: { label: "Passerelle (trunk SIP)", description: "Passerelle FXO/FXS ou trunk SIP vers l'opérateur" },
-      SBC: { label: "SBC (bordure SIP)", description: "Session Border Controller en périphérie du réseau VoIP" },
-      "Téléphone IP": { label: "Téléphone IP (poste)", description: "Poste de bureau, DECT, conférence ou softphone matérialisé" },
-      Autre: { label: "Autre", description: "Équipement VoIP non listé" },
-    },
+      "IP-PBX": {
+        label: "IP-PBX (sur site / VM)",
+        description: "Autocommutateur IP local ou virtualisé (3CX, Yeastar, CUCM…)"
+      },
+      Passerelle: {
+        label: "Passerelle (trunk SIP)",
+        description: "Passerelle FXO/FXS ou trunk SIP vers l'opérateur"
+      },
+      SBC: {
+        label: "SBC (bordure SIP)",
+        description: "Session Border Controller en périphérie du réseau VoIP"
+      },
+      "Téléphone IP": {
+        label: "Téléphone IP (poste)",
+        description: "Poste de bureau, DECT, conférence ou softphone matérialisé"
+      },
+      Autre: {
+        label: "Autre",
+        description: "Équipement VoIP non listé"
+      }
+    }
   },
   profiles: {
     firewall: {
@@ -246,7 +311,7 @@ const FR = {
         modelPlaceholder: "FortiGate 60F",
         firmwareLabel: "Firmware",
         firmwarePlaceholder: "4.8.1",
-        adminUrlPlaceholder: "https://192.168.10.1:10443",
+        adminUrlPlaceholder: "https://192.168.10.1:10443"
       },
       virtuel: {
         hardwareLabel: "VM / Appliance virtuelle",
@@ -255,14 +320,14 @@ const FR = {
         modelPlaceholder: "FortiGate-VM64",
         firmwareLabel: "Firmware",
         firmwarePlaceholder: "7.4.3",
-        adminUrlPlaceholder: "https://192.168.10.1:10443",
+        adminUrlPlaceholder: "https://192.168.10.1:10443"
       },
       cloud: {
         hardwareLabel: "Plateforme",
         hardwareDescription: "Fournisseur cloud et offre souscrite",
         modelLabel: "Offre / Service",
         modelPlaceholder: "Prisma Access",
-        adminUrlPlaceholder: "https://admin.cloudprovider.com",
+        adminUrlPlaceholder: "https://admin.cloudprovider.com"
       },
       logiciel: {
         hardwareLabel: "Logiciel",
@@ -271,7 +336,7 @@ const FR = {
         modelPlaceholder: "pfSense CE",
         firmwareLabel: "Version",
         firmwarePlaceholder: "2.7.2",
-        adminUrlPlaceholder: "https://192.168.10.1",
+        adminUrlPlaceholder: "https://192.168.10.1"
       },
       autre: {
         hardwareLabel: "Matériel",
@@ -280,8 +345,8 @@ const FR = {
         modelPlaceholder: "FortiGate 60F",
         firmwareLabel: "Firmware",
         firmwarePlaceholder: "4.8.1",
-        adminUrlPlaceholder: "https://192.168.10.1:10443",
-      },
+        adminUrlPlaceholder: "https://192.168.10.1:10443"
+      }
     },
     router: {
       Routeur: {
@@ -291,15 +356,15 @@ const FR = {
         modelPlaceholder: "ISR 4331",
         firmwareLabel: "Firmware",
         firmwarePlaceholder: "17.9.4",
-        adminUrlPlaceholder: "https://192.168.1.1",
+        adminUrlPlaceholder: "https://192.168.1.1"
       },
       "SD-WAN": {
         hardwareLabel: "Plateforme SD-WAN",
         hardwareDescription: "Fournisseur et offre souscrite",
         modelLabel: "Offre / Service",
         modelPlaceholder: "Prisma SD-WAN",
-        adminUrlPlaceholder: "https://admin.sdwan.example.com",
-      },
+        adminUrlPlaceholder: "https://admin.sdwan.example.com"
+      }
     },
     server: {
       physique: {
@@ -309,36 +374,54 @@ const FR = {
         systemDescription: "OS, CPU, RAM, stockage et rôles",
         modelPlaceholder: "ProLiant DL360 Gen11",
         namePlaceholder: "SRV-AD-01",
-        cpuLabel: "Processeur",
+        cpuLabel: "Processeur"
       },
       virtuel: {
         systemLabel: "Ressources VM",
         systemDescription: "Hyperviseur, vCPU, RAM et OS",
         namePlaceholder: "VM-APP-01",
-        cpuLabel: "vCPU",
-      },
+        cpuLabel: "vCPU"
+      }
     },
     storage: {
-      nas: { modelPlaceholder: "DS923+", namePlaceholder: "NAS-Sauvegarde" },
-      san: { modelPlaceholder: "PowerStore 500T", namePlaceholder: "SAN-Prod-01" },
-      virtuel: { modelPlaceholder: "TrueNAS Scale VM", namePlaceholder: "VM-STORAGE-01" },
-      cloud: { modelPlaceholder: "Azure Files Premium", namePlaceholder: "CLOUD-BACKUP" },
-      robot: { modelPlaceholder: "Scalar i3", namePlaceholder: "ROBOT-BACKUP" },
-      externe: { modelPlaceholder: "Expansion Desktop 8 To", namePlaceholder: "DD-Externe-01" },
+      nas: {
+        modelPlaceholder: "DS923+",
+        namePlaceholder: "NAS-Sauvegarde"
+      },
+      san: {
+        modelPlaceholder: "PowerStore 500T",
+        namePlaceholder: "SAN-Prod-01"
+      },
+      virtuel: {
+        modelPlaceholder: "TrueNAS Scale VM",
+        namePlaceholder: "VM-STORAGE-01"
+      },
+      cloud: {
+        modelPlaceholder: "Azure Files Premium",
+        namePlaceholder: "CLOUD-BACKUP"
+      },
+      robot: {
+        modelPlaceholder: "Scalar i3",
+        namePlaceholder: "ROBOT-BACKUP"
+      },
+      externe: {
+        modelPlaceholder: "Expansion Desktop 8 To",
+        namePlaceholder: "DD-Externe-01"
+      }
     },
     alimentation: {
       Onduleur: {
         modelPlaceholder: "Smart-UPS 1500",
         managementLabel: "Onduleur manageable",
         managementHint: "Onduleur avec carte réseau ou interface web de supervision.",
-        adminUrlPlaceholder: "https://192.168.1.51 ou interface NMC/APC",
+        adminUrlPlaceholder: "https://192.168.1.51 ou interface NMC/APC"
       },
       PDU: {
         modelPlaceholder: "AP8941",
         managementLabel: "PDU manageable",
         managementHint: "PDU avec interface web ou SNMP pour supervision des prises et consommation.",
-        adminUrlPlaceholder: "https://192.168.1.50 ou https://pdu.example.com",
-      },
+        adminUrlPlaceholder: "https://192.168.1.50 ou https://pdu.example.com"
+      }
     },
     toip: {
       "IP-PBX": {
@@ -349,7 +432,7 @@ const FR = {
         managementLabel: "IP-PBX manageable",
         managementHint: "Console web ou interface d'administration de la solution VoIP.",
         adminUrlPlaceholder: "https://pbx.exemple.fr:5001 ou https://3cx.example.com",
-        modelPlaceholder: "P-Series",
+        modelPlaceholder: "P-Series"
       },
       Passerelle: {
         extensionsLabel: "Nombre de lignes / canaux",
@@ -359,7 +442,7 @@ const FR = {
         managementLabel: "Équipement manageable",
         managementHint: "Console web ou interface d'administration de la solution VoIP.",
         adminUrlPlaceholder: "https://192.168.1.60",
-        modelPlaceholder: "TA400",
+        modelPlaceholder: "TA400"
       },
       SBC: {
         extensionsLabel: "Nombre de lignes / canaux",
@@ -369,23 +452,23 @@ const FR = {
         managementLabel: "SBC manageable",
         managementHint: "Console web ou interface d'administration de la solution VoIP.",
         adminUrlPlaceholder: "https://192.168.1.60",
-        modelPlaceholder: "Mediant VE",
+        modelPlaceholder: "Mediant VE"
       },
       "Téléphone IP": {
         firmwareLabel: "Firmware",
         firmwarePlaceholder: "96.36.199.66",
-        modelPlaceholder: "T46U",
+        modelPlaceholder: "T46U"
       },
       Autre: {
         extensionsLabel: "Nombre de lignes / canaux",
         extensionsPlaceholder: "8",
         firmwareLabel: "Version logiciel",
         firmwarePlaceholder: "20.0 Update 1",
-        modelPlaceholder: "Solution VoIP",
-      },
-    },
+        modelPlaceholder: "Solution VoIP"
+      }
+    }
   },
-  formatCustomModelAria: (label) => `${label} personnalisé`,
+  formatCustomModelAria: label => `${label} personnalisé`,
   namePlaceholders: {
     Internet: "INT-Principale-Siège",
     Firewalls: "FW-Siège-Bordeaux",
@@ -395,10 +478,9 @@ const FR = {
     BorneWifi: "AP-RDC",
     Alimentation: "PDU-Baie-A",
     Routeur: "RT-Siège",
-    TOIP: "PBX-Siège",
-  },
+    TOIP: "PBX-Siège"
+  }
 };
-
 const EN = {
   fields: {
     name: "Name",
@@ -505,7 +587,7 @@ const EN = {
     wifiModelPlaceholder: "U6 Pro",
     toipBrandPlaceholder: "3CX",
     dashOption: "-",
-    cpuLabelDefault: "Processor / vCPU",
+    cpuLabelDefault: "Processor / vCPU"
   },
   moduleSectionDescriptions: {
     Internet: {
@@ -514,7 +596,7 @@ const EN = {
       internetLink: "Sites, provider and bandwidth",
       internetNetwork: "Public IP and gateway",
       internetContract: "References and support",
-      internetNotes: "Additional information",
+      internetNotes: "Additional information"
     },
     Firewalls: {
       identity: "Name, sites and deployment type",
@@ -522,7 +604,7 @@ const EN = {
       network: "IP, VLAN and admin URL",
       ha: "Firewall cluster and HA peer",
       licences: "Licenses and expiry dates",
-      notes: "Access, procedures and useful information",
+      notes: "Access, procedures and useful information"
     },
     Serveurs: {
       identity: "Name, sites and type (Physical / Virtual)",
@@ -530,28 +612,28 @@ const EN = {
       network: "IP address and VLAN",
       system: "OS, resources and roles",
       remote: "Remote solution and connection ID",
-      notes: "Access, procedures and useful information",
+      notes: "Access, procedures and useful information"
     },
     Stockage: {
       identity: "Name, sites and storage type",
       hardware: "Brand, model and serial",
       network: "IP address and VLAN",
       storage: "Role, RAID, capacity and disks",
-      notes: "Access, procedures and useful information",
+      notes: "Access, procedures and useful information"
     },
     Switch: {
       identity: "Name and sites",
       hardware: "Brand, model, firmware and features",
       network: "IP address, VLAN and MAC",
       management: "Manageability and admin interface",
-      notes: "Access, procedures and useful information",
+      notes: "Access, procedures and useful information"
     },
     BorneWifi: {
       identity: "Name and sites",
       hardware: "Brand, model, serial and firmware",
       network: "IP address, VLAN and MAC",
       wifi: "SSIDs broadcast by the AP",
-      notes: "Access, procedures and useful information",
+      notes: "Access, procedures and useful information"
     },
     Alimentation: {
       identity: "Name, sites and deployment type (UPS / PDU)",
@@ -559,13 +641,13 @@ const EN = {
       power: "Capacity, outlets and battery",
       network: "IP address, VLAN and MAC",
       management: "Network management and web interface",
-      notes: "Access, procedures and useful information",
+      notes: "Access, procedures and useful information"
     },
     Routeur: {
       identity: "Name, sites and type (Router / SD-WAN)",
       hardware: "Brand, model and characteristics",
       network: "IP, VLAN and admin URL",
-      notes: "Access, procedures and useful information",
+      notes: "Access, procedures and useful information"
     },
     TOIP: {
       identity: "Name, sites and VoIP deployment type",
@@ -573,16 +655,19 @@ const EN = {
       voip: "Extensions, SIP domain and version",
       network: "IP address, VLAN and MAC",
       management: "Admin console and monitoring",
-      notes: "Access, procedures and useful information",
-    },
+      notes: "Access, procedures and useful information"
+    }
   },
-  internetCategories: { Principale: "Primary", Backup: "Backup" },
+  internetCategories: {
+    Principale: "Primary",
+    Backup: "Backup"
+  },
   internetConnectionCategories: {
     wired: "Wired",
     wireless: "Wireless",
     satellite: "Satellite",
     sdwan: "SD-WAN",
-    other: "Other",
+    other: "Other"
   },
   internetConnectionTypes: {
     Fibre: "Fiber",
@@ -595,81 +680,277 @@ const EN = {
     Câble: "Cable",
     Radio: "Radio",
     "SD-WAN": "SD-WAN",
-    Autre: "Other",
+    Autre: "Other"
   },
   typeOptions: {
     firewall: {
-      materiel: { label: "Hardware", description: "Physical appliance (FortiGate, Stormshield…)" },
-      virtuel: { label: "Virtual", description: "Virtual machine (FortiGate VM, vSN…)" },
-      cloud: { label: "Cloud", description: "FWaaS / managed cloud firewall" },
-      logiciel: { label: "Software", description: "Software firewall (pfSense, OPNsense, DynFi…)" },
-      autre: { label: "Other", description: "Other deployment mode" },
+      materiel: {
+        label: "Hardware",
+        description: "Physical appliance (FortiGate, Stormshield…)"
+      },
+      virtuel: {
+        label: "Virtual",
+        description: "Virtual machine (FortiGate VM, vSN…)"
+      },
+      cloud: {
+        label: "Cloud",
+        description: "FWaaS / managed cloud firewall"
+      },
+      logiciel: {
+        label: "Software",
+        description: "Software firewall (pfSense, OPNsense, DynFi…)"
+      },
+      autre: {
+        label: "Other",
+        description: "Other deployment mode"
+      }
     },
     server: {
-      physique: { label: "Physical", description: "Bare-metal, blade or tower" },
-      virtuel: { label: "Virtual", description: "On-prem or cloud virtual machine" },
+      physique: {
+        label: "Physical",
+        description: "Bare-metal, blade or tower"
+      },
+      virtuel: {
+        label: "Virtual",
+        description: "On-prem or cloud virtual machine"
+      }
     },
     storage: {
-      nas: { label: "NAS", description: "NAS appliance (Synology, QNAP…)" },
-      san: { label: "SAN", description: "SAN array or block storage appliance" },
-      virtuel: { label: "Virtual", description: "Virtual storage, vSAN or dedicated VM" },
-      cloud: { label: "Cloud", description: "Managed cloud storage (Azure, AWS…)" },
-      robot: { label: "Backup robot", description: "Tape library or RDX loader" },
-      externe: { label: "External disk", description: "USB disk or external rotation" },
+      nas: {
+        label: "NAS",
+        description: "NAS appliance (Synology, QNAP…)"
+      },
+      san: {
+        label: "SAN",
+        description: "SAN array or block storage appliance"
+      },
+      virtuel: {
+        label: "Virtual",
+        description: "Virtual storage, vSAN or dedicated VM"
+      },
+      cloud: {
+        label: "Cloud",
+        description: "Managed cloud storage (Azure, AWS…)"
+      },
+      robot: {
+        label: "Backup robot",
+        description: "Tape library or RDX loader"
+      },
+      externe: {
+        label: "External disk",
+        description: "USB disk or external rotation"
+      }
     },
     router: {
-      Routeur: { label: "Router", description: "Edge router, ISP box or appliance" },
-      "SD-WAN": { label: "SD-WAN", description: "SD-WAN overlay, orchestrator or cloud service" },
+      Routeur: {
+        label: "Router",
+        description: "Edge router, ISP box or appliance"
+      },
+      "SD-WAN": {
+        label: "SD-WAN",
+        description: "SD-WAN overlay, orchestrator or cloud service"
+      }
     },
     alimentation: {
-      Onduleur: { label: "UPS (on-site)", description: "Rack or tower UPS · offline, line-interactive or online" },
-      PDU: { label: "PDU (rack)", description: "Rack PDU · basic, metered, switched or managed" },
+      Onduleur: {
+        label: "UPS (on-site)",
+        description: "Rack or tower UPS · offline, line-interactive or online"
+      },
+      PDU: {
+        label: "PDU (rack)",
+        description: "Rack PDU · basic, metered, switched or managed"
+      }
     },
     toip: {
-      "IP-PBX": { label: "IP-PBX (on-site / VM)", description: "Local or virtual IP PBX (3CX, Yeastar, CUCM…)" },
-      Passerelle: { label: "Gateway (SIP trunk)", description: "FXO/FXS gateway or SIP trunk to carrier" },
-      SBC: { label: "SBC (SIP border)", description: "Session Border Controller at VoIP network edge" },
-      "Téléphone IP": { label: "IP phone (handset)", description: "Desk phone, DECT, conference or softphone device" },
-      Autre: { label: "Other", description: "Unlisted VoIP equipment" },
-    },
+      "IP-PBX": {
+        label: "IP-PBX (on-site / VM)",
+        description: "Local or virtual IP PBX (3CX, Yeastar, CUCM…)"
+      },
+      Passerelle: {
+        label: "Gateway (SIP trunk)",
+        description: "FXO/FXS gateway or SIP trunk to carrier"
+      },
+      SBC: {
+        label: "SBC (SIP border)",
+        description: "Session Border Controller at VoIP network edge"
+      },
+      "Téléphone IP": {
+        label: "IP phone (handset)",
+        description: "Desk phone, DECT, conference or softphone device"
+      },
+      Autre: {
+        label: "Other",
+        description: "Unlisted VoIP equipment"
+      }
+    }
   },
   profiles: {
     firewall: {
-      materiel: { hardwareLabel: "Hardware", hardwareDescription: "Brand, model, serial and warranty", modelLabel: "Model", modelPlaceholder: "FortiGate 60F", firmwareLabel: "Firmware", firmwarePlaceholder: "4.8.1", adminUrlPlaceholder: "https://192.168.10.1:10443" },
-      virtuel: { hardwareLabel: "VM / virtual appliance", hardwareDescription: "Brand, VM model and firmware version", modelLabel: "VM model", modelPlaceholder: "FortiGate-VM64", firmwareLabel: "Firmware", firmwarePlaceholder: "7.4.3", adminUrlPlaceholder: "https://192.168.10.1:10443" },
-      cloud: { hardwareLabel: "Platform", hardwareDescription: "Cloud provider and subscribed offer", modelLabel: "Offer / service", modelPlaceholder: "Prisma Access", adminUrlPlaceholder: "https://admin.cloudprovider.com" },
-      logiciel: { hardwareLabel: "Software", hardwareDescription: "Distribution and installed version", modelLabel: "Distribution", modelPlaceholder: "pfSense CE", firmwareLabel: "Version", firmwarePlaceholder: "2.7.2", adminUrlPlaceholder: "https://192.168.10.1" },
-      autre: { hardwareLabel: "Hardware", hardwareDescription: "Brand, model and characteristics", modelLabel: "Model", modelPlaceholder: "FortiGate 60F", firmwareLabel: "Firmware", firmwarePlaceholder: "4.8.1", adminUrlPlaceholder: "https://192.168.10.1:10443" },
+      materiel: {
+        hardwareLabel: "Hardware",
+        hardwareDescription: "Brand, model, serial and warranty",
+        modelLabel: "Model",
+        modelPlaceholder: "FortiGate 60F",
+        firmwareLabel: "Firmware",
+        firmwarePlaceholder: "4.8.1",
+        adminUrlPlaceholder: "https://192.168.10.1:10443"
+      },
+      virtuel: {
+        hardwareLabel: "VM / virtual appliance",
+        hardwareDescription: "Brand, VM model and firmware version",
+        modelLabel: "VM model",
+        modelPlaceholder: "FortiGate-VM64",
+        firmwareLabel: "Firmware",
+        firmwarePlaceholder: "7.4.3",
+        adminUrlPlaceholder: "https://192.168.10.1:10443"
+      },
+      cloud: {
+        hardwareLabel: "Platform",
+        hardwareDescription: "Cloud provider and subscribed offer",
+        modelLabel: "Offer / service",
+        modelPlaceholder: "Prisma Access",
+        adminUrlPlaceholder: "https://admin.cloudprovider.com"
+      },
+      logiciel: {
+        hardwareLabel: "Software",
+        hardwareDescription: "Distribution and installed version",
+        modelLabel: "Distribution",
+        modelPlaceholder: "pfSense CE",
+        firmwareLabel: "Version",
+        firmwarePlaceholder: "2.7.2",
+        adminUrlPlaceholder: "https://192.168.10.1"
+      },
+      autre: {
+        hardwareLabel: "Hardware",
+        hardwareDescription: "Brand, model and characteristics",
+        modelLabel: "Model",
+        modelPlaceholder: "FortiGate 60F",
+        firmwareLabel: "Firmware",
+        firmwarePlaceholder: "4.8.1",
+        adminUrlPlaceholder: "https://192.168.10.1:10443"
+      }
     },
     router: {
-      Routeur: { hardwareLabel: "Hardware", hardwareDescription: "Brand, model, serial and warranty", modelLabel: "Model", modelPlaceholder: "ISR 4331", firmwareLabel: "Firmware", firmwarePlaceholder: "17.9.4", adminUrlPlaceholder: "https://192.168.1.1" },
-      "SD-WAN": { hardwareLabel: "SD-WAN platform", hardwareDescription: "Provider and subscribed offer", modelLabel: "Offer / service", modelPlaceholder: "Prisma SD-WAN", adminUrlPlaceholder: "https://admin.sdwan.example.com" },
+      Routeur: {
+        hardwareLabel: "Hardware",
+        hardwareDescription: "Brand, model, serial and warranty",
+        modelLabel: "Model",
+        modelPlaceholder: "ISR 4331",
+        firmwareLabel: "Firmware",
+        firmwarePlaceholder: "17.9.4",
+        adminUrlPlaceholder: "https://192.168.1.1"
+      },
+      "SD-WAN": {
+        hardwareLabel: "SD-WAN platform",
+        hardwareDescription: "Provider and subscribed offer",
+        modelLabel: "Offer / service",
+        modelPlaceholder: "Prisma SD-WAN",
+        adminUrlPlaceholder: "https://admin.sdwan.example.com"
+      }
     },
     server: {
-      physique: { hardwareLabel: "Hardware", hardwareDescription: "Brand, model, serial and warranty", systemLabel: "System", systemDescription: "OS, CPU, RAM, storage and roles", modelPlaceholder: "ProLiant DL360 Gen11", namePlaceholder: "SRV-AD-01", cpuLabel: "Processor" },
-      virtuel: { systemLabel: "VM resources", systemDescription: "Hypervisor, vCPU, RAM and OS", namePlaceholder: "VM-APP-01", cpuLabel: "vCPU" },
+      physique: {
+        hardwareLabel: "Hardware",
+        hardwareDescription: "Brand, model, serial and warranty",
+        systemLabel: "System",
+        systemDescription: "OS, CPU, RAM, storage and roles",
+        modelPlaceholder: "ProLiant DL360 Gen11",
+        namePlaceholder: "SRV-AD-01",
+        cpuLabel: "Processor"
+      },
+      virtuel: {
+        systemLabel: "VM resources",
+        systemDescription: "Hypervisor, vCPU, RAM and OS",
+        namePlaceholder: "VM-APP-01",
+        cpuLabel: "vCPU"
+      }
     },
     storage: {
-      nas: { modelPlaceholder: "DS923+", namePlaceholder: "NAS-Backup" },
-      san: { modelPlaceholder: "PowerStore 500T", namePlaceholder: "SAN-Prod-01" },
-      virtuel: { modelPlaceholder: "TrueNAS Scale VM", namePlaceholder: "VM-STORAGE-01" },
-      cloud: { modelPlaceholder: "Azure Files Premium", namePlaceholder: "CLOUD-BACKUP" },
-      robot: { modelPlaceholder: "Scalar i3", namePlaceholder: "ROBOT-BACKUP" },
-      externe: { modelPlaceholder: "Expansion Desktop 8 TB", namePlaceholder: "EXT-DISK-01" },
+      nas: {
+        modelPlaceholder: "DS923+",
+        namePlaceholder: "NAS-Backup"
+      },
+      san: {
+        modelPlaceholder: "PowerStore 500T",
+        namePlaceholder: "SAN-Prod-01"
+      },
+      virtuel: {
+        modelPlaceholder: "TrueNAS Scale VM",
+        namePlaceholder: "VM-STORAGE-01"
+      },
+      cloud: {
+        modelPlaceholder: "Azure Files Premium",
+        namePlaceholder: "CLOUD-BACKUP"
+      },
+      robot: {
+        modelPlaceholder: "Scalar i3",
+        namePlaceholder: "ROBOT-BACKUP"
+      },
+      externe: {
+        modelPlaceholder: "Expansion Desktop 8 TB",
+        namePlaceholder: "EXT-DISK-01"
+      }
     },
     alimentation: {
-      Onduleur: { modelPlaceholder: "Smart-UPS 1500", managementLabel: "Manageable UPS", managementHint: "UPS with network card or web supervision interface.", adminUrlPlaceholder: "https://192.168.1.51 or NMC/APC interface" },
-      PDU: { modelPlaceholder: "AP8941", managementLabel: "Manageable PDU", managementHint: "PDU with web or SNMP interface for outlet and power monitoring.", adminUrlPlaceholder: "https://192.168.1.50 or https://pdu.example.com" },
+      Onduleur: {
+        modelPlaceholder: "Smart-UPS 1500",
+        managementLabel: "Manageable UPS",
+        managementHint: "UPS with network card or web supervision interface.",
+        adminUrlPlaceholder: "https://192.168.1.51 or NMC/APC interface"
+      },
+      PDU: {
+        modelPlaceholder: "AP8941",
+        managementLabel: "Manageable PDU",
+        managementHint: "PDU with web or SNMP interface for outlet and power monitoring.",
+        adminUrlPlaceholder: "https://192.168.1.50 or https://pdu.example.com"
+      }
     },
     toip: {
-      "IP-PBX": { extensionsLabel: "Extension count", extensionsPlaceholder: "48", firmwareLabel: "Software version", firmwarePlaceholder: "20.0 Update 1", managementLabel: "Manageable IP-PBX", managementHint: "Web console or VoIP solution admin interface.", adminUrlPlaceholder: "https://pbx.example.com:5001", modelPlaceholder: "P-Series" },
-      Passerelle: { extensionsLabel: "Line / channel count", extensionsPlaceholder: "8", firmwareLabel: "Software version", firmwarePlaceholder: "20.0 Update 1", managementLabel: "Manageable device", managementHint: "Web console or VoIP solution admin interface.", adminUrlPlaceholder: "https://192.168.1.60", modelPlaceholder: "TA400" },
-      SBC: { extensionsLabel: "Line / channel count", extensionsPlaceholder: "8", firmwareLabel: "Software version", firmwarePlaceholder: "20.0 Update 1", managementLabel: "Manageable SBC", managementHint: "Web console or VoIP solution admin interface.", adminUrlPlaceholder: "https://192.168.1.60", modelPlaceholder: "Mediant VE" },
-      "Téléphone IP": { firmwareLabel: "Firmware", firmwarePlaceholder: "96.36.199.66", modelPlaceholder: "T46U" },
-      Autre: { extensionsLabel: "Line / channel count", extensionsPlaceholder: "8", firmwareLabel: "Software version", firmwarePlaceholder: "20.0 Update 1", modelPlaceholder: "VoIP solution" },
-    },
+      "IP-PBX": {
+        extensionsLabel: "Extension count",
+        extensionsPlaceholder: "48",
+        firmwareLabel: "Software version",
+        firmwarePlaceholder: "20.0 Update 1",
+        managementLabel: "Manageable IP-PBX",
+        managementHint: "Web console or VoIP solution admin interface.",
+        adminUrlPlaceholder: "https://pbx.example.com:5001",
+        modelPlaceholder: "P-Series"
+      },
+      Passerelle: {
+        extensionsLabel: "Line / channel count",
+        extensionsPlaceholder: "8",
+        firmwareLabel: "Software version",
+        firmwarePlaceholder: "20.0 Update 1",
+        managementLabel: "Manageable device",
+        managementHint: "Web console or VoIP solution admin interface.",
+        adminUrlPlaceholder: "https://192.168.1.60",
+        modelPlaceholder: "TA400"
+      },
+      SBC: {
+        extensionsLabel: "Line / channel count",
+        extensionsPlaceholder: "8",
+        firmwareLabel: "Software version",
+        firmwarePlaceholder: "20.0 Update 1",
+        managementLabel: "Manageable SBC",
+        managementHint: "Web console or VoIP solution admin interface.",
+        adminUrlPlaceholder: "https://192.168.1.60",
+        modelPlaceholder: "Mediant VE"
+      },
+      "Téléphone IP": {
+        firmwareLabel: "Firmware",
+        firmwarePlaceholder: "96.36.199.66",
+        modelPlaceholder: "T46U"
+      },
+      Autre: {
+        extensionsLabel: "Line / channel count",
+        extensionsPlaceholder: "8",
+        firmwareLabel: "Software version",
+        firmwarePlaceholder: "20.0 Update 1",
+        modelPlaceholder: "VoIP solution"
+      }
+    }
   },
-  formatCustomModelAria: (label) => `Custom ${label}`,
+  formatCustomModelAria: label => `Custom ${label}`,
   namePlaceholders: {
     Internet: "INT-Primary-HQ",
     Firewalls: "FW-HQ",
@@ -679,13 +960,12 @@ const EN = {
     BorneWifi: "AP-GF",
     Alimentation: "PDU-Rack-A",
     Routeur: "RT-HQ",
-    TOIP: "PBX-HQ",
-  },
+    TOIP: "PBX-HQ"
+  }
 };
-
 const DE = {
   ...EN,
-  formatCustomModelAria: (label) => `Benutzerdefiniertes ${label}`,
+  formatCustomModelAria: label => `Benutzerdefiniertes ${label}`,
   fields: {
     ...EN.fields,
     name: "Name",
@@ -707,15 +987,18 @@ const DE = {
     osSystem: "OS / System",
     raid: "RAID",
     quickConnect: "QuickConnect",
-    cpuLabelDefault: "Prozessor / vCPU",
+    cpuLabelDefault: "Prozessor / vCPU"
   },
-  internetCategories: { Principale: "Primär", Backup: "Backup" },
+  internetCategories: {
+    Principale: "Primär",
+    Backup: "Backup"
+  },
   internetConnectionCategories: {
     wired: "Kabelgebunden",
     wireless: "Drahtlos",
     satellite: "Satellit",
     sdwan: "SD-WAN",
-    other: "Andere",
+    other: "Andere"
   },
   internetConnectionTypes: {
     Fibre: "Glasfaser",
@@ -728,13 +1011,12 @@ const DE = {
     Câble: "Kabel",
     Radio: "Funk",
     "SD-WAN": "SD-WAN",
-    Autre: "Andere",
-  },
+    Autre: "Andere"
+  }
 };
-
 const IT = {
   ...EN,
-  formatCustomModelAria: (label) => `${label} personalizzato`,
+  formatCustomModelAria: label => `${label} personalizzato`,
   fields: {
     ...EN.fields,
     name: "Nome",
@@ -756,15 +1038,18 @@ const IT = {
     osSystem: "OS / sistema",
     raid: "RAID",
     quickConnect: "QuickConnect",
-    cpuLabelDefault: "Processore / vCPU",
+    cpuLabelDefault: "Processore / vCPU"
   },
-  internetCategories: { Principale: "Principale", Backup: "Backup" },
+  internetCategories: {
+    Principale: "Principale",
+    Backup: "Backup"
+  },
   internetConnectionCategories: {
     wired: "Cablato",
     wireless: "Senza fili",
     satellite: "Satellitare",
     sdwan: "SD-WAN",
-    other: "Altro",
+    other: "Altro"
   },
   internetConnectionTypes: {
     Fibre: "Fibra",
@@ -777,13 +1062,12 @@ const IT = {
     Câble: "Cavo",
     Radio: "Radio",
     "SD-WAN": "SD-WAN",
-    Autre: "Altro",
-  },
+    Autre: "Altro"
+  }
 };
-
 const ES = {
   ...EN,
-  formatCustomModelAria: (label) => `${label} personalizado`,
+  formatCustomModelAria: label => `${label} personalizado`,
   fields: {
     ...EN.fields,
     name: "Nombre",
@@ -805,15 +1089,18 @@ const ES = {
     osSystem: "SO / sistema",
     raid: "RAID",
     quickConnect: "QuickConnect",
-    cpuLabelDefault: "Procesador / vCPU",
+    cpuLabelDefault: "Procesador / vCPU"
   },
-  internetCategories: { Principale: "Principal", Backup: "Backup" },
+  internetCategories: {
+    Principale: "Principal",
+    Backup: "Backup"
+  },
   internetConnectionCategories: {
     wired: "Cableado",
     wireless: "Inalámbrico",
     satellite: "Satélite",
     sdwan: "SD-WAN",
-    other: "Otro",
+    other: "Otro"
   },
   internetConnectionTypes: {
     Fibre: "Fibra",
@@ -826,10 +1113,14 @@ const ES = {
     Câble: "Cable",
     Radio: "Radio",
     "SD-WAN": "SD-WAN",
-    Autre: "Otro",
-  },
+    Autre: "Otro"
+  }
 };
-
-export const EQUIPMENT_FORM_FIELDS = { fr: FR, en: EN, de: DE, it: IT, es: ES };
-
+export const EQUIPMENT_FORM_FIELDS = {
+  fr: FR,
+  en: EN,
+  de: DE,
+  it: IT,
+  es: ES
+};
 export const getFormFields = createLocaleGetter(EQUIPMENT_FORM_FIELDS);

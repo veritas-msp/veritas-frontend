@@ -129,7 +129,7 @@
   gap: 1rem;
 }
 
-/* Métriques principales compactes - style Antivirus */
+
 .metricsRow {
   display: flex;
   gap: 1rem;
@@ -444,7 +444,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Style uniformisé pour les cartes de jobs - inspiré des cartes serveur */
+
 .jobCard {
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
@@ -471,7 +471,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Effets hover supprimés */
+
 
 .cardHeader {
   display: flex;
@@ -517,31 +517,31 @@
   font-size: 8px;
 }
 
-/* Statut Excellent */
+
 .statusDot.excellent {
   background-color: #10b981;
   color: #10b981;
 }
 
-/* Statut Good */
+
 .statusDot.good {
   background-color: #22c55e;
   color: #22c55e;
 }
 
-/* Statut Warning */
+
 .statusDot.warning {
   background-color: #f59e0b;
   color: #f59e0b;
 }
 
-/* Statut Critical */
+
 .statusDot.critical {
   background-color: #ef4444;
   color: #ef4444;
 }
 
-/* Statut Unknown */
+
 .statusDot.unknown {
   background-color: #6b7280;
   color: #6b7280;
@@ -569,12 +569,12 @@
   color: #f9fafb;
 }
 
-/* Section des sous-titres */
+
 .subtitleSection {
   margin-bottom: 0.5rem;
 }
 
-/* Styles pour les sections - style Antivirus */
+
 .sectionTitle {
   font-size: 1rem;
   font-weight: 600;
@@ -657,7 +657,7 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Section d'affichage du nombre de jobs */
+
 .jobsCountSection {
   display: flex;
   justify-content: center;
@@ -698,7 +698,7 @@
   color: #9ca3af;
 }
 
-/* Section de liste des jobs pour les instances Veeam */
+
 .jobsListSection {
   flex: 1;
   margin: 0.25rem 0 0 0;
@@ -858,7 +858,7 @@
   color: #9ca3af;
 }
 
-/* Informations de flux avec icônes */
+
 .flowInfo {
   display: flex;
   flex-direction: column;
@@ -928,7 +928,7 @@
   border-color: #4a4a6a;
 }
 
-/* Tooltips avec informations réelles du matériel */
+
 .serverTooltip,
 .storageTooltip {
   position: absolute;
@@ -999,7 +999,7 @@
   min-width: 80px;
 }
 
-/* Hover effects pour afficher les tooltips avec décalage */
+
 .flowSource:hover .serverTooltip,
 .flowDestination:hover .storageTooltip,
 .flowItem:hover .serverTooltip,
@@ -1063,7 +1063,7 @@
   z-index: 1;
 }
 
-/* Trait simple qui simule un flux */
+
 .flowArrow::before {
   content: '';
   position: absolute;
@@ -1103,7 +1103,7 @@
   animation: dataFlowGlow 1.5s linear infinite;
 }
 
-/* Flux bleu pour HyperBackup (référence Synology) */
+
 .flowArrowBlue::before {
   background: 
     repeating-linear-gradient(
@@ -1123,7 +1123,7 @@
   background: linear-gradient(90deg, transparent 0%, rgba(0, 102, 204, 0.3) 50%, transparent 100%);
 }
 
-/* Flux violet pour HYCU Backup */
+
 .flowArrowPurple::before {
   background: 
     repeating-linear-gradient(
@@ -1143,7 +1143,7 @@
   background: linear-gradient(90deg, transparent 0%, rgba(147, 51, 234, 0.3) 50%, transparent 100%);
 }
 
-/* Flux gris pour le lien entre datacenters */
+
 .flowArrowGray::before {
   background: 
     repeating-linear-gradient(
@@ -1186,9 +1186,9 @@
   }
 }
 
-/* Styles pour la flèche de transfert */
 
-/* Séparateur */
+
+
 .separator {
   border: none;
   height: 1px;
@@ -1200,7 +1200,7 @@
   background-color: #374151;
 }
 
-/* Métriques reformatées - sur la même ligne */
+
 .metricsSection {
   margin-top: 1rem;
   display: flex;
@@ -1288,7 +1288,7 @@
   color: white;
 }
 
-/* Tableau des métriques - Supprimé, remplacé par des métriques condensées */
+
 
 .metricInput:focus {
   outline: none;
@@ -1309,7 +1309,7 @@
   color: #6b7280;
 }
 
-/* Cacher les spinners pour les inputs number */
+
 .metricInput::-webkit-outer-spin-button,
 .metricInput::-webkit-inner-spin-button {
   display: none;
@@ -1350,7 +1350,7 @@
   box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
 }
 
-/* Zone de commentaire */
+
 .commentSection {
   margin-top: 0.75rem;
 }
@@ -1409,7 +1409,7 @@
   color: #6b7280;
 }
 
-/* État vide */
+
 .emptyState {
   display: flex;
   justify-content: center;
@@ -1429,14 +1429,14 @@
   color: #9ca3af;
 }
 
-/* Responsive */
+
 @media (max-width: 1200px) {
   .backupGrid {
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   }
 }
 
-/* Responsive design */
+
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
@@ -1471,7 +1471,7 @@
     margin: -1rem;
   }
 
-  /* Garder les cartes de périphériques côte à côte même en mobile */
+  
   .flowInline {
     flex-direction: row;
     align-items: center;
@@ -1543,7 +1543,7 @@
   }
 }
 
-/* ───────────── STYLES POUR LES BOUTONS SYNC (aligné EnterpriseDetailPage) ───────────── */
+
 .syncButton {
   display: inline-flex;
   align-items: center;

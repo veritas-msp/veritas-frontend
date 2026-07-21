@@ -1,5 +1,4 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 const BACKUP_MSP_PANEL_COPY = {
   fr: {
     panelTitle: "Sauvegardes",
@@ -25,20 +24,20 @@ const BACKUP_MSP_PANEL_COPY = {
       alertsTitle: "Jobs en erreur ou en retard",
       criticalTitle: "Dernière sauvegarde > 48 h ou inconnue",
       warningTitle: "Dernière sauvegarde > 24 h",
-      okTitle: "Dernière sauvegarde < 24 h",
+      okTitle: "Dernière sauvegarde < 24 h"
     },
     empty: {
       noJobsTitle: "Aucun job",
       noJobsText: "Configurez les jobs de sauvegarde dans les fiches clients.",
       noResultsTitle: "Aucun résultat",
-      noResultsText: "Aucun job ne correspond aux filtres actifs.",
+      noResultsText: "Aucun job ne correspond aux filtres actifs."
     },
     loading: {
       jobs: "Chargement des jobs…",
       hycu: "Chargement des instances HYCU…",
       veeam: "Chargement des instances Veeam…",
       activeBackup: "Chargement des réplicats Active Backup…",
-      hyperBackup: "Chargement des réplicats HyperBackup…",
+      hyperBackup: "Chargement des réplicats HyperBackup…"
     },
     instances: {
       toggle: "Instances de sauvegarde ({count})",
@@ -57,7 +56,7 @@ const BACKUP_MSP_PANEL_COPY = {
       licenseExpired: "Licence expirée",
       licenseExpiring: "Licence expire dans les 30 jours",
       moduleActive: "{label} : activé",
-      moduleInactive: "{label} : inactif",
+      moduleInactive: "{label} : inactif"
     },
     table: {
       status: "Statut",
@@ -78,15 +77,15 @@ const BACKUP_MSP_PANEL_COPY = {
       viewClient: "Voir la fiche client",
       deleteJob: "Supprimer le job",
       mapCheckmk: "Cliquer pour mapper avec CheckMK",
-      hycuNoSync: "Job HYCU non synchronisable avec CheckMK",
+      hycuNoSync: "Job HYCU non synchronisable avec CheckMK"
     },
     toasts: {
       syncError: "Erreur lors de la synchronisation des jobs",
       syncDone: "Synchronisation terminée",
       jobDeleted: "Job supprimé",
-      deleteError: "Erreur lors de la suppression du job",
+      deleteError: "Erreur lors de la suppression du job"
     },
-    unknownClient: "Client inconnu",
+    unknownClient: "Client inconnu"
   },
   en: {
     panelTitle: "Backups",
@@ -112,20 +111,20 @@ const BACKUP_MSP_PANEL_COPY = {
       alertsTitle: "Jobs in error or delayed",
       criticalTitle: "Last backup > 48 h or unknown",
       warningTitle: "Last backup > 24 h",
-      okTitle: "Last backup < 24 h",
+      okTitle: "Last backup < 24 h"
     },
     empty: {
       noJobsTitle: "No jobs",
       noJobsText: "Configure backup jobs in client records.",
       noResultsTitle: "No results",
-      noResultsText: "No jobs match the active filters.",
+      noResultsText: "No jobs match the active filters."
     },
     loading: {
       jobs: "Loading jobs…",
       hycu: "Loading HYCU instances…",
       veeam: "Loading Veeam instances…",
       activeBackup: "Loading Active Backup replicas…",
-      hyperBackup: "Loading HyperBackup replicas…",
+      hyperBackup: "Loading HyperBackup replicas…"
     },
     instances: {
       toggle: "Backup instances ({count})",
@@ -144,7 +143,7 @@ const BACKUP_MSP_PANEL_COPY = {
       licenseExpired: "License expired",
       licenseExpiring: "License expires within 30 days",
       moduleActive: "{label}: enabled",
-      moduleInactive: "{label}: disabled",
+      moduleInactive: "{label}: disabled"
     },
     table: {
       status: "Status",
@@ -165,15 +164,15 @@ const BACKUP_MSP_PANEL_COPY = {
       viewClient: "View client record",
       deleteJob: "Delete job",
       mapCheckmk: "Click to map with CheckMK",
-      hycuNoSync: "HYCU job cannot sync with CheckMK",
+      hycuNoSync: "HYCU job cannot sync with CheckMK"
     },
     toasts: {
       syncError: "Error syncing jobs",
       syncDone: "Sync completed",
       jobDeleted: "Job deleted",
-      deleteError: "Error deleting job",
+      deleteError: "Error deleting job"
     },
-    unknownClient: "Unknown client",
+    unknownClient: "Unknown client"
   },
   de: {
     panelTitle: "Backups",
@@ -199,20 +198,20 @@ const BACKUP_MSP_PANEL_COPY = {
       alertsTitle: "Jobs mit Fehler oder Verzögerung",
       criticalTitle: "Letztes Backup > 48 h oder unbekannt",
       warningTitle: "Letztes Backup > 24 h",
-      okTitle: "Letztes Backup < 24 h",
+      okTitle: "Letztes Backup < 24 h"
     },
     empty: {
       noJobsTitle: "Keine Jobs",
       noJobsText: "Backup-Jobs in den Kundenakten konfigurieren.",
       noResultsTitle: "Keine Ergebnisse",
-      noResultsText: "Kein Job entspricht den aktiven Filtern.",
+      noResultsText: "Kein Job entspricht den aktiven Filtern."
     },
     loading: {
       jobs: "Jobs werden geladen…",
       hycu: "HYCU-Instanzen werden geladen…",
       veeam: "Veeam-Instanzen werden geladen…",
       activeBackup: "Active-Backup-Replikate werden geladen…",
-      hyperBackup: "HyperBackup-Replikate werden geladen…",
+      hyperBackup: "HyperBackup-Replikate werden geladen…"
     },
     instances: {
       toggle: "Backup-Instanzen ({count})",
@@ -231,7 +230,7 @@ const BACKUP_MSP_PANEL_COPY = {
       licenseExpired: "Lizenz abgelaufen",
       licenseExpiring: "Lizenz läuft in 30 Tagen ab",
       moduleActive: "{label}: aktiv",
-      moduleInactive: "{label}: inaktiv",
+      moduleInactive: "{label}: inaktiv"
     },
     table: {
       status: "Status",
@@ -252,15 +251,15 @@ const BACKUP_MSP_PANEL_COPY = {
       viewClient: "Kundenakte anzeigen",
       deleteJob: "Job löschen",
       mapCheckmk: "Klicken zum Zuordnen mit CheckMK",
-      hycuNoSync: "HYCU-Job nicht mit CheckMK synchronisierbar",
+      hycuNoSync: "HYCU-Job nicht mit CheckMK synchronisierbar"
     },
     toasts: {
       syncError: "Fehler beim Synchronisieren der Jobs",
       syncDone: "Synchronisation abgeschlossen",
       jobDeleted: "Job gelöscht",
-      deleteError: "Fehler beim Löschen des Jobs",
+      deleteError: "Fehler beim Löschen des Jobs"
     },
-    unknownClient: "Unbekannter Kunde",
+    unknownClient: "Unbekannter Kunde"
   },
   it: {
     panelTitle: "Backup",
@@ -286,20 +285,20 @@ const BACKUP_MSP_PANEL_COPY = {
       alertsTitle: "Job in errore o in ritardo",
       criticalTitle: "Ultimo backup > 48 h o sconosciuto",
       warningTitle: "Ultimo backup > 24 h",
-      okTitle: "Ultimo backup < 24 h",
+      okTitle: "Ultimo backup < 24 h"
     },
     empty: {
       noJobsTitle: "Nessun job",
       noJobsText: "Configura i job di backup nelle schede clienti.",
       noResultsTitle: "Nessun risultato",
-      noResultsText: "Nessun job corrisponde ai filtri attivi.",
+      noResultsText: "Nessun job corrisponde ai filtri attivi."
     },
     loading: {
       jobs: "Caricamento job…",
       hycu: "Caricamento istanze HYCU…",
       veeam: "Caricamento istanze Veeam…",
       activeBackup: "Caricamento repliche Active Backup…",
-      hyperBackup: "Caricamento repliche HyperBackup…",
+      hyperBackup: "Caricamento repliche HyperBackup…"
     },
     instances: {
       toggle: "Istanze di backup ({count})",
@@ -318,7 +317,7 @@ const BACKUP_MSP_PANEL_COPY = {
       licenseExpired: "Licenza scaduta",
       licenseExpiring: "Licenza in scadenza entro 30 giorni",
       moduleActive: "{label}: attivo",
-      moduleInactive: "{label}: inattivo",
+      moduleInactive: "{label}: inattivo"
     },
     table: {
       status: "Stato",
@@ -339,15 +338,15 @@ const BACKUP_MSP_PANEL_COPY = {
       viewClient: "Vedi scheda cliente",
       deleteJob: "Elimina job",
       mapCheckmk: "Clicca per associare a CheckMK",
-      hycuNoSync: "Job HYCU non sincronizzabile con CheckMK",
+      hycuNoSync: "Job HYCU non sincronizzabile con CheckMK"
     },
     toasts: {
       syncError: "Errore durante la sincronizzazione dei job",
       syncDone: "Sincronizzazione completata",
       jobDeleted: "Job eliminato",
-      deleteError: "Errore durante l'eliminazione del job",
+      deleteError: "Errore durante l'eliminazione del job"
     },
-    unknownClient: "Cliente sconosciuto",
+    unknownClient: "Cliente sconosciuto"
   },
   es: {
     panelTitle: "Copias de seguridad",
@@ -373,20 +372,20 @@ const BACKUP_MSP_PANEL_COPY = {
       alertsTitle: "Jobs con error o retraso",
       criticalTitle: "Último backup > 48 h o desconocido",
       warningTitle: "Último backup > 24 h",
-      okTitle: "Último backup < 24 h",
+      okTitle: "Último backup < 24 h"
     },
     empty: {
       noJobsTitle: "Ningún job",
       noJobsText: "Configure los jobs de backup en las fichas de clientes.",
       noResultsTitle: "Sin resultados",
-      noResultsText: "Ningún job coincide con los filtros activos.",
+      noResultsText: "Ningún job coincide con los filtros activos."
     },
     loading: {
       jobs: "Cargando jobs…",
       hycu: "Cargando instancias HYCU…",
       veeam: "Cargando instancias Veeam…",
       activeBackup: "Cargando réplicas Active Backup…",
-      hyperBackup: "Cargando réplicas HyperBackup…",
+      hyperBackup: "Cargando réplicas HyperBackup…"
     },
     instances: {
       toggle: "Instancias de backup ({count})",
@@ -405,7 +404,7 @@ const BACKUP_MSP_PANEL_COPY = {
       licenseExpired: "Licencia expirada",
       licenseExpiring: "Licencia expira en 30 días",
       moduleActive: "{label}: activo",
-      moduleInactive: "{label}: inactivo",
+      moduleInactive: "{label}: inactivo"
     },
     table: {
       status: "Estado",
@@ -426,32 +425,44 @@ const BACKUP_MSP_PANEL_COPY = {
       viewClient: "Ver ficha cliente",
       deleteJob: "Eliminar job",
       mapCheckmk: "Clic para mapear con CheckMK",
-      hycuNoSync: "Job HYCU no sincronizable con CheckMK",
+      hycuNoSync: "Job HYCU no sincronizable con CheckMK"
     },
     toasts: {
       syncError: "Error al sincronizar jobs",
       syncDone: "Sincronización completada",
       jobDeleted: "Job eliminado",
-      deleteError: "Error al eliminar el job",
+      deleteError: "Error al eliminar el job"
     },
-    unknownClient: "Cliente desconocido",
-  },
+    unknownClient: "Cliente desconocido"
+  }
 };
-
 export function getBackupMspPanelCopy(locale) {
   const t = pickLocaleMessages(BACKUP_MSP_PANEL_COPY, locale);
   return {
     ...t,
-    formatAlertCount: (count) => interpolate(t.alertBar.alerts, { count: String(count) }),
-    formatCriticalCount: (count) => interpolate(t.alertBar.critical, { count: String(count) }),
-    formatWarningCount: (count) => interpolate(t.alertBar.warning, { count: String(count) }),
-    formatOkCount: (count) => interpolate(t.alertBar.ok, { count: String(count) }),
-    formatJobsToTreat: (count) =>
-      interpolate(count === 1 ? t.alertBar.jobsToTreat : t.alertBar.jobsToTreatPlural, {
-        count: String(count),
-      }),
-    formatInstancesToggle: (count) => interpolate(t.instances.toggle, { count: String(count) }),
-    formatModuleActive: (label) => interpolate(t.instances.moduleActive, { label }),
-    formatModuleInactive: (label) => interpolate(t.instances.moduleInactive, { label }),
+    formatAlertCount: count => interpolate(t.alertBar.alerts, {
+      count: String(count)
+    }),
+    formatCriticalCount: count => interpolate(t.alertBar.critical, {
+      count: String(count)
+    }),
+    formatWarningCount: count => interpolate(t.alertBar.warning, {
+      count: String(count)
+    }),
+    formatOkCount: count => interpolate(t.alertBar.ok, {
+      count: String(count)
+    }),
+    formatJobsToTreat: count => interpolate(count === 1 ? t.alertBar.jobsToTreat : t.alertBar.jobsToTreatPlural, {
+      count: String(count)
+    }),
+    formatInstancesToggle: count => interpolate(t.instances.toggle, {
+      count: String(count)
+    }),
+    formatModuleActive: label => interpolate(t.instances.moduleActive, {
+      label
+    }),
+    formatModuleInactive: label => interpolate(t.instances.moduleInactive, {
+      label
+    })
   };
 }

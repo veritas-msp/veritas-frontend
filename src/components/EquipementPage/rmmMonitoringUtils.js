@@ -1,80 +1,48 @@
 import { repairRmmInventoryTextFields, repairRmmTextEncoding } from "../../utils/rmmTextEncoding";
-
 const DEFAULT_OFFLINE_THRESHOLD_MINUTES = 15;
-/** Délai sans inventaire RMM avant alerte supervision (hors ligne prolongé). */
 export const DEFAULT_OFFLINE_ALERT_THRESHOLD_HOURS = 48;
-
 export { repairRmmTextEncoding };
-
 export function getRmmInventoryFromEquipment(equipment) {
   const raw = equipment?.rawData;
   if (!raw || typeof raw !== "object") return {};
   let inventory;
   if (raw.data && typeof raw.data === "object" && !Array.isArray(raw.data)) {
-    inventory = { ...raw.data, ...raw };
+    inventory = {
+      ...raw.data,
+      ...raw
+    };
   } else {
     inventory = raw;
   }
   return repairRmmInventoryTextFields(inventory);
 }
-
 export function isRmmManagedEquipment(equipment) {
   const inventory = getRmmInventoryFromEquipment(equipment);
-  return Boolean(
-    equipment?.agentManaged ||
-      inventory.source === "rmm" ||
-      equipment?.rawData?.source === "rmm" ||
-      equipment?.rmmAgentId ||
-      inventory.agentId ||
-      inventory.agent_id
-  );
+  return Boolean(equipment?.agentManaged || inventory.source === "rmm" || equipment?.rawData?.source === "rmm" || equipment?.rmmAgentId || inventory.agentId || inventory.agent_id);
 }
-
 export function getRmmAgentId(equipment) {
   const inventory = getRmmInventoryFromEquipment(equipment);
-  return (
-    equipment?.rmmAgentId ||
-    inventory.agentId ||
-    inventory.agent_id ||
-    equipment?.rawData?.agent_id ||
-    null
-  );
+  return equipment?.rmmAgentId || inventory.agentId || inventory.agent_id || equipment?.rawData?.agent_id || null;
 }
-
 export function getRmmAgentVersion(equipment) {
   const inventory = getRmmInventoryFromEquipment(equipment);
-  const version =
-    inventory.agentVersion ||
-    inventory.agent_version ||
-    equipment?.agentVersion ||
-    equipment?.agent_version ||
-    equipment?.rawData?.agentVersion ||
-    equipment?.rawData?.agent_version ||
-    null;
+  const version = inventory.agentVersion || inventory.agent_version || equipment?.agentVersion || equipment?.agent_version || equipment?.rawData?.agentVersion || equipment?.rawData?.agent_version || null;
   if (version == null || version === "") return null;
   return String(version).trim();
 }
-
 export function resolveRmmAgentOnline(equipment, offlineThresholdMinutes = DEFAULT_OFFLINE_THRESHOLD_MINUTES) {
   const inventory = getRmmInventoryFromEquipment(equipment);
   const explicit = equipment?.agentOnline ?? inventory.agentOnline;
-  const lastAt =
-    inventory.lastInventoryAt ||
-    inventory.collectedAt ||
-    equipment?.rawData?.lastInventoryAt ||
-    null;
-
+  const lastAt = inventory.lastInventoryAt || inventory.collectedAt || equipment?.rawData?.lastInventoryAt || null;
   if (lastAt) {
     const ageMs = Date.now() - new Date(lastAt).getTime();
     if (Number.isFinite(ageMs)) {
       return ageMs <= offlineThresholdMinutes * 60 * 1000;
     }
   }
-
   if (explicit === true || explicit === false) return explicit;
   return null;
 }
-
 export function getRmmAgentStatusKey(equipment, offlineThresholdMinutes = DEFAULT_OFFLINE_THRESHOLD_MINUTES) {
   if (!isRmmManagedEquipment(equipment)) return "manual";
   const online = resolveRmmAgentOnline(equipment, offlineThresholdMinutes);
@@ -82,19 +50,13 @@ export function getRmmAgentStatusKey(equipment, offlineThresholdMinutes = DEFAUL
   if (online === false) return "offline";
   return "unknown";
 }
-
 export function getRmmLastSeenAgeMs(equipment) {
   const lastAt = getRmmLastInventoryAt(equipment);
   if (!lastAt) return null;
   const ageMs = Date.now() - new Date(lastAt).getTime();
   return Number.isFinite(ageMs) ? ageMs : null;
 }
-
-/** Alerte supervision : hors ligne depuis au moins N h (défaut 48 h). */
-export function isRmmAgentOfflineAlertable(
-  equipment,
-  alertThresholdHours = DEFAULT_OFFLINE_ALERT_THRESHOLD_HOURS
-) {
+export function isRmmAgentOfflineAlertable(equipment, alertThresholdHours = DEFAULT_OFFLINE_ALERT_THRESHOLD_HOURS) {
   if (!isRmmManagedEquipment(equipment)) return false;
   if (resolveRmmAgentOnline(equipment) !== false) return false;
   const ageMs = getRmmLastSeenAgeMs(equipment);
@@ -102,68 +64,57 @@ export function isRmmAgentOfflineAlertable(
   const thresholdMs = Math.max(1, Number(alertThresholdHours) || DEFAULT_OFFLINE_ALERT_THRESHOLD_HOURS) * 60 * 60 * 1000;
   return ageMs >= thresholdMs;
 }
-
 function parseRmmDateTime(value) {
   if (value == null || value === "") return null;
   if (value instanceof Date) {
     return Number.isNaN(value.getTime()) ? null : value;
   }
-
   const raw = String(value).trim();
   if (!raw) return null;
-
-  // Format WMI/CIM : yyyyMMddHHmmss.ffffff±UUU
-  const cimMatch = raw.match(
-    /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(?:\.\d+)?(?:([+-])(\d{3}))?$/
-  );
+  const cimMatch = raw.match(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(?:\.\d+)?(?:([+-])(\d{3}))?$/);
   if (cimMatch) {
     const [, y, mo, d, h, mi, s, sign, offsetStr] = cimMatch;
     const offsetMinutes = offsetStr ? Number(offsetStr) * (sign === "-" ? -1 : 1) : 0;
-    const utcMs =
-      Date.UTC(Number(y), Number(mo) - 1, Number(d), Number(h), Number(mi), Number(s)) -
-      offsetMinutes * 60 * 1000;
+    const utcMs = Date.UTC(Number(y), Number(mo) - 1, Number(d), Number(h), Number(mi), Number(s)) - offsetMinutes * 60 * 1000;
     const cimDate = new Date(utcMs);
     return Number.isNaN(cimDate.getTime()) ? null : cimDate;
   }
-
   const parsed = new Date(raw);
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
-
 export function formatRmmDateTime(iso) {
   const date = parseRmmDateTime(iso);
   if (!date) return "-";
-  return date.toLocaleString("fr-FR", {
+  return date.toLocaleString("en-US", {
     day: "2-digit",
     month: "short",
     year: "numeric",
     hour: "2-digit",
-    minute: "2-digit",
+    minute: "2-digit"
   });
 }
-
 export function roundStorageGB(value) {
   const n = Number(value);
   if (!Number.isFinite(n)) return null;
   return Math.round(n * 100) / 100;
 }
-
-/** Affiche une capacité en Go, arrondie à 2 décimales max (sans zéros inutiles). */
 export function formatStorageGB(value) {
   const rounded = roundStorageGB(value);
   if (rounded == null) return null;
   return rounded.toFixed(2).replace(/\.?0+$/, "");
 }
-
 export function formatDiskUsage(freeGB, sizeGB) {
   if (sizeGB == null || sizeGB <= 0) return null;
   const total = roundStorageGB(sizeGB);
   const used = roundStorageGB(Math.max(0, Number(sizeGB) - Number(freeGB ?? 0)));
   if (total == null || used == null) return null;
-  const pct = Math.round((used / total) * 100);
-  return { used: formatStorageGB(used), total: formatStorageGB(total), pct };
+  const pct = Math.round(used / total * 100);
+  return {
+    used: formatStorageGB(used),
+    total: formatStorageGB(total),
+    pct
+  };
 }
-
 export function formatHotfixId(hotfix) {
   if (hotfix == null || hotfix === "") return null;
   if (typeof hotfix === "string" || typeof hotfix === "number") return String(hotfix);
@@ -172,7 +123,6 @@ export function formatHotfixId(hotfix) {
   }
   return null;
 }
-
 export function formatKbId(value) {
   if (value == null || value === "") return null;
   const raw = String(value).trim();
@@ -181,96 +131,71 @@ export function formatKbId(value) {
   if (/^\d+$/.test(raw)) return `KB${raw}`;
   return raw;
 }
-
 function extractHotfixDateRaw(value) {
   if (value == null || value === "") return null;
   if (value instanceof Date) return value;
   if (typeof value === "number" && Number.isFinite(value)) return new Date(value);
   if (typeof value === "string") return value.trim() || null;
   if (typeof value === "object") {
-    const nested =
-      value.DateTime ??
-      value.datetime ??
-      value.value ??
-      value.Value ??
-      value.date ??
-      value.Date ??
-      null;
+    const nested = value.DateTime ?? value.datetime ?? value.value ?? value.Value ?? value.date ?? value.Date ?? null;
     if (nested != null && nested !== value) return extractHotfixDateRaw(nested);
   }
   return null;
 }
-
 function parseHotfixDate(value) {
   const rawValue = extractHotfixDateRaw(value);
   if (rawValue == null || rawValue === "") return null;
   if (rawValue instanceof Date && !Number.isNaN(rawValue.getTime())) return rawValue;
-
   const raw = String(rawValue).trim();
   if (!raw) return null;
-
   const cimMatch = raw.match(/^(\d{4})(\d{2})(\d{2})/);
   if (cimMatch) {
     const date = new Date(Number(cimMatch[1]), Number(cimMatch[2]) - 1, Number(cimMatch[3]));
     if (!Number.isNaN(date.getTime())) return date;
   }
-
   const slashMatch = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
   if (slashMatch) {
     const date = new Date(Number(slashMatch[3]), Number(slashMatch[1]) - 1, Number(slashMatch[2]));
     if (!Number.isNaN(date.getTime())) return date;
   }
-
   const parsed = new Date(raw);
   if (!Number.isNaN(parsed.getTime())) return parsed;
   return null;
 }
-
 export function formatHotfixInstalledOn(value) {
   const date = parseHotfixDate(value);
   if (!date) {
     const raw = extractHotfixDateRaw(value);
     return raw && typeof raw === "string" ? raw : null;
   }
-  return date.toLocaleDateString("fr-FR", {
+  return date.toLocaleDateString("en-US", {
     day: "2-digit",
     month: "short",
-    year: "numeric",
+    year: "numeric"
   });
 }
-
 export function normalizeRecentHotfixes(hotfixes) {
   if (!Array.isArray(hotfixes)) return [];
-  return hotfixes
-    .map((item) => {
-      const id = formatHotfixId(item);
-      if (!id) return null;
-      const installedOn =
-        item && typeof item === "object"
-          ? item.InstalledOn || item.installedOn || null
-          : null;
-      const description =
-        item && typeof item === "object"
-          ? item.Description || item.description || null
-          : null;
-      return {
-        id: String(id),
-        kb: formatKbId(id),
-        installedOn,
-        installedOnLabel: formatHotfixInstalledOn(installedOn),
-        description,
-      };
-    })
-    .filter(Boolean);
+  return hotfixes.map(item => {
+    const id = formatHotfixId(item);
+    if (!id) return null;
+    const installedOn = item && typeof item === "object" ? item.InstalledOn || item.installedOn || null : null;
+    const description = item && typeof item === "object" ? item.Description || item.description || null : null;
+    return {
+      id: String(id),
+      kb: formatKbId(id),
+      installedOn,
+      installedOnLabel: formatHotfixInstalledOn(installedOn),
+      description
+    };
+  }).filter(Boolean);
 }
-
 export function getLatestHotfixLabel(hotfixes) {
   const normalized = normalizeRecentHotfixes(hotfixes);
   const latest = normalized[0];
   if (!latest) return null;
   return latest.kb || latest.id;
 }
-
 function normalizeDiskEntry(disk) {
   if (!disk || typeof disk !== "object") return null;
   const sizeGB = disk.sizeGB ?? disk.sizeGb ?? null;
@@ -282,94 +207,76 @@ function normalizeDiskEntry(disk) {
     drive,
     sizeGB,
     freeGB,
-    pct: usage?.pct ?? null,
+    pct: usage?.pct ?? null
   };
 }
-
 export function getWorstDiskUsage(inventory = {}) {
   const hardware = inventory.hardware || {};
   const disks = Array.isArray(hardware.disks) ? hardware.disks : [];
   let worst = null;
-
   for (const raw of disks) {
     const disk = normalizeDiskEntry(raw);
     if (!disk || disk.pct == null) continue;
     if (!worst || disk.pct > worst.pct) worst = disk;
   }
-
   return worst;
 }
-
 export function formatWorstDiskLabel(inventory = {}) {
   const worst = getWorstDiskUsage(inventory);
   if (!worst) return null;
   const drive = worst.drive ? `${worst.drive} ` : "";
   return `${drive}${worst.pct}%`;
 }
-
 export function getWindowsUpdateStatus(inventory = {}) {
   const updates = inventory.updates || {};
-  const pendingCount =
-    updates.pendingCount ??
-    (Array.isArray(updates.pending) ? updates.pending.length : null);
-
+  const pendingCount = updates.pendingCount ?? (Array.isArray(updates.pending) ? updates.pending.length : null);
   if (pendingCount != null) {
     if (pendingCount === 0) {
-      return { label: "À jour", tone: "good", pendingCount: 0, hasPendingScan: true };
+      return {
+        label: "Up to date",
+        tone: "good",
+        pendingCount: 0,
+        hasPendingScan: true
+      };
     }
     return {
       label: `${pendingCount} en attente`,
       tone: pendingCount >= 5 ? "bad" : "warn",
       pendingCount,
-      hasPendingScan: true,
+      hasPendingScan: true
     };
   }
-
   if (normalizeRecentHotfixes(updates.recentHotfixes).length > 0) {
     return {
       label: "Sync complet requis",
       tone: "neutral",
       pendingCount: null,
-      hasPendingScan: false,
+      hasPendingScan: false
     };
   }
-
-  return { label: "-", tone: "neutral", pendingCount: null, hasPendingScan: false };
+  return {
+    label: "-",
+    tone: "neutral",
+    pendingCount: null,
+    hasPendingScan: false
+  };
 }
-
 export function formatRmmOsShort(inventory = {}, equipment = null) {
   const editionInfo = getRmmOsEditionInfo(inventory, equipment);
   if (editionInfo.shortLabel) return editionInfo.shortLabel;
   const os = inventory.os || {};
-  const name =
-    equipment?.systeme ||
-    inventory.systeme ||
-    os.name ||
-    null;
+  const name = equipment?.systeme || inventory.systeme || os.name || null;
   const build = os.build || null;
   if (name && build) return `${name} (${build})`;
   return name || build || null;
 }
-
-/** Libellé OS complet pour listes (ex. « Windows 11 Pro 64-bit 25H2 »). */
 export function formatRmmOsTableLabel(inventory = {}, equipment = null) {
   const info = getRmmOsEditionInfo(inventory, equipment);
   const os = inventory.os || {};
-
-  let base =
-    info.osCaption ||
-    os.name ||
-    equipment?.systeme ||
-    inventory.systeme ||
-    null;
-
+  let base = info.osCaption || os.name || equipment?.systeme || inventory.systeme || null;
   if (base) {
-    base = String(base)
-      .replace(/^Microsoft\s+/i, "")
-      .replace(/\s*\([^)]*\)\s*$/, "")
-      .trim();
+    base = String(base).replace(/^Microsoft\s+/i, "").replace(/\s*\([^)]*\)\s*$/, "").trim();
   }
-
   const displayVersion = info.displayVersion;
   if (base && displayVersion) {
     const lower = base.toLowerCase();
@@ -377,12 +284,9 @@ export function formatRmmOsTableLabel(inventory = {}, equipment = null) {
       return `${base} ${displayVersion}`;
     }
   }
-
   if (base) return base;
   return info.shortLabel || formatRmmOsShort(inventory, equipment);
 }
-
-/** Numéro de build Windows (ex. « 22631.4037 »). */
 export function formatRmmOsBuildLabel(inventory = {}) {
   const os = inventory.os || {};
   if (os.patchLabel) {
@@ -392,10 +296,12 @@ export function formatRmmOsBuildLabel(inventory = {}) {
   if (os.build != null) return String(os.build);
   return null;
 }
-
 export function getRmmAgentOsDisplay(agent) {
-  if (!agent) return { label: null, build: null, iconSource: null };
-
+  if (!agent) return {
+    label: null,
+    build: null,
+    iconSource: null
+  };
   if (agent.equipment) {
     const inventory = getRmmInventoryFromEquipment(agent.equipment);
     const label = formatRmmOsTableLabel(inventory, agent.equipment);
@@ -403,27 +309,25 @@ export function getRmmAgentOsDisplay(agent) {
     return {
       label,
       build,
-      iconSource: label || agent.os,
+      iconSource: label || agent.os
     };
   }
-
   return {
     label: agent.os || null,
     build: agent.os_build != null ? String(agent.os_build) : null,
-    iconSource: agent.os,
+    iconSource: agent.os
   };
 }
-
 const WINDOWS_EDITION_ID_LABELS = {
   Professional: "Professionnel",
   ProfessionalWorkstation: "Professionnel pour workstations",
-  ProfessionalEducation: "Professionnel Éducation",
+  ProfessionalEducation: "Education Professional",
   ProfessionalSingleLanguage: "Professionnel (langue unique)",
   ProfessionalCountrySpecific: "Professionnel (pays)",
-  Enterprise: "Entreprise",
-  EnterpriseS: "Entreprise S",
-  EnterpriseG: "Entreprise G",
-  Education: "Éducation",
+  Enterprise: "Company",
+  EnterpriseS: "Company S",
+  EnterpriseG: "Company G",
+  Education: "Education",
   Core: "Core",
   CoreSingleLanguage: "Core (langue unique)",
   CoreCountrySpecific: "Core (pays)",
@@ -433,25 +337,17 @@ const WINDOWS_EDITION_ID_LABELS = {
   ServerDatacenterCore: "Server Datacenter Core",
   ServerStandardCore: "Server Standard Core",
   ServerRdsh: "Server RDSH",
-  IoTEnterprise: "IoT Entreprise",
-  CloudEdition: "Cloud Edition",
+  IoTEnterprise: "IoT Company",
+  CloudEdition: "Cloud Edition"
 };
-
 function cleanWindowsLicenseName(value) {
   if (!value) return null;
-  return String(value)
-    .replace(/^Windows\(R\),\s*/i, "")
-    .replace(/\s+edition$/i, "")
-    .trim();
+  return String(value).replace(/^Windows\(R\),\s*/i, "").replace(/\s+edition$/i, "").trim();
 }
-
 function parseEditionFromOsCaption(caption) {
   if (!caption) return null;
   const text = String(caption).trim();
-  const patterns = [
-    /Windows(?:\s+Server)?\s+[\d.]+\s+(.+?)(?:\s+\d+-bit)?$/i,
-    /Windows\s+(.+?)(?:\s+\d+-bit)?$/i,
-  ];
+  const patterns = [/Windows(?:\s+Server)?\s+[\d.]+\s+(.+?)(?:\s+\d+-bit)?$/i, /Windows\s+(.+?)(?:\s+\d+-bit)?$/i];
   for (const pattern of patterns) {
     const match = text.match(pattern);
     if (match?.[1]) {
@@ -461,36 +357,23 @@ function parseEditionFromOsCaption(caption) {
   }
   return null;
 }
-
 export function formatRmmEditionId(editionId) {
   if (!editionId) return null;
   const key = String(editionId).trim();
   return WINDOWS_EDITION_ID_LABELS[key] || key.replace(/([a-z])([A-Z])/g, "$1 $2");
 }
-
 export function getRmmOsEditionInfo(inventory = {}, equipment = null) {
   const os = inventory.os || {};
   const license = inventory.license || {};
   const licenseName = cleanWindowsLicenseName(license.edition || license.name);
   const editionFromCaption = parseEditionFromOsCaption(os.name || inventory.systeme);
-  const edition =
-    licenseName ||
-    editionFromCaption ||
-    formatRmmEditionId(os.editionId) ||
-    null;
+  const edition = licenseName || editionFromCaption || formatRmmEditionId(os.editionId) || null;
   const displayVersion = os.displayVersion || null;
   const build = os.patchLabel || (os.build != null ? String(os.build) : null);
   const osCaption = os.name || inventory.systeme || equipment?.systeme || null;
-  const licenseLabel =
-    license.activated === true
-      ? "Activée"
-      : license.activated === false
-        ? "Non activée"
-        : null;
-
+  const licenseLabel = license.activated === true ? "Enabled" : license.activated === false ? "Not enabled" : null;
   const shortParts = [edition, displayVersion].filter(Boolean);
   const shortLabel = shortParts.length ? shortParts.join(" · ") : osCaption;
-
   return {
     edition,
     editionId: os.editionId || null,
@@ -500,10 +383,9 @@ export function getRmmOsEditionInfo(inventory = {}, equipment = null) {
     licenseName: license.name || license.edition || null,
     licenseActivated: license.activated ?? null,
     licenseLabel,
-    shortLabel,
+    shortLabel
   };
 }
-
 export function formatRmmRam(inventory = {}, equipment = null) {
   const hardware = inventory.hardware || {};
   const perf = inventory.performance || {};
@@ -514,43 +396,33 @@ export function formatRmmRam(inventory = {}, equipment = null) {
   if (ramGB != null) return `${formatStorageGB(ramGB)} Go`;
   return equipment?.memoire || null;
 }
-
 export function formatUptime(seconds) {
   const total = Math.floor(Number(seconds));
   if (!Number.isFinite(total) || total <= 0) return null;
   if (total < 60) return "< 1 min";
   const days = Math.floor(total / 86400);
-  const hours = Math.floor((total % 86400) / 3600);
-  const minutes = Math.floor((total % 3600) / 60);
+  const hours = Math.floor(total % 86400 / 3600);
+  const minutes = Math.floor(total % 3600 / 60);
   if (days > 0) return `${days} j ${hours} h`;
   if (hours > 0) return `${hours} h ${minutes} min`;
   return `${minutes} min`;
 }
-
 export function resolveRmmUptimeLabel(inventory = {}) {
   const perf = inventory.performance || {};
   const fromAgent = formatUptime(perf.uptimeSeconds);
   if (fromAgent) return fromAgent;
-
-  const lastBoot =
-    inventory.os?.lastBoot ||
-    inventory.lastBootUpTime ||
-    inventory.os?.lastBootUpTime ||
-    null;
+  const lastBoot = inventory.os?.lastBoot || inventory.lastBootUpTime || inventory.os?.lastBootUpTime || null;
   if (!lastBoot) return null;
-
   const boot = new Date(lastBoot);
   if (Number.isNaN(boot.getTime())) return null;
   const seconds = Math.max(0, Math.floor((Date.now() - boot.getTime()) / 1000));
   return formatUptime(seconds);
 }
-
 export function formatTemperatureC(value) {
   const n = Number(value);
   if (!Number.isFinite(n) || n <= 0) return null;
   return `${Math.round(n)} °C`;
 }
-
 export function getPerformanceSummary(inventory = {}) {
   const perf = inventory.performance || {};
   return {
@@ -560,53 +432,45 @@ export function getPerformanceSummary(inventory = {}) {
     ramTotalGB: perf.ramTotalGB ?? inventory.hardware?.ramGB ?? null,
     uptimeSeconds: perf.uptimeSeconds ?? null,
     uptimeLabel: formatUptime(perf.uptimeSeconds),
-    processCount: perf.processCount ?? null,
+    processCount: perf.processCount ?? null
   };
 }
-
 export function getSensorSummary(inventory = {}) {
   const sensors = inventory.sensors || {};
   const list = Array.isArray(sensors.sensors) ? sensors.sensors : [];
   const maxTempC = sensors.maxTempC ?? null;
-  const hasThermalData =
-    maxTempC != null ||
-    list.some((item) => item?.type === "thermal" && Number.isFinite(Number(item?.value)) && Number(item.value) > 0);
+  const hasThermalData = maxTempC != null || list.some(item => item?.type === "thermal" && Number.isFinite(Number(item?.value)) && Number(item.value) > 0);
   return {
     maxTempC,
     maxTempLabel: formatTemperatureC(maxTempC),
     hasThermalData,
     sensors: list,
-    battery: sensors.battery || null,
+    battery: sensors.battery || null
   };
 }
-
 export function getSecuritySummary(inventory = {}) {
   const security = inventory.security || {};
   const defender = security.defender || {};
   const firewall = Array.isArray(security.firewall) ? security.firewall : [];
   const bitLocker = Array.isArray(security.bitLocker) ? security.bitLocker : [];
-  return { defender, firewall, bitLocker };
+  return {
+    defender,
+    firewall,
+    bitLocker
+  };
 }
-
 export function formatPendingKb(kb) {
   if (kb == null || kb === "") return null;
-  const parts = String(kb)
-    .split(",")
-    .map((part) => formatKbId(part.trim()))
-    .filter(Boolean);
+  const parts = String(kb).split(",").map(part => formatKbId(part.trim())).filter(Boolean);
   return parts.length ? parts.join(", ") : null;
 }
-
 export function getUpdatesDetail(inventory = {}) {
   const updates = inventory.updates || {};
   const pendingItems = Array.isArray(updates.pendingItems) ? updates.pendingItems : [];
   const driverItems = Array.isArray(updates.driverItems) ? updates.driverItems : [];
   const recentHotfixes = normalizeRecentHotfixes(updates.recentHotfixes);
   const status = getWindowsUpdateStatus(inventory);
-  const securityPendingCount = pendingItems.filter((item) =>
-    /security/i.test(String(item?.title || item?.description || ""))
-  ).length;
-
+  const securityPendingCount = pendingItems.filter(item => /security/i.test(String(item?.title || item?.description || ""))).length;
   return {
     ...status,
     rebootRequired: Boolean(updates.rebootRequired),
@@ -616,54 +480,45 @@ export function getUpdatesDetail(inventory = {}) {
     recentHotfixes,
     latestInstalledHotfix: recentHotfixes[0] || null,
     installedHotfixCount: recentHotfixes.length,
-    securityPendingCount,
+    securityPendingCount
   };
 }
-
-export function buildWindowsUpdatesPresentation(
-  updatesDetail = {},
-  { lastFullInventoryAt = null } = {}
-) {
+export function buildWindowsUpdatesPresentation(updatesDetail = {}, {
+  lastFullInventoryAt = null
+} = {}) {
   const pending = updatesDetail.pendingCount;
   const installed = updatesDetail.installedHotfixCount || 0;
   const reboot = updatesDetail.rebootRequired;
   const scanned = updatesDetail.hasPendingScan;
   const drivers = updatesDetail.driverCount || 0;
   const securityPending = updatesDetail.securityPendingCount || 0;
-
   let level = "unknown";
-  let title = "État des correctifs inconnu";
-  let hint = "Aucune remontée Windows Update pour ce poste.";
+  let title = "Patch status unknown";
+  let hint = "No Windows Update data for this workstation.";
   let icon = "mdi:shield-search";
-
   if (scanned) {
     if (reboot && pending === 0) {
       level = "reboot";
-      title = "Redémarrage requis";
-      hint = "Les mises à jour sont installées mais un redémarrage est nécessaire pour les appliquer.";
+      title = "Restart required";
+      hint = "Updates are installed but a restart is required to apply them.";
       icon = "mdi:restart-alert";
     } else if (pending === 0 && !reboot) {
       level = "ok";
-      title = "Système à jour";
-      hint = "Windows Update Agent ne signale aucun correctif logiciel en attente.";
+      title = "System up to date";
+      hint = "Windows Update Agent reports no pending software updates.";
       icon = "mdi:shield-check";
     } else if (pending > 0) {
       level = pending >= 5 || securityPending >= 2 ? "critical" : "attention";
-      title =
-        securityPending > 0
-          ? `${pending} correctif${pending > 1 ? "s" : ""} en attente (${securityPending} sécurité)`
-          : `${pending} correctif${pending > 1 ? "s" : ""} en attente`;
-      hint = "Ce poste n'est pas entièrement patché. Planifiez l'installation des mises à jour.";
+      title = securityPending > 0 ? `${pending} pending update${pending > 1 ? "s" : ""} (${securityPending} security)` : `${pending} pending update${pending > 1 ? "s" : ""}`;
+      hint = "This workstation is not fully patched. Schedule update installation.";
       icon = "mdi:shield-alert";
     }
   } else if (installed > 0) {
     level = "scan";
-    title = "Analyse des manquants incomplète";
-    hint =
-      "Les correctifs installés sont connus. Un sync complet agent est requis pour lister les KB manquantes.";
+    title = "Incomplete missing-updates analysis";
+    hint = "Installed patches are known. A full agent sync is required to list missing KBs.";
     icon = "mdi:shield-sync";
   }
-
   return {
     level,
     title,
@@ -675,23 +530,10 @@ export function buildWindowsUpdatesPresentation(
     scanned,
     drivers,
     securityPending,
-    lastFullInventoryAt,
+    lastFullInventoryAt
   };
 }
-
-const RMM_INVENTORY_PLACEHOLDER_TEXT = new Set([
-  "to be filled by o.e.m.",
-  "default string",
-  "system manufacturer",
-  "system product name",
-  "not applicable",
-  "n/a",
-  "none",
-  "system serial number",
-  "serial number",
-  "chassis serial number",
-]);
-
+const RMM_INVENTORY_PLACEHOLDER_TEXT = new Set(["to be filled by o.e.m.", "default string", "system manufacturer", "system product name", "not applicable", "n/a", "none", "system serial number", "serial number", "chassis serial number"]);
 export function sanitizeRmmInventoryText(value) {
   if (value == null) return null;
   const trimmed = String(value).trim();
@@ -699,24 +541,17 @@ export function sanitizeRmmInventoryText(value) {
   if (RMM_INVENTORY_PLACEHOLDER_TEXT.has(trimmed.toLowerCase())) return null;
   return trimmed;
 }
-
 export function getRmmChassisInfo(inventory = {}) {
   const chassis = inventory.chassis || {};
   return {
-    manufacturer: sanitizeRmmInventoryText(
-      inventory.fabricant ||
-        inventory.marque ||
-        inventory.manufacturer ||
-        chassis.manufacturer
-    ),
+    manufacturer: sanitizeRmmInventoryText(inventory.fabricant || inventory.marque || inventory.manufacturer || chassis.manufacturer),
     model: sanitizeRmmInventoryText(inventory.modele || inventory.model || chassis.model),
-    serial: sanitizeRmmInventoryText(
-      inventory.numeroSerie || inventory.serial || chassis.serialNumber
-    ),
+    serial: sanitizeRmmInventoryText(inventory.numeroSerie || inventory.serial || chassis.serialNumber)
   };
 }
-
-export function buildRmmAgentRowFromEquipment(equipment, { online = null } = {}) {
+export function buildRmmAgentRowFromEquipment(equipment, {
+  online = null
+} = {}) {
   const inventory = getRmmInventoryFromEquipment(equipment);
   const resolvedOnline = online ?? resolveRmmAgentOnline(equipment);
   const updates = getWindowsUpdateStatus(inventory);
@@ -725,7 +560,6 @@ export function buildRmmAgentRowFromEquipment(equipment, { online = null } = {})
   const sensor = getSensorSummary(inventory);
   const worstDisk = getWorstDiskUsage(inventory);
   const license = inventory.license || {};
-
   return {
     id: getRmmAgentId(equipment) || equipment?.id || equipment?.name,
     equipment,
@@ -734,20 +568,12 @@ export function buildRmmAgentRowFromEquipment(equipment, { online = null } = {})
     client_name: equipment?.clientName || "-",
     client_id: equipment?.clientId || null,
     online: resolvedOnline ?? false,
-    last_seen_at:
-      inventory.lastInventoryAt ||
-      inventory.collectedAt ||
-      equipment?.rawData?.last_seen_at ||
-      null,
+    last_seen_at: inventory.lastInventoryAt || inventory.collectedAt || equipment?.rawData?.last_seen_at || null,
     agent_version: getRmmAgentVersion(equipment),
     os: formatRmmOsTableLabel(inventory, equipment),
     os_build: formatRmmOsBuildLabel(inventory),
     ip: equipment?.ip || inventory.network?.ip || inventory.ip || null,
-    domain:
-      equipment?.domaine ||
-      inventory.domaine ||
-      (inventory.domain?.joined ? inventory.domain.name : inventory.domain?.workgroup) ||
-      null,
+    domain: equipment?.domaine || inventory.domaine || (inventory.domain?.joined ? inventory.domain.name : inventory.domain?.workgroup) || null,
     ram: formatRmmRam(inventory, equipment),
     cpu_pct: perf.cpuUsagePct,
     cpu_label: perf.cpuUsagePct != null ? `${perf.cpuUsagePct}%` : null,
@@ -765,26 +591,16 @@ export function buildRmmAgentRowFromEquipment(equipment, { online = null } = {})
     license_activated: license.activated ?? null,
     license_edition: license.edition || license.name || null,
     last_hotfix: getLatestHotfixLabel(inventory.updates?.recentHotfixes),
-    sync_requested_at: null,
+    sync_requested_at: null
   };
 }
-
 export function getRmmNetbiosName(equipment) {
   if (!equipment) return null;
   const inventory = getRmmInventoryFromEquipment(equipment);
-  return (
-    inventory.netbios ||
-    inventory.hostname ||
-    equipment?.netbios ||
-    equipment?.rawData?.netbios ||
-    equipment?.rawData?.hostname ||
-    null
-  );
+  return inventory.netbios || inventory.hostname || equipment?.netbios || equipment?.rawData?.netbios || equipment?.rawData?.hostname || null;
 }
-
 export function getRmmSyncRequestedAt(source = {}) {
   if (!source) return null;
-
   const candidates = [source];
   if (source.rawData && typeof source.rawData === "object") {
     candidates.push(source.rawData);
@@ -792,7 +608,6 @@ export function getRmmSyncRequestedAt(source = {}) {
       candidates.push(source.rawData.data);
     }
   }
-
   for (const item of candidates) {
     if (!item || typeof item !== "object") continue;
     if (Object.prototype.hasOwnProperty.call(item, "sync_requested_at") && item.sync_requested_at) {
@@ -802,10 +617,8 @@ export function getRmmSyncRequestedAt(source = {}) {
       return item.syncRequestedAt;
     }
   }
-
   return null;
 }
-
 export function rmmSyncTimestampsMatch(a, b) {
   if (a == null && b == null) return true;
   if (a == null || b == null) return false;
@@ -813,41 +626,28 @@ export function rmmSyncTimestampsMatch(a, b) {
   const tb = new Date(b).getTime();
   return Number.isFinite(ta) && Number.isFinite(tb) && ta === tb;
 }
-
 export function resolveRmmSyncRequestState(equipment, override = undefined) {
   if (override === null) {
-    return { pending: false, requestedAt: null };
+    return {
+      pending: false,
+      requestedAt: null
+    };
   }
-
   const requestedAt = override !== undefined ? override : getRmmSyncRequestedAt(equipment);
   const pending = Boolean(requestedAt && Number.isFinite(new Date(requestedAt).getTime()));
   return {
     pending,
-    requestedAt: pending ? requestedAt : null,
+    requestedAt: pending ? requestedAt : null
   };
 }
-
 export const DEFAULT_RMM_HEARTBEAT_INTERVAL_MINUTES = 5;
-
 export function getRmmLastInventoryAt(equipment) {
   const inventory = getRmmInventoryFromEquipment(equipment);
-  return (
-    inventory.lastInventoryAt ||
-    inventory.collectedAt ||
-    equipment?.rawData?.lastInventoryAt ||
-    equipment?.rawData?.last_seen_at ||
-    null
-  );
+  return inventory.lastInventoryAt || inventory.collectedAt || equipment?.rawData?.lastInventoryAt || equipment?.rawData?.last_seen_at || null;
 }
-
-export function estimateNextRmmCollectionAt(
-  lastInventoryAt,
-  intervalMinutes = DEFAULT_RMM_HEARTBEAT_INTERVAL_MINUTES
-) {
-  const intervalMs =
-    Math.max(1, Number(intervalMinutes) || DEFAULT_RMM_HEARTBEAT_INTERVAL_MINUTES) * 60 * 1000;
+export function estimateNextRmmCollectionAt(lastInventoryAt, intervalMinutes = DEFAULT_RMM_HEARTBEAT_INTERVAL_MINUTES) {
+  const intervalMs = Math.max(1, Number(intervalMinutes) || DEFAULT_RMM_HEARTBEAT_INTERVAL_MINUTES) * 60 * 1000;
   const now = Date.now();
-
   if (lastInventoryAt) {
     const lastMs = new Date(lastInventoryAt).getTime();
     if (!Number.isFinite(lastMs)) return null;
@@ -857,10 +657,8 @@ export function estimateNextRmmCollectionAt(
     }
     return new Date(nextMs);
   }
-
   return new Date(now + intervalMs);
 }
-
 export function formatFutureRelativeFrench(date) {
   if (!date) return null;
   const d = date instanceof Date ? date : new Date(date);
@@ -872,49 +670,49 @@ export function formatFutureRelativeFrench(date) {
   if (diffMin < 60) return `dans ${diffMin} min`;
   const diffH = Math.ceil(diffMin / 60);
   if (diffH < 24) return `dans ${diffH} h`;
-  return d.toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short", hour12: false });
+  return d.toLocaleString("en-US", {
+    dateStyle: "short",
+    timeStyle: "short",
+    hour12: false
+  });
 }
-
-export function formatRmmExpectedCollectionLabel(
-  equipment,
-  intervalMinutes = DEFAULT_RMM_HEARTBEAT_INTERVAL_MINUTES,
-  { withAbsolute = true } = {}
-) {
+export function formatRmmExpectedCollectionLabel(equipment, intervalMinutes = DEFAULT_RMM_HEARTBEAT_INTERVAL_MINUTES, {
+  withAbsolute = true
+} = {}) {
   if (resolveRmmAgentOnline(equipment) === false) {
     return "agent hors ligne";
   }
-
   const nextAt = estimateNextRmmCollectionAt(getRmmLastInventoryAt(equipment), intervalMinutes);
   if (!nextAt) {
     return withAbsolute ? "prochain passage agent" : "prochain passage";
   }
-
   const relative = formatFutureRelativeFrench(nextAt);
   if (!withAbsolute) {
     return relative;
   }
-
   const absolute = formatRmmDateTime(nextAt.toISOString());
   return `${relative} (${absolute})`;
 }
-
 export function isRmmSyncPending(source = {}) {
   const syncRequestedAt = getRmmSyncRequestedAt(source);
   if (!syncRequestedAt) return false;
   return Number.isFinite(new Date(syncRequestedAt).getTime());
 }
-
 export function isRmmSyncPendingForEquipment(equipment) {
   return isRmmSyncPending(equipment);
 }
-
 export function patchEquipmentRmmSyncRequest(equipment, syncRequestedAt) {
   if (!equipment) return equipment;
-  const raw = equipment.rawData && typeof equipment.rawData === "object" ? { ...equipment.rawData } : {};
+  const raw = equipment.rawData && typeof equipment.rawData === "object" ? {
+    ...equipment.rawData
+  } : {};
   const hasNestedData = raw.data && typeof raw.data === "object" && !Array.isArray(raw.data);
-  const inner = hasNestedData ? { ...raw.data } : { ...raw };
+  const inner = hasNestedData ? {
+    ...raw.data
+  } : {
+    ...raw
+  };
   const SYNC_KEYS = ["syncRequestedAt", "sync_requested_at", "Sync_requested_at", "SyncRequestedAt"];
-
   if (syncRequestedAt) {
     inner.syncRequestedAt = syncRequestedAt;
   } else {
@@ -922,28 +720,25 @@ export function patchEquipmentRmmSyncRequest(equipment, syncRequestedAt) {
       delete inner[key];
     }
   }
-
   if (hasNestedData) {
     raw.data = inner;
   } else {
     Object.assign(raw, inner);
   }
-
   for (const key of SYNC_KEYS) {
     delete raw[key];
   }
-
-  return { ...equipment, rawData: raw };
+  return {
+    ...equipment,
+    rawData: raw
+  };
 }
-
 export function mergeRmmAgentRows(apiRows = [], equipmentRows = []) {
   const byKey = new Map();
-
   for (const row of equipmentRows) {
     const key = String(row.id || row.hostname || "").toLowerCase();
     if (key) byKey.set(key, row);
   }
-
   for (const apiRow of apiRows) {
     const key = String(apiRow.id || apiRow.hostname || apiRow.machine_id || "").toLowerCase();
     if (!key) continue;
@@ -955,7 +750,7 @@ export function mergeRmmAgentRows(apiRows = [], equipmentRows = []) {
         last_seen_at: apiRow.last_seen_at || existing.last_seen_at,
         agent_version: apiRow.agent_version || existing.agent_version,
         client_name: apiRow.client_name || existing.client_name,
-        sync_requested_at: apiRow.sync_requested_at ?? null,
+        sync_requested_at: apiRow.sync_requested_at ?? null
       });
     } else {
       byKey.set(key, {
@@ -981,10 +776,9 @@ export function mergeRmmAgentRows(apiRows = [], equipmentRows = []) {
         updates_tone: "neutral",
         updates_pending: null,
         sync_requested_at: apiRow.sync_requested_at || null,
-        equipment: null,
+        equipment: null
       });
     }
   }
-
   return [...byKey.values()].sort((a, b) => Number(a.online) - Number(b.online));
 }

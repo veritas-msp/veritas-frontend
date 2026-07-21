@@ -1,19 +1,6 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 const TAB_IDS = ["overview", "devices", "backups", "contracts", "rmm", "alert-rules"];
-
-const LICENSE_MODULE_KEYS = [
-  "antivirus",
-  "antispam",
-  "domain",
-  "ssl",
-  "licences",
-  "o365",
-  "backup",
-  "firewall",
-  "toip",
-];
-
+const LICENSE_MODULE_KEYS = ["antivirus", "antispam", "domain", "ssl", "licences", "o365", "backup", "firewall", "toip"];
 const SUPERVISION_COPY = {
   fr: {
     eyebrow: "Services managés",
@@ -26,12 +13,12 @@ const SUPERVISION_COPY = {
       backups: "Sauvegardes",
       contracts: "Contrats & licences",
       rmm: "Agents RMM",
-      "alert-rules": "Règles d'alerte",
+      "alert-rules": "Règles d'alerte"
     },
     contractStatus: {
       expired: "Expiré",
       expiring: "Expire bientôt",
-      suspended: "Suspendu",
+      suspended: "Suspendu"
     },
     licenseModules: {
       antivirus: "Antivirus",
@@ -42,12 +29,12 @@ const SUPERVISION_COPY = {
       o365: "Microsoft 365",
       backup: "Sauvegarde",
       firewall: "Firewall",
-      toip: "TOIP / VoIP",
+      toip: "TOIP / VoIP"
     },
     contractType: {
       msp: "Contrat MSP",
       enterprise: "Contrat entreprise",
-      license: "Licence",
+      license: "Licence"
     },
     table: {
       name: "Nom",
@@ -55,19 +42,18 @@ const SUPERVISION_COPY = {
       status: "Statut",
       expiration: "Expiration",
       actions: "Actions",
-      sortBy: "Trier par {label}",
+      sortBy: "Trier par {label}"
     },
     contracts: {
       okTitle: "Contrats et licences OK",
-      okText:
-        "Aucune échéance expirée ou à renouveler dans les 60 prochains jours (contrats, antivirus, antispam, domaines, SSL, licences).",
+      okText: "Aucune échéance expirée ou à renouveler dans les 60 prochains jours (contrats, antivirus, antispam, domaines, SSL, licences).",
       alertCount: "{count} alerte",
       alertCountPlural: "{count} alertes",
       expiredCount: "{count} expirée",
       expiredCountPlural: "{count} expirées",
       expiringCount: "{count} à renouveler",
       viewEnterprise: "Voir l'entreprise",
-      panelTitle: "Contrats & licences à traiter",
+      panelTitle: "Contrats & licences à traiter"
     },
     priority: {
       emptyTitle: "Aucune alerte périphérique",
@@ -92,7 +78,7 @@ const SUPERVISION_COPY = {
         updates_pending: "Planifier l'installation des mises à jour Windows.",
         disk_critical: "Libérer ou étendre l'espace disque en urgence.",
         disk_warn: "Surveiller l'espace disque et planifier un nettoyage.",
-        missing_ip: "Compléter l'adresse IP dans la fiche matériel.",
+        missing_ip: "Compléter l'adresse IP dans la fiche matériel."
       },
       statusHints: {
         critical: "Alerte supervision critique · intervention immédiate.",
@@ -100,8 +86,8 @@ const SUPERVISION_COPY = {
         warning: "Warning supervision · analyser avant dégradation.",
         unmapped: "Équipement non mappé CheckMK · activer la supervision.",
         no_data: "Aucune donnée de supervision · vérifier le mapping.",
-        default: "Point de vigilance à traiter depuis la fiche matériel.",
-      },
+        default: "Point de vigilance à traiter depuis la fiche matériel."
+      }
     },
     familyStats: {
       emptyTitle: "Aucun équipement trouvé",
@@ -110,7 +96,7 @@ const SUPERVISION_COPY = {
       uncovered: "Non couvert",
       supervisedLabel: "supervisé",
       tooltip: "{label} · {monitored}/{total} supervisés",
-      openFamily: "Voir les périphériques {label}",
+      openFamily: "Voir les périphériques {label}"
     },
     overview: {
       hexTitle: "Vue d'ensemble",
@@ -121,11 +107,11 @@ const SUPERVISION_COPY = {
         critical: "Critiques",
         offline: "Hors ligne",
         backups: "Sauvegardes",
-        supervised: "Supervisé",
+        supervised: "Supervisé"
       },
       priorityTitle: "À traiter en priorité",
       viewAll: "Voir tout",
-      familyTitle: "Supervision par type de périphérique",
+      familyTitle: "Supervision par type de périphérique"
     },
     search: {
       devices: "Rechercher un périphérique, client, IP…",
@@ -133,7 +119,7 @@ const SUPERVISION_COPY = {
       clients: "Clients",
       clearFilters: "Effacer ({count})",
       agentCount: "{count} agent",
-      agentCountPlural: "{count} agents",
+      agentCountPlural: "{count} agents"
     },
     rmm: {
       online: "En ligne",
@@ -152,7 +138,7 @@ const SUPERVISION_COPY = {
         offline: "hors ligne",
         pendingUpdates: "MAJ en attente",
         diskAlert: "disque > 85%",
-        diskAlertPlural: "disques > 85%",
+        diskAlertPlural: "disques > 85%"
       },
       table: {
         hostname: "Poste",
@@ -163,7 +149,7 @@ const SUPERVISION_COPY = {
         updates: "MAJ Windows",
         agent: "Agent",
         lastSeen: "Dernière activité",
-        actions: "Actions",
+        actions: "Actions"
       },
       empty: {
         noMatchTitle: "Aucun agent ne correspond",
@@ -171,7 +157,7 @@ const SUPERVISION_COPY = {
         noAgentsTitle: "Aucun agent RMM",
         noMatchText: "Ajustez la recherche (poste, client, IP, OS, domaine…).",
         allOnlineText: "Aucun poste n'est actuellement hors ligne.",
-        noAgentsText: "Déployez l'agent Veritas sur les postes clients pour la supervision RMM.",
+        noAgentsText: "Déployez l'agent Veritas sur les postes clients pour la supervision RMM."
       },
       menu: {
         viewEnterprise: "Voir l'entreprise",
@@ -180,48 +166,47 @@ const SUPERVISION_COPY = {
         metricsHistory: "Historique métriques",
         copyHost: "Copier le nom du poste",
         copyIp: "Copier l'adresse IP",
-        revoke: "Révoquer l'agent",
+        revoke: "Révoquer l'agent"
       },
       clipboard: {
         hostName: "Nom du poste",
         ipAddress: "Adresse IP",
         copied: "{label} copié",
-        copyFailed: "Impossible de copier",
+        copyFailed: "Impossible de copier"
       },
       toasts: {
-        syncRequested:
-          "Sync complet demandé pour {hostname}. L'inventaire sera mis à jour au prochain passage de l'agent.",
+        syncRequested: "Sync complet demandé pour {hostname}. L'inventaire sera mis à jour au prochain passage de l'agent.",
         syncRequestFailed: "Impossible de demander la synchronisation",
         syncCancelled: "Demande de sync complet annulée pour {hostname}.",
         syncCancelFailed: "Impossible d'annuler la synchronisation",
         revokeFailed: "Poste introuvable pour révoquer cet agent",
-        metricsNoEquipment: "Aucun équipement lié à cet agent pour afficher les métriques",
-      },
+        metricsNoEquipment: "Aucun équipement lié à cet agent pour afficher les métriques"
+      }
     },
     time: {
-      never: "Jamais",
+      never: "Jamais"
     },
     error: {
-      title: "Erreur de chargement",
-    },
+      title: "Erreur de chargement"
+    }
   },
   en: {
     eyebrow: "Managed services",
-    pageTitle: "Supervision center",
+    pageTitle: "Monitoring center",
     subtitle: "Infrastructure & continuity · devices, backups, and RMM agents.",
-    tabSectionsAria: "Supervision sections",
+    tabSectionsAria: "Monitoring sections",
     tabs: {
       overview: "To do",
       devices: "Devices",
       backups: "Backups",
       contracts: "Contracts & licenses",
       rmm: "RMM agents",
-      "alert-rules": "Alert rules",
+      "alert-rules": "Alert rules"
     },
     contractStatus: {
       expired: "Expired",
       expiring: "Expiring soon",
-      suspended: "Suspended",
+      suspended: "Suspended"
     },
     licenseModules: {
       antivirus: "Antivirus",
@@ -232,12 +217,12 @@ const SUPERVISION_COPY = {
       o365: "Microsoft 365",
       backup: "Backup",
       firewall: "Firewall",
-      toip: "VoIP",
+      toip: "VoIP"
     },
     contractType: {
       msp: "MSP contract",
       enterprise: "Company contract",
-      license: "License",
+      license: "License"
     },
     table: {
       name: "Name",
@@ -245,19 +230,18 @@ const SUPERVISION_COPY = {
       status: "Status",
       expiration: "Expiration",
       actions: "Actions",
-      sortBy: "Sort by {label}",
+      sortBy: "Sort by {label}"
     },
     contracts: {
       okTitle: "Contracts and licenses OK",
-      okText:
-        "No expired or upcoming renewals within the next 60 days (contracts, antivirus, antispam, domains, SSL, licenses).",
+      okText: "No expired or upcoming renewals within the next 60 days (contracts, antivirus, antispam, domains, SSL, licenses).",
       alertCount: "{count} alert",
       alertCountPlural: "{count} alerts",
       expiredCount: "{count} expired",
       expiredCountPlural: "{count} expired",
       expiringCount: "{count} to renew",
       viewEnterprise: "View company",
-      panelTitle: "Contracts & licenses to review",
+      panelTitle: "Contracts & licenses to review"
     },
     priority: {
       emptyTitle: "No device alerts",
@@ -282,16 +266,16 @@ const SUPERVISION_COPY = {
         updates_pending: "Schedule Windows update installation.",
         disk_critical: "Free or extend disk space urgently.",
         disk_warn: "Monitor disk space and plan cleanup.",
-        missing_ip: "Complete the IP address in the hardware record.",
+        missing_ip: "Complete the IP address in the hardware record."
       },
       statusHints: {
         critical: "Critical supervision alert · immediate action required.",
         offline: "RMM agent offline · check endpoint connectivity.",
-        warning: "Supervision warning · analyze before degradation.",
+        warning: "Monitoring warning · analyze before degradation.",
         unmapped: "Equipment not mapped to CheckMK · enable supervision.",
         no_data: "No supervision data · verify mapping.",
-        default: "Item to handle from the hardware record.",
-      },
+        default: "Item to handle from the hardware record."
+      }
     },
     familyStats: {
       emptyTitle: "No equipment found",
@@ -300,7 +284,7 @@ const SUPERVISION_COPY = {
       uncovered: "Not covered",
       supervisedLabel: "monitored",
       tooltip: "{label} · {monitored}/{total} monitored",
-      openFamily: "View {label} devices",
+      openFamily: "View {label} devices"
     },
     overview: {
       hexTitle: "Overview",
@@ -311,11 +295,11 @@ const SUPERVISION_COPY = {
         critical: "Critical",
         offline: "Offline",
         backups: "Backups",
-        supervised: "Monitored",
+        supervised: "Monitored"
       },
       priorityTitle: "Priority items",
       viewAll: "View all",
-      familyTitle: "Supervision by device type",
+      familyTitle: "Monitoring by device type"
     },
     search: {
       devices: "Search device, client, IP…",
@@ -323,7 +307,7 @@ const SUPERVISION_COPY = {
       clients: "Clients",
       clearFilters: "Clear ({count})",
       agentCount: "{count} agent",
-      agentCountPlural: "{count} agents",
+      agentCountPlural: "{count} agents"
     },
     rmm: {
       online: "Online",
@@ -342,7 +326,7 @@ const SUPERVISION_COPY = {
         offline: "offline",
         pendingUpdates: "pending updates",
         diskAlert: "disk > 85%",
-        diskAlertPlural: "disks > 85%",
+        diskAlertPlural: "disks > 85%"
       },
       table: {
         hostname: "Workstation",
@@ -353,7 +337,7 @@ const SUPERVISION_COPY = {
         updates: "Windows updates",
         agent: "Agent",
         lastSeen: "Last activity",
-        actions: "Actions",
+        actions: "Actions"
       },
       empty: {
         noMatchTitle: "No matching agents",
@@ -361,7 +345,7 @@ const SUPERVISION_COPY = {
         noAgentsTitle: "No RMM agents",
         noMatchText: "Adjust your search (workstation, client, IP, OS, domain…).",
         allOnlineText: "No workstations are currently offline.",
-        noAgentsText: "Deploy the Veritas agent on client workstations for RMM supervision.",
+        noAgentsText: "Deploy the Veritas agent on client workstations for RMM supervision."
       },
       menu: {
         viewEnterprise: "View company",
@@ -370,30 +354,29 @@ const SUPERVISION_COPY = {
         metricsHistory: "Metrics history",
         copyHost: "Copy workstation name",
         copyIp: "Copy IP address",
-        revoke: "Revoke agent",
+        revoke: "Revoke agent"
       },
       clipboard: {
         hostName: "Workstation name",
         ipAddress: "IP address",
         copied: "{label} copied",
-        copyFailed: "Unable to copy",
+        copyFailed: "Unable to copy"
       },
       toasts: {
-        syncRequested:
-          "Full sync requested for {hostname}. Inventory will update on the agent's next run.",
+        syncRequested: "Full sync requested for {hostname}. Inventory will update on the agent's next run.",
         syncRequestFailed: "Unable to request synchronization",
         syncCancelled: "Full sync request cancelled for {hostname}.",
         syncCancelFailed: "Unable to cancel synchronization",
         revokeFailed: "Workstation not found to revoke this agent",
-        metricsNoEquipment: "No equipment linked to this agent to show metrics",
-      },
+        metricsNoEquipment: "No equipment linked to this agent to show metrics"
+      }
     },
     time: {
-      never: "Never",
+      never: "Never"
     },
     error: {
-      title: "Loading error",
-    },
+      title: "Loading error"
+    }
   },
   de: {
     eyebrow: "Managed Services",
@@ -406,12 +389,12 @@ const SUPERVISION_COPY = {
       backups: "Backups",
       contracts: "Verträge & Lizenzen",
       rmm: "RMM-Agenten",
-      "alert-rules": "Alarmregeln",
+      "alert-rules": "Alarmregeln"
     },
     contractStatus: {
       expired: "Abgelaufen",
       expiring: "Läuft bald ab",
-      suspended: "Ausgesetzt",
+      suspended: "Ausgesetzt"
     },
     licenseModules: {
       antivirus: "Antivirus",
@@ -422,12 +405,12 @@ const SUPERVISION_COPY = {
       o365: "Microsoft 365",
       backup: "Backup",
       firewall: "Firewall",
-      toip: "VoIP",
+      toip: "VoIP"
     },
     contractType: {
       msp: "MSP-Vertrag",
       enterprise: "Unternehmensvertrag",
-      license: "Lizenz",
+      license: "Lizenz"
     },
     table: {
       name: "Name",
@@ -435,19 +418,18 @@ const SUPERVISION_COPY = {
       status: "Status",
       expiration: "Ablauf",
       actions: "Aktionen",
-      sortBy: "Sortieren nach {label}",
+      sortBy: "Sortieren nach {label}"
     },
     contracts: {
       okTitle: "Verträge und Lizenzen OK",
-      okText:
-        "Keine abgelaufenen oder bald fälligen Verlängerungen in den nächsten 60 Tagen.",
+      okText: "Keine abgelaufenen oder bald fälligen Verlängerungen in den nächsten 60 Tagen.",
       alertCount: "{count} Alarm",
       alertCountPlural: "{count} Alarme",
       expiredCount: "{count} abgelaufen",
       expiredCountPlural: "{count} abgelaufen",
       expiringCount: "{count} zu erneuern",
       viewEnterprise: "Unternehmen anzeigen",
-      panelTitle: "Verträge & Lizenzen zu bearbeiten",
+      panelTitle: "Verträge & Lizenzen zu bearbeiten"
     },
     priority: {
       emptyTitle: "Keine Gerätealarme",
@@ -472,7 +454,7 @@ const SUPERVISION_COPY = {
         updates_pending: "Windows-Updates einplanen.",
         disk_critical: "Speicherplatz dringend freigeben oder erweitern.",
         disk_warn: "Speicherplatz überwachen und Bereinigung planen.",
-        missing_ip: "IP-Adresse in der Hardware-Akte ergänzen.",
+        missing_ip: "IP-Adresse in der Hardware-Akte ergänzen."
       },
       statusHints: {
         critical: "Kritischer Überwachungsalarm · sofort handeln.",
@@ -480,8 +462,8 @@ const SUPERVISION_COPY = {
         warning: "Überwachungswarnung · vor Verschlechterung analysieren.",
         unmapped: "Gerät nicht CheckMK zugeordnet · Überwachung aktivieren.",
         no_data: "Keine Überwachungsdaten · Mapping prüfen.",
-        default: "Punkt aus der Hardware-Akte bearbeiten.",
-      },
+        default: "Punkt aus der Hardware-Akte bearbeiten."
+      }
     },
     familyStats: {
       emptyTitle: "Keine inventarisierten Geräte",
@@ -490,7 +472,7 @@ const SUPERVISION_COPY = {
       uncovered: "Nicht abgedeckt",
       supervisedLabel: "überwacht",
       tooltip: "{label} · {monitored}/{total} überwacht",
-      openFamily: "Geräte {label} anzeigen",
+      openFamily: "Geräte {label} anzeigen"
     },
     overview: {
       hexTitle: "Übersicht",
@@ -501,11 +483,11 @@ const SUPERVISION_COPY = {
         critical: "Kritisch",
         offline: "Offline",
         backups: "Backups",
-        supervised: "Überwacht",
+        supervised: "Überwacht"
       },
       priorityTitle: "Priorität",
       viewAll: "Alle anzeigen",
-      familyTitle: "Überwachung nach Gerätetyp",
+      familyTitle: "Überwachung nach Gerätetyp"
     },
     search: {
       devices: "Gerät, Kunde, IP suchen…",
@@ -513,7 +495,7 @@ const SUPERVISION_COPY = {
       clients: "Kunden",
       clearFilters: "Löschen ({count})",
       agentCount: "{count} Agent",
-      agentCountPlural: "{count} Agenten",
+      agentCountPlural: "{count} Agenten"
     },
     rmm: {
       online: "Online",
@@ -532,7 +514,7 @@ const SUPERVISION_COPY = {
         offline: "offline",
         pendingUpdates: "Updates ausstehend",
         diskAlert: "Festplatte > 85%",
-        diskAlertPlural: "Festplatten > 85%",
+        diskAlertPlural: "Festplatten > 85%"
       },
       table: {
         hostname: "Arbeitsplatz",
@@ -543,7 +525,7 @@ const SUPERVISION_COPY = {
         updates: "Windows-Updates",
         agent: "Agent",
         lastSeen: "Letzte Aktivität",
-        actions: "Aktionen",
+        actions: "Aktionen"
       },
       empty: {
         noMatchTitle: "Kein passender Agent",
@@ -551,7 +533,7 @@ const SUPERVISION_COPY = {
         noAgentsTitle: "Keine RMM-Agenten",
         noMatchText: "Suche anpassen (Arbeitsplatz, Kunde, IP, OS, Domäne…).",
         allOnlineText: "Derzeit sind keine Arbeitsplätze offline.",
-        noAgentsText: "Veritas-Agent auf Kunden-Arbeitsplätzen für RMM-Überwachung bereitstellen.",
+        noAgentsText: "Veritas-Agent auf Kunden-Arbeitsplätzen für RMM-Überwachung bereitstellen."
       },
       menu: {
         viewEnterprise: "Unternehmen anzeigen",
@@ -560,30 +542,29 @@ const SUPERVISION_COPY = {
         metricsHistory: "Metrik-Verlauf",
         copyHost: "Arbeitsplatzname kopieren",
         copyIp: "IP-Adresse kopieren",
-        revoke: "Agent widerrufen",
+        revoke: "Agent widerrufen"
       },
       clipboard: {
         hostName: "Arbeitsplatzname",
         ipAddress: "IP-Adresse",
         copied: "{label} kopiert",
-        copyFailed: "Kopieren nicht möglich",
+        copyFailed: "Kopieren nicht möglich"
       },
       toasts: {
-        syncRequested:
-          "Vollsync für {hostname} angefordert. Inventar wird beim nächsten Agentenlauf aktualisiert.",
+        syncRequested: "Vollsync für {hostname} angefordert. Inventar wird beim nächsten Agentenlauf aktualisiert.",
         syncRequestFailed: "Synchronisation konnte nicht angefordert werden",
         syncCancelled: "Vollsync-Anfrage für {hostname} abgebrochen.",
         syncCancelFailed: "Synchronisation konnte nicht abgebrochen werden",
         revokeFailed: "Arbeitsplatz zum Widerruf dieses Agenten nicht gefunden",
-        metricsNoEquipment: "Kein mit diesem Agenten verknüpftes Gerät für Metriken",
-      },
+        metricsNoEquipment: "Kein mit diesem Agenten verknüpftes Gerät für Metriken"
+      }
     },
     time: {
-      never: "Nie",
+      never: "Nie"
     },
     error: {
-      title: "Ladefehler",
-    },
+      title: "Ladefehler"
+    }
   },
   it: {
     eyebrow: "Servizi gestiti",
@@ -596,12 +577,12 @@ const SUPERVISION_COPY = {
       backups: "Backup",
       contracts: "Contratti e licenze",
       rmm: "Agenti RMM",
-      "alert-rules": "Regole di alert",
+      "alert-rules": "Regole di alert"
     },
     contractStatus: {
       expired: "Scaduto",
       expiring: "In scadenza",
-      suspended: "Sospeso",
+      suspended: "Sospeso"
     },
     licenseModules: {
       antivirus: "Antivirus",
@@ -612,12 +593,12 @@ const SUPERVISION_COPY = {
       o365: "Microsoft 365",
       backup: "Backup",
       firewall: "Firewall",
-      toip: "VoIP",
+      toip: "VoIP"
     },
     contractType: {
       msp: "Contratto MSP",
       enterprise: "Contratto azienda",
-      license: "Licenza",
+      license: "Licenza"
     },
     table: {
       name: "Nome",
@@ -625,19 +606,18 @@ const SUPERVISION_COPY = {
       status: "Stato",
       expiration: "Scadenza",
       actions: "Azioni",
-      sortBy: "Ordina per {label}",
+      sortBy: "Ordina per {label}"
     },
     contracts: {
       okTitle: "Contratti e licenze OK",
-      okText:
-        "Nessuna scadenza o rinnovo entro i prossimi 60 giorni.",
+      okText: "Nessuna scadenza o rinnovo entro i prossimi 60 giorni.",
       alertCount: "{count} alert",
       alertCountPlural: "{count} alert",
       expiredCount: "{count} scaduto",
       expiredCountPlural: "{count} scaduti",
       expiringCount: "{count} da rinnovare",
       viewEnterprise: "Vedi azienda",
-      panelTitle: "Contratti e licenze da trattare",
+      panelTitle: "Contratti e licenze da trattare"
     },
     priority: {
       emptyTitle: "Nessun alert dispositivo",
@@ -662,7 +642,7 @@ const SUPERVISION_COPY = {
         updates_pending: "Pianificare installazione aggiornamenti Windows.",
         disk_critical: "Liberare o estendere spazio disco urgentemente.",
         disk_warn: "Monitorare spazio disco e pianificare pulizia.",
-        missing_ip: "Completare l'indirizzo IP nella scheda hardware.",
+        missing_ip: "Completare l'indirizzo IP nella scheda hardware."
       },
       statusHints: {
         critical: "Alert supervisione critico · intervento immediato.",
@@ -670,8 +650,8 @@ const SUPERVISION_COPY = {
         warning: "Warning supervisione · analizzare prima del degrado.",
         unmapped: "Equipaggiamento non mappato CheckMK · attivare supervisione.",
         no_data: "Nessun dato supervisione · verificare mapping.",
-        default: "Punto da trattare dalla scheda hardware.",
-      },
+        default: "Punto da trattare dalla scheda hardware."
+      }
     },
     familyStats: {
       emptyTitle: "Nessun dispositivo inventariato",
@@ -680,7 +660,7 @@ const SUPERVISION_COPY = {
       uncovered: "Non coperto",
       supervisedLabel: "supervisionato",
       tooltip: "{label} · {monitored}/{total} supervisionati",
-      openFamily: "Vedi dispositivi {label}",
+      openFamily: "Vedi dispositivi {label}"
     },
     overview: {
       hexTitle: "Panoramica",
@@ -691,11 +671,11 @@ const SUPERVISION_COPY = {
         critical: "Critici",
         offline: "Offline",
         backups: "Backup",
-        supervised: "Supervisionato",
+        supervised: "Supervisionato"
       },
       priorityTitle: "Da trattare in priorità",
       viewAll: "Vedi tutto",
-      familyTitle: "Supervisione per tipo di dispositivo",
+      familyTitle: "Supervisione per tipo di dispositivo"
     },
     search: {
       devices: "Cerca dispositivo, cliente, IP…",
@@ -703,7 +683,7 @@ const SUPERVISION_COPY = {
       clients: "Clienti",
       clearFilters: "Cancella ({count})",
       agentCount: "{count} agente",
-      agentCountPlural: "{count} agenti",
+      agentCountPlural: "{count} agenti"
     },
     rmm: {
       online: "Online",
@@ -722,7 +702,7 @@ const SUPERVISION_COPY = {
         offline: "offline",
         pendingUpdates: "aggiornamenti in attesa",
         diskAlert: "disco > 85%",
-        diskAlertPlural: "dischi > 85%",
+        diskAlertPlural: "dischi > 85%"
       },
       table: {
         hostname: "Postazione",
@@ -733,7 +713,7 @@ const SUPERVISION_COPY = {
         updates: "Aggiornamenti Windows",
         agent: "Agente",
         lastSeen: "Ultima attività",
-        actions: "Azioni",
+        actions: "Azioni"
       },
       empty: {
         noMatchTitle: "Nessun agente corrispondente",
@@ -741,7 +721,7 @@ const SUPERVISION_COPY = {
         noAgentsTitle: "Nessun agente RMM",
         noMatchText: "Modifica la ricerca (postazione, cliente, IP, OS, dominio…).",
         allOnlineText: "Nessuna postazione è attualmente offline.",
-        noAgentsText: "Distribuisci l'agente Veritas sulle postazioni clienti per la supervisione RMM.",
+        noAgentsText: "Distribuisci l'agente Veritas sulle postazioni clienti per la supervisione RMM."
       },
       menu: {
         viewEnterprise: "Vedi azienda",
@@ -750,30 +730,29 @@ const SUPERVISION_COPY = {
         metricsHistory: "Storico metriche",
         copyHost: "Copia nome postazione",
         copyIp: "Copia indirizzo IP",
-        revoke: "Revoca agente",
+        revoke: "Revoca agente"
       },
       clipboard: {
         hostName: "Nome postazione",
         ipAddress: "Indirizzo IP",
         copied: "{label} copiato",
-        copyFailed: "Impossibile copiare",
+        copyFailed: "Impossibile copiare"
       },
       toasts: {
-        syncRequested:
-          "Sync completo richiesto per {hostname}. L'inventario sarà aggiornato al prossimo passaggio dell'agente.",
+        syncRequested: "Sync completo richiesto per {hostname}. L'inventario sarà aggiornato al prossimo passaggio dell'agente.",
         syncRequestFailed: "Impossibile richiedere la sincronizzazione",
         syncCancelled: "Richiesta sync completo annullata per {hostname}.",
         syncCancelFailed: "Impossibile annullare la sincronizzazione",
         revokeFailed: "Postazione non trovata per revocare questo agente",
-        metricsNoEquipment: "Nessuna apparecchiatura collegata a questo agente per le metriche",
-      },
+        metricsNoEquipment: "Nessuna apparecchiatura collegata a questo agente per le metriche"
+      }
     },
     time: {
-      never: "Mai",
+      never: "Mai"
     },
     error: {
-      title: "Errore di caricamento",
-    },
+      title: "Errore di caricamento"
+    }
   },
   es: {
     eyebrow: "Servicios gestionados",
@@ -786,12 +765,12 @@ const SUPERVISION_COPY = {
       backups: "Copias de seguridad",
       contracts: "Contratos y licencias",
       rmm: "Agentes RMM",
-      "alert-rules": "Reglas de alerta",
+      "alert-rules": "Reglas de alerta"
     },
     contractStatus: {
       expired: "Expirado",
       expiring: "Expira pronto",
-      suspended: "Suspendido",
+      suspended: "Suspendido"
     },
     licenseModules: {
       antivirus: "Antivirus",
@@ -802,12 +781,12 @@ const SUPERVISION_COPY = {
       o365: "Microsoft 365",
       backup: "Copia de seguridad",
       firewall: "Firewall",
-      toip: "VoIP",
+      toip: "VoIP"
     },
     contractType: {
       msp: "Contrato MSP",
       enterprise: "Contrato empresa",
-      license: "Licencia",
+      license: "Licencia"
     },
     table: {
       name: "Nombre",
@@ -815,19 +794,18 @@ const SUPERVISION_COPY = {
       status: "Estado",
       expiration: "Expiración",
       actions: "Acciones",
-      sortBy: "Ordenar por {label}",
+      sortBy: "Ordenar por {label}"
     },
     contracts: {
       okTitle: "Contratos y licencias OK",
-      okText:
-        "Ningún vencimiento o renovación en los próximos 60 días.",
+      okText: "Ningún vencimiento o renovación en los próximos 60 días.",
       alertCount: "{count} alerta",
       alertCountPlural: "{count} alertas",
       expiredCount: "{count} expirado",
       expiredCountPlural: "{count} expirados",
       expiringCount: "{count} por renovar",
       viewEnterprise: "Ver empresa",
-      panelTitle: "Contratos y licencias por tratar",
+      panelTitle: "Contratos y licencias por tratar"
     },
     priority: {
       emptyTitle: "Ninguna alerta de dispositivo",
@@ -852,7 +830,7 @@ const SUPERVISION_COPY = {
         updates_pending: "Planificar instalación de actualizaciones Windows.",
         disk_critical: "Liberar o ampliar espacio en disco urgentemente.",
         disk_warn: "Supervisar espacio en disco y planificar limpieza.",
-        missing_ip: "Completar la dirección IP en la ficha hardware.",
+        missing_ip: "Completar la dirección IP en la ficha hardware."
       },
       statusHints: {
         critical: "Alerta crítica de supervisión · intervención inmediata.",
@@ -860,8 +838,8 @@ const SUPERVISION_COPY = {
         warning: "Warning de supervisión · analizar antes de degradación.",
         unmapped: "Equipo no mapeado CheckMK · activar supervisión.",
         no_data: "Sin datos de supervisión · verificar mapping.",
-        default: "Punto a tratar desde la ficha hardware.",
-      },
+        default: "Punto a tratar desde la ficha hardware."
+      }
     },
     familyStats: {
       emptyTitle: "Ningún dispositivo inventariado",
@@ -870,7 +848,7 @@ const SUPERVISION_COPY = {
       uncovered: "No cubierto",
       supervisedLabel: "supervisado",
       tooltip: "{label} · {monitored}/{total} supervisados",
-      openFamily: "Ver dispositivos {label}",
+      openFamily: "Ver dispositivos {label}"
     },
     overview: {
       hexTitle: "Resumen",
@@ -881,11 +859,11 @@ const SUPERVISION_COPY = {
         critical: "Críticos",
         offline: "Desconectados",
         backups: "Copias",
-        supervised: "Supervisado",
+        supervised: "Supervisado"
       },
       priorityTitle: "Prioridad",
       viewAll: "Ver todo",
-      familyTitle: "Supervisión por tipo de dispositivo",
+      familyTitle: "Supervisión por tipo de dispositivo"
     },
     search: {
       devices: "Buscar dispositivo, cliente, IP…",
@@ -893,7 +871,7 @@ const SUPERVISION_COPY = {
       clients: "Clientes",
       clearFilters: "Borrar ({count})",
       agentCount: "{count} agente",
-      agentCountPlural: "{count} agentes",
+      agentCountPlural: "{count} agentes"
     },
     rmm: {
       online: "En línea",
@@ -912,7 +890,7 @@ const SUPERVISION_COPY = {
         offline: "desconectados",
         pendingUpdates: "actualizaciones pendientes",
         diskAlert: "disco > 85%",
-        diskAlertPlural: "discos > 85%",
+        diskAlertPlural: "discos > 85%"
       },
       table: {
         hostname: "Equipo",
@@ -923,7 +901,7 @@ const SUPERVISION_COPY = {
         updates: "Actualizaciones Windows",
         agent: "Agente",
         lastSeen: "Última actividad",
-        actions: "Acciones",
+        actions: "Acciones"
       },
       empty: {
         noMatchTitle: "Ningún agente coincide",
@@ -931,7 +909,7 @@ const SUPERVISION_COPY = {
         noAgentsTitle: "Ningún agente RMM",
         noMatchText: "Ajusta la búsqueda (equipo, cliente, IP, SO, dominio…).",
         allOnlineText: "Ningún equipo está desconectado actualmente.",
-        noAgentsText: "Despliega el agente Veritas en los equipos clientes para la supervisión RMM.",
+        noAgentsText: "Despliega el agente Veritas en los equipos clientes para la supervisión RMM."
       },
       menu: {
         viewEnterprise: "Ver empresa",
@@ -940,42 +918,39 @@ const SUPERVISION_COPY = {
         metricsHistory: "Historial de métricas",
         copyHost: "Copiar nombre del equipo",
         copyIp: "Copiar dirección IP",
-        revoke: "Revocar agente",
+        revoke: "Revocar agente"
       },
       clipboard: {
         hostName: "Nombre del equipo",
         ipAddress: "Dirección IP",
         copied: "{label} copiado",
-        copyFailed: "No se puede copiar",
+        copyFailed: "No se puede copiar"
       },
       toasts: {
-        syncRequested:
-          "Sync completo solicitado para {hostname}. El inventario se actualizará en el próximo paso del agente.",
+        syncRequested: "Sync completo solicitado para {hostname}. El inventario se actualizará en el próximo paso del agente.",
         syncRequestFailed: "No se puede solicitar la sincronización",
         syncCancelled: "Solicitud de sync completo cancelada para {hostname}.",
         syncCancelFailed: "No se puede cancelar la sincronización",
         revokeFailed: "Equipo no encontrado para revocar este agente",
-        metricsNoEquipment: "Ningún equipo vinculado a este agente para mostrar métricas",
-      },
+        metricsNoEquipment: "Ningún equipo vinculado a este agente para mostrar métricas"
+      }
     },
     time: {
-      never: "Nunca",
+      never: "Nunca"
     },
     error: {
-      title: "Error de carga",
-    },
-  },
+      title: "Error de carga"
+    }
+  }
 };
-
 const TAB_ICONS = {
   overview: "mdi:lightning-bolt",
   devices: "mdi:devices",
   backups: "mdi:backup-restore",
   contracts: "mdi:file-document-alert-outline",
   rmm: "mdi:laptop",
-  "alert-rules": "mdi:bell-cog-outline",
+  "alert-rules": "mdi:bell-cog-outline"
 };
-
 const LICENSE_MODULE_ICONS = {
   antivirus: "mdi:shield-search",
   antispam: "mdi:email-secure-outline",
@@ -985,80 +960,124 @@ const LICENSE_MODULE_ICONS = {
   o365: "mdi:microsoft",
   backup: "mdi:backup-restore",
   firewall: "mdi:shield-outline",
-  toip: "mdi:phone-voip",
+  toip: "mdi:phone-voip"
 };
-
 export function getSupervisionCenterCopy(locale) {
   const t = pickLocaleMessages(SUPERVISION_COPY, locale);
   return {
     ...t,
-    tabs: TAB_IDS.map((id) => ({
+    tabs: TAB_IDS.map(id => ({
       id,
       label: t.tabs[id],
-      icon: TAB_ICONS[id],
+      icon: TAB_ICONS[id]
     })),
-    licenseModuleSections: LICENSE_MODULE_KEYS.map((module) => ({
+    licenseModuleSections: LICENSE_MODULE_KEYS.map(module => ({
       module,
       label: t.licenseModules[module],
-      icon: LICENSE_MODULE_ICONS[module],
+      icon: LICENSE_MODULE_ICONS[module]
     })),
     contractStatusMeta: {
-      expired: { label: t.contractStatus.expired, classKey: "expired" },
-      expiring: { label: t.contractStatus.expiring, classKey: "expiring" },
-      suspended: { label: t.contractStatus.suspended, classKey: "suspended" },
+      expired: {
+        label: t.contractStatus.expired,
+        classKey: "expired"
+      },
+      expiring: {
+        label: t.contractStatus.expiring,
+        classKey: "expiring"
+      },
+      suspended: {
+        label: t.contractStatus.suspended,
+        classKey: "suspended"
+      }
     },
-    tableColumns: [
-      { key: "name", label: t.table.name, sortable: true },
-      { key: "type", label: t.table.type, sortable: true },
-      { key: "status", label: t.table.status, sortable: true },
-      { key: "expiration", label: t.table.expiration, sortable: true },
-    ],
-    formatAlertCount: (count) =>
-      interpolate(count === 1 ? t.contracts.alertCount : t.contracts.alertCountPlural, {
-        count: String(count),
-      }),
-    formatExpiredCount: (count) =>
-      interpolate(count === 1 ? t.contracts.expiredCount : t.contracts.expiredCountPlural, {
-        count: String(count),
-      }),
-    formatExpiringCount: (count) =>
-      interpolate(t.contracts.expiringCount, { count: String(count) }),
-    formatAgentCount: (count) =>
-      interpolate(count === 1 ? t.search.agentCount : t.search.agentCountPlural, {
-        count: String(count),
-      }),
-    formatSortBy: (label) => interpolate(t.table.sortBy, { label }),
-    formatRmmSortBy: (label) => interpolate(t.rmm.sortBy, { label }),
-    formatRmmOfflineCount: (count) => interpolate(t.rmm.offlineCount, { count: String(count) }),
-    formatRmmWorkstationCount: (count) =>
-      interpolate(count === 1 ? t.rmm.summary.workstation : t.rmm.summary.workstationPlural, {
-        count: String(count),
-      }),
-    formatRmmDiskAlerts: (count) =>
-      interpolate(count === 1 ? t.rmm.summary.diskAlert : t.rmm.summary.diskAlertPlural, {
-        count: String(count),
-      }),
-    formatRmmSyncToast: (hostname) =>
-      interpolate(t.rmm.toasts.syncRequested, {
-        hostname: hostname || t.rmm.workstation,
-      }),
-    formatRmmSyncCancelledToast: (hostname) =>
-      interpolate(t.rmm.toasts.syncCancelled, {
-        hostname: hostname || t.rmm.workstation,
-      }),
-    formatClipboardCopied: (label) => interpolate(t.rmm.clipboard.copied, { label }),
-    rmmTableColumns: [
-      { key: "hostname", label: t.rmm.table.hostname, sortable: true },
-      { key: "client_name", label: t.rmm.table.client, sortable: true },
-      { key: "os", label: t.rmm.table.os, sortable: true },
-      { key: "os_build", label: t.rmm.table.build, sortable: true },
-      { key: "ip", label: t.rmm.table.ip, sortable: true },
-      { key: "updates_pending", label: t.rmm.table.updates, sortable: true },
-      { key: "agent_version", label: t.rmm.table.agent, sortable: true },
-      { key: "last_seen_at", label: t.rmm.table.lastSeen, sortable: true },
-    ],
-    getPriorityHint: (key) => t.priority.hints[key] || null,
-    getPriorityStatusHint: (status) => t.priority.statusHints[status] || t.priority.statusHints.default,
-    getLicenseModuleLabel: (module) => t.licenseModules[module] || module,
+    tableColumns: [{
+      key: "name",
+      label: t.table.name,
+      sortable: true
+    }, {
+      key: "type",
+      label: t.table.type,
+      sortable: true
+    }, {
+      key: "status",
+      label: t.table.status,
+      sortable: true
+    }, {
+      key: "expiration",
+      label: t.table.expiration,
+      sortable: true
+    }],
+    formatAlertCount: count => interpolate(count === 1 ? t.contracts.alertCount : t.contracts.alertCountPlural, {
+      count: String(count)
+    }),
+    formatExpiredCount: count => interpolate(count === 1 ? t.contracts.expiredCount : t.contracts.expiredCountPlural, {
+      count: String(count)
+    }),
+    formatExpiringCount: count => interpolate(t.contracts.expiringCount, {
+      count: String(count)
+    }),
+    formatAgentCount: count => interpolate(count === 1 ? t.search.agentCount : t.search.agentCountPlural, {
+      count: String(count)
+    }),
+    formatSortBy: label => interpolate(t.table.sortBy, {
+      label
+    }),
+    formatRmmSortBy: label => interpolate(t.rmm.sortBy, {
+      label
+    }),
+    formatRmmOfflineCount: count => interpolate(t.rmm.offlineCount, {
+      count: String(count)
+    }),
+    formatRmmWorkstationCount: count => interpolate(count === 1 ? t.rmm.summary.workstation : t.rmm.summary.workstationPlural, {
+      count: String(count)
+    }),
+    formatRmmDiskAlerts: count => interpolate(count === 1 ? t.rmm.summary.diskAlert : t.rmm.summary.diskAlertPlural, {
+      count: String(count)
+    }),
+    formatRmmSyncToast: hostname => interpolate(t.rmm.toasts.syncRequested, {
+      hostname: hostname || t.rmm.workstation
+    }),
+    formatRmmSyncCancelledToast: hostname => interpolate(t.rmm.toasts.syncCancelled, {
+      hostname: hostname || t.rmm.workstation
+    }),
+    formatClipboardCopied: label => interpolate(t.rmm.clipboard.copied, {
+      label
+    }),
+    rmmTableColumns: [{
+      key: "hostname",
+      label: t.rmm.table.hostname,
+      sortable: true
+    }, {
+      key: "client_name",
+      label: t.rmm.table.client,
+      sortable: true
+    }, {
+      key: "os",
+      label: t.rmm.table.os,
+      sortable: true
+    }, {
+      key: "os_build",
+      label: t.rmm.table.build,
+      sortable: true
+    }, {
+      key: "ip",
+      label: t.rmm.table.ip,
+      sortable: true
+    }, {
+      key: "updates_pending",
+      label: t.rmm.table.updates,
+      sortable: true
+    }, {
+      key: "agent_version",
+      label: t.rmm.table.agent,
+      sortable: true
+    }, {
+      key: "last_seen_at",
+      label: t.rmm.table.lastSeen,
+      sortable: true
+    }],
+    getPriorityHint: key => t.priority.hints[key] || null,
+    getPriorityStatusHint: status => t.priority.statusHints[status] || t.priority.statusHints.default,
+    getLicenseModuleLabel: module => t.licenseModules[module] || module
   };
 }

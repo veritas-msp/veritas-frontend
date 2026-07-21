@@ -597,7 +597,7 @@
   }
 }
 
-/* Onglet Agents · estimations coût / stockage */
+
 .agentsCostInsights {
   display: flex;
   flex-direction: column;
@@ -799,7 +799,7 @@
   }
 }
 
-/* Onglet Consommations */
+
 .consumptionsLayout {
   display: flex;
   flex-direction: column;

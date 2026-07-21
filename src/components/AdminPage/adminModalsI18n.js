@@ -1,46 +1,31 @@
 import { createLocaleGetter } from "../../i18n/translate";
 import { getFormModalsRoot } from "./adminFormModalsI18n";
-
 const ADMIN_MODALS = {
   fr: {
     collectorDelete: {
       title: "Supprimer le collecteur",
-      bullets: [
-        "La connexion IMAP/POP3 et sa configuration seront supprimées.",
-        "Les emails ne seront plus récupérés automatiquement depuis cette boîte.",
-        "L'historique des logs associé sera perdu.",
-      ],
+      bullets: ["La connexion IMAP/POP3 et sa configuration seront supprimées.", "Les emails ne seront plus récupérés automatiquement depuis cette boîte.", "L'historique des logs associé sera perdu."]
     },
     portalDelete: {
       title: "Supprimer l'accès portail",
       subtitle: "Le compte de connexion sera définitivement retiré.",
       deleteAccess: "Supprimer l'accès",
-      bullets: [
-        "L'identifiant de connexion au portail client sera supprimé.",
-        "Le contact et la fiche entreprise dans Veritas seront conservés.",
-        "La personne ne pourra plus se connecter tant qu'un nouvel accès n'aura pas été créé.",
-      ],
+      bullets: ["L'identifiant de connexion au portail client sera supprimé.", "Le contact et la fiche entreprise dans Veritas seront conservés.", "La personne ne pourra plus se connecter tant qu'un nouvel accès n'aura pas été créé."]
     },
     ingestionRuleDelete: {
       title: "Supprimer la règle",
-      bullets: [
-        "La règle et ses critères seront retirés du tri des emails entrants.",
-        "L'ordre d'évaluation des autres règles sera conservé.",
-        "Cette opération ne pourra pas être restaurée depuis Veritas.",
-      ],
+      bullets: ["La règle et ses critères seront retirés du tri des emails entrants.", "L'ordre d'évaluation des autres règles sera conservé.", "Cette opération ne pourra pas être restaurée depuis Veritas."]
     },
     rmmToken: {
       revokeTitle: "Mettre ce token à la corbeille ?",
-      revokeMessage:
-        "Le token sera révoqué : les nouvelles installations seront refusées. Vous pourrez le restaurer depuis la corbeille.",
+      revokeMessage: "Le token sera révoqué : les nouvelles installations seront refusées. Vous pourrez le restaurer depuis la corbeille.",
       revokeConfirm: "Mettre à la corbeille",
       restoreTitle: "Restaurer ce token ?",
-      restoreMessage:
-        "Le token redeviendra actif et pourra à nouveau servir à l'enrôlement des agents.",
+      restoreMessage: "Le token redeviendra actif et pourra à nouveau servir à l'enrôlement des agents.",
       restoreConfirm: "Restaurer",
       purgeTitle: "Supprimer définitivement ce token ?",
       purgeMessage: "Cette action est irréversible. Le token sera effacé de la base de données.",
-      purgeConfirm: "Supprimer définitivement",
+      purgeConfirm: "Supprimer définitivement"
     },
     adminDeleteConfirms: {
       untitled: "sans nom",
@@ -63,14 +48,13 @@ const ADMIN_MODALS = {
       ticketViewTitle: "Supprimer la vue",
       ticketViewMessage: "Supprimer la vue « {name} » ?",
       supportCreditTitle: "Supprimer le carnet",
-      supportCreditMessage:
-        "Supprimer le carnet « {label} » de {enterprise} ? Les crédits restants ({amount}) seront retirés du solde.",
+      supportCreditMessage: "Supprimer le carnet « {label} » de {enterprise} ? Les crédits restants ({amount}) seront retirés du solde.",
       bulkEnterprisesTitle: "Supprimer {count} entreprises",
       bulkEnterprisesIntro: "Cette action est irréversible. Les entreprises suivantes seront supprimées :",
       salesFormDelete: "Supprimer ce formulaire et tous ses champs ?",
       salesFormFieldDelete: "Supprimer ce champ ?",
       bulkEnterprisesOthersSingular: "… et {count} autre",
-      bulkEnterprisesOthersPlural: "… et {count} autres",
+      bulkEnterprisesOthersPlural: "… et {count} autres"
     },
     teamForm: {
       createTitle: "Nouvelle équipe",
@@ -91,49 +75,42 @@ const ADMIN_MODALS = {
       teamActiveHint: "Désactivez temporairement une équipe sans supprimer ses membres.",
       createBtn: "Créer l'équipe",
       sections: {
-        general: { label: "Général", description: "Nom et description" },
-        status: { label: "Statut", description: "Disponibilité" },
-      },
-    },
+        general: {
+          label: "Général",
+          description: "Nom et description"
+        },
+        status: {
+          label: "Statut",
+          description: "Disponibilité"
+        }
+      }
+    }
   },
   en: {
     collectorDelete: {
       title: "Delete collector",
-      bullets: [
-        "The IMAP/POP3 connection and its configuration will be removed.",
-        "Emails will no longer be fetched automatically from this mailbox.",
-        "Associated log history will be lost.",
-      ],
+      bullets: ["The IMAP/POP3 connection and its configuration will be removed.", "Emails will no longer be fetched automatically from this mailbox.", "Associated log history will be lost."]
     },
     portalDelete: {
       title: "Remove portal access",
       subtitle: "The login account will be permanently removed.",
       deleteAccess: "Remove access",
-      bullets: [
-        "The client portal login will be deleted.",
-        "The contact and enterprise record in Veritas will be kept.",
-        "The person will not be able to sign in until a new access is created.",
-      ],
+      bullets: ["The client portal login will be deleted.", "The contact and enterprise record in Veritas will be kept.", "The person will not be able to sign in until a new access is created."]
     },
     ingestionRuleDelete: {
       title: "Delete rule",
-      bullets: [
-        "The rule and its criteria will be removed from incoming email sorting.",
-        "The evaluation order of other rules will be preserved.",
-        "This operation cannot be restored from Veritas.",
-      ],
+      bullets: ["The rule and its criteria will be removed from incoming email sorting.", "The evaluation order of other rules will be preserved.", "This operation cannot be restored from Veritas."]
     },
     rmmToken: {
       revokeTitle: "Move this token to trash?",
-      revokeMessage:
-        "The token will be revoked: new installations will be rejected. You can restore it from the trash.",
+      revokeMessage: "The token will be revoked: new installations will be rejected. You can restore it from the trash.",
       revokeConfirm: "Move to trash",
       restoreTitle: "Restore this token?",
       restoreMessage: "The token will become active again and can be used for agent enrollment.",
       restoreConfirm: "Restore",
       purgeTitle: "Permanently delete this token?",
       purgeMessage: "This action is irreversible. The token will be erased from the database.",
-      purgeConfirm: "Delete permanently",
+      purgeConfirm: "Delete permanently"
     },
     adminDeleteConfirms: {
       untitled: "untitled",
@@ -156,14 +133,13 @@ const ADMIN_MODALS = {
       ticketViewTitle: "Delete view",
       ticketViewMessage: "Delete view « {name} »?",
       supportCreditTitle: "Delete credit pack",
-      supportCreditMessage:
-        "Delete pack « {label} » for {enterprise}? Remaining credits ({amount}) will be removed from the balance.",
+      supportCreditMessage: "Delete pack « {label} » for {enterprise}? Remaining credits ({amount}) will be removed from the balance.",
       bulkEnterprisesTitle: "Delete {count} companies",
       bulkEnterprisesIntro: "This action is irreversible. The following companies will be deleted:",
       salesFormDelete: "Delete this form and all its fields?",
       salesFormFieldDelete: "Delete this field?",
       bulkEnterprisesOthersSingular: "… and {count} other",
-      bulkEnterprisesOthersPlural: "… and {count} others",
+      bulkEnterprisesOthersPlural: "… and {count} others"
     },
     teamForm: {
       createTitle: "New team",
@@ -184,49 +160,42 @@ const ADMIN_MODALS = {
       teamActiveHint: "Temporarily disable a team without removing its members.",
       createBtn: "Create team",
       sections: {
-        general: { label: "General", description: "Name and description" },
-        status: { label: "Status", description: "Availability" },
-      },
-    },
+        general: {
+          label: "General",
+          description: "Name and description"
+        },
+        status: {
+          label: "Status",
+          description: "Availability"
+        }
+      }
+    }
   },
   de: {
     collectorDelete: {
       title: "Collector löschen",
-      bullets: [
-        "Die IMAP/POP3-Verbindung und ihre Konfiguration werden entfernt.",
-        "E-Mails werden nicht mehr automatisch aus diesem Postfach abgerufen.",
-        "Der zugehörige Protokollverlauf geht verloren.",
-      ],
+      bullets: ["Die IMAP/POP3-Verbindung und ihre Konfiguration werden entfernt.", "E-Mails werden nicht mehr automatisch aus diesem Postfach abgerufen.", "Der zugehörige Protokollverlauf geht verloren."]
     },
     portalDelete: {
       title: "Portalzugang entfernen",
       subtitle: "Das Anmeldekonto wird endgültig entfernt.",
       deleteAccess: "Zugang entfernen",
-      bullets: [
-        "Die Anmeldung für das Kundenportal wird gelöscht.",
-        "Kontakt und Unternehmensdatensatz in Veritas bleiben erhalten.",
-        "Die Person kann sich erst wieder anmelden, wenn ein neuer Zugang erstellt wurde.",
-      ],
+      bullets: ["Die Anmeldung für das Kundenportal wird gelöscht.", "Kontakt und Unternehmensdatensatz in Veritas bleiben erhalten.", "Die Person kann sich erst wieder anmelden, wenn ein neuer Zugang erstellt wurde."]
     },
     ingestionRuleDelete: {
       title: "Regel löschen",
-      bullets: [
-        "Die Regel und ihre Kriterien werden aus der Sortierung eingehender E-Mails entfernt.",
-        "Die Auswertungsreihenfolge anderer Regeln bleibt erhalten.",
-        "Dieser Vorgang kann in Veritas nicht wiederhergestellt werden.",
-      ],
+      bullets: ["Die Regel und ihre Kriterien werden aus der Sortierung eingehender E-Mails entfernt.", "Die Auswertungsreihenfolge anderer Regeln bleibt erhalten.", "Dieser Vorgang kann in Veritas nicht wiederhergestellt werden."]
     },
     rmmToken: {
       revokeTitle: "Diesen Token in den Papierkorb legen?",
-      revokeMessage:
-        "Der Token wird widerrufen: neue Installationen werden abgelehnt. Sie können ihn aus dem Papierkorb wiederherstellen.",
+      revokeMessage: "Der Token wird widerrufen: neue Installationen werden abgelehnt. Sie können ihn aus dem Papierkorb wiederherstellen.",
       revokeConfirm: "In den Papierkorb",
       restoreTitle: "Diesen Token wiederherstellen?",
       restoreMessage: "Der Token wird wieder aktiv und kann für die Agentenregistrierung genutzt werden.",
       restoreConfirm: "Wiederherstellen",
       purgeTitle: "Diesen Token endgültig löschen?",
       purgeMessage: "Diese Aktion ist endgültig. Der Token wird aus der Datenbank gelöscht.",
-      purgeConfirm: "Endgültig löschen",
+      purgeConfirm: "Endgültig löschen"
     },
     adminDeleteConfirms: {
       untitled: "ohne Name",
@@ -249,14 +218,13 @@ const ADMIN_MODALS = {
       ticketViewTitle: "Ansicht löschen",
       ticketViewMessage: "Ansicht « {name} » löschen?",
       supportCreditTitle: "Guthabenheft löschen",
-      supportCreditMessage:
-        "Heft « {label} » für {enterprise} löschen? Verbleibende Guthaben ({amount}) werden entfernt.",
+      supportCreditMessage: "Heft « {label} » für {enterprise} löschen? Verbleibende Guthaben ({amount}) werden entfernt.",
       bulkEnterprisesTitle: "{count} Unternehmen löschen",
       bulkEnterprisesIntro: "Diese Aktion ist endgültig. Folgende Unternehmen werden gelöscht:",
       salesFormDelete: "Dieses Formular und alle Felder löschen?",
       salesFormFieldDelete: "Dieses Feld löschen?",
       bulkEnterprisesOthersSingular: "… und {count} weitere",
-      bulkEnterprisesOthersPlural: "… und {count} weitere",
+      bulkEnterprisesOthersPlural: "… und {count} weitere"
     },
     teamForm: {
       createTitle: "Neues Team",
@@ -277,49 +245,42 @@ const ADMIN_MODALS = {
       teamActiveHint: "Deaktivieren Sie ein Team vorübergehend, ohne Mitglieder zu entfernen.",
       createBtn: "Team erstellen",
       sections: {
-        general: { label: "Allgemein", description: "Name und Beschreibung" },
-        status: { label: "Status", description: "Verfügbarkeit" },
-      },
-    },
+        general: {
+          label: "Allgemein",
+          description: "Name und Beschreibung"
+        },
+        status: {
+          label: "Status",
+          description: "Verfügbarkeit"
+        }
+      }
+    }
   },
   it: {
     collectorDelete: {
       title: "Elimina collector",
-      bullets: [
-        "La connessione IMAP/POP3 e la sua configurazione verranno rimosse.",
-        "Le email non verranno più recuperate automaticamente da questa casella.",
-        "La cronologia dei log associati andrà persa.",
-      ],
+      bullets: ["La connessione IMAP/POP3 e la sua configurazione verranno rimosse.", "Le email non verranno più recuperate automaticamente da questa casella.", "La cronologia dei log associati andrà persa."]
     },
     portalDelete: {
       title: "Rimuovi accesso portale",
       subtitle: "L'account di accesso verrà rimosso definitivamente.",
       deleteAccess: "Rimuovi accesso",
-      bullets: [
-        "L'identificativo di accesso al portale cliente verrà eliminato.",
-        "Il contatto e la scheda azienda in Veritas saranno conservati.",
-        "La persona non potrà più accedere finché non verrà creato un nuovo accesso.",
-      ],
+      bullets: ["L'identificativo di accesso al portale cliente verrà eliminato.", "Il contatto e la scheda azienda in Veritas saranno conservati.", "La persona non potrà più accedere finché non verrà creato un nuovo accesso."]
     },
     ingestionRuleDelete: {
       title: "Elimina regola",
-      bullets: [
-        "La regola e i suoi criteri verranno rimossi dal triage delle email in entrata.",
-        "L'ordine di valutazione delle altre regole sarà conservato.",
-        "Questa operazione non potrà essere ripristinata da Veritas.",
-      ],
+      bullets: ["La regola e i suoi criteri verranno rimossi dal triage delle email in entrata.", "L'ordine di valutazione delle altre regole sarà conservato.", "Questa operazione non potrà essere ripristinata da Veritas."]
     },
     rmmToken: {
       revokeTitle: "Spostare questo token nel cestino?",
-      revokeMessage:
-        "Il token sarà revocato: le nuove installazioni saranno rifiutate. Potrai ripristinarlo dal cestino.",
+      revokeMessage: "Il token sarà revocato: le nuove installazioni saranno rifiutate. Potrai ripristinarlo dal cestino.",
       revokeConfirm: "Sposta nel cestino",
       restoreTitle: "Ripristinare questo token?",
       restoreMessage: "Il token tornerà attivo e potrà essere usato per l'enrollment degli agenti.",
       restoreConfirm: "Ripristina",
       purgeTitle: "Eliminare definitivamente questo token?",
       purgeMessage: "Azione irreversibile. Il token sarà rimosso dal database.",
-      purgeConfirm: "Elimina definitivamente",
+      purgeConfirm: "Elimina definitivamente"
     },
     adminDeleteConfirms: {
       untitled: "senza nome",
@@ -342,14 +303,13 @@ const ADMIN_MODALS = {
       ticketViewTitle: "Elimina vista",
       ticketViewMessage: "Eliminare la vista « {name} »?",
       supportCreditTitle: "Elimina carnet",
-      supportCreditMessage:
-        "Eliminare il carnet « {label} » di {enterprise}? I crediti rimanenti ({amount}) saranno rimossi.",
+      supportCreditMessage: "Eliminare il carnet « {label} » di {enterprise}? I crediti rimanenti ({amount}) saranno rimossi.",
       bulkEnterprisesTitle: "Elimina {count} aziende",
       bulkEnterprisesIntro: "Azione irreversibile. Le seguenti aziende saranno eliminate:",
       salesFormDelete: "Eliminare questo modulo e tutti i campi?",
       salesFormFieldDelete: "Eliminare questo campo?",
       bulkEnterprisesOthersSingular: "… e {count} altra",
-      bulkEnterprisesOthersPlural: "… e {count} altre",
+      bulkEnterprisesOthersPlural: "… e {count} altre"
     },
     teamForm: {
       createTitle: "Nuovo team",
@@ -370,49 +330,42 @@ const ADMIN_MODALS = {
       teamActiveHint: "Disattiva temporaneamente un team senza rimuovere i membri.",
       createBtn: "Crea team",
       sections: {
-        general: { label: "Generale", description: "Nome e descrizione" },
-        status: { label: "Stato", description: "Disponibilità" },
-      },
-    },
+        general: {
+          label: "Generale",
+          description: "Nome e descrizione"
+        },
+        status: {
+          label: "Stato",
+          description: "Disponibilità"
+        }
+      }
+    }
   },
   es: {
     collectorDelete: {
       title: "Eliminar colector",
-      bullets: [
-        "Se eliminará la conexión IMAP/POP3 y su configuración.",
-        "Los correos ya no se recuperarán automáticamente de este buzón.",
-        "Se perderá el historial de logs asociado.",
-      ],
+      bullets: ["Se eliminará la conexión IMAP/POP3 y su configuración.", "Los correos ya no se recuperarán automáticamente de este buzón.", "Se perderá el historial de logs asociado."]
     },
     portalDelete: {
       title: "Eliminar acceso al portal",
       subtitle: "La cuenta de acceso se eliminará definitivamente.",
       deleteAccess: "Eliminar acceso",
-      bullets: [
-        "Se eliminará el identificador de acceso al portal cliente.",
-        "El contacto y la ficha de empresa en Veritas se conservarán.",
-        "La persona no podrá conectarse hasta que se cree un nuevo acceso.",
-      ],
+      bullets: ["Se eliminará el identificador de acceso al portal cliente.", "El contacto y la ficha de empresa en Veritas se conservarán.", "La persona no podrá conectarse hasta que se cree un nuevo acceso."]
     },
     ingestionRuleDelete: {
       title: "Eliminar regla",
-      bullets: [
-        "La regla y sus criterios se retirarán del triaje de correos entrantes.",
-        "Se conservará el orden de evaluación de las demás reglas.",
-        "Esta operación no podrá restaurarse desde Veritas.",
-      ],
+      bullets: ["La regla y sus criterios se retirarán del triaje de correos entrantes.", "Se conservará el orden de evaluación de las demás reglas.", "Esta operación no podrá restaurarse desde Veritas."]
     },
     rmmToken: {
       revokeTitle: "¿Mover este token a la papelera?",
-      revokeMessage:
-        "El token será revocado: se rechazarán nuevas instalaciones. Podrá restaurarlo desde la papelera.",
+      revokeMessage: "El token será revocado: se rechazarán nuevas instalaciones. Podrá restaurarlo desde la papelera.",
       revokeConfirm: "Mover a la papelera",
       restoreTitle: "¿Restaurar este token?",
       restoreMessage: "El token volverá a estar activo y podrá usarse para el enrolamiento de agentes.",
       restoreConfirm: "Restaurar",
       purgeTitle: "¿Eliminar definitivamente este token?",
       purgeMessage: "Acción irreversible. El token se borrará de la base de datos.",
-      purgeConfirm: "Eliminar definitivamente",
+      purgeConfirm: "Eliminar definitivamente"
     },
     adminDeleteConfirms: {
       untitled: "sin nombre",
@@ -435,14 +388,13 @@ const ADMIN_MODALS = {
       ticketViewTitle: "Eliminar vista",
       ticketViewMessage: "¿Eliminar la vista « {name} »?",
       supportCreditTitle: "Eliminar cuaderno",
-      supportCreditMessage:
-        "¿Eliminar el cuaderno « {label} » de {enterprise}? Los créditos restantes ({amount}) se retirarán.",
+      supportCreditMessage: "¿Eliminar el cuaderno « {label} » de {enterprise}? Los créditos restantes ({amount}) se retirarán.",
       bulkEnterprisesTitle: "Eliminar {count} empresas",
       bulkEnterprisesIntro: "Acción irreversible. Se eliminarán las siguientes empresas:",
       salesFormDelete: "¿Eliminar este formulario y todos sus campos?",
       salesFormFieldDelete: "¿Eliminar este campo?",
       bulkEnterprisesOthersSingular: "… y {count} más",
-      bulkEnterprisesOthersPlural: "… y {count} más",
+      bulkEnterprisesOthersPlural: "… y {count} más"
     },
     teamForm: {
       createTitle: "Nuevo equipo",
@@ -463,34 +415,39 @@ const ADMIN_MODALS = {
       teamActiveHint: "Desactive temporalmente un equipo sin eliminar sus miembros.",
       createBtn: "Crear equipo",
       sections: {
-        general: { label: "General", description: "Nombre y descripción" },
-        status: { label: "Estado", description: "Disponibilidad" },
-      },
-    },
-  },
+        general: {
+          label: "General",
+          description: "Nombre y descripción"
+        },
+        status: {
+          label: "Estado",
+          description: "Disponibilidad"
+        }
+      }
+    }
+  }
 };
-
 const getAdminModalsRoot = createLocaleGetter(ADMIN_MODALS);
-
 export function getAdminModalCopy(locale, modalKey) {
-  const root = { ...getAdminModalsRoot(locale), ...getFormModalsRoot(locale) };
+  const root = {
+    ...getAdminModalsRoot(locale),
+    ...getFormModalsRoot(locale)
+  };
   return root[modalKey] || {};
 }
-
 export function getAdminDeleteConfirmsCopy(locale) {
   return getAdminModalCopy(locale, "adminDeleteConfirms");
 }
-
 export function getTeamFormSections(locale) {
   const copy = getAdminModalCopy(locale, "teamForm");
   const icons = {
     general: "mdi:information-outline",
-    status: "mdi:toggle-switch-outline",
+    status: "mdi:toggle-switch-outline"
   };
   return Object.entries(copy.sections || {}).map(([id, section]) => ({
     id,
     label: section.label,
     description: section.description,
-    icon: icons[id] || "mdi:information-outline",
+    icon: icons[id] || "mdi:information-outline"
   }));
 }

@@ -5,53 +5,19 @@ import { FaTimes } from "react-icons/fa";
 import { createEquipment, updateEquipment, deleteEquipment } from "../../api/equipment";
 import { updateClient } from "../../api/clients";
 import { toast } from "react-toastify";
-import {
-  SWITCH_CATALOG,
-  WIFI_AP_CATALOG,
-  getAlimentationCatalogByType,
-  getToipCatalogByType,
-  getFirewallCatalogByDeploymentType,
-  getRouterCatalogByType,
-  getStorageCatalogByType,
-} from "./constants/equipmentCatalog";
+import { SWITCH_CATALOG, WIFI_AP_CATALOG, getAlimentationCatalogByType, getToipCatalogByType, getFirewallCatalogByDeploymentType, getRouterCatalogByType, getStorageCatalogByType } from "./constants/equipmentCatalog";
 import { isSynologyBrand } from "./synologyEquipmentUtils";
 import { normalizeInternetFormData } from "../RapportPage/monitoring/internetIpUtils";
 import { syncInternetLegacyDebit } from "./internetConnectionUtils";
-import {
-  buildAvailableSites,
-  buildEquipmentForUpdate,
-  buildEquipmentId,
-  buildEquipmentSectionMeta,
-  buildInitialFormData,
-  cloneEquipmentFormSnapshot,
-  equipmentFormsEqual,
-  getApiType,
-  getFirewallPartnerOptions,
-  isEquipmentRequiredSectionIncomplete,
-  isToipVoipSectionVisible,
-  normalizeServerType,
-  storageTypeToLegacyType,
-} from "./equipmentFormConfig";
+import { buildAvailableSites, buildEquipmentForUpdate, buildEquipmentId, buildEquipmentSectionMeta, buildInitialFormData, cloneEquipmentFormSnapshot, equipmentFormsEqual, getApiType, getFirewallPartnerOptions, isEquipmentRequiredSectionIncomplete, isToipVoipSectionVisible, normalizeServerType, storageTypeToLegacyType } from "./equipmentFormConfig";
 import { useAppLocale } from "../../hooks/useAppGeneralSettings";
-import {
-  getEquipmentFormSectionsI18n,
-  getEquipmentModalsCopy,
-  getEquipmentModuleLabel,
-  validateEquipmentFormI18n,
-  EQUIPMENT_MODULE_ICONS,
-  interpolate,
-} from "./equipmentModalsI18n";
+import { getEquipmentFormSectionsI18n, getEquipmentModalsCopy, getEquipmentModuleLabel, validateEquipmentFormI18n, EQUIPMENT_MODULE_ICONS, interpolate } from "./equipmentModalsI18n";
 import EquipmentFormSectionContent from "./EquipmentFormSectionContent";
 import { ConfirmModal } from "../AdminPage/AdminUi";
 import ModalDiscardConfirm from "../Misc/ModalDiscardConfirm";
 import { useModalCloseGuard } from "../../hooks/useModalCloseGuard";
 import styles from "../EnterprisesPage/EnterpriseFormModal.module.css";
-import {
-  serializeAssignedSsidsForPersistence,
-  serializeWifiSsidCatalogForPersistence,
-  wifiSsidCatalogsEqual,
-} from "./wifiApSsidUtils";
-
+import { serializeAssignedSsidsForPersistence, serializeWifiSsidCatalogForPersistence, wifiSsidCatalogsEqual } from "./wifiApSsidUtils";
 export default function EquipmentFormModal({
   open,
   onClose,
@@ -62,12 +28,11 @@ export default function EquipmentFormModal({
   onDeleted,
   mode = "edit",
   backgroundSave = false,
-  peerFirewalls = [],
+  peerFirewalls = []
 }) {
   const locale = useAppLocale();
   const copy = useMemo(() => getEquipmentModalsCopy(locale), [locale]);
   const formCopy = copy.form;
-
   const isAddMode = mode === "add";
   const [formData, setFormData] = useState({});
   const [activeSection, setActiveSection] = useState("identity");
@@ -76,13 +41,9 @@ export default function EquipmentFormModal({
   const [deleting, setDeleting] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [error, setError] = useState(null);
-
   const apiType = getApiType(moduleKey, equipment);
-  const serverType = normalizeServerType(
-    formData.typeServer || equipment?.type || equipment?.typeServer || ""
-  );
-  const isPhysicalServer = apiType === "Serveurs" && serverType === "physique";
-
+  const serverType = normalizeServerType(formData.typeServer || equipment?.type || equipment?.typeServer || "");
+  const isPhysicalServer = apiType === "Servers" && serverType === "physique";
   const availableSites = useMemo(() => {
     const sites = buildAvailableSites(client, equipment);
     const current = (formData.location || "").trim();
@@ -91,114 +52,85 @@ export default function EquipmentFormModal({
     }
     return sites;
   }, [client, equipment, formData.location]);
-
-  const firewallPartnerOptions = useMemo(
-    () =>
-      getFirewallPartnerOptions(client, equipment, {
-        currentPartnerName: formData.firewallHAName,
-        peerFirewalls,
-      }),
-    [client, equipment, formData.firewallHAName, peerFirewalls]
-  );
-
+  const firewallPartnerOptions = useMemo(() => getFirewallPartnerOptions(client, equipment, {
+    currentPartnerName: formData.firewallHAName,
+    peerFirewalls
+  }), [client, equipment, formData.firewallHAName, peerFirewalls]);
   const sections = useMemo(() => {
     const list = getEquipmentFormSectionsI18n(moduleKey, locale, {
       firewallType: formData.firewallType,
       routeurType: formData.routeurType,
       serverType: formData.typeServer,
       storageType: formData.storageType,
-      toipType: formData.toipType,
+      toipType: formData.toipType
     });
     if (moduleKey !== "TOIP") return list;
-    return list.filter(
-      (section) => section.id !== "voip" || isToipVoipSectionVisible(formData.toipType)
-    );
+    return list.filter(section => section.id !== "voip" || isToipVoipSectionVisible(formData.toipType));
   }, [moduleKey, locale, formData.firewallType, formData.routeurType, formData.typeServer, formData.storageType, formData.toipType]);
-
-  const hasChanges = useMemo(
-    () => !equipmentFormsEqual(formData, initialSnapshot),
-    [formData, initialSnapshot]
-  );
-
+  const hasChanges = useMemo(() => !equipmentFormsEqual(formData, initialSnapshot), [formData, initialSnapshot]);
   const hasUnsavedChanges = hasChanges;
-
-  const { requestClose, discardConfirmOpen, cancelDiscard, confirmDiscard } = useModalCloseGuard({
+  const {
+    requestClose,
+    discardConfirmOpen,
+    cancelDiscard,
+    confirmDiscard
+  } = useModalCloseGuard({
     open,
     onClose,
     hasUnsavedChanges,
-    blocked: saving || deleting,
+    blocked: saving || deleting
   });
-
-  const sectionMeta = useMemo(
-    () => buildEquipmentSectionMeta(formData, moduleKey, { isPhysicalServer, isAddMode }),
-    [formData, moduleKey, isPhysicalServer, isAddMode]
-  );
-
-  const isRequiredSectionIncomplete = useCallback(
-    (sectionId) =>
-      isEquipmentRequiredSectionIncomplete(formData, moduleKey, sectionId, { isAddMode }),
-    [formData, moduleKey, isAddMode]
-  );
-
+  const sectionMeta = useMemo(() => buildEquipmentSectionMeta(formData, moduleKey, {
+    isPhysicalServer,
+    isAddMode
+  }), [formData, moduleKey, isPhysicalServer, isAddMode]);
+  const isRequiredSectionIncomplete = useCallback(sectionId => isEquipmentRequiredSectionIncomplete(formData, moduleKey, sectionId, {
+    isAddMode
+  }), [formData, moduleKey, isAddMode]);
   const formSessionRef = useRef(null);
-
   useEffect(() => {
     if (!open) {
       formSessionRef.current = null;
       return;
     }
-
-    const equipmentKey = isAddMode
-      ? "new"
-      : String(equipment?.id ?? equipment?.rawData?.id ?? equipment?.name ?? "");
+    const equipmentKey = isAddMode ? "new" : String(equipment?.id ?? equipment?.rawData?.id ?? equipment?.name ?? "");
     const sessionKey = `${mode}:${moduleKey ?? ""}:${client?.id ?? ""}:${equipmentKey}`;
-
     if (formSessionRef.current === sessionKey) return;
     formSessionRef.current = sessionKey;
-
-    const nextForm = buildInitialFormData(equipment, moduleKey, { client });
+    const nextForm = buildInitialFormData(equipment, moduleKey, {
+      client
+    });
     setFormData(nextForm);
     setInitialSnapshot(cloneEquipmentFormSnapshot(nextForm));
     setActiveSection("identity");
     setError(null);
-  }, [
-    open,
-    isAddMode,
-    mode,
-    moduleKey,
-    client?.id,
-    equipment?.id,
-    equipment?.name,
-    equipment,
-    client,
-  ]);
-
+  }, [open, isAddMode, mode, moduleKey, client?.id, equipment?.id, equipment?.name, equipment, client]);
   const buildSubmitData = useCallback(() => {
     if (moduleKey === "Internet") {
       return syncInternetLegacyDebit(normalizeInternetFormData(formData));
     }
-    if (moduleKey === "Stockage") {
+    if (moduleKey === "Storage") {
       return {
         ...formData,
-        type: storageTypeToLegacyType(formData.storageType || formData.type),
+        type: storageTypeToLegacyType(formData.storageType || formData.type)
       };
     }
     if (moduleKey === "BorneWifi") {
-      const { clientSsids, assignedSsidIds, ...rest } = formData;
-      const persistedSsids = serializeAssignedSsidsForPersistence(
-        Array.isArray(assignedSsidIds) ? assignedSsidIds : [],
-        clientSsids
-      );
+      const {
+        clientSsids,
+        assignedSsidIds,
+        ...rest
+      } = formData;
+      const persistedSsids = serializeAssignedSsidsForPersistence(Array.isArray(assignedSsidIds) ? assignedSsidIds : [], clientSsids);
       return {
         ...rest,
         ssids: persistedSsids,
         clientSsids,
-        assignedSsidIds,
+        assignedSsidIds
       };
     }
     return formData;
   }, [formData, moduleKey]);
-
   const persistClientWifiCatalog = useCallback(async () => {
     if (moduleKey !== "BorneWifi" || !client?.id) return null;
     const nextCatalog = serializeWifiSsidCatalogForPersistence(formData.clientSsids || []);
@@ -206,76 +138,61 @@ export default function EquipmentFormModal({
     return updateClient(client.id, {
       name: client.name,
       ssid: nextCatalog,
-      ssids: nextCatalog,
+      ssids: nextCatalog
     });
   }, [client, formData.clientSsids, moduleKey]);
-
   useEffect(() => {
     if (!open || moduleKey === "Internet") return;
-    const sectionIds = new Set(sections.map((section) => section.id));
+    const sectionIds = new Set(sections.map(section => section.id));
     if (!sectionIds.has(activeSection)) {
       setActiveSection(sections[0]?.id || "identity");
     }
   }, [open, moduleKey, sections, activeSection, formData.toipType]);
-
   useEffect(() => {
     if (!open || moduleKey !== "TOIP") return;
     if (activeSection === "voip" && !isToipVoipSectionVisible(formData.toipType)) {
       setActiveSection("identity");
     }
   }, [open, moduleKey, activeSection, formData.toipType]);
-
   const update = useCallback((key, value) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
+    setFormData(prev => ({
+      ...prev,
+      [key]: value
+    }));
   }, []);
-
-  const updateBrandModel = useCallback(
-    (brand) => {
-      setFormData((prev) => ({
-        ...prev,
-        manufacturer: brand,
-        model: "",
-        ...(apiType === "NAS" && !isSynologyBrand(brand) ? { quickConnect: "" } : {}),
-      }));
-    },
-    [apiType]
-  );
-
+  const updateBrandModel = useCallback(brand => {
+    setFormData(prev => ({
+      ...prev,
+      manufacturer: brand,
+      model: "",
+      ...(apiType === "NAS" && !isSynologyBrand(brand) ? {
+        quickConnect: ""
+      } : {})
+    }));
+  }, [apiType]);
   const isSynologyStorageForm = apiType === "NAS" && isSynologyBrand(formData.manufacturer);
-
-  const storageBrandCatalog =
-    apiType === "NAS" ? getStorageCatalogByType(formData.storageType) : null;
-
+  const storageBrandCatalog = apiType === "NAS" ? getStorageCatalogByType(formData.storageType) : null;
   const brandModelCatalogByType = {
     Switch: SWITCH_CATALOG,
     BorneWifi: WIFI_AP_CATALOG,
     Alimentation: getAlimentationCatalogByType(formData.alimentationType),
-    TOIP: getToipCatalogByType(formData.toipType),
+    TOIP: getToipCatalogByType(formData.toipType)
   };
-  const brandModelCatalog =
-    apiType === "Firewalls"
-      ? getFirewallCatalogByDeploymentType(formData.firewallType)
-      : apiType === "Routeur"
-        ? getRouterCatalogByType(formData.routeurType)
-        : brandModelCatalogByType[apiType] || null;
-
+  const brandModelCatalog = apiType === "Firewalls" ? getFirewallCatalogByDeploymentType(formData.firewallType) : apiType === "Routeur" ? getRouterCatalogByType(formData.routeurType) : brandModelCatalogByType[apiType] || null;
   const handleSubmit = async () => {
     if (!client?.id) return;
     if (!isAddMode && !equipment) return;
-
     const validationError = validateEquipmentFormI18n(formData, moduleKey, locale, {
       setActiveSection,
-      isAddMode,
+      isAddMode
     });
     if (validationError) {
       setError(validationError);
       return;
     }
-
     setSaving(true);
     setError(null);
     const submitData = buildSubmitData();
-
     const persistToApi = async () => {
       await persistClientWifiCatalog();
       if (isAddMode) {
@@ -286,7 +203,6 @@ export default function EquipmentFormModal({
       await updateEquipment(equipmentId, submitData, equipmentForUpdate);
       return null;
     };
-
     if (backgroundSave) {
       try {
         if (!isAddMode && typeof onSaved === "function") {
@@ -297,10 +213,8 @@ export default function EquipmentFormModal({
         setSaving(false);
         return;
       }
-
       onClose();
       setSaving(false);
-
       void (async () => {
         try {
           const created = await persistToApi();
@@ -309,14 +223,13 @@ export default function EquipmentFormModal({
               await onSaved(submitData, created, equipment, moduleKey);
             }
           }
-          toast.success(isAddMode ? (moduleKey === "Firewalls" ? formCopy.toastAddedFirewall : formCopy.toastAdded) : formCopy.toastUpdated);
+          toast.success(isAddMode ? moduleKey === "Firewalls" ? formCopy.toastAddedFirewall : formCopy.toastAdded : formCopy.toastUpdated);
         } catch (err) {
           toast.error(err.message || formCopy.toastSaveError);
         }
       })();
       return;
     }
-
     try {
       if (isAddMode) {
         const created = await persistToApi();
@@ -331,26 +244,20 @@ export default function EquipmentFormModal({
       }
       onClose();
     } catch (err) {
-      setError(
-        err.message || (isAddMode ? formCopy.errorAdd : formCopy.errorUpdate)
-      );
+      setError(err.message || (isAddMode ? formCopy.errorAdd : formCopy.errorUpdate));
     } finally {
       setSaving(false);
     }
   };
-
   useEffect(() => {
     if (!open) setDeleteConfirmOpen(false);
   }, [open]);
-
   const openDeleteConfirm = () => {
     if (isAddMode || !equipment || !client?.id || saving || deleting) return;
     setDeleteConfirmOpen(true);
   };
-
   const handleConfirmDelete = async () => {
     if (isAddMode || !equipment || !client?.id) return;
-
     setDeleting(true);
     setError(null);
     try {
@@ -368,58 +275,36 @@ export default function EquipmentFormModal({
       setDeleting(false);
     }
   };
-
   if (!open) return null;
-
   const moduleLabel = getEquipmentModuleLabel(moduleKey, locale);
   const equipmentName = equipment?.nom || equipment?.name || equipment?.type || "";
   const isInternetModule = moduleKey === "Internet";
   const isFirewallModule = moduleKey === "Firewalls";
   const isRouterModule = moduleKey === "Routeur";
-  const isServerModule = moduleKey === "Serveurs";
+  const isServerModule = moduleKey === "Servers";
   const isComputerModule = moduleKey === "Ordinateurs";
-  const isStorageModule = moduleKey === "Stockage";
-  const modalTitle = isAddMode
-    ? isInternetModule
-      ? formCopy.addInternetTitle
-      : interpolate(formCopy.addModuleTitle, { module: moduleLabel.toLowerCase() })
-    : isInternetModule
-      ? interpolate(formCopy.editInternetTitle, { name: equipmentName || formCopy.editInternetFallback })
-      : interpolate(formCopy.editEquipmentTitle, { name: equipmentName || formCopy.editEquipmentFallback });
-  const modalSubtitle = isAddMode
-    ? isInternetModule
-      ? formCopy.addInternetSubtitle
-      : formCopy.addEquipmentSubtitle
-    : isInternetModule
-      ? formCopy.editInternetSubtitle
-      : interpolate(formCopy.editEquipmentSubtitle, { module: moduleLabel });
+  const isStorageModule = moduleKey === "Storage";
+  const modalTitle = isAddMode ? isInternetModule ? formCopy.addInternetTitle : interpolate(formCopy.addModuleTitle, {
+    module: moduleLabel.toLowerCase()
+  }) : isInternetModule ? interpolate(formCopy.editInternetTitle, {
+    name: equipmentName || formCopy.editInternetFallback
+  }) : interpolate(formCopy.editEquipmentTitle, {
+    name: equipmentName || formCopy.editEquipmentFallback
+  });
+  const modalSubtitle = isAddMode ? isInternetModule ? formCopy.addInternetSubtitle : formCopy.addEquipmentSubtitle : isInternetModule ? formCopy.editInternetSubtitle : interpolate(formCopy.editEquipmentSubtitle, {
+    module: moduleLabel
+  });
   const modalEyebrow = isInternetModule ? formCopy.eyebrowInternet : formCopy.eyebrowEquipment;
-  const submitDisabled = saving || deleting || (!isAddMode && !hasChanges);
-  const equipmentDisplayName =
-    equipment?.nom || equipment?.name || formData.name || formCopy.thisEquipment;
-
-  return (
-    <>
-      {createPortal(
-    <div className={styles.overlay} onClick={requestClose} role="presentation">
-      <div
-        className={`${styles.shell} ${moduleKey === "Internet" ? styles.shellInternet : ""}`}
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="equipment-form-modal-title"
-      >
+  const submitDisabled = saving || deleting || !isAddMode && !hasChanges;
+  const equipmentDisplayName = equipment?.nom || equipment?.name || formData.name || formCopy.thisEquipment;
+  return <>
+      {createPortal(<div className={styles.overlay} onClick={requestClose} role="presentation">
+      <div className={`${styles.shell} ${moduleKey === "Internet" ? styles.shellInternet : ""}`} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="equipment-form-modal-title">
         <div className={styles.accentBar} aria-hidden />
         <header className={styles.header}>
           <div className={styles.headerMain}>
             <div className={styles.headerIconWrap} aria-hidden>
-              <Icon
-                icon={
-                  isAddMode
-                    ? EQUIPMENT_MODULE_ICONS[moduleKey] || "mdi:plus-circle-outline"
-                    : "mdi:pencil-outline"
-                }
-              />
+              <Icon icon={isAddMode ? EQUIPMENT_MODULE_ICONS[moduleKey] || "mdi:plus-circle-outline" : "mdi:pencil-outline"} />
             </div>
             <div className={styles.headerText}>
               <p className={styles.eyebrow}>{modalEyebrow}</p>
@@ -429,173 +314,74 @@ export default function EquipmentFormModal({
               <p className={styles.subtitle}>{modalSubtitle}</p>
             </div>
           </div>
-          <button
-            type="button"
-            className={styles.closeBtn}
-            onClick={requestClose}
-            disabled={saving || deleting}
-            aria-label={formCopy.close}
-          >
+          <button type="button" className={styles.closeBtn} onClick={requestClose} disabled={saving || deleting} aria-label={formCopy.close}>
             <FaTimes />
           </button>
         </header>
 
         <div className={styles.body}>
           <nav className={styles.nav} aria-label={formCopy.navAria}>
-            {sections.map((section) => (
-              <button
-                key={section.id}
-                type="button"
-                className={`${styles.navItem} ${
-                  activeSection === section.id ? styles.navItemActive : ""
-                }`}
-                onClick={() => setActiveSection(section.id)}
-                aria-current={activeSection === section.id ? "step" : undefined}
-              >
+            {sections.map(section => <button key={section.id} type="button" className={`${styles.navItem} ${activeSection === section.id ? styles.navItemActive : ""}`} onClick={() => setActiveSection(section.id)} aria-current={activeSection === section.id ? "step" : undefined}>
                 <Icon icon={section.icon} className={styles.navItemIcon} aria-hidden />
                 <span className={styles.navItemText}>
-                  <span
-                    className={`${styles.navItemLabel} ${
-                      isRequiredSectionIncomplete(section.id) ? styles.navItemLabelRequired : ""
-                    }`}
-                  >
+                  <span className={`${styles.navItemLabel} ${isRequiredSectionIncomplete(section.id) ? styles.navItemLabelRequired : ""}`}>
                     {section.label}
                   </span>
                   <span className={styles.navItemHint}>{section.description}</span>
                 </span>
-                {sectionMeta[section.id] ? (
-                  <span className={styles.navBadge}>✓</span>
-                ) : null}
-              </button>
-            ))}
+                {sectionMeta[section.id] ? <span className={styles.navBadge}>✓</span> : null}
+              </button>)}
           </nav>
 
           <div className={styles.content}>
-            {error && (
-              <div
-                role="alert"
-                style={{
-                  marginBottom: "1rem",
-                  padding: "0.65rem 0.85rem",
-                  borderRadius: "10px",
-                  background: "rgba(220, 38, 38, 0.08)",
-                  border: "1px solid rgba(220, 38, 38, 0.2)",
-                  color: "#b91c1c",
-                  fontSize: "0.8125rem",
-                }}
-              >
+            {error && <div role="alert" style={{
+              marginBottom: "1rem",
+              padding: "0.65rem 0.85rem",
+              borderRadius: "10px",
+              background: "rgba(220, 38, 38, 0.08)",
+              border: "1px solid rgba(220, 38, 38, 0.2)",
+              color: "#b91c1c",
+              fontSize: "0.8125rem"
+            }}>
                 {error}
-              </div>
-            )}
-            <EquipmentFormSectionContent
-              activeSection={activeSection}
-              moduleKey={moduleKey}
-              apiType={apiType}
-              formData={formData}
-              setFormData={setFormData}
-              update={update}
-              updateBrandModel={updateBrandModel}
-              availableSites={availableSites}
-              firewallPartnerOptions={firewallPartnerOptions}
-              isPhysicalServer={isPhysicalServer}
-              serverType={serverType}
-              isSynologyStorageForm={isSynologyStorageForm}
-              brandModelCatalog={brandModelCatalog}
-              storageBrandCatalog={storageBrandCatalog}
-              isAddMode={isAddMode}
-              isRequiredSectionIncomplete={isRequiredSectionIncomplete}
-              formCopy={copy}
-            />
+              </div>}
+            <EquipmentFormSectionContent activeSection={activeSection} moduleKey={moduleKey} apiType={apiType} formData={formData} setFormData={setFormData} update={update} updateBrandModel={updateBrandModel} availableSites={availableSites} firewallPartnerOptions={firewallPartnerOptions} isPhysicalServer={isPhysicalServer} serverType={serverType} isSynologyStorageForm={isSynologyStorageForm} brandModelCatalog={brandModelCatalog} storageBrandCatalog={storageBrandCatalog} isAddMode={isAddMode} isRequiredSectionIncomplete={isRequiredSectionIncomplete} formCopy={copy} />
           </div>
         </div>
 
         <footer className={styles.footer}>
           <span className={styles.footerHint}>
-            {isAddMode
-              ? formCopy.footerRequired
-              : hasChanges
-                ? formCopy.footerUnsaved
-                : formCopy.footerNoChanges}
+            {isAddMode ? formCopy.footerRequired : hasChanges ? formCopy.footerUnsaved : formCopy.footerNoChanges}
           </span>
           <div className={styles.footerActions}>
-            {!isAddMode && (
-              <button
-                type="button"
-                className={`${styles.ghostBtn} ${styles.footerDeleteBtn}`}
-                onClick={openDeleteConfirm}
-                disabled={saving || deleting}
-              >
+            {!isAddMode && <button type="button" className={`${styles.ghostBtn} ${styles.footerDeleteBtn}`} onClick={openDeleteConfirm} disabled={saving || deleting}>
                 <Icon icon="mdi:delete-outline" aria-hidden />
                 {deleting ? formCopy.deleting : formCopy.delete}
-              </button>
-            )}
-            <button
-              type="button"
-              className={styles.ghostBtn}
-              onClick={requestClose}
-              disabled={saving || deleting}
-            >
+              </button>}
+            <button type="button" className={styles.ghostBtn} onClick={requestClose} disabled={saving || deleting}>
               {formCopy.cancel}
             </button>
-            <button
-              type="button"
-              className={styles.primaryBtn}
-              onClick={handleSubmit}
-              disabled={submitDisabled}
-            >
-              {saving ? (
-                <>
+            <button type="button" className={styles.primaryBtn} onClick={handleSubmit} disabled={submitDisabled}>
+              {saving ? <>
                   <Icon icon="mdi:loading" className={styles.spinning} aria-hidden />
                   {formCopy.saving}
-                </>
-              ) : isAddMode ? (
-                <>
+                </> : isAddMode ? <>
                   <Icon icon="mdi:check" aria-hidden />
-                  {isInternetModule
-                    ? formCopy.createInternet
-                    : isFirewallModule
-                      ? formCopy.createFirewall
-                      : isRouterModule
-                        ? formCopy.createRouter
-                        : isServerModule
-                          ? formCopy.createServer
-                          : isStorageModule
-                            ? formCopy.createStorage
-                            : isComputerModule
-                              ? formCopy.createComputer
-                            : formCopy.createEquipment}
-                </>
-              ) : (
-                <>
+                  {isInternetModule ? formCopy.createInternet : isFirewallModule ? formCopy.createFirewall : isRouterModule ? formCopy.createRouter : isServerModule ? formCopy.createServer : isStorageModule ? formCopy.createStorage : isComputerModule ? formCopy.createComputer : formCopy.createEquipment}
+                </> : <>
                   <Icon icon="mdi:content-save-outline" aria-hidden />
                   {formCopy.save}
-                </>
-              )}
+                </>}
             </button>
           </div>
         </footer>
       </div>
-    </div>,
-        document.getElementById("modal-root") || document.body
-      )}
-      <ModalDiscardConfirm
-        open={discardConfirmOpen}
-        onConfirm={confirmDiscard}
-        onClose={cancelDiscard}
-      />
-      <ConfirmModal
-        open={deleteConfirmOpen}
-        title={isInternetModule ? formCopy.deleteInternetTitle : formCopy.deleteEquipmentTitle}
-        icon="mdi:delete-alert-outline"
-        message={interpolate(formCopy.deleteMessage, { name: equipmentDisplayName })}
-        confirmLabel={formCopy.delete}
-        confirmVariant="dangerSolid"
-        confirmLoading={deleting}
-        onConfirm={handleConfirmDelete}
-        onClose={() => {
-          if (!deleting) setDeleteConfirmOpen(false);
-        }}
-      />
-    </>
-  );
+    </div>, document.getElementById("modal-root") || document.body)}
+      <ModalDiscardConfirm open={discardConfirmOpen} onConfirm={confirmDiscard} onClose={cancelDiscard} />
+      <ConfirmModal open={deleteConfirmOpen} title={isInternetModule ? formCopy.deleteInternetTitle : formCopy.deleteEquipmentTitle} icon="mdi:delete-alert-outline" message={interpolate(formCopy.deleteMessage, {
+      name: equipmentDisplayName
+    })} confirmLabel={formCopy.delete} confirmVariant="dangerSolid" confirmLoading={deleting} onConfirm={handleConfirmDelete} onClose={() => {
+      if (!deleting) setDeleteConfirmOpen(false);
+    }} />
+    </>;
 }

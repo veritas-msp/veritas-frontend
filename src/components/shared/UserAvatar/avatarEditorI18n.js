@@ -1,5 +1,4 @@
 import { createLocaleGetter } from "../../../i18n/translate";
-
 const AVATAR_EDITOR_COPY = {
   fr: {
     currentLabel: "Photo affichée dans le chat support",
@@ -14,8 +13,8 @@ const AVATAR_EDITOR_COPY = {
       photoSaved: "Photo de profil enregistrée",
       uploadError: "Impossible d'envoyer l'image",
       cleared: "Avatar réinitialisé",
-      clearError: "Impossible de réinitialiser l'avatar",
-    },
+      clearError: "Impossible de réinitialiser l'avatar"
+    }
   },
   en: {
     currentLabel: "Photo shown in support chat",
@@ -30,8 +29,8 @@ const AVATAR_EDITOR_COPY = {
       photoSaved: "Profile photo saved",
       uploadError: "Unable to upload image",
       cleared: "Avatar reset",
-      clearError: "Unable to reset avatar",
-    },
+      clearError: "Unable to reset avatar"
+    }
   },
   de: {
     currentLabel: "Foto im Support-Chat angezeigt",
@@ -46,8 +45,8 @@ const AVATAR_EDITOR_COPY = {
       photoSaved: "Profilfoto gespeichert",
       uploadError: "Bild konnte nicht hochgeladen werden",
       cleared: "Avatar zurückgesetzt",
-      clearError: "Avatar konnte nicht zurückgesetzt werden",
-    },
+      clearError: "Avatar konnte nicht zurückgesetzt werden"
+    }
   },
   it: {
     currentLabel: "Foto mostrata nella chat di supporto",
@@ -62,8 +61,8 @@ const AVATAR_EDITOR_COPY = {
       photoSaved: "Foto del profilo salvata",
       uploadError: "Impossibile caricare l'immagine",
       cleared: "Avatar reimpostato",
-      clearError: "Impossibile reimpostare l'avatar",
-    },
+      clearError: "Impossibile reimpostare l'avatar"
+    }
   },
   es: {
     currentLabel: "Foto mostrada en el chat de soporte",
@@ -78,9 +77,8 @@ const AVATAR_EDITOR_COPY = {
       photoSaved: "Foto de perfil guardada",
       uploadError: "No se pudo subir la imagen",
       cleared: "Avatar restablecido",
-      clearError: "No se pudo restablecer el avatar",
-    },
-  },
+      clearError: "No se pudo restablecer el avatar"
+    }
+  }
 };
-
 export const getAvatarEditorCopy = createLocaleGetter(AVATAR_EDITOR_COPY);

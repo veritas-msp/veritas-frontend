@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { Icon } from "@iconify/react";
 import { toast } from 'react-toastify';
-import { FaServer, FaNetworkWired, FaWifi, FaShieldAlt, FaHdd, FaGlobe, FaCamera, FaStickyNote, FaTimes, FaCube, FaHistory, FaChevronLeft, FaChevronRight, FaPlay, FaTerminal, FaPlus } from "react-icons/fa";
+import { FaServer, FaNetworkWired, FaWifi, FaShieldAlt, FaHdd, FaGlobe, FaCamera, FaStickyNote, FaTimes, FaCube, FaPlus } from "react-icons/fa";
 import styles from "./EquipmentDetailPage.module.css";
 import enterpriseDetailStyles from "../EnterprisesPage/EnterpriseDetailPage.module.css";
 import SmartTooltip from "../SmartTooltip";
 import EquipmentFormModal from "./EquipmentFormModal";
 import { fetchClientGeneral } from "../../api/clients";
 import { normalizeClientSites } from "../../utils/clientSites";
-import { updateEquipment, getEquipmentNotes, addEquipmentNote, uploadEquipmentPhoto, getEquipmentPhotos, getCheckMKAvailability, getAllHardwareEquipment, getClientHardwareEquipment, getEquipmentLogs, purgeEquipmentLogs, equipmentTypeToFamily, getEquipmentCheckMKMonitoring, syncEquipmentCheckMKMonitoring, fetchEquipmentTags, addEquipmentTag, removeEquipmentTag } from "../../api/equipment";
+import { updateEquipment, getCheckMKAvailability, getAllHardwareEquipment, getClientHardwareEquipment, getEquipmentLogs, purgeEquipmentLogs, equipmentTypeToFamily, getEquipmentCheckMKMonitoring, syncEquipmentCheckMKMonitoring, fetchEquipmentTags, addEquipmentTag, removeEquipmentTag } from "../../api/equipment";
 import { requestRmmAgentSync, cancelRmmAgentSync, fetchRmmAgents } from "../../api/rmm";
 import ClientTagModal from "../EnterprisesPage/ClientTagModal";
-import API_BASE_URL from "../../config";
 import EquipmentMappingModal from "./EquipmentMappingModal";
 import CheckMKMonitoringPanel from "./CheckMKMonitoringPanel";
 import RmmMonitoringPanel, { RmmSyncPendingNotice } from "./RmmMonitoringPanel";
@@ -38,11 +37,6 @@ import { ConfirmModal } from "../AdminPage/AdminUi";
 import { useAppLocale } from "../../hooks/useAppGeneralSettings";
 import { getEquipmentModalsCopy, interpolate } from "./equipmentModalsI18n";
 import { isCheckMKMappableType } from "./CheckMKMonitoringStatusBadge";
-import RoleTagsSelect from "./RoleTagsSelect";
-import { SERVER_ROLE_GROUPS, SERVER_ROLE_OPTIONS } from "./constants/serverRoleOptions";
-import ServerRemoteAccessFields from "./ServerRemoteAccessFields";
-import StorageDiskBayPicker from "./StorageDiskBayPicker";
-import CapacityInput from "./CapacityInput";
 import { isSynologyBrand, buildQuickConnectUrl } from "./synologyEquipmentUtils";
 import { getLogActionDetails } from "./equipmentLogUtils";
 import EquipmentLogDetailModal from "./EquipmentLogDetailModal";
@@ -51,35 +45,29 @@ import { useVeritasEdition } from "../../hooks/useVeritasEdition";
 import ProFeatureBadge from "../Misc/ProFeature/ProFeatureBadge";
 import ProFeaturePromoModal from "../Misc/ProFeature/ProFeaturePromoModal";
 import { notifyProFeature, setProFeaturePromoHandler } from "../Misc/ProFeature/proFeatureUtils";
-import {
-  findEquipmentInList,
-  getEquipmentClientId,
-  getEquipmentDbId as resolveEquipmentDbId,
-  getEquipmentListKey,
-} from "../../utils/equipmentIdentity";
-import {
-  getRmmAgentId,
-  getRmmAgentVersion,
-  buildRmmAgentRowFromEquipment,
-  formatRmmDateTime,
-  getRmmSyncRequestedAt,
-  isRmmManagedEquipment,
-  patchEquipmentRmmSyncRequest,
-  resolveRmmSyncRequestState,
-  rmmSyncTimestampsMatch,
-  formatRmmExpectedCollectionLabel,
-} from "./rmmMonitoringUtils";
-
+import { findEquipmentInList, getEquipmentClientId, getEquipmentDbId as resolveEquipmentDbId, getEquipmentListKey } from "../../utils/equipmentIdentity";
+import { getRmmAgentId, getRmmAgentVersion, buildRmmAgentRowFromEquipment, getRmmSyncRequestedAt, isRmmManagedEquipment, patchEquipmentRmmSyncRequest, resolveRmmSyncRequestState, rmmSyncTimestampsMatch, formatRmmExpectedCollectionLabel } from "./rmmMonitoringUtils";
 const CheckMKMappingModal = EquipmentMappingModal;
-
-export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNavigate, onNavigateToEquipment }) {
+export default function EquipmentDetailPage({
+  equipment,
+  onBack,
+  onUpdate,
+  onNavigate,
+  onNavigateToEquipment
+}) {
   const CHECKMK_SYNC_MIN_INTERVAL_MS = 30 * 60 * 1000;
   const locale = useAppLocale();
   const modalsCopy = useMemo(() => getEquipmentModalsCopy(locale), [locale]);
   const copy = useMemo(() => getEquipmentDetailCopy(locale), [locale]);
-  const { theme } = useTheme();
-  const { isCommunity } = useVeritasEdition();
-  const { enabled: checkmkIntegrationEnabled } = useCheckMKIntegrationEnabled();
+  const {
+    theme
+  } = useTheme();
+  const {
+    isCommunity
+  } = useVeritasEdition();
+  const {
+    enabled: checkmkIntegrationEnabled
+  } = useCheckMKIntegrationEnabled();
   const [isEditingInfo, setIsEditingInfo] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -98,7 +86,7 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
   const [checkmkMapping, setCheckmkMapping] = useState(equipment?.checkmkMapping || null);
   const [checkmkLastSyncedAt, setCheckmkLastSyncedAt] = useState(null);
   const [checkmkPeriod, setCheckmkPeriod] = useState(null);
-  const [checkmkAvailabilityPeriod, setCheckmkAvailabilityPeriod] = useState('1m'); // '1m' | '3m' | '1y'
+  const [checkmkAvailabilityPeriod, setCheckmkAvailabilityPeriod] = useState('1m');
   const [eventModalOpen, setEventModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
@@ -118,13 +106,11 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
   const [heroMenuOpen, setHeroMenuOpen] = useState(false);
   const [rmmSyncRequesting, setRmmSyncRequesting] = useState(false);
   const [lunsModalOpen, setLunsModalOpen] = useState(false);
-  const [licencesModalOpen, setLicencesModalOpen] = useState(false);
+  const [licencesModalOpen, setLicensesModalOpen] = useState(false);
   const [availableSites, setAvailableSites] = useState([]);
-  // Ã‰tats pour les logs
   const [logs, setLogs] = useState([]);
   const [loadingLogs, setLoadingLogs] = useState(true);
   const [logsPage, setLogsPage] = useState(1);
-  // États pour l'activité (événements + tickets)
   const [activity, setActivity] = useState(null);
   const [loadingActivity, setLoadingActivity] = useState(false);
   const [activityDatePreset, setActivityDatePreset] = useState("30d");
@@ -132,7 +118,6 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
   const [activityCustomEnd, setActivityCustomEnd] = useState(toDateInputValue(new Date()));
   const activityControllerRef = useRef(null);
   const lastActivityFetchKeyRef = useRef(null);
-  // Ã‰tats pour les SSID (bornes WiFi)
   const [globalSSIDs, setGlobalSSIDs] = useState([]);
   const [loadingSSIDs, setLoadingSSIDs] = useState(false);
   const [logsTotal, setLogsTotal] = useState(0);
@@ -142,19 +127,22 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
   const [purgeLogsConfirmOpen, setPurgeLogsConfirmOpen] = useState(false);
   const [purgingLogs, setPurgingLogs] = useState(false);
   const logsLimit = 10;
-
-  const LOG_FILTER_OPTIONS = useMemo(
-    () => [
-      { value: "all", label: copy.logs.filters.all },
-      { value: "user", label: copy.logs.filters.user },
-      { value: "modifications", label: copy.logs.filters.modifications },
-      { value: "rmm", label: copy.logs.filters.rmm },
-      { value: "remote", label: copy.logs.filters.remote },
-    ],
-    [copy]
-  );
-  
-  // État pour la sidebar droite
+  const LOG_FILTER_OPTIONS = useMemo(() => [{
+    value: "all",
+    label: copy.logs.filters.all
+  }, {
+    value: "user",
+    label: copy.logs.filters.user
+  }, {
+    value: "modifications",
+    label: copy.logs.filters.modifications
+  }, {
+    value: "rmm",
+    label: copy.logs.filters.rmm
+  }, {
+    value: "remote",
+    label: copy.logs.filters.remote
+  }], [copy]);
   const [rightPanelTab, setRightPanelTab] = useState('dashboard');
   const logsControllerRef = useRef(null);
   const checkmkControllerRef = useRef(null);
@@ -164,49 +152,36 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
   const syncConfirmedOnAgentRef = useRef(false);
   const lastRmmRefreshSnapshotRef = useRef(null);
   const getEquipmentDbIdLocal = () => resolveEquipmentDbId(equipment);
-
-  const getEditModuleKey = (eq) => {
-    const displayType = eq?.type === "NAS" ? "Stockage" : eq?.type;
-    if (displayType === "Stockage" || eq?.type === "NAS") return "Stockage";
+  const getEditModuleKey = eq => {
+    const displayType = eq?.type === "NAS" ? "Storage" : eq?.type;
+    if (displayType === "Storage" || eq?.type === "NAS") return "Storage";
     return eq?.type || displayType;
   };
-
-  const equipmentDisplayType = equipment?.type === "NAS" ? "Stockage" : equipment?.type;
+  const equipmentDisplayType = equipment?.type === "NAS" ? "Storage" : equipment?.type;
   const equipmentModuleKey = equipment ? getEditModuleKey(equipment) : null;
   const alertSettings = useEquipmentAlertSettings(equipment);
   const rmmManaged = isRmmManagedEquipment(equipment);
   const rmmAgentId = getRmmAgentId(equipment);
-  // undefined = dérivé de l'équipement ; null = annulé localement ; string = demandé
   const [syncRequestOverride, setSyncRequestOverride] = useState(undefined);
-  const { pending: rmmSyncPending, requestedAt: rmmSyncRequestedAt } = useMemo(
-    () => resolveRmmSyncRequestState(equipment, syncRequestOverride),
-    [equipment, syncRequestOverride]
-  );
-
+  const {
+    pending: rmmSyncPending,
+    requestedAt: rmmSyncRequestedAt
+  } = useMemo(() => resolveRmmSyncRequestState(equipment, syncRequestOverride), [equipment, syncRequestOverride]);
   useEffect(() => {
     syncRequestOverrideRef.current = syncRequestOverride;
   }, [syncRequestOverride]);
-
   const showRmmHeroStatus = equipment?.type === "Ordinateurs" && rmmManaged;
-  const rmmAgentVersion = useMemo(
-    () => (showRmmHeroStatus ? getRmmAgentVersion(equipment) : null),
-    [equipment, showRmmHeroStatus]
-  );
+  const rmmAgentVersion = useMemo(() => showRmmHeroStatus ? getRmmAgentVersion(equipment) : null, [equipment, showRmmHeroStatus]);
   const showRmmMetricsTab = equipment?.type === "Ordinateurs" && rmmManaged;
   const showRmmPeripheralsTab = showRmmMetricsTab;
   const showRmmOperationsTab = showRmmMetricsTab;
-  const rmmMetricsAgent = useMemo(
-    () => (showRmmMetricsTab ? buildRmmAgentRowFromEquipment(equipment) : null),
-    [equipment, showRmmMetricsTab]
-  );
-
+  const rmmMetricsAgent = useMemo(() => showRmmMetricsTab ? buildRmmAgentRowFromEquipment(equipment) : null, [equipment, showRmmMetricsTab]);
   useEffect(() => {
     if (!equipment?.id) return;
     if (equipment.detailTab === "metrics" && showRmmMetricsTab) {
       setRightPanelTab("metrics");
     }
   }, [equipment?.id, equipment?.detailTab, showRmmMetricsTab]);
-
   const handleRmmFullSync = async () => {
     setHeroMenuOpen(false);
     if (!rmmAgentId) {
@@ -221,24 +196,21 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
       setSyncRequestOverride(syncAt);
       onUpdate?.(patchEquipmentRmmSyncRequest(equipment, syncAt));
       const expectedLabel = formatRmmExpectedCollectionLabel(equipment, undefined, {
-        withAbsolute: false,
+        withAbsolute: false
       });
-      toast.success(
-        expectedLabel
-          ? interpolate(copy.toasts.fullSyncRequestedWithCollection, { label: expectedLabel })
-          : copy.toasts.fullSyncRequested
-      );
+      toast.success(expectedLabel ? interpolate(copy.toasts.fullSyncRequestedWithCollection, {
+        label: expectedLabel
+      }) : copy.toasts.fullSyncRequested);
       window.setTimeout(() => {
         refreshRmmEquipment();
       }, 5000);
     } catch (error) {
-      console.error("Erreur sync complet RMM:", error);
+      console.error("Error sync complet RMM:", error);
       toast.error(error?.message || copy.toasts.fullSyncRequestError);
     } finally {
       setRmmSyncRequesting(false);
     }
   };
-
   const handleRmmCancelSync = async () => {
     setHeroMenuOpen(false);
     if (!rmmAgentId) {
@@ -254,13 +226,12 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
       toast.success(copy.toasts.fullSyncCancelled);
       await refreshRmmEquipment();
     } catch (error) {
-      console.error("Erreur annulation sync RMM:", error);
+      console.error("Error annulation sync RMM:", error);
       toast.error(error?.message || copy.toasts.fullSyncCancelError);
     } finally {
       setRmmSyncRequesting(false);
     }
   };
-
   const refreshRmmEquipment = useCallback(async () => {
     if (!equipment?.clientId || !onUpdate) return;
     try {
@@ -271,7 +242,6 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
         const preserveCancelled = syncRequestOverrideRef.current === null;
         const currentOverride = syncRequestOverrideRef.current;
         let nextEquipment = refreshed;
-
         if (preserveCancelled) {
           nextEquipment = patchEquipmentRmmSyncRequest(refreshed, null);
           setSyncRequestOverride(null);
@@ -284,50 +254,44 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
         } else if (currentOverride === undefined) {
           setSyncRequestOverride(undefined);
         }
-
-        setFormData(buildDetailFormData(nextEquipment, { clientSites, clientSsids }));
+        setFormData(buildDetailFormData(nextEquipment, {
+          clientSites,
+          clientSsids
+        }));
         const rmmSnapshot = JSON.stringify({
           dbId: resolveEquipmentDbId(nextEquipment),
           syncAt: getRmmSyncRequestedAt(nextEquipment),
           heartbeat: nextEquipment?.rmmLastHeartbeat || nextEquipment?.rawData?.rmm_last_heartbeat || null,
-          agentStatus: nextEquipment?.agentStatus || nextEquipment?.rawData?.agent_status || null,
+          agentStatus: nextEquipment?.agentStatus || nextEquipment?.rawData?.agent_status || null
         });
         if (lastRmmRefreshSnapshotRef.current === rmmSnapshot) return;
         lastRmmRefreshSnapshotRef.current = rmmSnapshot;
         onUpdate(nextEquipment);
       }
-    } catch {
-      // Ignorer · la fiche reste utilisable avec les données locales
-    }
+    } catch {}
   }, [equipment, onUpdate, clientSites, clientSsids]);
-
   useEffect(() => {
-    setProFeaturePromoHandler((featureKey) => setProPromoFeature(featureKey));
+    setProFeaturePromoHandler(featureKey => setProPromoFeature(featureKey));
     return () => setProFeaturePromoHandler(null);
   }, []);
-
   const openCreateEventModal = () => {
     setHeroMenuOpen(false);
     if (isCommunity) {
-      notifyProFeature("Planning entreprise");
+      notifyProFeature("Company schedule");
       return;
     }
     setEditingEvent(null);
     setEventModalOpen(true);
   };
-
-  const applyCheckMKPayload = (payload) => {
+  const applyCheckMKPayload = payload => {
     if (!payload) return;
     const availabilityByPeriod = payload.availabilityByPeriod || payload.checkmkData?.availabilityByPeriod || {};
-    const availability =
-      availabilityByPeriod[checkmkAvailabilityPeriod] ??
-      payload.checkmkData?.availability ??
-      null;
+    const availability = availabilityByPeriod[checkmkAvailabilityPeriod] ?? payload.checkmkData?.availability ?? null;
     if (payload.checkmkData) {
       setCheckmkData({
         ...payload.checkmkData,
         availability,
-        availabilityByPeriod,
+        availabilityByPeriod
       });
     }
     if (payload.hostDetails) {
@@ -337,75 +301,54 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
       setCheckmkLastSyncedAt(payload.lastSyncedAt);
     }
   };
-
   const abortAllPendingFetches = () => {
     logsControllerRef.current?.abort();
     checkmkControllerRef.current?.abort();
     availabilityControllerRef.current?.abort();
   };
-
   const [initialFormData, setInitialFormData] = useState(null);
   const [hasInfoChanges, setHasInfoChanges] = useState(false);
-
-  // État local pour les champs éditables (hydraté depuis la config formulaire + RMM)
   const [formData, setFormData] = useState(() => buildDetailFormData(equipment));
-
-  const remoteAccessAction = useMemo(
-    () => resolveEquipmentRemoteAccessAction(equipment, formData, locale),
-    [equipment, formData, locale]
-  );
-
+  const remoteAccessAction = useMemo(() => resolveEquipmentRemoteAccessAction(equipment, formData, locale), [equipment, formData, locale]);
   const equipmentDbId = useMemo(() => resolveEquipmentDbId(equipment), [equipment]);
   const equipmentClientId = useMemo(() => getEquipmentClientId(equipment), [equipment]);
   const equipmentIdentityKey = useMemo(() => getEquipmentListKey(equipment), [equipment]);
   const canManageEquipmentTags = Boolean(equipmentDbId && equipmentClientId);
-
   useEffect(() => {
     if (!canManageEquipmentTags) {
       setEquipmentTags([]);
       setLoadingEquipmentTags(false);
       return undefined;
     }
-
     let cancelled = false;
     setLoadingEquipmentTags(true);
-    fetchEquipmentTags(equipmentDbId, equipmentClientId)
-      .then((tags) => {
-        if (!cancelled) setEquipmentTags(Array.isArray(tags) ? tags : []);
-      })
-      .catch((error) => {
-        console.error("Erreur chargement étiquettes périphérique:", error);
-        if (!cancelled) setEquipmentTags([]);
-      })
-      .finally(() => {
-        if (!cancelled) setLoadingEquipmentTags(false);
-      });
-
+    fetchEquipmentTags(equipmentDbId, equipmentClientId).then(tags => {
+      if (!cancelled) setEquipmentTags(Array.isArray(tags) ? tags : []);
+    }).catch(error => {
+      console.error("Error loading tags device:", error);
+      if (!cancelled) setEquipmentTags([]);
+    }).finally(() => {
+      if (!cancelled) setLoadingEquipmentTags(false);
+    });
     return () => {
       cancelled = true;
     };
   }, [canManageEquipmentTags, equipmentDbId, equipmentClientId]);
-
   useEffect(() => {
     if (!equipment) return;
     abortAllPendingFetches();
-
-    setFormData(buildDetailFormData(equipment, { clientSites, clientSsids }));
-
+    setFormData(buildDetailFormData(equipment, {
+      clientSites,
+      clientSsids
+    }));
     const mapping = equipment.checkmkMapping || checkmkMapping || null;
     setCheckmkMapping(mapping);
-    // Désactivé temporairement - fonctionnalités à venir
-    // loadNotes();
-    // loadPhotos();
     if (checkmkIntegrationEnabled && mapping && mapping.checkmk_host_name) {
       loadCheckMKData();
     } else {
       setCheckmkData(null);
     }
-    // Les logs sont chargés uniquement à la demande (onglet "logs")
-    // Aucun chargement annexe ici: la fiche se base uniquement sur l'équipement courant.
   }, [equipmentIdentityKey, checkmkIntegrationEnabled, clientSites, clientSsids]);
-
   useEffect(() => {
     if (!equipment?.clientId) {
       setClientSites([]);
@@ -413,63 +356,50 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
       return undefined;
     }
     let mounted = true;
-    fetchClientGeneral(equipment.clientId)
-      .then((client) => {
-        if (!mounted) return;
-        setClientSites(normalizeClientSites(client?.sites));
-        setClientSsids(Array.isArray(client?.ssids) ? client.ssids : []);
-      })
-      .catch(() => {
-        if (mounted) {
-          setClientSites([]);
-          setClientSsids([]);
-        }
-      });
+    fetchClientGeneral(equipment.clientId).then(client => {
+      if (!mounted) return;
+      setClientSites(normalizeClientSites(client?.sites));
+      setClientSsids(Array.isArray(client?.ssids) ? client.ssids : []);
+    }).catch(() => {
+      if (mounted) {
+        setClientSites([]);
+        setClientSsids([]);
+      }
+    });
     return () => {
       mounted = false;
     };
   }, [equipment?.clientId]);
-
   useEffect(() => {
     if (equipment?.type !== "Firewalls" || !equipment?.clientId) {
       setPeerFirewalls([]);
       return undefined;
     }
     let mounted = true;
-    getClientHardwareEquipment(equipment.clientId)
-      .then((list) => {
-        if (!mounted) return;
-        setPeerFirewalls(
-          (Array.isArray(list) ? list : []).filter((eq) => eq.type === "Firewalls")
-        );
-      })
-      .catch(() => {
-        if (mounted) setPeerFirewalls([]);
-      });
+    getClientHardwareEquipment(equipment.clientId).then(list => {
+      if (!mounted) return;
+      setPeerFirewalls((Array.isArray(list) ? list : []).filter(eq => eq.type === "Firewalls"));
+    }).catch(() => {
+      if (mounted) setPeerFirewalls([]);
+    });
     return () => {
       mounted = false;
     };
   }, [equipment?.clientId, equipment?.type, equipmentIdentityKey]);
-
-  const openLinkedEquipment = useCallback(
-    (target) => {
-      if (!target) return;
-      if (onNavigate) {
-        onNavigate("EquipmentDetail", target);
-        return;
-      }
-      onNavigateToEquipment?.(target);
-    },
-    [onNavigate, onNavigateToEquipment]
-  );
-
+  const openLinkedEquipment = useCallback(target => {
+    if (!target) return;
+    if (onNavigate) {
+      onNavigate("EquipmentDetail", target);
+      return;
+    }
+    onNavigateToEquipment?.(target);
+  }, [onNavigate, onNavigateToEquipment]);
   useEffect(() => {
     const timer = window.setTimeout(() => {
       setLogsSearch(logsSearchDraft.trim());
     }, 350);
     return () => window.clearTimeout(timer);
   }, [logsSearchDraft]);
-
   useEffect(() => {
     if (rightPanelTab !== 'logs') {
       logsControllerRef.current?.abort();
@@ -478,7 +408,6 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
     if (!equipment?.id) return;
     loadLogs(1);
   }, [rightPanelTab, equipment?.id, logsSearch, logsCategory]);
-
   useEffect(() => {
     if (!rmmManaged || !equipment?.clientId) return undefined;
     refreshRmmEquipment();
@@ -489,32 +418,27 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
     }, intervalMs);
     return () => clearInterval(interval);
   }, [rmmManaged, equipment?.clientId, equipment?.id, rmmSyncPending, refreshRmmEquipment]);
-
   useEffect(() => {
     if (rightPanelTab === "dashboard" && rmmManaged) {
       refreshRmmEquipment();
     }
   }, [rightPanelTab, rmmManaged, refreshRmmEquipment]);
-
   useEffect(() => {
     setSyncRequestOverride(undefined);
     syncConfirmedOnAgentRef.current = Boolean(getRmmSyncRequestedAt(equipment));
     lastRmmRefreshSnapshotRef.current = null;
     lastActivityFetchKeyRef.current = null;
   }, [equipment?.id]);
-
   useEffect(() => {
     if (!rmmManaged || !rmmAgentId || !equipment?.clientId || !onUpdate) return undefined;
     let cancelled = false;
-
     const pollAgentSyncState = async () => {
       try {
         const agents = await fetchRmmAgents(equipment.clientId);
         if (cancelled) return;
-        const agent = (Array.isArray(agents) ? agents : []).find((row) => row.id === rmmAgentId);
+        const agent = (Array.isArray(agents) ? agents : []).find(row => row.id === rmmAgentId);
         if (!agent) return;
         const syncAt = agent.sync_requested_at || null;
-
         if (syncRequestOverrideRef.current === null) {
           if (!syncAt) {
             setSyncRequestOverride(undefined);
@@ -523,17 +447,11 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
           }
           return;
         }
-
-        const currentAt =
-          syncRequestOverrideRef.current !== undefined
-            ? syncRequestOverrideRef.current
-            : getRmmSyncRequestedAt(equipment);
-
+        const currentAt = syncRequestOverrideRef.current !== undefined ? syncRequestOverrideRef.current : getRmmSyncRequestedAt(equipment);
         if (rmmSyncTimestampsMatch(syncAt, currentAt)) {
           if (syncAt) syncConfirmedOnAgentRef.current = true;
           return;
         }
-
         if (!syncAt) {
           if (typeof currentAt === "string" && !syncConfirmedOnAgentRef.current) {
             return;
@@ -544,71 +462,51 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
           refreshRmmEquipment();
           return;
         }
-
         syncConfirmedOnAgentRef.current = true;
         setSyncRequestOverride(syncAt);
         onUpdate(patchEquipmentRmmSyncRequest(equipment, syncAt));
-      } catch {
-        // Ignorer · l'état local reste utilisable
-      }
+      } catch {}
     };
-
     pollAgentSyncState();
     if (!rmmSyncPending) {
       return () => {
         cancelled = true;
       };
     }
-
     const interval = setInterval(pollAgentSyncState, 15000);
     return () => {
       cancelled = true;
       clearInterval(interval);
     };
-  }, [
-    rmmManaged,
-    rmmAgentId,
-    equipment?.clientId,
-    equipment?.id,
-    onUpdate,
-    refreshRmmEquipment,
-    rmmSyncPending,
-  ]);
-
+  }, [rmmManaged, rmmAgentId, equipment?.clientId, equipment?.id, onUpdate, refreshRmmEquipment, rmmSyncPending]);
   useEffect(() => {
     if (rightPanelTab === 'metrics' && !showRmmMetricsTab) {
       setRightPanelTab('dashboard');
     }
   }, [rightPanelTab, showRmmMetricsTab]);
-
   useEffect(() => {
     if (rightPanelTab === "peripherals" && !showRmmPeripheralsTab) {
       setRightPanelTab("dashboard");
     }
   }, [rightPanelTab, showRmmPeripheralsTab]);
-
   useEffect(() => {
     if (rightPanelTab === "operations" && !showRmmOperationsTab) {
       setRightPanelTab("dashboard");
     }
   }, [rightPanelTab, showRmmOperationsTab]);
-
   useEffect(() => {
-    // Les données CheckMK ne sont utiles que sur dashboard/events.
     if (rightPanelTab === 'dashboard' || rightPanelTab === 'events') return;
     checkmkControllerRef.current?.abort();
     availabilityControllerRef.current?.abort();
   }, [rightPanelTab]);
-
   useEffect(() => {
     return () => {
       abortAllPendingFetches();
     };
   }, []);
-
   useEffect(() => {
     if (!heroMenuOpen) return undefined;
-    const handlePointerDown = (event) => {
+    const handlePointerDown = event => {
       if (heroActionsMenuRef.current && !heroActionsMenuRef.current.contains(event.target)) {
         setHeroMenuOpen(false);
       }
@@ -616,7 +514,6 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
     document.addEventListener("mousedown", handlePointerDown);
     return () => document.removeEventListener("mousedown", handlePointerDown);
   }, [heroMenuOpen]);
-
   const openEditEquipmentModal = async () => {
     setHeroMenuOpen(false);
     if (!equipment?.clientId) {
@@ -624,61 +521,51 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
       return;
     }
     try {
-      const [client, allEquipment] = await Promise.all([
-        fetchClientGeneral(equipment.clientId),
-        getAllHardwareEquipment(),
-      ]);
+      const [client, allEquipment] = await Promise.all([fetchClientGeneral(equipment.clientId), getAllHardwareEquipment()]);
       setModalClient({
         ...client,
         sites: Array.isArray(client.sites) ? [...client.sites] : client.sites,
-        ssids: Array.isArray(client.ssids) ? [...client.ssids] : client.ssids,
+        ssids: Array.isArray(client.ssids) ? [...client.ssids] : client.ssids
       });
-      setPeerFirewalls(
-        (Array.isArray(allEquipment) ? allEquipment : []).filter(
-          (eq) => eq.type === "Firewalls" && String(eq.clientId) === String(equipment.clientId)
-        )
-      );
+      setPeerFirewalls((Array.isArray(allEquipment) ? allEquipment : []).filter(eq => eq.type === "Firewalls" && String(eq.clientId) === String(equipment.clientId)));
       setEditModalOpen(true);
     } catch (error) {
-      console.error("Ouverture modal édition:", error);
+      console.error("Open edit modal:", error);
       toast.error(copy.toasts.editOpenError);
     }
   };
-
-  const handleEquipmentModalSaved = async (submitData) => {
+  const handleEquipmentModalSaved = async submitData => {
     let nextEquipment = equipment;
     if (submitData?.location !== undefined && equipment) {
       nextEquipment = patchEquipmentLocation(equipment, submitData.location);
-      setFormData(buildDetailFormData(nextEquipment, { clientSites, clientSsids }));
+      setFormData(buildDetailFormData(nextEquipment, {
+        clientSites,
+        clientSsids
+      }));
       onUpdate?.(nextEquipment);
     }
-
     try {
       const list = await getClientHardwareEquipment(equipment.clientId);
       const refreshed = findEquipmentInList(list, nextEquipment || equipment);
       if (refreshed) {
-        setFormData(buildDetailFormData(refreshed, { clientSites, clientSsids }));
+        setFormData(buildDetailFormData(refreshed, {
+          clientSites,
+          clientSsids
+        }));
         onUpdate?.(refreshed);
       }
     } catch (error) {
-      console.warn("Rafraîchissement fiche matériel:", error);
+      console.warn("Refresh hardware record:", error);
     }
   };
-
   const handleEquipmentModalDeleted = () => {
     onUpdate?.(null);
     onBack?.();
   };
-
-  // Par défaut aucun filtre par service : "Tous" est coché, les cartes services ne le sont pas
-
-  // Charger les SSID globaux du client
   const loadSSIDs = async () => {
     setGlobalSSIDs([]);
     setLoadingSSIDs(false);
   };
-
-  // La fiche équipement ne charge plus les sites globaux (évite le fetch général).
   useEffect(() => {
     const localSites = [];
     if (equipment?.location && String(equipment.location).trim() && equipment.location !== "Sans site") {
@@ -686,33 +573,23 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
     }
     setAvailableSites(localSites);
   }, [equipment?.location]);
-
-  // Fonction pour détecter les changements dans les champs info
   const detectInfoChanges = (currentData, initialData) => {
     if (!initialData) return false;
-
     const infoFields = ["name", "location", "typeServer", "ip", "vlan", "systeme", "remoteAccessSolution", "remoteAccessId", "manufacturer", "model", "serial", "expirationGarantie", "processeur", "memoire", "stockage", "role", "raid", "capacite", "nbDisquesActuels", "nbDisquesMax", "disques", "luns", "fournisseur", "internetType", "debit", "categorie", "ipNonFixe", "firmware", "licences", "modeHA", "roleHA", "firewallHA", "firewallHAName", "adresseMac", "quickConnect"];
-
     for (const field of infoFields) {
       const cur = currentData[field];
       const init = initialData[field];
-      const changed = Array.isArray(cur) && Array.isArray(init)
-        ? JSON.stringify(cur) !== JSON.stringify(init)
-        : (cur !== init);
+      const changed = Array.isArray(cur) && Array.isArray(init) ? JSON.stringify(cur) !== JSON.stringify(init) : cur !== init;
       if (changed) return true;
     }
-
     return false;
   };
-
-  // Fonction pour mettre à jour formData et détecter les changements
-  const updateFormDataWithChanges = (newData) => {
+  const updateFormDataWithChanges = newData => {
     setFormData(newData);
     if (initialFormData) {
       setHasInfoChanges(detectInfoChanges(newData, initialFormData));
     }
   };
-
   const handleSaveInfo = async () => {
     if (!equipment?.id) return;
     setSaving(true);
@@ -720,17 +597,19 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
       await updateEquipment(equipment.id, formData, equipment);
       setIsEditingInfo(false);
       if (onUpdate) {
-        onUpdate({ ...equipment, ...formData });
+        onUpdate({
+          ...equipment,
+          ...formData
+        });
       }
       toast.success(copy.toasts.saveSuccess);
     } catch (error) {
-      console.error("Erreur lors de la sauvegarde:", error);
+      console.error("Error lors de la sauvegarde:", error);
       toast.error(copy.toasts.saveError);
     } finally {
       setSaving(false);
     }
   };
-
   const handleCancelInfo = () => {
     if (initialFormData) {
       setFormData(initialFormData);
@@ -738,25 +617,11 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
     setIsEditingInfo(false);
     setHasInfoChanges(false);
   };
-
   const loadNotes = async () => {
-    // FonctionnalitÃ© dÃ©sactivÃ©e temporairement - Ã  venir
     if (!equipment?.id) return;
     setLoadingNotes(false);
     setNotes([]);
-    // DÃ©sactivÃ© temporairement - fonctionnalitÃ© Ã  venir
-    // setLoadingNotes(true);
-    // try {
-    //   const notesData = await getEquipmentNotes(equipment.id);
-    //   setNotes(notesData || []);
-    // } catch (error) {
-    //   console.error("Erreur lors du chargement des notes:", error);
-    //   setNotes([]);
-    // } finally {
-    //   setLoadingNotes(false);
-    // }
   };
-
   const loadLogs = async (page = 1) => {
     if (!equipment?.id) return;
     logsControllerRef.current?.abort();
@@ -764,34 +629,28 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
     logsControllerRef.current = controller;
     setLoadingLogs(true);
     try {
-      const data = await getEquipmentLogs(
-        equipment.id, 
-        page, 
-        logsLimit,
-        {
-          clientId: equipment.clientId,
-          type: equipment.type,
-          name: equipment.name,
-          dbId: getEquipmentDbIdLocal() || equipment.dbId || null,
-          search: logsSearch,
-          category: logsCategory,
-          signal: controller.signal,
-        }
-      );
+      const data = await getEquipmentLogs(equipment.id, page, logsLimit, {
+        clientId: equipment.clientId,
+        type: equipment.type,
+        name: equipment.name,
+        dbId: getEquipmentDbIdLocal() || equipment.dbId || null,
+        search: logsSearch,
+        category: logsCategory,
+        signal: controller.signal
+      });
       if (controller.signal.aborted) return;
       setLogs(data.logs || []);
       setLogsTotal(data.total || 0);
       setLogsPage(page);
     } catch (error) {
       if (error?.name === "AbortError") return;
-      console.error("Erreur lors du chargement des logs:", error);
+      console.error("Error while loading des logs:", error);
       setLogs([]);
       setLogsTotal(0);
     } finally {
       if (!controller.signal.aborted) setLoadingLogs(false);
     }
   };
-
   const handlePurgeLogs = async () => {
     if (!equipment?.id || purgingLogs) return;
     setPurgingLogs(true);
@@ -802,47 +661,45 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
         name: equipment.name,
         dbId: getEquipmentDbIdLocal() || equipment.dbId || null,
         search: logsSearch,
-        category: logsCategory,
+        category: logsCategory
       });
       const deleted = result?.logs_deleted ?? 0;
-      toast.success(
-        deleted > 0
-          ? interpolate(copy.logs.purgeSuccess, { count: deleted })
-          : copy.logs.purgeNone
-      );
+      toast.success(deleted > 0 ? interpolate(copy.logs.purgeSuccess, {
+        count: deleted
+      }) : copy.logs.purgeNone);
       setPurgeLogsConfirmOpen(false);
       setSelectedLogDetail(null);
       await loadLogs(1);
     } catch (error) {
-      console.error("Erreur purge logs:", error);
+      console.error("Error purge logs:", error);
       toast.error(error?.message || copy.toasts.purgeError);
     } finally {
       setPurgingLogs(false);
     }
   };
-
   const logsFiltersActive = Boolean(logsSearch) || logsCategory !== "all";
-  const purgeLogsMessage = logsFiltersActive
-    ? interpolate(modalsCopy.confirm?.purgeLogs?.messageFiltered, { count: logsTotal })
-    : interpolate(modalsCopy.confirm?.purgeLogs?.messageAll, { count: logsTotal });
-
+  const purgeLogsMessage = logsFiltersActive ? interpolate(modalsCopy.confirm?.purgeLogs?.messageFiltered, {
+    count: logsTotal
+  }) : interpolate(modalsCopy.confirm?.purgeLogs?.messageAll, {
+    count: logsTotal
+  });
   const loadEquipmentActivity = useCallback(async () => {
     if (!equipmentDbId || !equipmentClientId) {
       setActivity(null);
       setLoadingActivity(false);
       return;
     }
-
     activityControllerRef.current?.abort();
     const controller = new AbortController();
     activityControllerRef.current = controller;
-
-    const { start, end } = resolveEquipmentActivityRange({
+    const {
+      start,
+      end
+    } = resolveEquipmentActivityRange({
       preset: activityDatePreset,
       customStart: activityCustomStart,
-      customEnd: activityCustomEnd,
+      customEnd: activityCustomEnd
     });
-
     setLoadingActivity(true);
     try {
       const payload = await fetchEquipmentActivity({
@@ -850,46 +707,22 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
         clientId: equipmentClientId,
         startDate: start.toISOString(),
         endDate: end.toISOString(),
-        signal: controller.signal,
+        signal: controller.signal
       });
       if (controller.signal.aborted) return;
       setActivity(payload);
     } catch (error) {
       if (controller.signal.aborted) return;
-      console.error("Erreur chargement activité périphérique:", error);
+      console.error("Error loading device activity:", error);
       setActivity(null);
     } finally {
       if (!controller.signal.aborted) {
         setLoadingActivity(false);
-        lastActivityFetchKeyRef.current = [
-          equipmentDbId || "",
-          equipmentClientId || "",
-          activityDatePreset,
-          activityCustomStart,
-          activityCustomEnd,
-        ].join("|");
+        lastActivityFetchKeyRef.current = [equipmentDbId || "", equipmentClientId || "", activityDatePreset, activityCustomStart, activityCustomEnd].join("|");
       }
     }
-  }, [
-    equipmentDbId,
-    equipmentClientId,
-    activityDatePreset,
-    activityCustomStart,
-    activityCustomEnd,
-  ]);
-
-  const activityFetchKey = useMemo(
-    () =>
-      [
-        equipmentDbId || "",
-        equipmentClientId || "",
-        activityDatePreset,
-        activityCustomStart,
-        activityCustomEnd,
-      ].join("|"),
-    [equipmentDbId, equipmentClientId, activityDatePreset, activityCustomStart, activityCustomEnd]
-  );
-
+  }, [equipmentDbId, equipmentClientId, activityDatePreset, activityCustomStart, activityCustomEnd]);
+  const activityFetchKey = useMemo(() => [equipmentDbId || "", equipmentClientId || "", activityDatePreset, activityCustomStart, activityCustomEnd].join("|"), [equipmentDbId, equipmentClientId, activityDatePreset, activityCustomStart, activityCustomEnd]);
   useEffect(() => {
     if (rightPanelTab !== "events" && rightPanelTab !== "stats") {
       activityControllerRef.current?.abort();
@@ -905,94 +738,79 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
     lastActivityFetchKeyRef.current = activityFetchKey;
     loadEquipmentActivity();
   }, [rightPanelTab, activityFetchKey, equipmentDbId, equipmentClientId, loadEquipmentActivity]);
-
-  const handleOpenLinkedTicket = (ticket) => {
+  const handleOpenLinkedTicket = ticket => {
     if (!ticket?.id || !onNavigate) return;
     onNavigate("TicketDetail", {
       ticketId: ticket.id,
       ticketNumber: ticket.ticket_number,
-      title: ticket.title,
+      title: ticket.title
     });
   };
-
-  const handleOpenPlanningEvent = (event) => {
+  const handleOpenPlanningEvent = event => {
     if (!event) return;
     if (isCommunity) {
-      notifyProFeature("Planning entreprise");
+      notifyProFeature("Company schedule");
       return;
     }
     setEditingEvent(event);
     setEventModalOpen(true);
   };
-
   const refreshActivityAfterEventChange = () => {
     if (rightPanelTab === "events" || rightPanelTab === "stats") {
       lastActivityFetchKeyRef.current = null;
       loadEquipmentActivity();
     }
   };
-
   const loadPhotos = async () => {
-    // FonctionnalitÃ© dÃ©sactivÃ©e temporairement - Ã  venir
     if (!equipment?.id) return;
     setLoadingPhotos(false);
     setPhotos([]);
-    // DÃ©sactivÃ© temporairement - fonctionnalitÃ© Ã  venir
-    // setLoadingPhotos(true);
-    // try {
-    //   const photosData = await getEquipmentPhotos(equipment.id);
-    //   setPhotos(photosData || []);
-    // } catch (error) {
-    //   console.error("Erreur lors du chargement des photos:", error);
-    //   setPhotos([]);
-    // } finally {
-    //   setLoadingPhotos(false);
-    // }
   };
-
   const handleAddNote = async () => {
-    // Ouvrir la modal "coming soon" au lieu d'ajouter la note
     setNoteModalOpen(true);
   };
-
-  const handlePhotoUpload = async (e) => {
-    // EmpÃªcher le comportement par dÃ©faut et ouvrir la modal "coming soon"
+  const handlePhotoUpload = async e => {
     e.preventDefault();
-    e.target.value = ""; // RÃ©initialiser l'input
+    e.target.value = "";
     setPhotoModalOpen(true);
   };
-
-  /** Retourne { startTime, endTime } pour la période disponibilité (1m, 3m, 1y) */
-  const getAvailabilityPeriodRange = (periodKey) => {
+  const getAvailabilityPeriodRange = periodKey => {
     const endTime = new Date();
     endTime.setHours(23, 59, 59, 999);
     const startTime = new Date(endTime);
-    if (periodKey === '1m') startTime.setMonth(startTime.getMonth() - 1);
-    else if (periodKey === '3m') startTime.setMonth(startTime.getMonth() - 3);
-    else if (periodKey === '1y') startTime.setFullYear(startTime.getFullYear() - 1);
+    if (periodKey === '1m') startTime.setMonth(startTime.getMonth() - 1);else if (periodKey === '3m') startTime.setMonth(startTime.getMonth() - 3);else if (periodKey === '1y') startTime.setFullYear(startTime.getFullYear() - 1);
     startTime.setHours(0, 0, 0, 0);
-    return { startTime, endTime };
+    return {
+      startTime,
+      endTime
+    };
   };
-
-  const loadCheckMKData = async ({ force = false } = {}) => {
+  const loadCheckMKData = async ({
+    force = false
+  } = {}) => {
     if (!checkmkIntegrationEnabled) return;
     const mapping = checkmkMapping || equipment?.checkmkMapping;
     if (!mapping?.checkmk_host_name) return;
-
     const equipmentId = getEquipmentDbIdLocal();
     const clientId = equipment?.clientId;
     const family = equipmentTypeToFamily(equipment?.type);
     if (!equipmentId || !clientId || !family) return;
-
     checkmkControllerRef.current?.abort();
     const controller = new AbortController();
     checkmkControllerRef.current = controller;
     setLoadingCheckMK(true);
     try {
-      const { startTime: availStart, endTime: availEnd } = getAvailabilityPeriodRange(checkmkAvailabilityPeriod);
-      setCheckmkPeriod({ startTime: availStart, endTime: availEnd });
-
-      const fetchOptions = { signal: controller.signal };
+      const {
+        startTime: availStart,
+        endTime: availEnd
+      } = getAvailabilityPeriodRange(checkmkAvailabilityPeriod);
+      setCheckmkPeriod({
+        startTime: availStart,
+        endTime: availEnd
+      });
+      const fetchOptions = {
+        signal: controller.signal
+      };
       const syncPayload = {
         equipmentId,
         clientId,
@@ -1000,30 +818,16 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
         hostName: mapping.checkmk_host_name,
         site: mapping.checkmk_site || null,
         force,
-        availabilityPeriod: checkmkAvailabilityPeriod,
+        availabilityPeriod: checkmkAvailabilityPeriod
       };
-
-      // 1. Afficher les données persistées en base
-      const stored = await getEquipmentCheckMKMonitoring(
-        equipmentId,
-        checkmkAvailabilityPeriod,
-        fetchOptions
-      ).catch((e) => (e?.name === "AbortError" ? Promise.reject(e) : null));
+      const stored = await getEquipmentCheckMKMonitoring(equipmentId, checkmkAvailabilityPeriod, fetchOptions).catch(e => e?.name === "AbortError" ? Promise.reject(e) : null);
       if (controller.signal.aborted) return;
       if (stored?.checkmkData) {
         applyCheckMKPayload(stored);
       }
-
-      // 2. Synchroniser avec CheckMK (auto si > 30 min, ou forcé via le bouton)
-      const shouldSync =
-        force ||
-        !stored?.lastSyncedAt ||
-        Date.now() - new Date(stored.lastSyncedAt).getTime() >= CHECKMK_SYNC_MIN_INTERVAL_MS;
-
+      const shouldSync = force || !stored?.lastSyncedAt || Date.now() - new Date(stored.lastSyncedAt).getTime() >= CHECKMK_SYNC_MIN_INTERVAL_MS;
       if (shouldSync) {
-        const synced = await syncEquipmentCheckMKMonitoring(syncPayload, fetchOptions).catch((e) =>
-          e?.name === "AbortError" ? Promise.reject(e) : null
-        );
+        const synced = await syncEquipmentCheckMKMonitoring(syncPayload, fetchOptions).catch(e => e?.name === "AbortError" ? Promise.reject(e) : null);
         if (controller.signal.aborted) return;
         if (synced?.checkmkData) {
           applyCheckMKPayload(synced);
@@ -1031,13 +835,12 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
       }
     } catch (error) {
       if (error?.name === "AbortError") return;
-      console.error("Erreur lors du chargement des données CheckMK:", error);
+      console.error("Error lors du loading des data CheckMK:", error);
     } finally {
       if (!controller.signal.aborted) setLoadingCheckMK(false);
     }
   };
-
-  const loadCheckMKAvailabilityOnly = async (periodKey) => {
+  const loadCheckMKAvailabilityOnly = async periodKey => {
     const mapping = checkmkMapping || equipment?.checkmkMapping;
     if (!mapping?.checkmk_host_name || !checkmkData) return;
     availabilityControllerRef.current?.abort();
@@ -1045,64 +848,52 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
     availabilityControllerRef.current = controller;
     setLoadingAvailability(true);
     try {
-      const { startTime, endTime } = getAvailabilityPeriodRange(periodKey);
-      setCheckmkPeriod({ startTime, endTime });
-
+      const {
+        startTime,
+        endTime
+      } = getAvailabilityPeriodRange(periodKey);
+      setCheckmkPeriod({
+        startTime,
+        endTime
+      });
       const equipmentId = getEquipmentDbIdLocal();
       let availability = null;
-
       if (equipmentId) {
         const stored = await getEquipmentCheckMKMonitoring(equipmentId, periodKey, {
-          signal: controller.signal,
+          signal: controller.signal
         }).catch(() => null);
         if (controller.signal.aborted) return;
-        availability =
-          stored?.availabilityByPeriod?.[periodKey] ??
-          stored?.checkmkData?.availability ??
-          null;
+        availability = stored?.availabilityByPeriod?.[periodKey] ?? stored?.checkmkData?.availability ?? null;
       }
-
       if (!availability) {
-        const availRes = await getCheckMKAvailability(
-          mapping.checkmk_host_name,
-          mapping.checkmk_site || null,
-          startTime.toISOString(),
-          endTime.toISOString(),
-          { signal: controller.signal }
-        ).catch(() => null);
+        const availRes = await getCheckMKAvailability(mapping.checkmk_host_name, mapping.checkmk_site || null, startTime.toISOString(), endTime.toISOString(), {
+          signal: controller.signal
+        }).catch(() => null);
         availability = availRes?.availability ?? availRes ?? null;
       }
-
       if (controller.signal.aborted) return;
       const prevByPeriod = checkmkData?.availabilityByPeriod || {};
-      const nextCheckmkData = checkmkData
-        ? {
-            ...checkmkData,
-            availability,
-            availabilityByPeriod: { ...prevByPeriod, [periodKey]: availability },
-          }
-        : checkmkData;
+      const nextCheckmkData = checkmkData ? {
+        ...checkmkData,
+        availability,
+        availabilityByPeriod: {
+          ...prevByPeriod,
+          [periodKey]: availability
+        }
+      } : checkmkData;
       setCheckmkData(nextCheckmkData);
     } catch (error) {
       if (error?.name === "AbortError") return;
-      console.error("Erreur lors du chargement de la disponibilité:", error);
+      console.error("Error loading availability:", error);
     } finally {
       if (!controller.signal.aborted) setLoadingAvailability(false);
     }
   };
-
-  const openCheckMKService = (service) => {
+  const openCheckMKService = service => {
     const hostName = checkmkMapping?.checkmk_host_name;
     if (!hostName) return;
-
-    const serviceDescription = service?.description
-      || (service?.id && service.id.includes(':') ? service.id.split(':').slice(1).join(':') : null)
-      || service?.title
-      || service?.name
-      || null;
-
+    const serviceDescription = service?.description || (service?.id && service.id.includes(':') ? service.id.split(':').slice(1).join(':') : null) || service?.title || service?.name || null;
     if (!serviceDescription) return;
-
     const baseUrl = 'https://monitoring.psi.fr/clients/check_mk/view.py';
     const params = new URLSearchParams({
       view_name: 'service',
@@ -1111,9 +902,7 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
     });
     window.open(`${baseUrl}?${params.toString()}`, '_blank', 'noopener');
   };
-
-  /** Ouvre dans CheckMK la vue service ou host correspondant à un événement (notification) */
-  const openCheckMKEvent = (event) => {
+  const openCheckMKEvent = event => {
     const hostName = event?.host ?? event?.log_host ?? checkmkMapping?.checkmk_host_name;
     if (!hostName) return;
     const baseUrl = 'https://monitoring.psi.fr/clients/check_mk/view.py';
@@ -1133,32 +922,37 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
       window.open(`${baseUrl}?${params.toString()}`, '_blank', 'noopener');
     }
   };
-
-  const handleMappingSaved = (mapping) => {
+  const handleMappingSaved = mapping => {
     if (mapping) {
       setCheckmkMapping(mapping);
       if (onUpdate) {
-        onUpdate({ ...equipment, checkmkMapping: mapping });
+        onUpdate({
+          ...equipment,
+          checkmkMapping: mapping
+        });
       }
-      // Recharger les donnÃ©es CheckMK si un mapping existe
       if (mapping.checkmk_host_name) {
         setTimeout(() => {
-          loadCheckMKData({ force: true });
+          loadCheckMKData({
+            force: true
+          });
         }, 500);
       }
     } else {
       setCheckmkMapping(null);
       setCheckmkData(null);
       if (onUpdate) {
-        const { checkmkMapping, ...equipmentWithoutMapping } = equipment;
+        const {
+          checkmkMapping,
+          ...equipmentWithoutMapping
+        } = equipment;
         onUpdate(equipmentWithoutMapping);
       }
     }
   };
-
-  const getTypeIcon = (type) => {
+  const getTypeIcon = type => {
     const icons = {
-      'Serveurs': FaServer,
+      'Servers': FaServer,
       'NAS': FaHdd,
       'Firewalls': FaShieldAlt,
       'Switch': FaNetworkWired,
@@ -1167,12 +961,9 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
     };
     return icons[type] || FaServer;
   };
-
-  // Fonction pour obtenir l'icÃ´ne de stockage selon le type (comme dans StepStockage.js et Stockage.js)
-  const getStorageIcon = (equipment) => {
+  const getStorageIcon = equipment => {
     const storageType = equipment?.rawData?.type || equipment?.type || '';
     const typeLower = storageType.toLowerCase();
-    
     if (typeLower.includes('san')) {
       return 'mdi:server-network-outline';
     } else if (typeLower.includes('robot')) {
@@ -1180,252 +971,108 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
     } else if (typeLower.includes('disque')) {
       return 'mdi:harddisk';
     } else {
-      // NAS par dÃ©faut
       return 'mdi:nas';
     }
   };
-
-  // Pour les serveurs, utiliser l'icÃ´ne selon le type (physique/virtuel)
-  // Pour les stockages, utiliser Icon de @iconify/react avec les mÃªmes icÃ´nes que StepStockage.js
   let TypeIcon = equipment ? getTypeIcon(equipment.type) : FaServer;
   let StorageIconName = null;
   if (equipment && equipment.type === 'NAS') {
     StorageIconName = getStorageIcon(equipment);
-  } else if (equipment && equipment.type === 'Serveurs') {
+  } else if (equipment && equipment.type === 'Servers') {
     const serverType = equipment.typeServer || equipment.rawData?.type || '';
-    if (serverType === 'virtuel' || serverType === 'Virtuel') {
-      TypeIcon = FaCube; // Virtuel = FaCube
+    if (serverType === 'virtuel' || serverType === 'Virtual') {
+      TypeIcon = FaCube;
     } else {
-      TypeIcon = FaServer; // Physique = FaServer
+      TypeIcon = FaServer;
     }
   }
-
   const storageTypeValue = (formData.type || equipment?.rawData?.type || equipment?.type || '').toString().toLowerCase();
   const isNasOrSanStorage = equipment?.type === 'NAS' && (storageTypeValue.includes('nas') || storageTypeValue.includes('san'));
   const isSynologyNasStorage = isNasOrSanStorage && isSynologyBrand(formData.manufacturer);
-  const typeDisplayLabel = useMemo(
-    () => getEquipmentDetailTypeLabel(equipment, locale),
-    [equipment, locale]
-  );
-
-  // Options pour les rÃ´les et OS (pour les serveurs)
-  const raidOptions = [
-    "RAID 0",
-    "RAID 1",
-    "RAID 5",
-    "RAID 6",
-    "RAID 10",
-    "RAID 50",
-    "RAID 60",
-    "SHR (Synology)",
-    "SHR-2 (Synology)",
-    "Qtier (QNAP)",
-    "RAID-TP (QNAP)",
-    "RAID-Z (ZFS)",
-    "RAID-Z2 (ZFS)",
-    "RAID-Z3 (ZFS)",
-    "Autre"
-  ];
-
-  const lunRoleOptions = [
-    { value: "stockage", label: "Stockage" },
-    { value: "exploitation", label: "Exploitation" }
-  ];
-
-  const internetCategorieOptions = ["Principale", "Backup"];
-
-  const internetTypeOptions = [
-    "Fibre",
-    "ADSL",
-    "SDSL",
-    "VDSL",
-    "4G",
-    "5G",
-    "Satellite",
-    "Câble",
-    "Radio",
-    "SD-WAN",
-    "Autre"
-  ];
-
-  const nasRoleOptions = [
-    "Stockage de sauvegarde",
-    "Stockage de fichiers communs",
-    "Stockage principal",
-    "Stockage d'archivage",
-    "Stockage de rÃ©plication",
-    "Autre"
-  ];
-
-  const osOptions = [
-    "Windows Server 2012 R2 Standard",
-    "Windows Server 2012 R2 Datacenter",
-    "Windows Server 2016 Standard",
-    "Windows Server 2016 Datacenter",
-    "Windows Server 2019 Standard",
-    "Windows Server 2019 Datacenter",
-    "Windows Server 2022 Standard",
-    "Windows Server 2022 Datacenter",
-    "Windows Server 2025 Standard",
-    "Windows Server 2025 Datacenter",
-    "Windows 10 Pro",
-    "Windows 10 Enterprise",
-    "Windows 11 Pro",
-    "Windows 11 Enterprise",
-    "Ubuntu Server 18.04 LTS",
-    "Ubuntu Server 20.04 LTS",
-    "Ubuntu Server 22.04 LTS",
-    "Ubuntu Server 24.04 LTS",
-    "Ubuntu Desktop 20.04 LTS",
-    "Ubuntu Desktop 22.04 LTS",
-    "Ubuntu Desktop 24.04 LTS",
-    "Debian 10 (Buster)",
-    "Debian 11 (Bullseye)",
-    "Debian 12 (Bookworm)",
-    "Debian 13 (Trixie)",
-    "CentOS 6",
-    "CentOS 7",
-    "CentOS 8",
-    "CentOS Stream 8",
-    "CentOS Stream 9",
-    "CentOS Stream 10",
-    "Red Hat Enterprise Linux 6",
-    "Red Hat Enterprise Linux 7",
-    "Red Hat Enterprise Linux 8",
-    "Red Hat Enterprise Linux 9",
-    "Red Hat Enterprise Linux 10",
-    "SUSE Linux Enterprise Server 12",
-    "SUSE Linux Enterprise Server 15",
-    "SUSE Linux Enterprise Server 16",
-    "openSUSE Leap 15",
-    "openSUSE Leap 16",
-    "openSUSE Tumbleweed",
-    "VMware ESXi 6.5",
-    "VMware ESXi 6.7",
-    "VMware ESXi 7.0",
-    "VMware ESXi 8.0",
-    "VMware ESXi 8.1",
-    "VMware ESXi 8.2",
-    "VMware vCenter Server 6.7",
-    "VMware vCenter Server 7.0",
-    "VMware vCenter Server 8.0",
-    "Proxmox VE 6.x",
-    "Proxmox VE 7.x",
-    "Proxmox VE 8.x",
-    "AlmaLinux 8",
-    "AlmaLinux 9",
-    "Rocky Linux 8",
-    "Rocky Linux 9",
-    "Oracle Linux 7",
-    "Oracle Linux 8",
-    "Oracle Linux 9",
-    "Fedora Server 37",
-    "Fedora Server 38",
-    "Fedora Server 39",
-    "Fedora Server 40",
-    "FreeBSD 12",
-    "FreeBSD 13",
-    "FreeBSD 14",
-    "TrueNAS Core",
-    "TrueNAS Scale",
-    "Citrix XenServer 7.1",
-    "Citrix XenServer 8.0",
-    "Citrix XenServer 8.2",
-    "Microsoft Hyper-V Server 2019",
-    "Microsoft Hyper-V Server 2022",
-    "Autre"
-  ];
-
-  const handleLogClick = (log) => {
+  const typeDisplayLabel = useMemo(() => getEquipmentDetailTypeLabel(equipment, locale), [equipment, locale]);
+  const raidOptions = ["RAID 0", "RAID 1", "RAID 5", "RAID 6", "RAID 10", "RAID 50", "RAID 60", "SHR (Synology)", "SHR-2 (Synology)", "Qtier (QNAP)", "RAID-TP (QNAP)", "RAID-Z (ZFS)", "RAID-Z2 (ZFS)", "RAID-Z3 (ZFS)", "Autre"];
+  const lunRoleOptions = [{
+    value: "stockage",
+    label: "Storage"
+  }, {
+    value: "exploitation",
+    label: "Exploitation"
+  }];
+  const internetCategorieOptions = ["Primary", "Backup"];
+  const internetTypeOptions = ["Fibre", "ADSL", "SDSL", "VDSL", "4G", "5G", "Satellite", "Câble", "Radio", "SD-WAN", "Autre"];
+  const nasRoleOptions = ["Storage de sauvegarde", "Storage de fichiers communs", "Storage principal", "Storage d'archivage", "Storage de réplication", "Autre"];
+  const osOptions = ["Windows Server 2012 R2 Standard", "Windows Server 2012 R2 Datacenter", "Windows Server 2016 Standard", "Windows Server 2016 Datacenter", "Windows Server 2019 Standard", "Windows Server 2019 Datacenter", "Windows Server 2022 Standard", "Windows Server 2022 Datacenter", "Windows Server 2025 Standard", "Windows Server 2025 Datacenter", "Windows 10 Pro", "Windows 10 Enterprise", "Windows 11 Pro", "Windows 11 Enterprise", "Ubuntu Server 18.04 LTS", "Ubuntu Server 20.04 LTS", "Ubuntu Server 22.04 LTS", "Ubuntu Server 24.04 LTS", "Ubuntu Desktop 20.04 LTS", "Ubuntu Desktop 22.04 LTS", "Ubuntu Desktop 24.04 LTS", "Debian 10 (Buster)", "Debian 11 (Bullseye)", "Debian 12 (Bookworm)", "Debian 13 (Trixie)", "CentOS 6", "CentOS 7", "CentOS 8", "CentOS Stream 8", "CentOS Stream 9", "CentOS Stream 10", "Red Hat Enterprise Linux 6", "Red Hat Enterprise Linux 7", "Red Hat Enterprise Linux 8", "Red Hat Enterprise Linux 9", "Red Hat Enterprise Linux 10", "SUSE Linux Enterprise Server 12", "SUSE Linux Enterprise Server 15", "SUSE Linux Enterprise Server 16", "openSUSE Leap 15", "openSUSE Leap 16", "openSUSE Tumbleweed", "VMware ESXi 6.5", "VMware ESXi 6.7", "VMware ESXi 7.0", "VMware ESXi 8.0", "VMware ESXi 8.1", "VMware ESXi 8.2", "VMware vCenter Server 6.7", "VMware vCenter Server 7.0", "VMware vCenter Server 8.0", "Proxmox VE 6.x", "Proxmox VE 7.x", "Proxmox VE 8.x", "AlmaLinux 8", "AlmaLinux 9", "Rocky Linux 8", "Rocky Linux 9", "Oracle Linux 7", "Oracle Linux 8", "Oracle Linux 9", "Fedora Server 37", "Fedora Server 38", "Fedora Server 39", "Fedora Server 40", "FreeBSD 12", "FreeBSD 13", "FreeBSD 14", "TrueNAS Core", "TrueNAS Scale", "Citrix XenServer 7.1", "Citrix XenServer 8.0", "Citrix XenServer 8.2", "Microsoft Hyper-V Server 2019", "Microsoft Hyper-V Server 2022", "Autre"];
+  const handleLogClick = log => {
     setSelectedLogDetail(log);
   };
-
   const closeLogModal = () => {
     setSelectedLogDetail(null);
   };
-
-  const handleAddEquipmentTag = async ({ label, color }) => {
+  const handleAddEquipmentTag = async ({
+    label,
+    color
+  }) => {
     const trimmed = String(label || "").trim();
     if (!trimmed || !canManageEquipmentTags || addingEquipmentTag) return;
-
     setAddingEquipmentTag(true);
     try {
       const tag = await addEquipmentTag(equipmentDbId, equipmentClientId, {
         label: trimmed,
-        color,
+        color
       });
-      setEquipmentTags((prev) => {
-        if (prev.some((t) => t.id === tag.id)) return prev;
+      setEquipmentTags(prev => {
+        if (prev.some(t => t.id === tag.id)) return prev;
         return [...prev, tag].sort((a, b) => a.label.localeCompare(b.label));
       });
       setEquipmentTagModalOpen(false);
       toast.success(copy.toasts.tagAdded);
     } catch (error) {
-      console.error("Erreur ajout étiquette périphérique:", error);
+      console.error("Error ajout tag device:", error);
       toast.error(error.message || copy.toasts.tagAddError);
     } finally {
       setAddingEquipmentTag(false);
     }
   };
-
-  const handleRemoveEquipmentTag = async (tagId) => {
+  const handleRemoveEquipmentTag = async tagId => {
     if (!canManageEquipmentTags) return;
     try {
       await removeEquipmentTag(equipmentDbId, equipmentClientId, tagId);
-      setEquipmentTags((prev) => prev.filter((t) => t.id !== tagId));
+      setEquipmentTags(prev => prev.filter(t => t.id !== tagId));
       toast.success(copy.toasts.tagRemoved);
     } catch (error) {
-      console.error("Erreur suppression étiquette périphérique:", error);
+      console.error("Error suppression tag device:", error);
       toast.error(error.message || copy.toasts.tagRemoveError);
     }
   };
-
-  const equipmentHeroTitle =
-    equipment?.type === "Internet"
-      ? formData.fournisseur && formData.internetType
-        ? `${formData.fournisseur.toUpperCase()} ${formData.internetType.toUpperCase()}`
-        : equipment.name
-      : equipment?.name;
-
+  const equipmentHeroTitle = equipment?.type === "Internet" ? formData.fournisseur && formData.internetType ? `${formData.fournisseur.toUpperCase()} ${formData.internetType.toUpperCase()}` : equipment.name : equipment?.name;
   const heroRoleLabels = (() => {
     if (!equipment) return [];
-    if (equipment.type === "Serveurs" && Array.isArray(formData.role)) {
+    if (equipment.type === "Servers" && Array.isArray(formData.role)) {
       return formData.role.filter(Boolean);
     }
     if (equipment.type === "NAS") {
       const roleValue = formData.role;
-      const roleString =
-        typeof roleValue === "string" ? roleValue : Array.isArray(roleValue) ? roleValue[0] || "" : "";
+      const roleString = typeof roleValue === "string" ? roleValue : Array.isArray(roleValue) ? roleValue[0] || "" : "";
       return roleString?.trim() ? [roleString] : [];
     }
     if (equipment.rawData?.type === "Disque dur externe" || equipment.type === "Disque dur externe") {
       const roleValue = formData.role;
-      const roleString =
-        typeof roleValue === "string" ? roleValue : Array.isArray(roleValue) ? roleValue[0] || "" : "";
+      const roleString = typeof roleValue === "string" ? roleValue : Array.isArray(roleValue) ? roleValue[0] || "" : "";
       return roleString?.trim() ? [roleString] : [];
     }
     return [];
   })();
-
   if (!equipment) {
-    return (
-      <div className={styles.detailPage}>
+    return <div className={styles.detailPage}>
         <div className={styles.error}>{copy.notFound}</div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className={`${enterpriseDetailStyles.contratDetailPage} ${enterpriseDetailStyles.enterpriseDetailPage} ${styles.equipmentDetailPage}`}>
+  return <div className={`${enterpriseDetailStyles.contratDetailPage} ${enterpriseDetailStyles.enterpriseDetailPage} ${styles.equipmentDetailPage}`}>
       <header className={enterpriseDetailStyles.pageHero} data-guide="equipment-hero">
         <div className={enterpriseDetailStyles.heroRow}>
           <div className={enterpriseDetailStyles.heroMain}>
             <div className={enterpriseDetailStyles.heroAvatar}>
-              {StorageIconName ? (
-                <Icon icon={StorageIconName} aria-hidden />
-              ) : (
-                <TypeIcon aria-hidden />
-              )}
+              {StorageIconName ? <Icon icon={StorageIconName} aria-hidden /> : <TypeIcon aria-hidden />}
             </div>
             <div className={enterpriseDetailStyles.heroText}>
               <h1 className={enterpriseDetailStyles.heroTitle}>
@@ -1435,474 +1082,211 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
                 <span className={`${enterpriseDetailStyles.contractBadge} ${enterpriseDetailStyles.contractBadge_active}`}>
                   {typeDisplayLabel}
                 </span>
-                {showRmmHeroStatus ? (
-                  <>
-                    {rmmAgentVersion ? (
-                      <span className={rmmPanelStyles.agentVersionChip} title={copy.agent.versionTitle}>
+                {showRmmHeroStatus ? <>
+                    {rmmAgentVersion ? <span className={rmmPanelStyles.agentVersionChip} title={copy.agent.versionTitle}>
                         <Icon icon="mdi:tag-outline" className={rmmPanelStyles.agentVersionIcon} aria-hidden />
-                        {interpolate(copy.agent.chip, { version: rmmAgentVersion })}
-                      </span>
-                    ) : null}
+                        {interpolate(copy.agent.chip, {
+                    version: rmmAgentVersion
+                  })}
+                      </span> : null}
                     <RmmAgentStatusBadge equipment={equipment} />
-                  </>
-                ) : null}
-                {formData.location ? (
-                  <span className={enterpriseDetailStyles.heroMetaItem}>
+                  </> : null}
+                {formData.location ? <span className={enterpriseDetailStyles.heroMetaItem}>
                     <Icon icon="mdi:map-marker-outline" aria-hidden />
                     {formData.location}
-                  </span>
-                ) : null}
-                {formData.ip ? (
-                  <span className={enterpriseDetailStyles.heroMetaItem}>
+                  </span> : null}
+                {formData.ip ? <span className={enterpriseDetailStyles.heroMetaItem}>
                     <Icon icon="mdi:lan-connect" aria-hidden />
                     {formData.ip}
-                  </span>
-                ) : null}
-                {equipment.clientName && onNavigate && equipment.clientId ? (
-                  <button
-                    type="button"
-                    className={`${enterpriseDetailStyles.heroMetaItem} ${enterpriseDetailStyles.heroMetaLink}`}
-                    onClick={() =>
-                      onNavigate("ContratDetail", {
-                        clientId: equipment.clientId,
-                        name: equipment.clientName,
-                      })
-                    }
-                    title={copy.hero.viewEnterprise}
-                  >
+                  </span> : null}
+                {equipment.clientName && onNavigate && equipment.clientId ? <button type="button" className={`${enterpriseDetailStyles.heroMetaItem} ${enterpriseDetailStyles.heroMetaLink}`} onClick={() => onNavigate("ContratDetail", {
+                clientId: equipment.clientId,
+                name: equipment.clientName
+              })} title={copy.hero.viewEnterprise}>
                     <Icon icon="mdi:domain" aria-hidden />
                     {equipment.clientName}
-                  </button>
-                ) : equipment.clientName ? (
-                  <span className={enterpriseDetailStyles.heroMetaItem}>
+                  </button> : equipment.clientName ? <span className={enterpriseDetailStyles.heroMetaItem}>
                     <Icon icon="mdi:domain" aria-hidden />
                     {equipment.clientName}
-                  </span>
-                ) : null}
-                {heroRoleLabels.map((role) => (
-                  <span key={role} className={enterpriseDetailStyles.heroMetaItem}>
+                  </span> : null}
+                {heroRoleLabels.map(role => <span key={role} className={enterpriseDetailStyles.heroMetaItem}>
                     {role}
-                  </span>
-                ))}
-                {checkmkIntegrationEnabled &&
-                equipment.type !== "Internet" &&
-                checkmkMapping?.checkmk_host_name ? (
-                  <span
-                    className={enterpriseDetailStyles.heroMetaItem}
-                    title={
-                      checkmkLastSyncedAt
-                        ? new Date(checkmkLastSyncedAt).toLocaleString(
-                            { fr: "fr-FR", en: "en-GB", de: "de-DE", it: "it-IT", es: "es-ES" }[locale] || "fr-FR"
-                          )
-                        : copy.hero.neverSynced
-                    }
-                  >
+                  </span>)}
+                {checkmkIntegrationEnabled && equipment.type !== "Internet" && checkmkMapping?.checkmk_host_name ? <span className={enterpriseDetailStyles.heroMetaItem} title={checkmkLastSyncedAt ? new Date(checkmkLastSyncedAt).toLocaleString({
+                fr: "en-US",
+                en: "en-GB",
+                de: "de-DE",
+                it: "it-IT",
+                es: "es-ES"
+              }[locale] || "en-US") : copy.hero.neverSynced}>
                     <Icon icon="mdi:clock-outline" aria-hidden />
                     {checkmkLastSyncedAt ? formatEquipmentDetailRelative(checkmkLastSyncedAt, locale) : copy.hero.notSynced}
-                  </span>
-                ) : null}
-                {canManageEquipmentTags ? (
-                  loadingEquipmentTags ? (
-                    <span className={enterpriseDetailStyles.heroTagsLoading}>
+                  </span> : null}
+                {canManageEquipmentTags ? loadingEquipmentTags ? <span className={enterpriseDetailStyles.heroTagsLoading}>
                       {copy.loadingTags}
-                    </span>
-                  ) : (
-                    <>
-                      {equipmentTags.map((tag) => (
-                        <span
-                          key={tag.id}
-                          className={enterpriseDetailStyles.heroTagChip}
-                          style={{
-                            backgroundColor: `${tag.color || "#2b5fab"}18`,
-                            borderColor: `${tag.color || "#2b5fab"}55`,
-                            color: tag.color || "#2b5fab",
-                          }}
-                        >
+                    </span> : <>
+                      {equipmentTags.map(tag => <span key={tag.id} className={enterpriseDetailStyles.heroTagChip} style={{
+                  backgroundColor: `${tag.color || "#2b5fab"}18`,
+                  borderColor: `${tag.color || "#2b5fab"}55`,
+                  color: tag.color || "#2b5fab"
+                }}>
                           {tag.label}
-                          <button
-                            type="button"
-                            className={enterpriseDetailStyles.heroTagRemove}
-                            onClick={() => handleRemoveEquipmentTag(tag.id)}
-                            aria-label={interpolate(copy.hero.removeTag, { label: tag.label })}
-                          >
+                          <button type="button" className={enterpriseDetailStyles.heroTagRemove} onClick={() => handleRemoveEquipmentTag(tag.id)} aria-label={interpolate(copy.hero.removeTag, {
+                    label: tag.label
+                  })}>
                             <FaTimes />
                           </button>
-                        </span>
-                      ))}
+                        </span>)}
                       <div className={enterpriseDetailStyles.heroTagAddWrap}>
                         <SmartTooltip content={copy.hero.addTag}>
-                          <button
-                            type="button"
-                            className={enterpriseDetailStyles.heroTagAddTrigger}
-                            onClick={() => setEquipmentTagModalOpen(true)}
-                            aria-label={copy.hero.addTag}
-                          >
+                          <button type="button" className={enterpriseDetailStyles.heroTagAddTrigger} onClick={() => setEquipmentTagModalOpen(true)} aria-label={copy.hero.addTag}>
                             <FaPlus />
                           </button>
                         </SmartTooltip>
                       </div>
-                    </>
-                  )
-                ) : null}
+                    </> : null}
               </div>
             </div>
           </div>
 
           <div className={enterpriseDetailStyles.heroActions} ref={heroActionsMenuRef}>
-            {rmmManaged && rmmSyncPending ? (
-              <RmmSyncPendingNotice
-                variant="chip"
-                equipment={equipment}
-                syncRequestedAt={rmmSyncRequestedAt}
-              />
-            ) : null}
-            {remoteAccessAction ? (
-              <SmartTooltip content={remoteAccessAction.tooltip}>
-                <EquipmentRemoteAccessLaunchButton
-                  variant="hero"
-                  label={remoteAccessAction.label}
-                  icon={remoteAccessAction.icon}
-                  title={remoteAccessAction.tooltip}
-                  onClick={remoteAccessAction.launch}
-                />
-              </SmartTooltip>
-            ) : null}
-            {alertSettings.available ? (
-              <SmartTooltip
-                content={interpolate(copy.hero.alertsTooltip, {
-                  status: alertSettings.loading ? "…" : alertSettings.statusLabel,
-                })}
-              >
-                <button
-                  type="button"
-                  className={`${enterpriseDetailStyles.heroMenuBtn} ${styles.heroAlertBtn} ${
-                    alertSettings.suspended
-                      ? styles.heroAlertBtnSuspended
-                      : alertSettings.alertsEnabled
-                        ? styles.heroAlertBtnActive
-                        : styles.heroAlertBtnDisabled
-                  }`}
-                  onClick={() => setAlertModalOpen(true)}
-                  aria-label={copy.hero.alertsAria}
-                >
-                  <Icon
-                    icon={
-                      alertSettings.suspended || !alertSettings.alertsEnabled
-                        ? "mdi:bell-off-outline"
-                        : "mdi:bell-ring-outline"
-                    }
-                    aria-hidden
-                  />
+            {rmmManaged && rmmSyncPending ? <RmmSyncPendingNotice variant="chip" equipment={equipment} syncRequestedAt={rmmSyncRequestedAt} /> : null}
+            {remoteAccessAction ? <SmartTooltip content={remoteAccessAction.tooltip}>
+                <EquipmentRemoteAccessLaunchButton variant="hero" label={remoteAccessAction.label} icon={remoteAccessAction.icon} title={remoteAccessAction.tooltip} onClick={remoteAccessAction.launch} />
+              </SmartTooltip> : null}
+            {alertSettings.available ? <SmartTooltip content={interpolate(copy.hero.alertsTooltip, {
+            status: alertSettings.loading ? "…" : alertSettings.statusLabel
+          })}>
+                <button type="button" className={`${enterpriseDetailStyles.heroMenuBtn} ${styles.heroAlertBtn} ${alertSettings.suspended ? styles.heroAlertBtnSuspended : alertSettings.alertsEnabled ? styles.heroAlertBtnActive : styles.heroAlertBtnDisabled}`} onClick={() => setAlertModalOpen(true)} aria-label={copy.hero.alertsAria}>
+                  <Icon icon={alertSettings.suspended || !alertSettings.alertsEnabled ? "mdi:bell-off-outline" : "mdi:bell-ring-outline"} aria-hidden />
                 </button>
-              </SmartTooltip>
-            ) : null}
+              </SmartTooltip> : null}
             <SmartTooltip content={copy.hero.actionsTooltip}>
-              <button
-                type="button"
-                className={enterpriseDetailStyles.heroMenuBtn}
-                onClick={() => setHeroMenuOpen((open) => !open)}
-                aria-expanded={heroMenuOpen}
-                aria-haspopup="menu"
-                aria-label={copy.hero.actionsAria}
-              >
+              <button type="button" className={enterpriseDetailStyles.heroMenuBtn} onClick={() => setHeroMenuOpen(open => !open)} aria-expanded={heroMenuOpen} aria-haspopup="menu" aria-label={copy.hero.actionsAria}>
                 <Icon icon="mdi:dots-horizontal" aria-hidden />
               </button>
             </SmartTooltip>
-            {heroMenuOpen ? (
-              <div className={enterpriseDetailStyles.heroClientMenu} role="menu">
-                <button
-                  type="button"
-                  className={enterpriseDetailStyles.heroMenuItem}
-                  role="menuitem"
-                  onClick={openEditEquipmentModal}
-                >
+            {heroMenuOpen ? <div className={enterpriseDetailStyles.heroClientMenu} role="menu">
+                <button type="button" className={enterpriseDetailStyles.heroMenuItem} role="menuitem" onClick={openEditEquipmentModal}>
                   <Icon icon="mdi:pencil-outline" aria-hidden />
                   <span>{copy.hero.edit}</span>
                 </button>
-                <button
-                  type="button"
-                  className={enterpriseDetailStyles.heroMenuItem}
-                  role="menuitem"
-                  onClick={openCreateEventModal}
-                >
+                <button type="button" className={enterpriseDetailStyles.heroMenuItem} role="menuitem" onClick={openCreateEventModal}>
                   <Icon icon="mdi:calendar-plus-outline" aria-hidden />
                   <span className={styles.heroMenuItemLabel}>
                     {copy.hero.createEvent}
                     {isCommunity ? <ProFeatureBadge variant="inline" className={styles.proBadgeInline} /> : null}
                   </span>
                 </button>
-                {alertSettings.available ? (
-                  <button
-                    type="button"
-                    className={enterpriseDetailStyles.heroMenuItem}
-                    role="menuitem"
-                    onClick={() => {
-                      setHeroMenuOpen(false);
-                      setAlertModalOpen(true);
-                    }}
-                  >
+                {alertSettings.available ? <button type="button" className={enterpriseDetailStyles.heroMenuItem} role="menuitem" onClick={() => {
+              setHeroMenuOpen(false);
+              setAlertModalOpen(true);
+            }}>
                     <Icon icon="mdi:bell-alert-outline" aria-hidden />
                     <span>{copy.hero.alertsMenu}</span>
-                  </button>
-                ) : null}
-                {rmmManaged && rmmAgentId ? (
-                  rmmSyncPending ? (
-                    <button
-                      type="button"
-                      className={enterpriseDetailStyles.heroMenuItem}
-                      role="menuitem"
-                      disabled={rmmSyncRequesting}
-                      onClick={handleRmmCancelSync}
-                    >
+                  </button> : null}
+                {rmmManaged && rmmAgentId ? rmmSyncPending ? <button type="button" className={enterpriseDetailStyles.heroMenuItem} role="menuitem" disabled={rmmSyncRequesting} onClick={handleRmmCancelSync}>
                       <Icon icon="mdi:sync-off" aria-hidden />
                       <span>{copy.hero.cancelFullSync}</span>
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className={enterpriseDetailStyles.heroMenuItem}
-                      role="menuitem"
-                      disabled={rmmSyncRequesting}
-                      onClick={handleRmmFullSync}
-                    >
+                    </button> : <button type="button" className={enterpriseDetailStyles.heroMenuItem} role="menuitem" disabled={rmmSyncRequesting} onClick={handleRmmFullSync}>
                       <Icon icon="mdi:sync" aria-hidden />
                       <span>{copy.hero.fullSync}</span>
-                    </button>
-                  )
-                ) : null}
-                {checkmkIntegrationEnabled && equipment.type !== "Internet" ? (
-                  <>
+                    </button> : null}
+                {checkmkIntegrationEnabled && equipment.type !== "Internet" ? <>
                     <div className={enterpriseDetailStyles.heroMenuDivider} role="separator" />
-                    <button
-                      type="button"
-                      className={enterpriseDetailStyles.heroMenuItem}
-                      role="menuitem"
-                      disabled={!checkmkMapping?.checkmk_host_name || loadingCheckMK}
-                      onClick={() => {
-                        setHeroMenuOpen(false);
-                        loadCheckMKData({ force: true });
-                      }}
-                    >
+                    <button type="button" className={enterpriseDetailStyles.heroMenuItem} role="menuitem" disabled={!checkmkMapping?.checkmk_host_name || loadingCheckMK} onClick={() => {
+                setHeroMenuOpen(false);
+                loadCheckMKData({
+                  force: true
+                });
+              }}>
                       <Icon icon="mdi:sync" aria-hidden />
                       <span>{copy.hero.refreshCheckmk}</span>
                     </button>
-                    <button
-                      type="button"
-                      className={enterpriseDetailStyles.heroMenuItem}
-                      role="menuitem"
-                      onClick={() => {
-                        setHeroMenuOpen(false);
-                        setCheckmkMappingModal(true);
-                      }}
-                    >
+                    <button type="button" className={enterpriseDetailStyles.heroMenuItem} role="menuitem" onClick={() => {
+                setHeroMenuOpen(false);
+                setCheckmkMappingModal(true);
+              }}>
                       <Icon icon="simple-icons:checkmk" aria-hidden />
                       <span>{checkmkMapping?.checkmk_host_name ? copy.hero.mappingCheckmk : copy.hero.mapCheckmk}</span>
                     </button>
-                  </>
-                ) : null}
-                {remoteAccessAction ? (
-                  <button
-                    type="button"
-                    className={enterpriseDetailStyles.heroMenuItem}
-                    role="menuitem"
-                    onClick={() => {
-                      setHeroMenuOpen(false);
-                      remoteAccessAction.launch();
-                    }}
-                  >
+                  </> : null}
+                {remoteAccessAction ? <button type="button" className={enterpriseDetailStyles.heroMenuItem} role="menuitem" onClick={() => {
+              setHeroMenuOpen(false);
+              remoteAccessAction.launch();
+            }}>
                     <Icon icon={remoteAccessAction.icon} aria-hidden />
                     <span>{remoteAccessAction.label}</span>
-                  </button>
-                ) : null}
-                {isSynologyNasStorage && formData.quickConnect ? (
-                  <button
-                    type="button"
-                    className={enterpriseDetailStyles.heroMenuItem}
-                    role="menuitem"
-                    onClick={() => {
-                      setHeroMenuOpen(false);
-                      const url = buildQuickConnectUrl(formData.quickConnect);
-                      if (url) window.open(url, "_blank", "noopener,noreferrer");
-                    }}
-                  >
+                  </button> : null}
+                {isSynologyNasStorage && formData.quickConnect ? <button type="button" className={enterpriseDetailStyles.heroMenuItem} role="menuitem" onClick={() => {
+              setHeroMenuOpen(false);
+              const url = buildQuickConnectUrl(formData.quickConnect);
+              if (url) window.open(url, "_blank", "noopener,noreferrer");
+            }}>
                     <Icon icon="mdi:link-variant" aria-hidden />
                     <span>{copy.hero.openQuickConnect}</span>
-                  </button>
-                ) : null}
-              </div>
-            ) : null}
+                  </button> : null}
+              </div> : null}
           </div>
         </div>
       </header>
 
       <div className={styles.shell}>
         <nav className={styles.tabBar} aria-label={copy.tabs.aria}>
-          <button
-            type="button"
-            className={`${styles.tabBtn} ${rightPanelTab === 'dashboard' ? styles.tabBtnActive : ''}`}
-            onClick={() => setRightPanelTab('dashboard')}
-          >
+          <button type="button" className={`${styles.tabBtn} ${rightPanelTab === 'dashboard' ? styles.tabBtnActive : ''}`} onClick={() => setRightPanelTab('dashboard')}>
             <Icon icon="mdi:view-dashboard-outline" />
             {copy.tabs.general}
           </button>
-          {showRmmOperationsTab ? (
-            <button
-              type="button"
-              className={`${styles.tabBtn} ${rightPanelTab === 'operations' ? styles.tabBtnActive : ''}`}
-              onClick={() => setRightPanelTab('operations')}
-            >
+          {showRmmOperationsTab ? <button type="button" className={`${styles.tabBtn} ${rightPanelTab === 'operations' ? styles.tabBtnActive : ''}`} onClick={() => setRightPanelTab('operations')}>
               <Icon icon="mdi:wrench-cog-outline" />
               {copy.tabs.system}
-            </button>
-          ) : null}
-          {showRmmPeripheralsTab ? (
-            <button
-              type="button"
-              className={`${styles.tabBtn} ${rightPanelTab === 'peripherals' ? styles.tabBtnActive : ''}`}
-              onClick={() => setRightPanelTab('peripherals')}
-            >
+            </button> : null}
+          {showRmmPeripheralsTab ? <button type="button" className={`${styles.tabBtn} ${rightPanelTab === 'peripherals' ? styles.tabBtnActive : ''}`} onClick={() => setRightPanelTab('peripherals')}>
               <Icon icon="mdi:devices" />
               {copy.tabs.peripherals}
-            </button>
-          ) : null}
-          {showRmmMetricsTab ? (
-            <button
-              type="button"
-              className={`${styles.tabBtn} ${rightPanelTab === 'metrics' ? styles.tabBtnActive : ''}`}
-              onClick={() => setRightPanelTab('metrics')}
-            >
+            </button> : null}
+          {showRmmMetricsTab ? <button type="button" className={`${styles.tabBtn} ${rightPanelTab === 'metrics' ? styles.tabBtnActive : ''}`} onClick={() => setRightPanelTab('metrics')}>
               <Icon icon="mdi:chart-timeline-variant" />
               {copy.tabs.metrics}
-            </button>
-          ) : null}
-          <button
-            type="button"
-            className={`${styles.tabBtn} ${rightPanelTab === 'events' ? styles.tabBtnActive : ''}`}
-            onClick={() => setRightPanelTab('events')}
-          >
+            </button> : null}
+          <button type="button" className={`${styles.tabBtn} ${rightPanelTab === 'events' ? styles.tabBtnActive : ''}`} onClick={() => setRightPanelTab('events')}>
             <Icon icon="mdi:calendar-clock" />
             {copy.tabs.events}
           </button>
-          <button
-            type="button"
-            className={`${styles.tabBtn} ${rightPanelTab === 'stats' ? styles.tabBtnActive : ''}`}
-            onClick={() => setRightPanelTab('stats')}
-          >
+          <button type="button" className={`${styles.tabBtn} ${rightPanelTab === 'stats' ? styles.tabBtnActive : ''}`} onClick={() => setRightPanelTab('stats')}>
             <Icon icon="mdi:chart-box-outline" />
             {copy.tabs.stats}
           </button>
-          <button
-            type="button"
-            className={`${styles.tabBtn} ${rightPanelTab === 'documents' ? styles.tabBtnActive : ''}`}
-            onClick={() => setRightPanelTab('documents')}
-          >
+          <button type="button" className={`${styles.tabBtn} ${rightPanelTab === 'documents' ? styles.tabBtnActive : ''}`} onClick={() => setRightPanelTab('documents')}>
             <Icon icon="mdi:file-document-outline" />
             {copy.tabs.documents}
           </button>
-          <button
-            type="button"
-            className={`${styles.tabBtn} ${rightPanelTab === 'logs' ? styles.tabBtnActive : ''}`}
-            onClick={() => setRightPanelTab('logs')}
-          >
+          <button type="button" className={`${styles.tabBtn} ${rightPanelTab === 'logs' ? styles.tabBtnActive : ''}`} onClick={() => setRightPanelTab('logs')}>
             <Icon icon="mdi:history" />
             {copy.tabs.logs}
           </button>
         </nav>
 
-        {rmmManaged && rmmSyncPending ? (
-          <RmmSyncPendingNotice
-            equipment={equipment}
-            syncRequestedAt={rmmSyncRequestedAt}
-            onCancel={handleRmmCancelSync}
-            cancelling={rmmSyncRequesting}
-          />
-        ) : null}
+        {rmmManaged && rmmSyncPending ? <RmmSyncPendingNotice equipment={equipment} syncRequestedAt={rmmSyncRequestedAt} onCancel={handleRmmCancelSync} cancelling={rmmSyncRequesting} /> : null}
 
         <div className={styles.mainContent}>
-          {rightPanelTab === 'dashboard' && (
-            <>
-              <EquipmentDetailSpecsPanel
-                equipment={equipment}
-                formData={formData}
-                clientSites={clientSites}
-                clientSsids={clientSsids}
-                peerFirewalls={peerFirewalls}
-                onOpenEquipment={openLinkedEquipment}
-                remoteAccessAction={remoteAccessAction}
-              />
+          {rightPanelTab === 'dashboard' && <>
+              <EquipmentDetailSpecsPanel equipment={equipment} formData={formData} clientSites={clientSites} clientSsids={clientSsids} peerFirewalls={peerFirewalls} onOpenEquipment={openLinkedEquipment} remoteAccessAction={remoteAccessAction} />
 
-              {equipment.type === 'Ordinateurs' && (
-                <RmmMonitoringPanel
-                  equipment={equipment}
-                  syncPending={rmmSyncPending}
-                  syncRequestedAt={rmmSyncRequestedAt}
-                  variant="general"
-                  agentStatusInHero={showRmmHeroStatus}
-                />
-              )}
+              {equipment.type === 'Ordinateurs' && <RmmMonitoringPanel equipment={equipment} syncPending={rmmSyncPending} syncRequestedAt={rmmSyncRequestedAt} variant="general" agentStatusInHero={showRmmHeroStatus} />}
 
-              {checkmkIntegrationEnabled && isCheckMKMappableType(equipment.type) && equipment.type !== 'Internet' && (
-                <CheckMKMonitoringPanel
-                  equipment={equipment}
-                  checkmkMapping={checkmkMapping}
-                  checkmkData={checkmkData}
-                  checkmkHostDetails={checkmkHostDetails}
-                  loadingCheckMK={loadingCheckMK}
-                  loadingAvailability={loadingAvailability}
-                  checkmkAvailabilityPeriod={checkmkAvailabilityPeriod}
-                  onAvailabilityPeriodChange={(period) => {
-                    setCheckmkAvailabilityPeriod(period);
-                    loadCheckMKAvailabilityOnly(period);
-                  }}
-                  onOpenService={openCheckMKService}
-                  onOpenEvent={openCheckMKEvent}
-                  onOpenMapping={() => setCheckmkMappingModal(true)}
-                />
-              )}
-            </>
-          )}
+              {checkmkIntegrationEnabled && isCheckMKMappableType(equipment.type) && equipment.type !== 'Internet' && <CheckMKMonitoringPanel equipment={equipment} checkmkMapping={checkmkMapping} checkmkData={checkmkData} checkmkHostDetails={checkmkHostDetails} loadingCheckMK={loadingCheckMK} loadingAvailability={loadingAvailability} checkmkAvailabilityPeriod={checkmkAvailabilityPeriod} onAvailabilityPeriodChange={period => {
+            setCheckmkAvailabilityPeriod(period);
+            loadCheckMKAvailabilityOnly(period);
+          }} onOpenService={openCheckMKService} onOpenEvent={openCheckMKEvent} onOpenMapping={() => setCheckmkMappingModal(true)} />}
+            </>}
 
-          {rightPanelTab === 'events' && (
-            <EquipmentEventsPanel
-              copy={copy}
-              locale={locale}
-              loading={loadingActivity}
-              activity={activity}
-              datePreset={activityDatePreset}
-              onDatePresetChange={setActivityDatePreset}
-              customStart={activityCustomStart}
-              customEnd={activityCustomEnd}
-              onCustomStartChange={setActivityCustomStart}
-              onCustomEndChange={setActivityCustomEnd}
-              onCreateEvent={openCreateEventModal}
-              onOpenPlanningEvent={handleOpenPlanningEvent}
-              onOpenTicket={handleOpenLinkedTicket}
-              isCommunity={isCommunity}
-              proBadge={<ProFeatureBadge variant="inline" className={styles.proBadgeInline} />}
-            />
-          )}
+          {rightPanelTab === 'events' && <EquipmentEventsPanel copy={copy} locale={locale} loading={loadingActivity} activity={activity} datePreset={activityDatePreset} onDatePresetChange={setActivityDatePreset} customStart={activityCustomStart} customEnd={activityCustomEnd} onCustomStartChange={setActivityCustomStart} onCustomEndChange={setActivityCustomEnd} onCreateEvent={openCreateEventModal} onOpenPlanningEvent={handleOpenPlanningEvent} onOpenTicket={handleOpenLinkedTicket} isCommunity={isCommunity} proBadge={<ProFeatureBadge variant="inline" className={styles.proBadgeInline} />} />}
 
-          {rightPanelTab === 'stats' && (
-            <EquipmentStatsPanel
-              copy={copy}
-              locale={locale}
-              equipment={equipment}
-              loading={loadingActivity}
-              activity={activity}
-              datePreset={activityDatePreset}
-              onDatePresetChange={setActivityDatePreset}
-              customStart={activityCustomStart}
-              customEnd={activityCustomEnd}
-              onCustomStartChange={setActivityCustomStart}
-              onCustomEndChange={setActivityCustomEnd}
-              alertSettings={alertSettings}
-              rmmManaged={rmmManaged}
-            />
-          )}
+          {rightPanelTab === 'stats' && <EquipmentStatsPanel copy={copy} locale={locale} equipment={equipment} loading={loadingActivity} activity={activity} datePreset={activityDatePreset} onDatePresetChange={setActivityDatePreset} customStart={activityCustomStart} customEnd={activityCustomEnd} onCustomStartChange={setActivityCustomStart} onCustomEndChange={setActivityCustomEnd} alertSettings={alertSettings} rmmManaged={rmmManaged} />}
 
-          {/* Documents */}
-          {rightPanelTab === 'documents' && (
-            <section className={enterpriseDetailStyles.panel}>
+          {}
+          {rightPanelTab === 'documents' && <section className={enterpriseDetailStyles.panel}>
               <header className={specsStyles.panelHeader}>
                 <div>
                   <h2 className={specsStyles.panelTitle}>
@@ -1915,60 +1299,28 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
               <div className={enterpriseDetailStyles.panelBody}>
                 <EquipmentDocumentsPanel equipment={equipment} embedded />
               </div>
-            </section>
-          )}
+            </section>}
 
-          {rightPanelTab === 'metrics' && showRmmMetricsTab ? (
-            rmmMetricsAgent ? (
-              <RmmMetricHistoryPanel
-                agent={rmmMetricsAgent}
-                active={rightPanelTab === "metrics"}
-                embedded
-              />
-            ) : (
-              <div className={styles.emptyState}>
+          {rightPanelTab === 'metrics' && showRmmMetricsTab ? rmmMetricsAgent ? <RmmMetricHistoryPanel agent={rmmMetricsAgent} active={rightPanelTab === "metrics"} embedded /> : <div className={styles.emptyState}>
                 <Icon icon="mdi:chart-timeline-variant" className={styles.emptyIcon} />
                 <h5>{copy.metrics.unavailableTitle}</h5>
                 <p className={styles.emptyHint}>
                   {copy.metrics.unavailableHint}
                 </p>
-              </div>
-            )
-          ) : null}
+              </div> : null}
 
-          {rightPanelTab === "peripherals" && showRmmPeripheralsTab ? (
-            <RmmMonitoringPanel
-              equipment={equipment}
-              variant="peripherals"
-              agentStatusInHero={showRmmHeroStatus}
-            />
-          ) : null}
+          {rightPanelTab === "peripherals" && showRmmPeripheralsTab ? <RmmMonitoringPanel equipment={equipment} variant="peripherals" agentStatusInHero={showRmmHeroStatus} /> : null}
 
-          {rightPanelTab === "operations" && showRmmOperationsTab ? (
-            <RmmMonitoringPanel
-              equipment={equipment}
-              syncPending={rmmSyncPending}
-              syncRequestedAt={rmmSyncRequestedAt}
-              variant="operations"
-              agentStatusInHero={showRmmHeroStatus}
-            />
-          ) : null}
+          {rightPanelTab === "operations" && showRmmOperationsTab ? <RmmMonitoringPanel equipment={equipment} syncPending={rmmSyncPending} syncRequestedAt={rmmSyncRequestedAt} variant="operations" agentStatusInHero={showRmmHeroStatus} /> : null}
 
-          {/* Logs */}
-          {rightPanelTab === 'logs' && (
-            <section className={enterpriseDetailStyles.panel}>
+          {}
+          {rightPanelTab === 'logs' && <section className={enterpriseDetailStyles.panel}>
               <header className={enterpriseDetailStyles.panelHeader}>
                 <div className={enterpriseDetailStyles.panelHeaderMain}>
                   <h2 className={enterpriseDetailStyles.panelTitle}>{copy.logs.title}</h2>
                 </div>
                 <div className={styles.logsHeaderActions}>
-                  <button
-                    type="button"
-                    className={styles.logsPurgeBtn}
-                    onClick={() => setPurgeLogsConfirmOpen(true)}
-                    disabled={loadingLogs || purgingLogs || logsTotal === 0}
-                    title={copy.logs.purgeTitle}
-                  >
+                  <button type="button" className={styles.logsPurgeBtn} onClick={() => setPurgeLogsConfirmOpen(true)} disabled={loadingLogs || purgingLogs || logsTotal === 0} title={copy.logs.purgeTitle}>
                     <Icon icon="mdi:delete-sweep" aria-hidden />
                     {copy.logs.purge}
                   </button>
@@ -1978,53 +1330,27 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
                 <div className={styles.logsToolbar}>
                   <div className={styles.logsSearchWrap}>
                     <Icon icon="mdi:magnify" className={styles.logsSearchIcon} aria-hidden />
-                    <input
-                      type="search"
-                      className={styles.logsSearchInput}
-                      value={logsSearchDraft}
-                      onChange={(event) => setLogsSearchDraft(event.target.value)}
-                      placeholder={copy.logs.searchPlaceholder}
-                      aria-label={copy.logs.searchAria}
-                    />
-                    {logsSearchDraft ? (
-                      <button
-                        type="button"
-                        className={styles.logsSearchClear}
-                        onClick={() => setLogsSearchDraft("")}
-                        aria-label={copy.logs.clearSearch}
-                      >
+                    <input type="search" className={styles.logsSearchInput} value={logsSearchDraft} onChange={event => setLogsSearchDraft(event.target.value)} placeholder={copy.logs.searchPlaceholder} aria-label={copy.logs.searchAria} />
+                    {logsSearchDraft ? <button type="button" className={styles.logsSearchClear} onClick={() => setLogsSearchDraft("")} aria-label={copy.logs.clearSearch}>
                         <Icon icon="mdi:close" aria-hidden />
-                      </button>
-                    ) : null}
+                      </button> : null}
                   </div>
                   <label className={styles.logsFilterLabel}>
                     <span className={styles.logsFilterLabelText}>{copy.logs.filterType}</span>
-                    <select
-                      className={styles.logsFilterSelect}
-                      value={logsCategory}
-                      onChange={(event) => setLogsCategory(event.target.value)}
-                      aria-label={copy.logs.filterAria}
-                    >
-                      {LOG_FILTER_OPTIONS.map((option) => (
-                        <option key={option.value} value={option.value}>
+                    <select className={styles.logsFilterSelect} value={logsCategory} onChange={event => setLogsCategory(event.target.value)} aria-label={copy.logs.filterAria}>
+                      {LOG_FILTER_OPTIONS.map(option => <option key={option.value} value={option.value}>
                           {option.label}
-                        </option>
-                      ))}
+                        </option>)}
                     </select>
                   </label>
                 </div>
-                {loadingLogs ? (
-                  <div className={styles.loadingState}>{copy.loading}</div>
-                ) : logs.length === 0 ? (
-                  <div className={styles.emptyState}>
+                {loadingLogs ? <div className={styles.loadingState}>{copy.loading}</div> : logs.length === 0 ? <div className={styles.emptyState}>
                     <Icon icon="mdi:history" className={styles.emptyIcon} />
                     <h5>{logsFiltersActive ? copy.logs.emptyFiltered : copy.logs.empty}</h5>
                     <p className={styles.emptyHint}>
                       {logsFiltersActive ? copy.logs.emptyFilteredHint : copy.logs.emptyHint}
                     </p>
-                  </div>
-                ) : (
-                  <>
+                  </div> : <>
                     <div className={enterpriseDetailStyles.dataTableWrapper}>
                       <table className={enterpriseDetailStyles.dataTable}>
                         <thead>
@@ -2036,677 +1362,631 @@ export default function EquipmentDetailPage({ equipment, onBack, onUpdate, onNav
                         </thead>
                         <tbody>
                           {logs.map((log, index) => {
-                            const logMeta = getLogActionDetails(log);
-                            const logUser = log.user_name || log.user || copy.logs.systemUser;
-                            return (
-                              <tr
-                                key={log.id || index}
-                                className={enterpriseDetailStyles.dataTableRowClickable}
-                                onClick={() => handleLogClick(log)}
-                                title={copy.logs.detailTitle}
-                              >
+                      const logMeta = getLogActionDetails(log);
+                      const logUser = log.user_name || log.user || copy.logs.systemUser;
+                      return <tr key={log.id || index} className={enterpriseDetailStyles.dataTableRowClickable} onClick={() => handleLogClick(log)} title={copy.logs.detailTitle}>
                                 <td>
-                                  <span className={styles.logActionInline} style={{ color: logMeta.color }}>
+                                  <span className={styles.logActionInline} style={{
+                            color: logMeta.color
+                          }}>
                                     <Icon icon={logMeta.icon} aria-hidden />
                                     {log.action || logMeta.label}
                                   </span>
                                 </td>
                                 <td>{logUser}</td>
                                 <td className={styles.eventMetaCell}>
-                                  {log.created_at || log.timestamp
-                                    ? new Date(log.created_at || log.timestamp).toLocaleString(
-                                        { fr: "fr-FR", en: "en-GB", de: "de-DE", it: "it-IT", es: "es-ES" }[locale] || "fr-FR",
-                                        {
-                                        day: "2-digit",
-                                        month: "2-digit",
-                                        year: "numeric",
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                      })
-                                    : "-"}
+                                  {log.created_at || log.timestamp ? new Date(log.created_at || log.timestamp).toLocaleString({
+                            fr: "en-US",
+                            en: "en-GB",
+                            de: "de-DE",
+                            it: "it-IT",
+                            es: "es-ES"
+                          }[locale] || "en-US", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit"
+                          }) : "-"}
                                 </td>
-                              </tr>
-                            );
-                          })}
+                              </tr>;
+                    })}
                         </tbody>
                       </table>
                     </div>
-                    {logsTotal > logsLimit && (
-                      <div className={styles.pagination}>
-                        <button
-                          className={styles.paginationButton}
-                          onClick={() => loadLogs(logsPage - 1)}
-                          disabled={logsPage <= 1 || loadingLogs}
-                        >
+                    {logsTotal > logsLimit && <div className={styles.pagination}>
+                        <button className={styles.paginationButton} onClick={() => loadLogs(logsPage - 1)} disabled={logsPage <= 1 || loadingLogs}>
                           <Icon icon="mdi:chevron-left" />
                         </button>
                         <span className={styles.paginationInfo}>
                           {interpolate(copy.logs.pagination, {
-                            page: logsPage,
-                            pages: Math.ceil(logsTotal / logsLimit),
-                            total: logsTotal,
-                          })}
+                    page: logsPage,
+                    pages: Math.ceil(logsTotal / logsLimit),
+                    total: logsTotal
+                  })}
                         </span>
-                        <button
-                          className={styles.paginationButton}
-                          onClick={() => loadLogs(logsPage + 1)}
-                          disabled={logsPage >= Math.ceil(logsTotal / logsLimit) || loadingLogs}
-                        >
+                        <button className={styles.paginationButton} onClick={() => loadLogs(logsPage + 1)} disabled={logsPage >= Math.ceil(logsTotal / logsLimit) || loadingLogs}>
                           <Icon icon="mdi:chevron-right" />
                         </button>
-                      </div>
-                    )}
-                  </>
-                )}
+                      </div>}
+                  </>}
               </div>
-            </section>
-          )}
+            </section>}
         </div>
       </div>
 
-      {/* Modal Photo (Coming Soon) */}
-      {photoModalOpen && (
-        <div className={styles.modalOverlay} onClick={() => setPhotoModalOpen(false)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+      {}
+      {photoModalOpen && <div className={styles.modalOverlay} onClick={() => setPhotoModalOpen(false)}>
+          <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>
                 <FaCamera className={styles.modalIcon} />
                 Ajout de photo
               </h2>
-              <button 
-                className={styles.modalCloseButton}
-                onClick={() => setPhotoModalOpen(false)}
-                title="Fermer"
-              >
+              <button className={styles.modalCloseButton} onClick={() => setPhotoModalOpen(false)} title="Close">
                 <FaTimes />
               </button>
             </div>
             <div className={styles.modalBody}>
               <div className={styles.comingSoonMessage}>
                 <Icon icon="mdi:clock-outline" width={48} height={48} className={styles.comingSoonIcon} />
-                <h3>FonctionnalitÃ© Ã  venir</h3>
+                <h3>Feature coming soon</h3>
                 <p>
-                  BientÃ´t, vous pourrez ajouter des photos Ã  vos Ã©quipements pour :
+                  Soon, you will be able to add photos to your equipment to:
                 </p>
                 <ul className={styles.comingSoonList}>
-                  <li>Documenter l'Ã©tat physique de l'Ã©quipement</li>
-                  <li>Enregistrer des photos avant/aprÃ¨s intervention</li>
-                  <li>CrÃ©er un historique visuel de vos Ã©quipements</li>
+                  <li>Document the physical condition of equipment</li>
+                  <li>Save photos before and after interventions</li>
+                  <li>Create a visual history of your equipment</li>
                   <li>Et bien plus encore...</li>
                 </ul>
                 <p className={styles.comingSoonNote}>
-                  Cette fonctionnalitÃ© permettra de garder une trace visuelle de tous vos Ã©quipements et de leurs Ã©volutions.
+                  This feature will keep a visual record of all your equipment and its changes.
                 </p>
               </div>
             </div>
             <div className={styles.modalFooter}>
-              <button 
-                className={styles.modalOkButton}
-                onClick={() => setPhotoModalOpen(false)}
-              >
+              <button className={styles.modalOkButton} onClick={() => setPhotoModalOpen(false)}>
                 Compris
               </button>
             </div>
           </div>
-        </div>
-      )}
+        </div>}
 
-      {/* Modal Note (Coming Soon) */}
-      {noteModalOpen && (
-        <div className={styles.modalOverlay} onClick={() => setNoteModalOpen(false)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+      {}
+      {noteModalOpen && <div className={styles.modalOverlay} onClick={() => setNoteModalOpen(false)}>
+          <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>
                 <FaStickyNote className={styles.modalIcon} />
                 Ajout de note
               </h2>
-              <button 
-                className={styles.modalCloseButton}
-                onClick={() => setNoteModalOpen(false)}
-                title="Fermer"
-              >
+              <button className={styles.modalCloseButton} onClick={() => setNoteModalOpen(false)} title="Close">
                 <FaTimes />
               </button>
             </div>
             <div className={styles.modalBody}>
               <div className={styles.comingSoonMessage}>
                 <Icon icon="mdi:clock-outline" width={48} height={48} className={styles.comingSoonIcon} />
-                <h3>FonctionnalitÃ© Ã  venir</h3>
+                <h3>Feature coming soon</h3>
                 <p>
-                  BientÃ´t, vous pourrez ajouter des notes Ã  vos Ã©quipements pour :
+                  Soon, you will be able to add notes to your equipment to:
                 </p>
                 <ul className={styles.comingSoonList}>
-                  <li>Enregistrer des observations et remarques</li>
-                  <li>Documenter les interventions effectuÃ©es</li>
-                  <li>CrÃ©er un historique des actions rÃ©alisÃ©es</li>
+                  <li>Save observations and remarks</li>
+                  <li>Document completed interventions</li>
+                  <li>Create a history of completed actions</li>
                   <li>Et bien plus encore...</li>
                 </ul>
                 <p className={styles.comingSoonNote}>
-                  Cette fonctionnalitÃ© permettra de garder une trace Ã©crite de toutes les informations importantes concernant vos Ã©quipements.
+                  This feature will keep a written record of all important information about your equipment.
                 </p>
               </div>
             </div>
             <div className={styles.modalFooter}>
-              <button 
-                className={styles.modalOkButton}
-                onClick={() => setNoteModalOpen(false)}
-              >
+              <button className={styles.modalOkButton} onClick={() => setNoteModalOpen(false)}>
                 Compris
               </button>
             </div>
           </div>
-        </div>
-      )}
+        </div>}
 
-      {/* Modal CheckMK Mapping */}
-      {checkmkIntegrationEnabled && checkmkMappingModal && equipment && (
-        <CheckMKMappingModal
-          isOpen={checkmkMappingModal}
-          onClose={() => setCheckmkMappingModal(false)}
-          equipment={{
-            id: equipment.rawData?.id || equipment.id,
-            name: equipment.name || equipment.nom,
-            nom: equipment.nom || equipment.name,
-            clientName: equipment.clientName,
-            clientId: equipment.clientId,
-            type: equipment.type,
-            checkmkMapping: checkmkMapping || equipment.checkmkMapping
-          }}
-          onMappingSaved={handleMappingSaved}
-        />
-      )}
+      {}
+      {checkmkIntegrationEnabled && checkmkMappingModal && equipment && <CheckMKMappingModal isOpen={checkmkMappingModal} onClose={() => setCheckmkMappingModal(false)} equipment={{
+      id: equipment.rawData?.id || equipment.id,
+      name: equipment.name || equipment.nom,
+      nom: equipment.nom || equipment.name,
+      clientName: equipment.clientName,
+      clientId: equipment.clientId,
+      type: equipment.type,
+      checkmkMapping: checkmkMapping || equipment.checkmkMapping
+    }} onMappingSaved={handleMappingSaved} />}
 
-      {/* Modal Debug CheckMK */}
-      {checkmkDebugModal && checkmkData && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 9999
-        }}>
+      {}
+      {checkmkDebugModal && checkmkData && <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 9999
+    }}>
           <div style={{
-            backgroundColor: 'var(--bg-secondary, #1a1a2e)',
-            borderRadius: '0.5rem',
-            padding: '2rem',
-            maxWidth: '90vw',
-            maxHeight: '90vh',
-            overflow: 'auto',
+        backgroundColor: 'var(--bg-secondary, #1a1a2e)',
+        borderRadius: '0.5rem',
+        padding: '2rem',
+        maxWidth: '90vw',
+        maxHeight: '90vh',
+        overflow: 'auto',
+        border: '1px solid var(--border-primary, #2a2a4a)',
+        boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)'
+      }}>
+            <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '1.5rem'
+        }}>
+              <h2 style={{
+            color: 'var(--text-primary, #f9fafb)',
+            margin: 0
+          }}>Raw CheckMK data</h2>
+              <button onClick={() => setCheckmkDebugModal(false)} style={{
+            backgroundColor: 'var(--bg-tertiary, #1e1e3f)',
             border: '1px solid var(--border-primary, #2a2a4a)',
-            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)'
+            color: 'var(--text-primary, #f9fafb)',
+            borderRadius: '0.375rem',
+            padding: '0.5rem 1rem',
+            cursor: 'pointer',
+            fontSize: '1rem'
           }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-              <h2 style={{ color: 'var(--text-primary, #f9fafb)', margin: 0 }}>Données brutes CheckMK</h2>
-              <button
-                onClick={() => setCheckmkDebugModal(false)}
-                style={{
-                  backgroundColor: 'var(--bg-tertiary, #1e1e3f)',
-                  border: '1px solid var(--border-primary, #2a2a4a)',
-                  color: 'var(--text-primary, #f9fafb)',
-                  borderRadius: '0.375rem',
-                  padding: '0.5rem 1rem',
-                  cursor: 'pointer',
-                  fontSize: '1rem'
-                }}
-              >
-                Fermer
+                Close
               </button>
             </div>
             <pre style={{
-              backgroundColor: 'var(--bg-tertiary, #1e1e3f)',
-              padding: '1rem',
-              borderRadius: '0.375rem',
-              overflow: 'auto',
-              maxHeight: '70vh',
-              color: 'var(--text-primary, #f9fafb)',
-              fontSize: '0.875rem',
-              fontFamily: 'monospace'
-            }}>
+          backgroundColor: 'var(--bg-tertiary, #1e1e3f)',
+          padding: '1rem',
+          borderRadius: '0.375rem',
+          overflow: 'auto',
+          maxHeight: '70vh',
+          color: 'var(--text-primary, #f9fafb)',
+          fontSize: '0.875rem',
+          fontFamily: 'monospace'
+        }}>
               {(() => {
-                const maxServices = 200;
-                const maxEvents = 200;
-                const allServices = checkmkData.services?.services || [];
-                const allEvents = checkmkData.events?.events || [];
-
-                const payload = {
-                  hostDetails: {
-                    ...checkmkHostDetails,
-                    // Inclure aussi les donnees brutes si disponibles
-                    raw: checkmkHostDetails?.raw,
-                    statusRaw: checkmkHostDetails?.statusRaw
-                  },
-                  services: {
-                    count: allServices.length,
-                    truncated: allServices.length > maxServices,
-                    services: allServices.slice(0, maxServices)
-                  },
-                  availability: checkmkData.availability,
-                  events: {
-                    totalCount: checkmkData.events?.events_count,
-                    count: allEvents.length,
-                    truncated: allEvents.length > maxEvents,
-                    allEvents: allEvents.slice(0, maxEvents),
-                    debug: checkmkData.events?.debug
-                  },
-                  period: checkmkData.events?.period,
-                  hostEventsDetailed: checkmkData.hostEventsDetailed
-                };
-
-                return JSON.stringify(payload, null, 2);
-              })()}
+            const maxServices = 200;
+            const maxEvents = 200;
+            const allServices = checkmkData.services?.services || [];
+            const allEvents = checkmkData.events?.events || [];
+            const payload = {
+              hostDetails: {
+                ...checkmkHostDetails,
+                raw: checkmkHostDetails?.raw,
+                statusRaw: checkmkHostDetails?.statusRaw
+              },
+              services: {
+                count: allServices.length,
+                truncated: allServices.length > maxServices,
+                services: allServices.slice(0, maxServices)
+              },
+              availability: checkmkData.availability,
+              events: {
+                totalCount: checkmkData.events?.events_count,
+                count: allEvents.length,
+                truncated: allEvents.length > maxEvents,
+                allEvents: allEvents.slice(0, maxEvents),
+                debug: checkmkData.events?.debug
+              },
+              period: checkmkData.events?.period,
+              hostEventsDetailed: checkmkData.hostEventsDetailed
+            };
+            return JSON.stringify(payload, null, 2);
+          })()}
             </pre>
           </div>
-        </div>
-      )}
+        </div>}
 
-      {/* Modal Gestion des LUNs (NAS) */}
-      {lunsModalOpen && equipment?.type === 'NAS' && (
-        <div className={styles.modalOverlay} onClick={() => setLunsModalOpen(false)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()} style={{ maxWidth: '560px' }}>
+      {}
+      {lunsModalOpen && equipment?.type === 'NAS' && <div className={styles.modalOverlay} onClick={() => setLunsModalOpen(false)}>
+          <div className={styles.modalContent} onClick={e => e.stopPropagation()} style={{
+        maxWidth: '560px'
+      }}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>
                 <Icon icon="mdi:harddisk-multiple" className={styles.modalIcon} />
-                Gérer les LUNs
+                Manage LUNs
               </h2>
-              <button
-                className={styles.modalCloseButton}
-                onClick={() => setLunsModalOpen(false)}
-                title="Fermer"
-              >
+              <button className={styles.modalCloseButton} onClick={() => setLunsModalOpen(false)} title="Close">
                 <FaTimes />
               </button>
             </div>
-            <div className={styles.modalBody} style={{ maxHeight: '60vh', overflowY: 'auto' }}>
-              {(formData.luns && Array.isArray(formData.luns) && formData.luns.length > 0) ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  {formData.luns.map((lun, lunIndex) => (
-                    <div
-                      key={lunIndex}
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: '1fr 80px minmax(100px, 1fr) auto',
-                        gap: '0.5rem',
-                        alignItems: 'end',
-                        padding: '0.5rem',
-                        background: 'var(--bg-tertiary, #f3f4f6)',
-                        borderRadius: 6
-                      }}
-                    >
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary, #6b7280)' }}>Nom</span>
-                        <input
-                          type="text"
-                          className={styles.fieldInput}
-                          value={lun.nom || lun.iqn || ''}
-                          onChange={(e) => {
-                            const luns = [...(formData.luns || [])];
-                            luns[lunIndex] = { ...luns[lunIndex], nom: e.target.value, iqn: e.target.value };
-                            updateFormDataWithChanges({ ...formData, luns });
-                          }}
-                          placeholder="Nom ou IQN"
-                        />
+            <div className={styles.modalBody} style={{
+          maxHeight: '60vh',
+          overflowY: 'auto'
+        }}>
+              {formData.luns && Array.isArray(formData.luns) && formData.luns.length > 0 ? <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.5rem'
+          }}>
+                  {formData.luns.map((lun, lunIndex) => <div key={lunIndex} style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 80px minmax(100px, 1fr) auto',
+              gap: '0.5rem',
+              alignItems: 'end',
+              padding: '0.5rem',
+              background: 'var(--bg-tertiary, #f3f4f6)',
+              borderRadius: 6
+            }}>
+                      <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2
+              }}>
+                        <span style={{
+                  fontSize: '0.7rem',
+                  color: 'var(--text-secondary, #6b7280)'
+                }}>Name</span>
+                        <input type="text" className={styles.fieldInput} value={lun.nom || lun.iqn || ''} onChange={e => {
+                  const luns = [...(formData.luns || [])];
+                  luns[lunIndex] = {
+                    ...luns[lunIndex],
+                    nom: e.target.value,
+                    iqn: e.target.value
+                  };
+                  updateFormDataWithChanges({
+                    ...formData,
+                    luns
+                  });
+                }} placeholder="Name or IQN" />
                       </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary, #6b7280)' }}>Capacité (Go)</span>
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          className={styles.fieldInput}
-                          value={lun.capacite ?? ''}
-                          onChange={(e) => {
-                            const luns = [...(formData.luns || [])];
-                            luns[lunIndex] = { ...luns[lunIndex], capacite: e.target.value };
-                            updateFormDataWithChanges({ ...formData, luns });
-                          }}
-                        />
+                      <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2
+              }}>
+                        <span style={{
+                  fontSize: '0.7rem',
+                  color: 'var(--text-secondary, #6b7280)'
+                }}>Capacity (GB)</span>
+                        <input type="text" inputMode="numeric" className={styles.fieldInput} value={lun.capacite ?? ''} onChange={e => {
+                  const luns = [...(formData.luns || [])];
+                  luns[lunIndex] = {
+                    ...luns[lunIndex],
+                    capacite: e.target.value
+                  };
+                  updateFormDataWithChanges({
+                    ...formData,
+                    luns
+                  });
+                }} />
                       </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary, #6b7280)' }}>Rôle</span>
-                        <select
-                          className={styles.fieldInput}
-                          value={lun.role || 'stockage'}
-                          onChange={(e) => {
-                            const luns = [...(formData.luns || [])];
-                            luns[lunIndex] = { ...luns[lunIndex], role: e.target.value };
-                            updateFormDataWithChanges({ ...formData, luns });
-                          }}
-                        >
-                          {lunRoleOptions.map((opt) => (
-                            <option key={opt.value} value={opt.value}>{opt.label}</option>
-                          ))}
+                      <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2
+              }}>
+                        <span style={{
+                  fontSize: '0.7rem',
+                  color: 'var(--text-secondary, #6b7280)'
+                }}>Role</span>
+                        <select className={styles.fieldInput} value={lun.role || 'stockage'} onChange={e => {
+                  const luns = [...(formData.luns || [])];
+                  luns[lunIndex] = {
+                    ...luns[lunIndex],
+                    role: e.target.value
+                  };
+                  updateFormDataWithChanges({
+                    ...formData,
+                    luns
+                  });
+                }}>
+                          {lunRoleOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                         </select>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const luns = (formData.luns || []).filter((_, i) => i !== lunIndex);
-                          updateFormDataWithChanges({ ...formData, luns });
-                        }}
-                        title="Supprimer ce LUN"
-                        style={{
-                          minWidth: 32,
-                          height: 32,
-                          padding: 0,
-                          border: 'none',
-                          background: 'transparent',
-                          color: '#ef4444',
-                          cursor: 'pointer',
-                          borderRadius: 6,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                      >
+                      <button type="button" onClick={() => {
+                const luns = (formData.luns || []).filter((_, i) => i !== lunIndex);
+                updateFormDataWithChanges({
+                  ...formData,
+                  luns
+                });
+              }} title="Delete this LUN" style={{
+                minWidth: 32,
+                height: 32,
+                padding: 0,
+                border: 'none',
+                background: 'transparent',
+                color: '#ef4444',
+                cursor: 'pointer',
+                borderRadius: 6,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
                         <Icon icon="mdi:delete" width={18} height={18} />
                       </button>
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const luns = [...(formData.luns || []), { nom: '', iqn: '', capacite: '', role: 'stockage' }];
-                      updateFormDataWithChanges({ ...formData, luns });
-                    }}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '0.35rem',
-                      padding: '0.5rem',
-                      background: 'transparent',
-                      border: '1px dashed #d1d5db',
-                      borderRadius: 6,
-                      cursor: 'pointer',
-                      color: '#6b7280',
-                      fontSize: '0.85rem'
-                    }}
-                  >
-                    <Icon icon="mdi:plus" width={18} height={18} /> Ajouter un LUN
+                    </div>)}
+                  <button type="button" onClick={() => {
+              const luns = [...(formData.luns || []), {
+                nom: '',
+                iqn: '',
+                capacite: '',
+                role: 'stockage'
+              }];
+              updateFormDataWithChanges({
+                ...formData,
+                luns
+              });
+            }} style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.35rem',
+              padding: '0.5rem',
+              background: 'transparent',
+              border: '1px dashed #d1d5db',
+              borderRadius: 6,
+              cursor: 'pointer',
+              color: '#6b7280',
+              fontSize: '0.85rem'
+            }}>
+                    <Icon icon="mdi:plus" width={18} height={18} /> Add a LUN
                   </button>
-                </div>
-              ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <span className={styles.sidebarSummaryValueSecondary} style={{ fontSize: '0.9rem' }}>Aucun LUN configuré.</span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const luns = [{ nom: '', iqn: '', capacite: '', role: 'stockage' }];
-                      updateFormDataWithChanges({ ...formData, luns });
-                    }}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '0.35rem',
-                      padding: '0.5rem',
-                      background: 'transparent',
-                      border: '1px dashed #d1d5db',
-                      borderRadius: 6,
-                      cursor: 'pointer',
-                      color: '#6b7280',
-                      fontSize: '0.85rem'
-                    }}
-                  >
-                    <Icon icon="mdi:plus" width={18} height={18} /> Ajouter un LUN
+                </div> : <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.5rem'
+          }}>
+                  <span className={styles.sidebarSummaryValueSecondary} style={{
+              fontSize: '0.9rem'
+            }}>No LUN configured.</span>
+                  <button type="button" onClick={() => {
+              const luns = [{
+                nom: '',
+                iqn: '',
+                capacite: '',
+                role: 'stockage'
+              }];
+              updateFormDataWithChanges({
+                ...formData,
+                luns
+              });
+            }} style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.35rem',
+              padding: '0.5rem',
+              background: 'transparent',
+              border: '1px dashed #d1d5db',
+              borderRadius: 6,
+              cursor: 'pointer',
+              color: '#6b7280',
+              fontSize: '0.85rem'
+            }}>
+                    <Icon icon="mdi:plus" width={18} height={18} /> Add a LUN
                   </button>
-                </div>
-              )}
+                </div>}
             </div>
             <div className={styles.modalFooter}>
-              <button
-                className={styles.modalOkButton}
-                onClick={() => setLunsModalOpen(false)}
-              >
-                Fermer
+              <button className={styles.modalOkButton} onClick={() => setLunsModalOpen(false)}>
+                Close
               </button>
             </div>
           </div>
-        </div>
-      )}
+        </div>}
 
-      {/* Modal Gestion des licences (Firewalls) */}
-      {licencesModalOpen && equipment?.type === 'Firewalls' && (
-        <div className={styles.modalOverlay} onClick={() => setLicencesModalOpen(false)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()} style={{ maxWidth: '560px' }}>
+      {}
+      {licencesModalOpen && equipment?.type === 'Firewalls' && <div className={styles.modalOverlay} onClick={() => setLicensesModalOpen(false)}>
+          <div className={styles.modalContent} onClick={e => e.stopPropagation()} style={{
+        maxWidth: '560px'
+      }}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>
                 <Icon icon="mdi:license" className={styles.modalIcon} />
-                Gérer les licences
+                Manage licenses
               </h2>
-              <button
-                className={styles.modalCloseButton}
-                onClick={() => setLicencesModalOpen(false)}
-                title="Fermer"
-              >
+              <button className={styles.modalCloseButton} onClick={() => setLicensesModalOpen(false)} title="Close">
                 <FaTimes />
               </button>
             </div>
-            <div className={styles.modalBody} style={{ maxHeight: '60vh', overflowY: 'auto' }}>
-              {(formData.licences && Array.isArray(formData.licences) && formData.licences.length > 0) ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  {formData.licences.map((lic, licIndex) => (
-                    <div
-                      key={licIndex}
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: '1fr 1fr minmax(100px, 1fr) auto',
-                        gap: '0.5rem',
-                        alignItems: 'end',
-                        padding: '0.5rem',
-                        background: 'var(--bg-tertiary, #f3f4f6)',
-                        borderRadius: 6
-                      }}
-                    >
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary, #6b7280)' }}>Nom</span>
-                        <input
-                          type="text"
-                          className={styles.fieldInput}
-                          value={lic.nom || ''}
-                          onChange={(e) => {
-                            const licences = [...(formData.licences || [])];
-                            licences[licIndex] = { ...licences[licIndex], nom: e.target.value };
-                            updateFormDataWithChanges({ ...formData, licences });
-                          }}
-                          placeholder="Nom de la licence"
-                        />
+            <div className={styles.modalBody} style={{
+          maxHeight: '60vh',
+          overflowY: 'auto'
+        }}>
+              {formData.licences && Array.isArray(formData.licences) && formData.licences.length > 0 ? <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.5rem'
+          }}>
+                  {formData.licences.map((lic, licIndex) => <div key={licIndex} style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr minmax(100px, 1fr) auto',
+              gap: '0.5rem',
+              alignItems: 'end',
+              padding: '0.5rem',
+              background: 'var(--bg-tertiary, #f3f4f6)',
+              borderRadius: 6
+            }}>
+                      <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2
+              }}>
+                        <span style={{
+                  fontSize: '0.7rem',
+                  color: 'var(--text-secondary, #6b7280)'
+                }}>Name</span>
+                        <input type="text" className={styles.fieldInput} value={lic.nom || ''} onChange={e => {
+                  const licences = [...(formData.licences || [])];
+                  licences[licIndex] = {
+                    ...licences[licIndex],
+                    nom: e.target.value
+                  };
+                  updateFormDataWithChanges({
+                    ...formData,
+                    licences
+                  });
+                }} placeholder="License name" />
                       </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary, #6b7280)' }}>Type</span>
-                        <input
-                          type="text"
-                          className={styles.fieldInput}
-                          value={lic.type || ''}
-                          onChange={(e) => {
-                            const licences = [...(formData.licences || [])];
-                            licences[licIndex] = { ...licences[licIndex], type: e.target.value };
-                            updateFormDataWithChanges({ ...formData, licences });
-                          }}
-                          placeholder="Type"
-                        />
+                      <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2
+              }}>
+                        <span style={{
+                  fontSize: '0.7rem',
+                  color: 'var(--text-secondary, #6b7280)'
+                }}>Type</span>
+                        <input type="text" className={styles.fieldInput} value={lic.type || ''} onChange={e => {
+                  const licences = [...(formData.licences || [])];
+                  licences[licIndex] = {
+                    ...licences[licIndex],
+                    type: e.target.value
+                  };
+                  updateFormDataWithChanges({
+                    ...formData,
+                    licences
+                  });
+                }} placeholder="Type" />
                       </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary, #6b7280)' }}>Expiration</span>
-                        <input
-                          type="date"
-                          className={styles.fieldInput}
-                          value={lic.expiration || ''}
-                          onChange={(e) => {
-                            const licences = [...(formData.licences || [])];
-                            licences[licIndex] = { ...licences[licIndex], expiration: e.target.value };
-                            updateFormDataWithChanges({ ...formData, licences });
-                          }}
-                        />
+                      <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2
+              }}>
+                        <span style={{
+                  fontSize: '0.7rem',
+                  color: 'var(--text-secondary, #6b7280)'
+                }}>Expiration</span>
+                        <input type="date" className={styles.fieldInput} value={lic.expiration || ''} onChange={e => {
+                  const licences = [...(formData.licences || [])];
+                  licences[licIndex] = {
+                    ...licences[licIndex],
+                    expiration: e.target.value
+                  };
+                  updateFormDataWithChanges({
+                    ...formData,
+                    licences
+                  });
+                }} />
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const licences = (formData.licences || []).filter((_, i) => i !== licIndex);
-                          updateFormDataWithChanges({ ...formData, licences });
-                        }}
-                        title="Supprimer cette licence"
-                        style={{
-                          minWidth: 32,
-                          height: 32,
-                          padding: 0,
-                          border: 'none',
-                          background: 'transparent',
-                          color: '#ef4444',
-                          cursor: 'pointer',
-                          borderRadius: 6,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                      >
+                      <button type="button" onClick={() => {
+                const licences = (formData.licences || []).filter((_, i) => i !== licIndex);
+                updateFormDataWithChanges({
+                  ...formData,
+                  licences
+                });
+              }} title="Delete this license" style={{
+                minWidth: 32,
+                height: 32,
+                padding: 0,
+                border: 'none',
+                background: 'transparent',
+                color: '#ef4444',
+                cursor: 'pointer',
+                borderRadius: 6,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
                         <Icon icon="mdi:delete" width={18} height={18} />
                       </button>
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const licences = [...(formData.licences || []), { nom: '', type: '', expiration: '' }];
-                      updateFormDataWithChanges({ ...formData, licences });
-                    }}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '0.35rem',
-                      padding: '0.5rem',
-                      background: 'transparent',
-                      border: '1px dashed #d1d5db',
-                      borderRadius: 6,
-                      cursor: 'pointer',
-                      color: '#6b7280',
-                      fontSize: '0.85rem'
-                    }}
-                  >
-                    <Icon icon="mdi:plus" width={18} height={18} /> Ajouter une licence
+                    </div>)}
+                  <button type="button" onClick={() => {
+              const licences = [...(formData.licences || []), {
+                nom: '',
+                type: '',
+                expiration: ''
+              }];
+              updateFormDataWithChanges({
+                ...formData,
+                licences
+              });
+            }} style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.35rem',
+              padding: '0.5rem',
+              background: 'transparent',
+              border: '1px dashed #d1d5db',
+              borderRadius: 6,
+              cursor: 'pointer',
+              color: '#6b7280',
+              fontSize: '0.85rem'
+            }}>
+                    <Icon icon="mdi:plus" width={18} height={18} /> Add a license
                   </button>
-                </div>
-              ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <span className={styles.sidebarSummaryValueSecondary} style={{ fontSize: '0.9rem' }}>Aucune licence configurée.</span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const licences = [{ nom: '', type: '', expiration: '' }];
-                      updateFormDataWithChanges({ ...formData, licences });
-                    }}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '0.35rem',
-                      padding: '0.5rem',
-                      background: 'transparent',
-                      border: '1px dashed #d1d5db',
-                      borderRadius: 6,
-                      cursor: 'pointer',
-                      color: '#6b7280',
-                      fontSize: '0.85rem'
-                    }}
-                  >
-                    <Icon icon="mdi:plus" width={18} height={18} /> Ajouter une licence
+                </div> : <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.5rem'
+          }}>
+                  <span className={styles.sidebarSummaryValueSecondary} style={{
+              fontSize: '0.9rem'
+            }}>No license configured.</span>
+                  <button type="button" onClick={() => {
+              const licences = [{
+                nom: '',
+                type: '',
+                expiration: ''
+              }];
+              updateFormDataWithChanges({
+                ...formData,
+                licences
+              });
+            }} style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.35rem',
+              padding: '0.5rem',
+              background: 'transparent',
+              border: '1px dashed #d1d5db',
+              borderRadius: 6,
+              cursor: 'pointer',
+              color: '#6b7280',
+              fontSize: '0.85rem'
+            }}>
+                    <Icon icon="mdi:plus" width={18} height={18} /> Add a license
                   </button>
-                </div>
-              )}
+                </div>}
             </div>
             <div className={styles.modalFooter}>
-              <button
-                className={styles.modalOkButton}
-                onClick={() => setLicencesModalOpen(false)}
-              >
-                Fermer
+              <button className={styles.modalOkButton} onClick={() => setLicensesModalOpen(false)}>
+                Close
               </button>
             </div>
           </div>
-        </div>
-      )}
+        </div>}
 
-      {/* Modal Ã‰vÃ©nement */}
-      <PlanningEventModalBridge
-        open={eventModalOpen}
-        editingEvent={editingEvent}
-        initialClientId={equipment?.clientId || null}
-        initialClientName={equipment?.clientName || ""}
-        initialEquipmentId={
-          getEquipmentDbIdLocal() ||
-          equipment?.id ||
-          (equipment?.type && equipment?.name ? `${equipment.type}-${equipment.name}` : null)
-        }
-        onClose={() => {
-          setEventModalOpen(false);
-          setEditingEvent(null);
-        }}
-        onSaved={refreshActivityAfterEventChange}
-      />
+      {}
+      <PlanningEventModalBridge open={eventModalOpen} editingEvent={editingEvent} initialClientId={equipment?.clientId || null} initialClientName={equipment?.clientName || ""} initialEquipmentId={getEquipmentDbIdLocal() || equipment?.id || (equipment?.type && equipment?.name ? `${equipment.type}-${equipment.name}` : null)} onClose={() => {
+      setEventModalOpen(false);
+      setEditingEvent(null);
+    }} onSaved={refreshActivityAfterEventChange} />
 
       <EquipmentLogDetailModal log={selectedLogDetail} onClose={closeLogModal} />
 
-      <ConfirmModal
-        open={purgeLogsConfirmOpen}
-        onClose={() => {
-          if (purgingLogs) return;
-          setPurgeLogsConfirmOpen(false);
-        }}
-        onConfirm={handlePurgeLogs}
-        title={modalsCopy.confirm?.purgeLogs?.title}
-        message={purgeLogsMessage}
-        icon="mdi:delete-sweep"
-        confirmLabel={modalsCopy.confirm?.purgeLogs?.confirm}
-        confirmVariant="dangerSolid"
-        confirmLoading={purgingLogs}
-      />
+      <ConfirmModal open={purgeLogsConfirmOpen} onClose={() => {
+      if (purgingLogs) return;
+      setPurgeLogsConfirmOpen(false);
+    }} onConfirm={handlePurgeLogs} title={modalsCopy.confirm?.purgeLogs?.title} message={purgeLogsMessage} icon="mdi:delete-sweep" confirmLabel={modalsCopy.confirm?.purgeLogs?.confirm} confirmVariant="dangerSolid" confirmLoading={purgingLogs} />
 
-      {modalClient && equipmentModuleKey ? (
-        <EquipmentFormModal
-          open={editModalOpen}
-          onClose={() => setEditModalOpen(false)}
-          client={modalClient}
-          equipment={equipment}
-          moduleKey={equipmentModuleKey}
-          mode="edit"
-          peerFirewalls={peerFirewalls}
-          onSaved={handleEquipmentModalSaved}
-          onDeleted={handleEquipmentModalDeleted}
-        />
-      ) : null}
+      {modalClient && equipmentModuleKey ? <EquipmentFormModal open={editModalOpen} onClose={() => setEditModalOpen(false)} client={modalClient} equipment={equipment} moduleKey={equipmentModuleKey} mode="edit" peerFirewalls={peerFirewalls} onSaved={handleEquipmentModalSaved} onDeleted={handleEquipmentModalDeleted} /> : null}
 
-      <EquipmentAlertSuspensionModal
-        open={alertModalOpen}
-        onClose={() => setAlertModalOpen(false)}
-        equipment={equipment}
-        onNavigate={onNavigate}
-        alert={alertSettings}
-      />
+      <EquipmentAlertSuspensionModal open={alertModalOpen} onClose={() => setAlertModalOpen(false)} equipment={equipment} onNavigate={onNavigate} alert={alertSettings} />
 
-      <ClientTagModal
-        open={equipmentTagModalOpen}
-        entityKind="equipment"
-        entityName={equipmentHeroTitle || equipment?.name || ""}
-        assignedTags={equipmentTags}
-        saving={addingEquipmentTag}
-        onClose={() => {
-          if (addingEquipmentTag) return;
-          setEquipmentTagModalOpen(false);
-        }}
-        onSubmit={handleAddEquipmentTag}
-      />
+      <ClientTagModal open={equipmentTagModalOpen} entityKind="equipment" entityName={equipmentHeroTitle || equipment?.name || ""} assignedTags={equipmentTags} saving={addingEquipmentTag} onClose={() => {
+      if (addingEquipmentTag) return;
+      setEquipmentTagModalOpen(false);
+    }} onSubmit={handleAddEquipmentTag} />
 
-      <ProFeaturePromoModal
-        open={Boolean(proPromoFeature)}
-        featureKey={proPromoFeature}
-        onClose={() => setProPromoFeature(null)}
-      />
-    </div>
-  );
+      <ProFeaturePromoModal open={Boolean(proPromoFeature)} featureKey={proPromoFeature} onClose={() => setProPromoFeature(null)} />
+    </div>;
 }
-

@@ -1,41 +1,39 @@
 import { createLocaleGetter } from "../../i18n/translate";
-
 const ADMIN_NOTIFICATIONS_HUB_COPY = {
   fr: {
     tabs: {
       inapp: "In-app",
       events: "Événements",
-      webhooks: "Webhooks",
-    },
+      webhooks: "Webhooks"
+    }
   },
   en: {
     tabs: {
       inapp: "In-app",
       events: "Events",
-      webhooks: "Webhooks",
-    },
+      webhooks: "Webhooks"
+    }
   },
   de: {
     tabs: {
       inapp: "In-App",
       events: "Ereignisse",
-      webhooks: "Webhooks",
-    },
+      webhooks: "Webhooks"
+    }
   },
   it: {
     tabs: {
       inapp: "In-app",
       events: "Eventi",
-      webhooks: "Webhook",
-    },
+      webhooks: "Webhook"
+    }
   },
   es: {
     tabs: {
       inapp: "In-app",
       events: "Eventos",
-      webhooks: "Webhooks",
-    },
-  },
+      webhooks: "Webhooks"
+    }
+  }
 };
-
 export const getAdminNotificationsHubCopy = createLocaleGetter(ADMIN_NOTIFICATIONS_HUB_COPY);

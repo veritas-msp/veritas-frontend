@@ -7,8 +7,12 @@ import styles from "./Form.module.css";
 import adminStyles from "../../AdminPanel.module.css";
 import API_BASE_URL from "../../../../config";
 import { getIconPath } from "../../../../utils/assetHelper";
-
-const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
+const StepAntivirus = ({
+  form,
+  setForm,
+  onAdd,
+  currentStepData
+}) => {
   const bottomRef = useRef(null);
   const [expandedSolutions, setExpandedSolutions] = useState(new Set());
   const [showSolutionModal, setShowSolutionModal] = useState(false);
@@ -17,8 +21,6 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
   const [selectedSolutionIndex, setSelectedSolutionIndex] = useState(null);
   const [companies, setCompanies] = useState([]);
   const [loadingCompanies, setLoadingCompanies] = useState(false);
-
-  // Exposer la fonction d'ouverture du modal via onAdd
   useEffect(() => {
     if (onAdd && currentStepData?.key === 'antivirus') {
       onAdd[currentStepData.key] = () => {
@@ -26,52 +28,40 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
       };
     }
   }, [onAdd, currentStepData]);
-
   const getAuthHeaders = () => ({});
-
-  // Protection contre form undefined
   if (!form) {
-    return (
-      <div className={styles.stepContainer}>
+    return <div className={styles.stepContainer}>
         <div className={styles.formSection}>
-          <p>Chargement...</p>
+          <p>Loading...</p>
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  // Fonction pour obtenir les solutions antivirus avec initialisation sécurisée
   const getAntivirusData = () => {
     const antivirus = form?.equipements?.Antivirus;
-    
     if (!antivirus || !antivirus.solutions || !Array.isArray(antivirus.solutions)) {
       return {
         solutions: []
       };
     }
-    
     return {
       solutions: antivirus.solutions
     };
   };
-
   const updateField = (field, value) => {
-    setForm((prev) => ({
+    setForm(prev => ({
       ...prev,
       equipements: {
         ...prev.equipements,
         Antivirus: {
           ...prev.equipements?.Antivirus,
-          [field]: value,
-        },
-      },
+          [field]: value
+        }
+      }
     }));
   };
-
   const antivirusData = getAntivirusData();
   const solutions = antivirusData.solutions || [];
-
-  const toggleSolutionExpansion = (index) => {
+  const toggleSolutionExpansion = index => {
     const newExpanded = new Set(expandedSolutions);
     if (newExpanded.has(index)) {
       newExpanded.delete(index);
@@ -80,8 +70,7 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
     }
     setExpandedSolutions(newExpanded);
   };
-
-  const addSolution = (solutionName) => {
+  const addSolution = solutionName => {
     const currentAntivirus = getAntivirusData();
     const newSolution = {
       id: Date.now(),
@@ -89,24 +78,19 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
       licencesTotales: "",
       licencesUtilisees: "",
       expiration: "",
-      companyId: "" // ID de l'entreprise dans BitDefender
+      companyId: ""
     };
-    
     const updatedSolutions = [...currentAntivirus.solutions, newSolution];
     updateField("solutions", updatedSolutions);
     setShowSolutionModal(false);
-
   };
-
-  const removeSolution = (index) => {
+  const removeSolution = index => {
     const currentAntivirus = getAntivirusData();
     const updatedSolutions = [...currentAntivirus.solutions];
     updatedSolutions.splice(index, 1);
     updateField("solutions", updatedSolutions);
-
-    // Mettre à jour expandedSolutions
     const newExpanded = new Set();
-    expandedSolutions.forEach((idx) => {
+    expandedSolutions.forEach(idx => {
       if (Number(idx) < index) {
         newExpanded.add(idx);
       } else if (Number(idx) > index) {
@@ -115,7 +99,6 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
     });
     setExpandedSolutions(newExpanded);
   };
-
   const updateSolution = (index, field, value) => {
     const currentAntivirus = getAntivirusData();
     const updatedSolutions = [...currentAntivirus.solutions];
@@ -125,8 +108,6 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
     };
     updateField("solutions", updatedSolutions);
   };
-
-  // Charger la liste des entreprises BitDefender
   const loadCompanies = async () => {
     setLoadingCompanies(true);
     try {
@@ -134,35 +115,28 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
         method: 'GET',
         headers: {
           ...getAuthHeaders(),
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         credentials: 'include'
       });
-
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `Erreur HTTP: ${response.status}`);
+        throw new Error(errorData.error || `HTTP error: ${response.status}`);
       }
-
       const data = await response.json();
-
       if (data.success && data.companies) {
         console.log('🔍 Entreprises reçues de l\'API:', data.companies.length);
-        console.log('📋 Détails des entreprises:', data.companies.map(c => ({
+        console.log('📋 Détails des companies:', data.companies.map(c => ({
           id: c.id || c._id,
           name: c.name || c.companyName,
           hasId: !!(c.id || c._id)
         })));
-
-        // Dédupliquer les entreprises par ID, mais être plus tolérant
         const uniqueCompanies = [];
         const seenIds = new Set();
         const skippedCompanies = [];
-
         data.companies.forEach((company, index) => {
           const companyId = company.id || company._id;
-          const companyName = company.name || company.companyName || 'Entreprise sans nom';
-
+          const companyName = company.name || company.companyName || 'Unnamed company';
           if (companyId && !seenIds.has(companyId)) {
             seenIds.add(companyId);
             uniqueCompanies.push(company);
@@ -171,7 +145,6 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
             console.log(`⚠️ Entreprise ignorée (doublon): ${companyName} (ID: ${companyId})`);
             skippedCompanies.push(company);
           } else if (!companyId) {
-            // Si pas d'ID, on utilise le nom comme clé unique
             const nameKey = companyName.toLowerCase().trim();
             if (!seenIds.has(nameKey)) {
               seenIds.add(nameKey);
@@ -183,117 +156,82 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
             }
           }
         });
-
-        console.log(`📊 Résultat: ${uniqueCompanies.length} entreprises uniques sur ${data.companies.length} reçues`);
+        console.log(`📊 Résultat: ${uniqueCompanies.length} companies uniques of ${data.companies.length} received`);
         if (skippedCompanies.length > 0) {
-          console.log(`🚫 ${skippedCompanies.length} entreprises ignorées:`, skippedCompanies.map(c => c.name || c.companyName || 'Sans nom'));
+          console.log(`🚫 ${skippedCompanies.length} companies ignorées:`, skippedCompanies.map(c => c.name || c.companyName || 'Untitled'));
         }
-
         setCompanies(uniqueCompanies);
       } else {
-        throw new Error(data.error || 'Erreur lors de la récupération des entreprises');
+        throw new Error(data.error || 'Error retrieving companies');
       }
     } catch (error) {
-      console.error('❌ Erreur chargement entreprises BitDefender:', error);
-      alert(`Erreur lors du chargement des entreprises: ${error.message}`);
+      console.error('❌ Erreur chargement companies BitDefender:', error);
+      alert(`Error loading companies: ${error.message}`);
       setCompanies([]);
     } finally {
       setLoadingCompanies(false);
     }
   };
-
-  // Ouvrir le modal de sélection d'entreprise
-  const openCompanySelection = (index) => {
+  const openCompanySelection = index => {
     setSelectedSolutionIndex(index);
     setShowCompanySelectionModal(true);
     loadCompanies();
   };
-
-  // Sélectionner une entreprise et synchroniser
   const selectCompanyAndSync = async (companyId, companyName) => {
     if (selectedSolutionIndex === null) return;
-
     const currentAntivirus = getAntivirusData();
     const solution = currentAntivirus.solutions[selectedSolutionIndex];
-
-    // Mettre à jour le companyId dans la solution
     const updatedSolutions = [...currentAntivirus.solutions];
     updatedSolutions[selectedSolutionIndex] = {
       ...updatedSolutions[selectedSolutionIndex],
       companyId: companyId,
-      companyName: companyName // Stocker aussi le nom pour affichage
+      companyName: companyName
     };
     updateField("solutions", updatedSolutions);
-
-    // Fermer le modal
     setShowCompanySelectionModal(false);
     setSelectedSolutionIndex(null);
-
-    // Démarrer la synchronisation avec le nom de l'entreprise
     await syncBitdefenderSolution(selectedSolutionIndex, companyId, companyName);
   };
-
   const syncBitdefenderSolution = async (index, companyIdOverride = null, companyNameOverride = null) => {
     const currentAntivirus = getAntivirusData();
     const solution = currentAntivirus.solutions[index];
     const companyId = companyIdOverride || solution.companyId;
-    // Préserver le nom de l'entreprise : utiliser celui passé en paramètre, sinon celui de la solution
     const existingCompanyName = companyNameOverride || solution.companyName || "";
-
     if (!companyId || companyId.trim() === "") {
-      alert("Veuillez renseigner l'ID de l'entreprise BitDefender avant de synchroniser.");
+      alert("Please enter the BitDefender company ID before syncing.");
       return;
     }
-
     setSyncingSolutions(new Set([...syncingSolutions, index]));
-
     try {
       const response = await fetch(`${API_BASE_URL}/bitdefender/sync/${companyId}`, {
         method: 'POST',
         headers: {
           ...getAuthHeaders(),
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         credentials: 'include'
       });
-
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `Erreur HTTP: ${response.status}`);
+        throw new Error(errorData.error || `HTTP error: ${response.status}`);
       }
-
       const data = await response.json();
-
       if (data.success && data.data) {
-        // Mettre à jour les données de la solution
         const updatedSolutions = [...currentAntivirus.solutions];
-        
-        // Récupérer les endpoints depuis la réponse
         const endpointsList = data.data.endpoints?.list || [];
-        
-        // Extraire les informations de licence
         let licencesTotales = "";
         let licencesUtilisees = "";
         let expirationDate = "";
-        
         if (data.data.license) {
           const license = data.data.license;
-          
-          // Récupérer total slots et used slots
-          // totalLicenses contient maintenant totalSlots
-          // usedLicenses contient maintenant usedSlots
           if (license.totalLicenses !== null && license.totalLicenses !== undefined) {
             licencesTotales = String(license.totalLicenses);
           }
-          
           if (license.usedLicenses !== null && license.usedLicenses !== undefined) {
             licencesUtilisees = String(license.usedLicenses);
           }
-          
-          // Si toujours vide, explorer les données brutes pour trouver totalSlots et usedSlots
           if ((!licencesTotales || !licencesUtilisees) && license.raw) {
             const raw = license.raw;
-            
             if (!licencesTotales) {
               if (raw.totalSlots !== null && raw.totalSlots !== undefined) {
                 licencesTotales = String(raw.totalSlots);
@@ -301,7 +239,6 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
                 licencesTotales = String(raw.slots.total);
               }
             }
-            
             if (!licencesUtilisees) {
               if (raw.usedSlots !== null && raw.usedSlots !== undefined) {
                 licencesUtilisees = String(raw.usedSlots);
@@ -310,30 +247,23 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
               }
             }
           }
-          
-          // Formater la date d'expiration pour l'input date (YYYY-MM-DD)
           const rawDate = license.expirationDate;
-          
           if (rawDate) {
-            // Si c'est un timestamp Unix (nombre en secondes ou millisecondes)
             if (typeof rawDate === 'number') {
               const expDate = new Date(rawDate > 1000000000000 ? rawDate : rawDate * 1000);
               if (!isNaN(expDate.getTime())) {
                 expirationDate = expDate.toISOString().split('T')[0];
               }
             } else {
-              // Si c'est une string, essayer de la parser
               const dateStr = String(rawDate);
               const expDate = new Date(dateStr);
               if (!isNaN(expDate.getTime())) {
                 expirationDate = expDate.toISOString().split('T')[0];
               } else if (/^\d{4}-\d{2}-\d{2}/.test(dateStr)) {
-                // Si c'est déjà au format YYYY-MM-DD, on l'utilise tel quel
                 expirationDate = dateStr.split('T')[0].split(' ')[0];
               }
             }
           } else {
-            // Si pas de expirationDate direct, explorer les données brutes
             if (license.raw) {
               const rawLicense = license.raw;
               const possibleDateFields = ['expiration', 'expirationDate', 'expiryDate', 'expires', 'validUntil', 'endDate', 'validUntilDate'];
@@ -350,32 +280,23 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
             }
           }
         }
-        
-        // Extraire le nom de l'entreprise depuis les données de l'API
-        // Garder le nom existant si disponible, sinon utiliser celui de l'API
         let companyName = existingCompanyName || solution.companyName || "";
         if (data.data && data.data.company) {
-          const apiCompanyName = data.data.company.name || 
-                                 data.data.company.companyName || 
-                                 data.data.company.company || 
-                                 null;
-          // Utiliser le nom de l'API s'il est disponible, sinon garder celui existant
+          const apiCompanyName = data.data.company.name || data.data.company.companyName || data.data.company.company || null;
           if (apiCompanyName) {
             companyName = apiCompanyName;
           }
         }
-        
         updatedSolutions[index] = {
           ...updatedSolutions[index],
           companyId: companyId,
-          companyName: companyName, // Stocker le nom de l'entreprise
+          companyName: companyName,
           licencesTotales: licencesTotales || solution.licencesTotales || "",
           licencesUtilisees: licencesUtilisees || solution.licencesUtilisees || "",
           expiration: expirationDate || solution.expiration || "",
-          // Stocker les endpoints avec leurs IDs
           endpoints: endpointsList.map(ep => ({
             id: ep.id,
-            name: ep.name || 'Sans nom',
+            name: ep.name || 'Untitled',
             ip: ep.ip || '',
             type: ep.type || 'autre',
             machineType: ep.machineType,
@@ -383,7 +304,6 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
             fqdn: ep.fqdn || '',
             isManaged: ep.isManaged || false
           })),
-          // Stocker toutes les données disponibles
           syncData: {
             license: data.data.license || null,
             endpoints: data.data.endpoints || null,
@@ -396,35 +316,34 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
           }
         };
         updateField("solutions", updatedSolutions);
-        
-        // Afficher un message de succès
-        toast.success(`✅ Synchronisation réussie pour ${solution.companyName || solution.solution}: ${endpointsList.length} endpoint(s) récupéré(s)`);
+        toast.success(`✅ Sync successful for ${solution.companyName || solution.solution}: ${endpointsList.length} endpoint(s) retrieved`);
       } else {
-        throw new Error(data.error || 'Erreur lors de la synchronisation');
+        throw new Error(data.error || 'Error during sync');
       }
     } catch (error) {
       console.error('❌ Erreur synchronisation BitDefender:', error);
-      toast.error(`❌ Erreur lors de la synchronisation: ${error.message}`);
+      toast.error(`❌ Error during sync: ${error.message}`);
     } finally {
       const newSyncing = new Set(syncingSolutions);
       newSyncing.delete(index);
       setSyncingSolutions(newSyncing);
     }
   };
-
-  // Fonction helper pour obtenir l'icône selon le type de solution
-  const getSolutionIcon = (solutionName) => {
+  const getSolutionIcon = solutionName => {
     if (solutionName === "GravityZone BitDefender") {
-      return <img src={getIconPath('bitdefender.png')} alt="BitDefender" style={{ width: '20px', height: '20px', display: 'inline-block', verticalAlign: 'middle', borderRadius: '4px' }} />;
+      return <img src={getIconPath('bitdefender.png')} alt="BitDefender" style={{
+        width: '20px',
+        height: '20px',
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        borderRadius: '4px'
+      }} />;
     }
     return null;
   };
-
-  // Fonction pour formater la date au format JJ-MM-AAAA
-  const formatDate = (dateString) => {
+  const formatDate = dateString => {
     if (!dateString) return "";
     try {
-      // Format d'entrée attendu : YYYY-MM-DD (format standard des inputs date)
       const parts = dateString.split('-');
       if (parts.length === 3) {
         const year = parts[0];
@@ -432,7 +351,6 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
         const day = parts[2];
         return `${day}-${month}-${year}`;
       }
-      // Si le format n'est pas standard, essayer avec Date
       const date = new Date(dateString);
       if (!isNaN(date.getTime())) {
         const day = String(date.getDate()).padStart(2, '0');
@@ -445,581 +363,623 @@ const StepAntivirus = ({ form, setForm, onAdd, currentStepData }) => {
       return dateString;
     }
   };
-
-  return (
-    <motion.div
-      className={styles.stepContainer}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: "circOut" }}
-    >
+  return <motion.div className={styles.stepContainer} initial={{
+    opacity: 0,
+    y: 20
+  }} animate={{
+    opacity: 1,
+    y: 0
+  }} transition={{
+    duration: 0.4,
+    ease: "circOut"
+  }}>
       <div className={styles.formSection}>
         <div className={styles.scrollable}>
-          {solutions.length === 0 ? (
-            <div className={styles.emptyState}>
-              <p className={styles.emptyStateTitle}>Aucune solution antivirus configurée</p>
+          {solutions.length === 0 ? <div className={styles.emptyState}>
+              <p className={styles.emptyStateTitle}>No antivirus solution configured</p>
               <p className={styles.emptyStateDescription}>
-                Cliquez sur "Ajouter une solution" pour commencer
+                Click "Add a solution" to get started
               </p>
-            </div>
-          ) : (
-            solutions.map((solution, i) => (
-            <motion.div
-              key={i}
-              className={styles.serverCard}
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div 
-                className={`${styles.serverHeader} ${expandedSolutions.has(i) ? styles.serverHeaderExpanded : ''}`}
-                onClick={() => toggleSolutionExpansion(i)}
-                style={{ cursor: 'pointer' }}
-              >
-                <div 
-                  className={styles.dragHandle} 
-                  title="Glisser pour réorganiser"
-                  onClick={(e) => e.stopPropagation()}
-                  onMouseDown={(e) => e.stopPropagation()}
-                  style={{ opacity: 0.3, transition: 'opacity 0.2s ease', cursor: 'grab' }}
-                  onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = 'var(--accent-primary)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.3'; e.currentTarget.style.color = 'inherit'; }}
-                >
+            </div> : solutions.map((solution, i) => <motion.div key={i} className={styles.serverCard} initial={{
+          opacity: 0,
+          scale: 0.98
+        }} animate={{
+          opacity: 1,
+          scale: 1
+        }} transition={{
+          duration: 0.3
+        }}>
+              <div className={`${styles.serverHeader} ${expandedSolutions.has(i) ? styles.serverHeaderExpanded : ''}`} onClick={() => toggleSolutionExpansion(i)} style={{
+            cursor: 'pointer'
+          }}>
+                <div className={styles.dragHandle} title="Drag to reorder" onClick={e => e.stopPropagation()} onMouseDown={e => e.stopPropagation()} style={{
+              opacity: 0.3,
+              transition: 'opacity 0.2s ease',
+              cursor: 'grab'
+            }} onMouseEnter={e => {
+              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.color = 'var(--accent-primary)';
+            }} onMouseLeave={e => {
+              e.currentTarget.style.opacity = '0.3';
+              e.currentTarget.style.color = 'inherit';
+            }}>
                   <GripVertical size={18} />
               </div>
-                <div className={styles.serverTitle} style={{ flex: 1 }}>
-                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <div className={styles.serverTitle} style={{
+              flex: 1
+            }}>
+                  <h4 style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
+              }}>
                     {getSolutionIcon(solution.solution)}
                     {solution.solution || `Solution #${i + 1}`}
                   </h4>
                   <span className={styles.serverType}>
-                    {[
-                      solution.solution,
-                      solution.licencesTotales && `${solution.licencesTotales} licence${solution.licencesTotales > 1 ? 's' : ''}`,
-                      solution.expiration && formatDate(solution.expiration),
-                      solution.companyId && `Company ID: ${solution.companyId}`
-                    ].filter(Boolean).join(' • ')}
+                    {[solution.solution, solution.licencesTotales && `${solution.licencesTotales} licence${solution.licencesTotales > 1 ? 's' : ''}`, solution.expiration && formatDate(solution.expiration), solution.companyId && `Company ID: ${solution.companyId}`].filter(Boolean).join(' • ')}
                   </span>
           </div>
                 <div className={styles.serverActions}>
-                  {solution.solution === "GravityZone BitDefender" && (
-                    <>
-                      {solution.companyId ? (
-                        <button
-                          className={styles.addButtonDiscret}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            syncBitdefenderSolution(i);
-                          }}
-                          disabled={syncingSolutions.has(i)}
-                          title={syncingSolutions.has(i) ? 'Synchronisation en cours' : 'Re-synchroniser'}
-                          style={{ 
-                            opacity: syncingSolutions.has(i) ? 0.6 : 1,
-                            cursor: syncingSolutions.has(i) ? 'wait' : 'pointer',
-                            marginRight: '0.5rem',
-                            padding: '0.5rem',
-                            width: '36px',
-                            height: '36px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            border: '1px dashed transparent',
-                            borderRadius: '6px',
-                            background: 'transparent',
-                            transition: 'all 0.2s ease'
-                          }}
-                          onMouseEnter={(e) => {
-                            if (!syncingSolutions.has(i)) {
-                              e.currentTarget.style.borderColor = '#15d1a0';
-                              e.currentTarget.style.borderStyle = 'dashed';
-                            }
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.borderColor = 'transparent';
-                            e.currentTarget.style.borderStyle = 'dashed';
-                          }}
-                        >
-                          {syncingSolutions.has(i) ? (
-                            <Icon icon="mdi:loading" className={styles.loading} style={{ color: '#15d1a0' }} />
-                          ) : (
-                            <Icon icon="mdi:cloud-sync" style={{ color: '#6b7280', fontSize: '20px' }} />
-                          )}
-                        </button>
-                      ) : (
-                        <button
-                          className={styles.addButtonDiscret}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openCompanySelection(i);
-                          }}
-                          disabled={syncingSolutions.has(i)}
-                          title={syncingSolutions.has(i) ? 'Synchronisation en cours' : 'Synchroniser'}
-                          style={{ 
-                            opacity: syncingSolutions.has(i) ? 0.6 : 1,
-                            cursor: syncingSolutions.has(i) ? 'wait' : 'pointer',
-                            marginRight: '0.5rem',
-                            padding: '0.5rem',
-                            width: '36px',
-                            height: '36px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            border: '1px dashed transparent',
-                            borderRadius: '6px',
-                            background: 'transparent',
-                            transition: 'all 0.2s ease'
-                          }}
-                          onMouseEnter={(e) => {
-                            if (!syncingSolutions.has(i)) {
-                              e.currentTarget.style.borderColor = '#15d1a0';
-                              e.currentTarget.style.borderStyle = 'dashed';
-                            }
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.borderColor = 'transparent';
-                            e.currentTarget.style.borderStyle = 'dashed';
-                          }}
-                        >
-                          {syncingSolutions.has(i) ? (
-                            <Icon icon="mdi:loading" className={styles.loading} style={{ color: '#15d1a0' }} />
-                          ) : (
-                            <Icon icon="mdi:cloud-sync" style={{ color: '#6b7280', fontSize: '20px' }} />
-                          )}
-                        </button>
-                      )}
-                    </>
-                  )}
-                  <button
-                    className={styles.deleteButton}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeSolution(i);
-                    }}
-                    title="Supprimer cette solution"
-                  >
+                  {solution.solution === "GravityZone BitDefender" && <>
+                      {solution.companyId ? <button className={styles.addButtonDiscret} onClick={e => {
+                  e.stopPropagation();
+                  syncBitdefenderSolution(i);
+                }} disabled={syncingSolutions.has(i)} title={syncingSolutions.has(i) ? 'Sync in progress' : 'Re-sync'} style={{
+                  opacity: syncingSolutions.has(i) ? 0.6 : 1,
+                  cursor: syncingSolutions.has(i) ? 'wait' : 'pointer',
+                  marginRight: '0.5rem',
+                  padding: '0.5rem',
+                  width: '36px',
+                  height: '36px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: '1px dashed transparent',
+                  borderRadius: '6px',
+                  background: 'transparent',
+                  transition: 'all 0.2s ease'
+                }} onMouseEnter={e => {
+                  if (!syncingSolutions.has(i)) {
+                    e.currentTarget.style.borderColor = '#15d1a0';
+                    e.currentTarget.style.borderStyle = 'dashed';
+                  }
+                }} onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = 'transparent';
+                  e.currentTarget.style.borderStyle = 'dashed';
+                }}>
+                          {syncingSolutions.has(i) ? <Icon icon="mdi:loading" className={styles.loading} style={{
+                    color: '#15d1a0'
+                  }} /> : <Icon icon="mdi:cloud-sync" style={{
+                    color: '#6b7280',
+                    fontSize: '20px'
+                  }} />}
+                        </button> : <button className={styles.addButtonDiscret} onClick={e => {
+                  e.stopPropagation();
+                  openCompanySelection(i);
+                }} disabled={syncingSolutions.has(i)} title={syncingSolutions.has(i) ? 'Sync in progress' : 'Sync'} style={{
+                  opacity: syncingSolutions.has(i) ? 0.6 : 1,
+                  cursor: syncingSolutions.has(i) ? 'wait' : 'pointer',
+                  marginRight: '0.5rem',
+                  padding: '0.5rem',
+                  width: '36px',
+                  height: '36px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: '1px dashed transparent',
+                  borderRadius: '6px',
+                  background: 'transparent',
+                  transition: 'all 0.2s ease'
+                }} onMouseEnter={e => {
+                  if (!syncingSolutions.has(i)) {
+                    e.currentTarget.style.borderColor = '#15d1a0';
+                    e.currentTarget.style.borderStyle = 'dashed';
+                  }
+                }} onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = 'transparent';
+                  e.currentTarget.style.borderStyle = 'dashed';
+                }}>
+                          {syncingSolutions.has(i) ? <Icon icon="mdi:loading" className={styles.loading} style={{
+                    color: '#15d1a0'
+                  }} /> : <Icon icon="mdi:cloud-sync" style={{
+                    color: '#6b7280',
+                    fontSize: '20px'
+                  }} />}
+                        </button>}
+                    </>}
+                  <button className={styles.deleteButton} onClick={e => {
+                e.stopPropagation();
+                removeSolution(i);
+              }} title="Delete this solution">
                     ×
                   </button>
           </div>
         </div>
 
-              {/* Formulaire d'édition (affiché seulement si déplié) */}
-              {expandedSolutions.has(i) && (
-                <motion.div 
-                  className={styles.serverForm}
-                  style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-        <div className={styles.formGrid} style={{ gridTemplateColumns: '1fr 1fr' }}>
+              {}
+              {expandedSolutions.has(i) && <motion.div className={styles.serverForm} style={{
+            background: 'transparent',
+            boxShadow: 'none',
+            border: 'none'
+          }} initial={{
+            opacity: 0,
+            height: 0
+          }} animate={{
+            opacity: 1,
+            height: "auto"
+          }} exit={{
+            opacity: 0,
+            height: 0
+          }} transition={{
+            duration: 0.3
+          }}>
+        <div className={styles.formGrid} style={{
+              gridTemplateColumns: '1fr 1fr'
+            }}>
           <div className={styles.formField}>
-            <label htmlFor={`solution-company-name-${i}`}>Nom de l'entreprise</label>
-            <input
-              id={`solution-company-name-${i}`}
-              type="text"
-              value={solution.companyName || ""}
-              disabled
-              style={{
-                backgroundColor: "#f3f4f6", 
-                cursor: "not-allowed",
-                opacity: 0.7
-              }}
-            />
+            <label htmlFor={`solution-company-name-${i}`}>Company name</label>
+            <input id={`solution-company-name-${i}`} type="text" value={solution.companyName || ""} disabled style={{
+                  backgroundColor: "#f3f4f6",
+                  cursor: "not-allowed",
+                  opacity: 0.7
+                }} />
           </div>
           <div className={styles.formField}>
             <label htmlFor={`solution-company-id-${i}`}>Company ID</label>
-            <input
-              id={`solution-company-id-${i}`}
-              type="text"
-              value={solution.companyId || ""}
-              disabled
-              style={{
-                backgroundColor: "#f3f4f6", 
-                cursor: "not-allowed",
-                opacity: 0.7
-              }}
-            />
+            <input id={`solution-company-id-${i}`} type="text" value={solution.companyId || ""} disabled style={{
+                  backgroundColor: "#f3f4f6",
+                  cursor: "not-allowed",
+                  opacity: 0.7
+                }} />
           </div>
         </div>
-        <div className={styles.formGrid} style={{ gridTemplateColumns: '1fr 1fr 1fr' }}>
+        <div className={styles.formGrid} style={{
+              gridTemplateColumns: '1fr 1fr 1fr'
+            }}>
           <div className={styles.formField}>
-            <label htmlFor={`solution-licences-totales-${i}`}>Licences totales</label>
-            <input
-              id={`solution-licences-totales-${i}`}
-              type="number"
-              min="0"
-              value={solution.licencesTotales || ""}
-              onChange={(e) => updateSolution(i, "licencesTotales", e.target.value)}
-            />
+            <label htmlFor={`solution-licences-totales-${i}`}>Total licenses</label>
+            <input id={`solution-licences-totales-${i}`} type="number" min="0" value={solution.licencesTotales || ""} onChange={e => updateSolution(i, "licencesTotales", e.target.value)} />
           </div>
           <div className={styles.formField}>
-            <label htmlFor={`solution-licences-utilisees-${i}`}>Licences utilisées</label>
-            <input
-              id={`solution-licences-utilisees-${i}`}
-              type="number"
-              min="0"
-              value={solution.licencesUtilisees || ""}
-              onChange={(e) => updateSolution(i, "licencesUtilisees", e.target.value)}
-            />
+            <label htmlFor={`solution-licences-utilisees-${i}`}>Used licenses</label>
+            <input id={`solution-licences-utilisees-${i}`} type="number" min="0" value={solution.licencesUtilisees || ""} onChange={e => updateSolution(i, "licencesUtilisees", e.target.value)} />
           </div>
           <div className={styles.formField}>
-            <label htmlFor={`solution-expiration-${i}`}>Expiration de la licence</label>
-            <input
-              id={`solution-expiration-${i}`}
-              type="date"
-              value={solution.expiration || ""}
-              onChange={(e) => updateSolution(i, "expiration", e.target.value)}
-            />
+            <label htmlFor={`solution-expiration-${i}`}>License expiration</label>
+            <input id={`solution-expiration-${i}`} type="date" value={solution.expiration || ""} onChange={e => updateSolution(i, "expiration", e.target.value)} />
           </div>
         </div>
-                </motion.div>
-              )}
-            </motion.div>
-          ))
-          )}
+                </motion.div>}
+            </motion.div>)}
           <div ref={bottomRef} />
         </div>
       </div>
 
-      {/* Modal de sélection de la solution */}
-      {showSolutionModal && (
-        <div className={adminStyles.modalOverlay} onClick={() => setShowSolutionModal(false)}>
-          <div className={adminStyles.modalContent} onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px', padding: 0 }}>
-            <div
-              style={{
-                padding: '1.5rem 1.75rem',
-                borderBottom: '1px solid #e5e7eb',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                background: '#ffffff'
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div
-                  style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '10px',
-                    background: '#ecfdf5',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <Icon icon="mdi:shield-check" style={{ width: '24px', height: '24px', color: '#13BA8E' }} />
+      {}
+      {showSolutionModal && <div className={adminStyles.modalOverlay} onClick={() => setShowSolutionModal(false)}>
+          <div className={adminStyles.modalContent} onClick={e => e.stopPropagation()} style={{
+        maxWidth: '800px',
+        padding: 0
+      }}>
+            <div style={{
+          padding: '1.5rem 1.75rem',
+          borderBottom: '1px solid #e5e7eb',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          background: '#ffffff'
+        }}>
+              <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem'
+          }}>
+                <div style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '10px',
+              background: '#ecfdf5',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+                  <Icon icon="mdi:shield-check" style={{
+                width: '24px',
+                height: '24px',
+                color: '#13BA8E'
+              }} />
                 </div>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: '#111827' }}>
-                    Ajouter une solution antivirus
+                  <h3 style={{
+                margin: 0,
+                fontSize: '1.25rem',
+                fontWeight: 700,
+                color: '#111827'
+              }}>
+                    Add an antivirus solution
                   </h3>
-                  <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.875rem', color: '#6b7280' }}>
-                    Sélectionnez le type de solution antivirus à configurer
+                  <p style={{
+                margin: '0.25rem 0 0 0',
+                fontSize: '0.875rem',
+                color: '#6b7280'
+              }}>
+                    Select the antivirus solution type to configure
                   </p>
                 </div>
               </div>
-              <button
-                className={adminStyles.closeButton}
-                onClick={() => setShowSolutionModal(false)}
-                title="Fermer"
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: '6px',
-                  border: 'none',
-                  background: 'transparent',
-                  cursor: 'pointer',
-                  color: '#6b7280',
-                  transition: 'all 0.2s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#f3f4f6';
-                  e.currentTarget.style.color = '#111827';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = '#6b7280';
-                }}
-              >
+              <button className={adminStyles.closeButton} onClick={() => setShowSolutionModal(false)} title="Close" style={{
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '6px',
+            border: 'none',
+            background: 'transparent',
+            cursor: 'pointer',
+            color: '#6b7280',
+            transition: 'all 0.2s ease'
+          }} onMouseEnter={e => {
+            e.currentTarget.style.background = '#f3f4f6';
+            e.currentTarget.style.color = '#111827';
+          }} onMouseLeave={e => {
+            e.currentTarget.style.background = 'transparent';
+            e.currentTarget.style.color = '#6b7280';
+          }}>
                 <Icon icon="mdi:close" width={20} height={20} />
               </button>
             </div>
-            <div style={{ padding: '1.5rem 1.75rem', background: '#f9fafb' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                {[
-                  {
-                    type: "GravityZone BitDefender",
-                    label: "GravityZone BitDefender",
-                    description: "Solution antivirus d'entreprise avec gestion centralisée et synchronisation automatique",
-                    icon: getIconPath('bitdefender.png'),
-                    features: ["Gestion centralisée", "Synchronisation API", "Suivi des licences"]
-                  }
-                ].map(({ type, label, description, icon, features }) => (
-                  <motion.button
-                    key={type}
-                    onClick={() => addSolution(type)}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    style={{
-                      width: '100%',
-                      border: '1px solid #e5e7eb',
-                      borderRadius: '12px',
-                      padding: '1.25rem',
-                      background: '#ffffff',
-                      cursor: 'pointer',
-                      textAlign: 'left',
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      gap: '1rem',
-                      transition: 'all 0.2s ease',
-                      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'rgba(19, 186, 142, 0.05)';
-                      e.currentTarget.style.borderColor = '#13BA8E';
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(19, 186, 142, 0.15)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#ffffff';
-                      e.currentTarget.style.borderColor = '#e5e7eb';
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: '64px',
-                        height: '64px',
-                        borderRadius: '12px',
-                        background: '#f9fafb',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0,
-                        border: '1px solid #e5e7eb',
-                        overflow: 'hidden'
-                      }}
-                    >
-                      <img
-                        src={icon}
-                        alt={label}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'contain',
-                          padding: '8px'
-                        }}
-                      />
+            <div style={{
+          padding: '1.5rem 1.75rem',
+          background: '#f9fafb'
+        }}>
+              <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.75rem'
+          }}>
+                {[{
+              type: "GravityZone BitDefender",
+              label: "GravityZone BitDefender",
+              description: "Enterprise antivirus solution with centralized management and automatic sync",
+              icon: getIconPath('bitdefender.png'),
+              features: ["Centralized management", "API sync", "License tracking"]
+            }].map(({
+              type,
+              label,
+              description,
+              icon,
+              features
+            }) => <motion.button key={type} onClick={() => addSolution(type)} initial={{
+              opacity: 0,
+              y: 10
+            }} animate={{
+              opacity: 1,
+              y: 0
+            }} transition={{
+              duration: 0.3
+            }} style={{
+              width: '100%',
+              border: '1px solid #e5e7eb',
+              borderRadius: '12px',
+              padding: '1.25rem',
+              background: '#ffffff',
+              cursor: 'pointer',
+              textAlign: 'left',
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '1rem',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+            }} onMouseEnter={e => {
+              e.currentTarget.style.backgroundColor = 'rgba(19, 186, 142, 0.05)';
+              e.currentTarget.style.borderColor = '#13BA8E';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(19, 186, 142, 0.15)';
+            }} onMouseLeave={e => {
+              e.currentTarget.style.backgroundColor = '#ffffff';
+              e.currentTarget.style.borderColor = '#e5e7eb';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
+            }}>
+                    <div style={{
+                width: '64px',
+                height: '64px',
+                borderRadius: '12px',
+                background: '#f9fafb',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                border: '1px solid #e5e7eb',
+                overflow: 'hidden'
+              }}>
+                      <img src={icon} alt={label} style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  padding: '8px'
+                }} />
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
+                    <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.5rem',
+                flex: 1
+              }}>
                       <div>
-                        <span style={{ fontWeight: 700, color: '#111827', fontSize: '1rem', display: 'block', marginBottom: '0.25rem' }}>
+                        <span style={{
+                    fontWeight: 700,
+                    color: '#111827',
+                    fontSize: '1rem',
+                    display: 'block',
+                    marginBottom: '0.25rem'
+                  }}>
                           {label}
                         </span>
-                        <span style={{ color: '#6b7280', fontSize: '0.875rem', lineHeight: '1.4', display: 'block' }}>
+                        <span style={{
+                    color: '#6b7280',
+                    fontSize: '0.875rem',
+                    lineHeight: '1.4',
+                    display: 'block'
+                  }}>
                           {description}
                         </span>
                       </div>
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.25rem' }}>
-                        {features.map((feature, idx) => (
-                          <span
-                            key={idx}
-                            style={{
-                              fontSize: '0.75rem',
-                              padding: '0.25rem 0.5rem',
-                              background: '#f3f4f6',
-                              color: '#6b7280',
-                              borderRadius: '6px',
-                              fontWeight: 500
-                            }}
-                          >
+                      <div style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '0.5rem',
+                  marginTop: '0.25rem'
+                }}>
+                        {features.map((feature, idx) => <span key={idx} style={{
+                    fontSize: '0.75rem',
+                    padding: '0.25rem 0.5rem',
+                    background: '#f3f4f6',
+                    color: '#6b7280',
+                    borderRadius: '6px',
+                    fontWeight: 500
+                  }}>
                             {feature}
-                          </span>
-                        ))}
+                          </span>)}
                       </div>
                     </div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0,
-                        color: '#13BA8E',
-                        transition: 'transform 0.2s ease'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'translateX(4px)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'translateX(0)';
-                      }}
-                    >
+                    <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                color: '#13BA8E',
+                transition: 'transform 0.2s ease'
+              }} onMouseEnter={e => {
+                e.currentTarget.style.transform = 'translateX(4px)';
+              }} onMouseLeave={e => {
+                e.currentTarget.style.transform = 'translateX(0)';
+              }}>
                       <Icon icon="mdi:chevron-right" width={24} height={24} />
                     </div>
-                  </motion.button>
-                ))}
+                  </motion.button>)}
               </div>
             </div>
           </div>
-        </div>
-      )}
+        </div>}
 
-      {/* Modal de sélection d'entreprise BitDefender */}
-      {showCompanySelectionModal && (
-        <div className={adminStyles.modalOverlay} onClick={() => { setShowCompanySelectionModal(false); setSelectedSolutionIndex(null); }}>
-          <div className={adminStyles.modalContent} onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px', padding: 0 }}>
-            <div
-              style={{
-                padding: '1rem 1.25rem',
-                borderBottom: '1px solid #e5e7eb',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                background: '#ffffff'
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <Icon icon="mdi:office-building" style={{ fontSize: '24px', color: '#15d1a0' }} />
+      {}
+      {showCompanySelectionModal && <div className={adminStyles.modalOverlay} onClick={() => {
+      setShowCompanySelectionModal(false);
+      setSelectedSolutionIndex(null);
+    }}>
+          <div className={adminStyles.modalContent} onClick={e => e.stopPropagation()} style={{
+        maxWidth: '800px',
+        padding: 0
+      }}>
+            <div style={{
+          padding: '1rem 1.25rem',
+          borderBottom: '1px solid #e5e7eb',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          background: '#ffffff'
+        }}>
+              <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem'
+          }}>
+                <Icon icon="mdi:office-building" style={{
+              fontSize: '24px',
+              color: '#15d1a0'
+            }} />
                 <div>
-                  <h3 style={{ margin: 0, fontSize: '1.08rem', fontWeight: 700, color: '#1a1a1a', textAlign: 'left' }}>
-                    Sélectionner une entreprise BitDefender
+                  <h3 style={{
+                margin: 0,
+                fontSize: '1.08rem',
+                fontWeight: 700,
+                color: '#1a1a1a',
+                textAlign: 'left'
+              }}>
+                    Select a BitDefender company
                   </h3>
-                  <span style={{ fontSize: '0.875rem', color: '#6b7280', textAlign: 'left' }}>
-                    Choisissez l'entreprise à associer
+                  <span style={{
+                fontSize: '0.875rem',
+                color: '#6b7280',
+                textAlign: 'left'
+              }}>
+                    Choose the company to link
                   </span>
                 </div>
               </div>
-              <button
-                className={adminStyles.closeButton}
-                onClick={() => { setShowCompanySelectionModal(false); setSelectedSolutionIndex(null); }}
-                title="Fermer"
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: '6px',
-                  border: 'none',
-                  background: 'transparent',
-                  cursor: 'pointer',
-                  color: '#6b7280',
-                  transition: 'all 0.2s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#f3f4f6';
-                  e.currentTarget.style.color = '#111827';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = '#6b7280';
-                }}
-              >
+              <button className={adminStyles.closeButton} onClick={() => {
+            setShowCompanySelectionModal(false);
+            setSelectedSolutionIndex(null);
+          }} title="Close" style={{
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '6px',
+            border: 'none',
+            background: 'transparent',
+            cursor: 'pointer',
+            color: '#6b7280',
+            transition: 'all 0.2s ease'
+          }} onMouseEnter={e => {
+            e.currentTarget.style.background = '#f3f4f6';
+            e.currentTarget.style.color = '#111827';
+          }} onMouseLeave={e => {
+            e.currentTarget.style.background = 'transparent';
+            e.currentTarget.style.color = '#6b7280';
+          }}>
                 <Icon icon="mdi:close" width={20} height={20} />
               </button>
             </div>
-            <div style={{ padding: '1rem 1.25rem', background: '#ffffff', maxHeight: '70vh', overflowY: 'auto' }}>
-              {loadingCompanies ? (
-                <div style={{ textAlign: 'center', padding: '2rem' }}>
-                  <Icon icon="mdi:loading" className={styles.loading} style={{ fontSize: '2rem', color: '#15d1a0', marginBottom: '1rem' }} />
-                  <p style={{ color: '#6b7280', fontSize: '0.875rem' }}>Chargement des entreprises...</p>
-                </div>
-              ) : companies.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '2rem', color: '#6b7280' }}>
-                  <Icon icon="mdi:office-building-outline" style={{ fontSize: '3rem', marginBottom: '1rem', opacity: 0.5 }} />
-                  <p style={{ fontSize: '1rem', marginBottom: '0.5rem', fontWeight: 600, color: '#1a1a1a' }}>Aucune entreprise trouvée</p>
-                  <p style={{ fontSize: '0.875rem', opacity: 0.7 }}>
-                    Vérifiez votre configuration API BitDefender.
+            <div style={{
+          padding: '1rem 1.25rem',
+          background: '#ffffff',
+          maxHeight: '70vh',
+          overflowY: 'auto'
+        }}>
+              {loadingCompanies ? <div style={{
+            textAlign: 'center',
+            padding: '2rem'
+          }}>
+                  <Icon icon="mdi:loading" className={styles.loading} style={{
+              fontSize: '2rem',
+              color: '#15d1a0',
+              marginBottom: '1rem'
+            }} />
+                  <p style={{
+              color: '#6b7280',
+              fontSize: '0.875rem'
+            }}>Loading companies...</p>
+                </div> : companies.length === 0 ? <div style={{
+            textAlign: 'center',
+            padding: '2rem',
+            color: '#6b7280'
+          }}>
+                  <Icon icon="mdi:office-building-outline" style={{
+              fontSize: '3rem',
+              marginBottom: '1rem',
+              opacity: 0.5
+            }} />
+                  <p style={{
+              fontSize: '1rem',
+              marginBottom: '0.5rem',
+              fontWeight: 600,
+              color: '#1a1a1a'
+            }}>No companies found</p>
+                  <p style={{
+              fontSize: '0.875rem',
+              opacity: 0.7
+            }}>
+                    Check your BitDefender API configuration.
                   </p>
-                </div>
-              ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '0.75rem' }}>
-                  {companies.map((company) => {
-                    const companyId = company.id || company._id;
-                    const companyName = company.name || company.companyName || 'Entreprise sans nom';
-                    const companyEmail = company.email || company.contactEmail || null;
-                    const companyPhone = company.phone || company.contactPhone || null;
-                    const companyCountry = company.country || company.countryCode || null;
-                    const companyStatus = company.status || company.activeStatus || null;
-                    
-                    return (
-                      <motion.button
-                        key={companyId}
-                        onClick={() => selectCompanyAndSync(companyId, companyName)}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.2 }}
-                        style={{
-                          border: '1px solid #e5e7eb',
-                          borderRadius: '8px',
-                          padding: '0.75rem',
-                          background: '#ffffff',
-                          cursor: 'pointer',
-                          textAlign: 'left',
-                          transition: 'all 0.2s ease',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          gap: '0.75rem',
-                          width: '100%'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = '#f0fdfa';
-                          e.currentTarget.style.borderColor = '#15d1a0';
-                          e.currentTarget.style.transform = 'translateY(-2px)';
-                          e.currentTarget.style.boxShadow = '0 4px 12px rgba(21, 209, 160, 0.15)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = '#ffffff';
-                          e.currentTarget.style.borderColor = '#e5e7eb';
-                          e.currentTarget.style.transform = 'translateY(0)';
-                          e.currentTarget.style.boxShadow = 'none';
-                        }}
-                      >
-                        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                            <span style={{ fontWeight: 600, color: '#1a1a1a', fontSize: '0.875rem', wordBreak: 'break-word' }}>
+                </div> : <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: '0.75rem'
+          }}>
+                  {companies.map(company => {
+              const companyId = company.id || company._id;
+              const companyName = company.name || company.companyName || 'Unnamed company';
+              const companyEmail = company.email || company.contactEmail || null;
+              const companyPhone = company.phone || company.contactPhone || null;
+              const companyCountry = company.country || company.countryCode || null;
+              const companyStatus = company.status || company.activeStatus || null;
+              return <motion.button key={companyId} onClick={() => selectCompanyAndSync(companyId, companyName)} initial={{
+                opacity: 0,
+                scale: 0.95
+              }} animate={{
+                opacity: 1,
+                scale: 1
+              }} transition={{
+                duration: 0.2
+              }} style={{
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                padding: '0.75rem',
+                background: '#ffffff',
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '0.75rem',
+                width: '100%'
+              }} onMouseEnter={e => {
+                e.currentTarget.style.backgroundColor = '#f0fdfa';
+                e.currentTarget.style.borderColor = '#15d1a0';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(21, 209, 160, 0.15)';
+              }} onMouseLeave={e => {
+                e.currentTarget.style.backgroundColor = '#ffffff';
+                e.currentTarget.style.borderColor = '#e5e7eb';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}>
+                        <div style={{
+                  flex: 1,
+                  minWidth: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.25rem'
+                }}>
+                          <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    flexWrap: 'wrap'
+                  }}>
+                            <span style={{
+                      fontWeight: 600,
+                      color: '#1a1a1a',
+                      fontSize: '0.875rem',
+                      wordBreak: 'break-word'
+                    }}>
                               {companyName}
                             </span>
-                            {companyStatus && (
-                              <span style={{
-                                fontSize: '0.65rem',
-                                padding: '0.1rem 0.35rem',
-                                borderRadius: '4px',
-                                background: companyStatus === 'active' || companyStatus === 1 ? '#f0fdfa' : '#fef2f2',
-                                color: companyStatus === 'active' || companyStatus === 1 ? '#15d1a0' : '#ef4444',
-                                fontWeight: 500,
-                                whiteSpace: 'nowrap'
-                              }}>
-                                {companyStatus === 'active' || companyStatus === 1 ? 'Actif' : 'Inactif'}
-                              </span>
-                            )}
+                            {companyStatus && <span style={{
+                      fontSize: '0.65rem',
+                      padding: '0.1rem 0.35rem',
+                      borderRadius: '4px',
+                      background: companyStatus === 'active' || companyStatus === 1 ? '#f0fdfa' : '#fef2f2',
+                      color: companyStatus === 'active' || companyStatus === 1 ? '#15d1a0' : '#ef4444',
+                      fontWeight: 500,
+                      whiteSpace: 'nowrap'
+                    }}>
+                                {companyStatus === 'active' || companyStatus === 1 ? 'Active' : 'Inactive'}
+                              </span>}
                           </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', fontSize: '0.7rem', color: '#6b7280' }}>
-                            <span style={{ fontFamily: 'monospace' }}>{companyId}</span>
+                          <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    flexWrap: 'wrap',
+                    fontSize: '0.7rem',
+                    color: '#6b7280'
+                  }}>
+                            <span style={{
+                      fontFamily: 'monospace'
+                    }}>{companyId}</span>
                             {companyEmail && <span>• {companyEmail}</span>}
                             {companyPhone && <span>• {companyPhone}</span>}
                             {companyCountry && <span>• {companyCountry}</span>}
                           </div>
                         </div>
-                        <Icon icon="mdi:chevron-right" style={{ fontSize: '18px', color: '#9ca3af', flexShrink: 0 }} />
-                      </motion.button>
-                    );
-                  })}
-                </div>
-              )}
+                        <Icon icon="mdi:chevron-right" style={{
+                  fontSize: '18px',
+                  color: '#9ca3af',
+                  flexShrink: 0
+                }} />
+                      </motion.button>;
+            })}
+                </div>}
             </div>
           </div>
-        </div>
-      )}
-    </motion.div>
-  );
+        </div>}
+    </motion.div>;
 };
-
 export default StepAntivirus;

@@ -2,36 +2,30 @@ import React, { useMemo } from "react";
 import styles from "../MonitoringSummary.module.css";
 import { Icon as IconifyIcon } from "@iconify/react";
 import { useTheme } from "../../../../hooks/useTheme";
-import { scoreToLetter, scoreToColor } from "../../../../utils/gradeUtils";
+import { scoreToLetter } from "../../../../utils/gradeUtils";
 import LetterScale from "../../common/LetterScale";
-
-export default function SauvegardeTitle({ data, config }) {
-  const { theme } = useTheme();
-  
-  // Fonction pour calculer le score de santé global de la sauvegarde (identique à SauvegardeSummary.js)
+export default function BackupTitle({
+  data,
+  config
+}) {
+  const {
+    theme
+  } = useTheme();
   const calculateGlobalBackupHealthScore = () => {
     const sauvegarde = config?.client?.equipements?.Sauvegarde;
     const instances = sauvegarde?.instances || [];
-    
     if (!data || instances.length === 0) return null;
-
     let totalJobs = 0;
     let successJobs = 0;
     let failedJobs = 0;
     let warningJobs = 0;
-
-    // Parcourir toutes les instances
     instances.forEach((instance, instanceIndex) => {
       const instanceData = data?.[instanceIndex];
       if (!instanceData) return;
-
-      // Parcourir tous les jobs de l'instance
       Object.keys(instanceData).forEach(jobIndex => {
         if (jobIndex !== 'comment') {
           totalJobs++;
           const jobData = instanceData[jobIndex];
-          
-          // Compter les statuts
           if (jobData?.lastStatus === "SUCCESS") {
             successJobs++;
           } else if (jobData?.lastStatus === "FAIL") {
@@ -42,82 +36,59 @@ export default function SauvegardeTitle({ data, config }) {
         }
       });
     });
-
     if (totalJobs === 0) return null;
-
     let score = 100;
-
-    // 1. Taux de réussite des jobs (0-50 points)
-    const successRate = (successJobs / totalJobs) * 100;
-    const successScore = (successRate / 100) * 50;
-    score -= (50 - successScore);
-
-    // 2. Pénalités pour les échecs (0-20 points)
-    const failRate = (failedJobs / totalJobs) * 100;
+    const successRate = successJobs / totalJobs * 100;
+    const successScore = successRate / 100 * 50;
+    score -= 50 - successScore;
+    const failRate = failedJobs / totalJobs * 100;
     const failPenalty = Math.min(failRate * 0.2, 20);
     score -= failPenalty;
-
-    // 3. Pénalités pour les avertissements (0-10 points)
-    const warningRate = (warningJobs / totalJobs) * 100;
+    const warningRate = warningJobs / totalJobs * 100;
     const warningPenalty = Math.min(warningRate * 0.1, 10);
     score -= warningPenalty;
-
-    // S'assurer que le score est entre 0 et 100
     score = Math.max(0, Math.min(100, Math.round(score)));
-
     return {
       score
     };
   };
-
-  // Calculer le score
   const healthScore = useMemo(() => {
     return calculateGlobalBackupHealthScore();
   }, [data, config]);
-
   const healthScoreValue = healthScore?.score ?? null;
   const manualScore = data?.manualHealthScore;
   const finalScore = manualScore !== undefined ? manualScore : healthScoreValue;
   const scoreLetter = finalScore !== null ? scoreToLetter(finalScore) : null;
-
-  return (
-    <div className={styles.cyberModuleTitleWrapper}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-        <div style={{ flex: 1 }}>
+  return <div className={styles.cyberModuleTitleWrapper}>
+      <div style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '100%'
+    }}>
+        <div style={{
+        flex: 1
+      }}>
           <div className={styles.cyberModuleSubTitle}>
-            <IconifyIcon
-              icon="material-symbols:backup"
-              width={50}
-              height={50}
-              color="#000000"
-            />
-            <h2>SAUVEGARDE</h2>
+            <IconifyIcon icon="material-symbols:backup" width={50} height={50} color="#000000" />
+            <h2>BACKUP</h2>
           </div>
           <p className={styles.cyberModuleSubTitleDescription}>
-            Protection et restauration des données
+            Data protection and restoration
           </p>
         </div>
-        {finalScore !== null && (
-          <div style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginLeft: '1rem',
-            marginRight: '-1rem',
-            transform: 'scale(1.3)',
-            transformOrigin: 'right center'
-          }}>
-            <LetterScale 
-              activeLetter={scoreLetter} 
-              theme={theme}
-              letters={["F", "E", "D", "C", "B", "A"]}
-              size="normal"
-            />
-          </div>
-        )}
+        {finalScore !== null && <div style={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: '1rem',
+        marginRight: '-1rem',
+        transform: 'scale(1.3)',
+        transformOrigin: 'right center'
+      }}>
+            <LetterScale activeLetter={scoreLetter} theme={theme} letters={["F", "E", "D", "C", "B", "A"]} size="normal" />
+          </div>}
       </div>
-    </div>
-  );
+    </div>;
 }
-

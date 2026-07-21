@@ -10,7 +10,6 @@ import { useAppLocale } from "../../hooks/useAppGeneralSettings";
 import { interpolate } from "../../i18n/translate";
 import layout from "../EnterprisesPage/EnterpriseFormModal.module.css";
 import formStyles from "./IngestionRuleFormModal.module.css";
-
 export default function TeamFormModal({
   open,
   mode = "create",
@@ -18,7 +17,7 @@ export default function TeamFormModal({
   setDraft,
   saving = false,
   onClose,
-  onSave,
+  onSave
 }) {
   const locale = useAppLocale();
   const commonCopy = useCommonCopy();
@@ -27,34 +26,27 @@ export default function TeamFormModal({
   const formSections = useMemo(() => getTeamFormSections(locale), [locale]);
   const isCreate = mode === "create";
   const [activeSection, setActiveSection] = useState("general");
-
   useEffect(() => {
     if (!open) return;
     setActiveSection("general");
   }, [open]);
-
-  const sectionMeta = useMemo(
-    () => ({
-      general: Boolean(String(draft?.name || "").trim()),
-      status: true,
-    }),
-    [draft]
-  );
-
+  const sectionMeta = useMemo(() => ({
+    general: Boolean(String(draft?.name || "").trim()),
+    status: true
+  }), [draft]);
   if (!open || !draft) return null;
-
-  const patchDraft = (patch) => setDraft((prev) => ({ ...prev, ...patch }));
-
-  const modalTitle = isCreate
-    ? modalCopy.createTitle
-    : interpolate(modalCopy.editTitle, { name: draft.name || modalCopy.editFallback });
+  const patchDraft = patch => setDraft(prev => ({
+    ...prev,
+    ...patch
+  }));
+  const modalTitle = isCreate ? modalCopy.createTitle : interpolate(modalCopy.editTitle, {
+    name: draft.name || modalCopy.editFallback
+  });
   const modalSubtitle = isCreate ? modalCopy.createSubtitle : modalCopy.editSubtitle;
-
   const renderSectionContent = () => {
     switch (activeSection) {
       case "general":
-        return (
-          <>
+        return <>
             <div className={layout.sectionHead}>
               <h3 className={layout.sectionTitle}>{modalCopy.generalTitle}</h3>
               <p className={layout.sectionDesc}>{modalCopy.generalDesc}</p>
@@ -64,36 +56,22 @@ export default function TeamFormModal({
                 <label className={`${layout.label} ${layout.labelRequired}`} htmlFor="team-name">
                   {modalCopy.nameLabel}
                 </label>
-                <input
-                  id="team-name"
-                  type="text"
-                  className={layout.input}
-                  value={draft.name || ""}
-                  onChange={(e) => patchDraft({ name: e.target.value })}
-                  placeholder={modalCopy.namePlaceholder}
-                  autoFocus
-                />
+                <input id="team-name" type="text" className={layout.input} value={draft.name || ""} onChange={e => patchDraft({
+                name: e.target.value
+              })} placeholder={modalCopy.namePlaceholder} autoFocus />
               </div>
               <div className={`${layout.field} ${layout.fieldFull}`}>
                 <label className={layout.label} htmlFor="team-description">
                   {modalCopy.descriptionLabel}
                 </label>
-                <input
-                  id="team-description"
-                  type="text"
-                  className={layout.input}
-                  value={draft.description || ""}
-                  onChange={(e) => patchDraft({ description: e.target.value })}
-                  placeholder={modalCopy.descriptionPlaceholder}
-                />
+                <input id="team-description" type="text" className={layout.input} value={draft.description || ""} onChange={e => patchDraft({
+                description: e.target.value
+              })} placeholder={modalCopy.descriptionPlaceholder} />
               </div>
             </div>
-          </>
-        );
-
+          </>;
       case "status":
-        return (
-          <>
+        return <>
             <div className={layout.sectionHead}>
               <h3 className={layout.sectionTitle}>{modalCopy.statusTitle}</h3>
               <p className={layout.sectionDesc}>{modalCopy.statusDesc}</p>
@@ -103,30 +81,19 @@ export default function TeamFormModal({
                 <div className={formStyles.statusLabel}>{modalCopy.teamActiveLabel}</div>
                 <p className={formStyles.statusHint}>{modalCopy.teamActiveHint}</p>
               </div>
-              <Switch
-                checked={Boolean(draft.isActive)}
-                onChange={(on) => patchDraft({ isActive: on })}
-                label={draft.isActive ? adminCopy.activeShort : adminCopy.inactiveShort}
-              />
+              <Switch checked={Boolean(draft.isActive)} onChange={on => patchDraft({
+              isActive: on
+            })} label={draft.isActive ? adminCopy.activeShort : adminCopy.inactiveShort} />
             </div>
-          </>
-        );
-
+          </>;
       default:
         return null;
     }
   };
-
-  return createPortal(
-    <div className={layout.overlay} onClick={onClose} role="presentation">
-      <div
-        className={layout.shell}
-        style={{ maxWidth: "min(720px, 100%)" }}
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="team-form-title"
-      >
+  return createPortal(<div className={layout.overlay} onClick={onClose} role="presentation">
+      <div className={layout.shell} style={{
+      maxWidth: "min(720px, 100%)"
+    }} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="team-form-title">
         <div className={layout.accentBar} aria-hidden />
         <header className={layout.header}>
           <div className={layout.headerMain}>
@@ -148,22 +115,14 @@ export default function TeamFormModal({
 
         <div className={layout.body}>
           <nav className={layout.nav} aria-label={modalCopy.sectionsAria}>
-            {formSections.map((section) => (
-              <button
-                key={section.id}
-                type="button"
-                className={`${layout.navItem} ${activeSection === section.id ? layout.navItemActive : ""}`}
-                onClick={() => setActiveSection(section.id)}
-                aria-current={activeSection === section.id ? "step" : undefined}
-              >
+            {formSections.map(section => <button key={section.id} type="button" className={`${layout.navItem} ${activeSection === section.id ? layout.navItemActive : ""}`} onClick={() => setActiveSection(section.id)} aria-current={activeSection === section.id ? "step" : undefined}>
                 <Icon icon={section.icon} className={layout.navItemIcon} aria-hidden />
                 <span className={layout.navItemText}>
                   <span className={layout.navItemLabel}>{section.label}</span>
                   <span className={layout.navItemHint}>{section.description}</span>
                 </span>
                 {sectionMeta[section.id] && <span className={layout.navBadge}>✓</span>}
-              </button>
-            ))}
+              </button>)}
           </nav>
 
           <div className={layout.content}>{renderSectionContent()}</div>
@@ -177,33 +136,20 @@ export default function TeamFormModal({
             <button type="button" className={layout.ghostBtn} onClick={onClose} disabled={saving}>
               {commonCopy.cancel}
             </button>
-            <button
-              type="button"
-              className={layout.primaryBtn}
-              onClick={onSave}
-              disabled={saving || !String(draft.name || "").trim()}
-            >
-              {saving ? (
-                <>
+            <button type="button" className={layout.primaryBtn} onClick={onSave} disabled={saving || !String(draft.name || "").trim()}>
+              {saving ? <>
                   <Icon icon="mdi:loading" className={layout.spinning} aria-hidden />
                   {commonCopy.saving}
-                </>
-              ) : isCreate ? (
-                <>
+                </> : isCreate ? <>
                   <Icon icon="mdi:check" aria-hidden />
                   {modalCopy.createBtn}
-                </>
-              ) : (
-                <>
+                </> : <>
                   <Icon icon="mdi:content-save-outline" aria-hidden />
                   {commonCopy.save}
-                </>
-              )}
+                </>}
             </button>
           </div>
         </footer>
       </div>
-    </div>,
-    document.getElementById("modal-root") || document.body
-  );
+    </div>, document.getElementById("modal-root") || document.body);
 }

@@ -1,11 +1,9 @@
 import { createLocaleGetter } from "../../i18n/translate";
-
 const DOCUMENTS_HUB = {
   fr: {
     eyebrow: "Pilotage",
     pageTitle: "Documents",
-    subtitle:
-      "Centralisez les pièces jointes clients : factures matériel, photos de baie, plans réseau, contrats et procédures.",
+    subtitle: "Centralisez les pièces jointes clients : factures matériel, photos de baie, plans réseau, contrats et procédures.",
     upload: "Ajouter un document",
     uploadFirst: "Ajouter le premier document",
     searchPlaceholder: "Rechercher un fichier, une entreprise…",
@@ -59,14 +57,13 @@ const DOCUMENTS_HUB = {
       Procédure: "Procédure",
       Contrat: "Contrat",
       Rapport: "Rapport",
-      Autre: "Autre",
-    },
+      Autre: "Autre"
+    }
   },
   en: {
     eyebrow: "Management",
     pageTitle: "Documents",
-    subtitle:
-      "Centralize client attachments: hardware invoices, rack photos, network diagrams, contracts and procedures.",
+    subtitle: "Centralize client attachments: hardware invoices, rack photos, network diagrams, contracts and procedures.",
     upload: "Add document",
     uploadFirst: "Add first document",
     searchPlaceholder: "Search file, company…",
@@ -119,15 +116,14 @@ const DOCUMENTS_HUB = {
       "Plan de réseau": "Network diagram",
       Procédure: "Procedure",
       Contrat: "Contract",
-      Rapport: "Report",
-      Autre: "Other",
-    },
+      Report: "Report",
+      Autre: "Other"
+    }
   },
   de: {
     eyebrow: "Steuerung",
     pageTitle: "Dokumente",
-    subtitle:
-      "Zentralisieren Sie Kundenanhänge: Hardware-Rechnungen, Rack-Fotos, Netzwerkpläne, Verträge und Verfahren.",
+    subtitle: "Zentralisieren Sie Kundenanhänge: Hardware-Rechnungen, Rack-Fotos, Netzwerkpläne, Verträge und Verfahren.",
     upload: "Dokument hinzufügen",
     uploadFirst: "Erstes Dokument hinzufügen",
     searchPlaceholder: "Datei, Unternehmen suchen…",
@@ -181,14 +177,13 @@ const DOCUMENTS_HUB = {
       Procédure: "Verfahren",
       Contrat: "Vertrag",
       Rapport: "Bericht",
-      Autre: "Sonstiges",
-    },
+      Autre: "Sonstiges"
+    }
   },
   it: {
     eyebrow: "Pilotaggio",
     pageTitle: "Documenti",
-    subtitle:
-      "Centralizza gli allegati clienti: fatture hardware, foto rack, schemi di rete, contratti e procedure.",
+    subtitle: "Centralizza gli allegati clienti: fatture hardware, foto rack, schemi di rete, contratti e procedure.",
     upload: "Aggiungi documento",
     uploadFirst: "Aggiungi il primo documento",
     searchPlaceholder: "Cerca file, azienda…",
@@ -242,14 +237,13 @@ const DOCUMENTS_HUB = {
       Procédure: "Procedura",
       Contrat: "Contratto",
       Rapport: "Report",
-      Autre: "Altro",
-    },
+      Autre: "Altro"
+    }
   },
   es: {
     eyebrow: "Gestión",
     pageTitle: "Documentos",
-    subtitle:
-      "Centralice los adjuntos de clientes: facturas de hardware, fotos de rack, diagramas de red, contratos y procedimientos.",
+    subtitle: "Centralice los adjuntos de clientes: facturas de hardware, fotos de rack, diagramas de red, contratos y procedimientos.",
     upload: "Añadir documento",
     uploadFirst: "Añadir el primer documento",
     searchPlaceholder: "Buscar archivo, empresa…",
@@ -303,20 +297,9 @@ const DOCUMENTS_HUB = {
       Procédure: "Procedimiento",
       Contrat: "Contrato",
       Rapport: "Informe",
-      Autre: "Otro",
-    },
-  },
+      Autre: "Otro"
+    }
+  }
 };
-
-export const CATEGORY_KEYS = [
-  "Facture matériel",
-  "Image client",
-  "Baie de brassage",
-  "Plan de réseau",
-  "Procédure",
-  "Contrat",
-  "Rapport",
-  "Autre",
-];
-
+export const CATEGORY_KEYS = ["Facture matériel", "Image client", "Baie de brassage", "Plan de réseau", "Procédure", "Contrat", "Rapport", "Autre"];
 export const getDocumentsHubCopy = createLocaleGetter(DOCUMENTS_HUB);

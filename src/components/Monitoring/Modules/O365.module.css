@@ -1,4 +1,4 @@
-/* ───────────── CONTAINER PRINCIPAL ───────────── */
+
 .container {
   max-width: 1400px;
   margin: 0 auto;
@@ -10,7 +10,7 @@
   box-sizing: border-box;
 }
 
-/* ───────────── CARTE PRINCIPALE OFFICE 365 ───────────── */
+
 .o365Grid {
   display: grid;
   gap: 1.5rem;
@@ -34,7 +34,7 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* ───────────── EN-TÊTE DE LA CARTE ───────────── */
+
 .cardHeader {
   display: flex;
   align-items: center;
@@ -105,7 +105,7 @@
   gap: 0.5rem;
 }
 
-/* ───────────── SECTION LICENCES ───────────── */
+
 .licensesSection {
   margin-bottom: 1.5rem;
 }
@@ -235,7 +235,7 @@
   color: #ffffff;
 }
 
-/* ───────────── LISTE DES UTILISATEURS ───────────── */
+
 .usersList {
   max-height: 0;
   overflow: hidden;
@@ -350,7 +350,7 @@
   color: #9ca3af;
 }
 
-/* Bouton "Charger plus" */
+
 .loadMoreButton {
   grid-column: 1 / -1;
   padding: 0.75rem;
@@ -384,7 +384,7 @@
   color: #f9fafb;
 }
 
-/* Scrollbar personnalisée pour la liste des utilisateurs */
+
 .usersGrid::-webkit-scrollbar {
   width: 6px;
 }
@@ -415,7 +415,7 @@
   background: #9ca3af;
 }
 
-/* ───────────── SECTION ONEDRIVE ───────────── */
+
 .oneDriveSection {
   margin-bottom: 1.5rem;
 }
@@ -504,7 +504,7 @@
   box-shadow: none;
 }
 
-/* ───────────── BARRE DE PROGRESSION ───────────── */
+
 .progressSection {
   background: #f9fafb;
   border: 1px solid #e5e7eb;
@@ -591,7 +591,7 @@
   font-weight: 500;
 }
 
-/* ───────────── SECTION CSV ───────────── */
+
 .csvSection {
   margin-bottom: 1.5rem;
 }
@@ -685,7 +685,7 @@
 }
 
 .csvInput::before {
-  content: '📁 Choisir un fichier CSV';
+  content: '📁 Choose a CSV file';
   font-size: 12px;
   font-weight: 500;
   color: #6b7280;
@@ -694,11 +694,11 @@
 }
 
 .csvInput:has(input[type="file"]:not([value=""]))::before {
-  content: '✅ Fichier sélectionné';
+  content: '✅ File selected';
   color: #10b981;
 }
 
-/* Tooltip pour les labels CSV */
+
 .csvLabel[title]:hover::after {
   content: attr(title);
   position: absolute;
@@ -735,7 +735,7 @@
   border-top-color: #374151;
 }
 
-/* ───────────── SECTION GRAPHIQUES ───────────── */
+
 .graphsSection {
   margin-bottom: 1.5rem;
 }
@@ -813,7 +813,7 @@
   }
 }
 
-/* ───────────── SECTION STATISTIQUES ───────────── */
+
 .statsSection {
   background: #f9fafb;
   border: 1px solid #e5e7eb;
@@ -884,7 +884,7 @@
   color: #f9fafb;
 }
 
-/* ───────────── LABELS DE POSITION ───────────── */
+
 .positionLabel {
   font-size: 10px;
   font-weight: 700;
@@ -895,7 +895,7 @@
   flex-shrink: 0;
 }
 
-/* ───────────── STYLES DE PODIUM ───────────── */
+
 .firstPlace {
   border: 2px solid #fbbf24;
   background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
@@ -983,7 +983,7 @@
   color: #9ca3af;
 }
 
-/* ───────────── SECTION COMMENTAIRES ───────────── */
+
 .commentSection {
   display: flex;
   flex-direction: column;
@@ -1054,7 +1054,7 @@
   color: #6b7280;
 }
 
-/* ───────────── ÉTAT VIDE ───────────── */
+
 .emptyState {
   text-align: center;
   padding: 3rem 1rem;
@@ -1071,7 +1071,7 @@
   color: #9ca3af;
 }
 
-/* ───────────── RESPONSIVE ───────────── */
+
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
@@ -1121,7 +1121,7 @@
   }
 }
 
-/* Styles pour les statistiques avec podium */
+
 .statsSection {
   margin-top: 1.5rem;
   padding: 1rem;
@@ -1275,7 +1275,7 @@
   color: #9ca3af;
 }
 
-/* Styles pour les insights des licences */
+
 .insightsSection {
   margin-top: 1.5rem;
   padding: 1rem;
@@ -1489,7 +1489,7 @@
   color: #93c5fd;
 }
 
-/* Responsive design pour les insights */
+
 @media (max-width: 768px) {
   .licenseInsights {
     grid-template-columns: 1fr;
@@ -1512,7 +1512,7 @@
   }
 }
 
-/* Styles pour les statistiques par domaine */
+
 .domainStats {
   display: flex;
   flex-direction: column;
@@ -1566,7 +1566,7 @@
   color: #9ca3af;
 }
 
-/* Responsive design pour les domaines */
+
 @media (max-width: 768px) {
   .domainItem {
     padding: 0.625rem;
@@ -1583,7 +1583,7 @@
   }
 }
 
-/* Style pour la carte d'insight pleine largeur */
+
 .insightCardFullWidth {
   grid-column: 1 / -1;
   padding: 1rem;
@@ -1619,7 +1619,7 @@
   color: #d1d5db;
 }
 
-/* ───────────── NOUVEAUX STYLES POUR LA RESTRUCTURATION ───────────── */
+
 .headerLeft {
   display: flex;
   align-items: center;
@@ -1644,7 +1644,7 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* ───────────── SECTIONS ───────────── */
+
 .dashboardSection,
 .licensesSection,
 .usersSection,
@@ -1663,8 +1663,8 @@
   color: #f9fafb;
 }
 
-/* ───────────── MÉTRIQUES ───────────── */
-/* Métriques principales compactes - style Antivirus */
+
+
 .metricsRow {
   display: flex;
   gap: 1rem;
@@ -1711,16 +1711,16 @@
   color: #f9fafb;
 }
 
-/* ───────────── TABLEAU UTILISATEURS ───────────── */
+
 .usersTableContainer {
   overflow-x: auto;
-  /* Masquer la scrollbar horizontale */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
 
 .usersTableContainer::-webkit-scrollbar {
-  height: 0; /* Masquer la scrollbar horizontale */
+  height: 0; 
   display: none;
 }
 
@@ -1779,7 +1779,7 @@
   background: #2a2a4a;
 }
 
-/* ───────────── TABLE DES LICENCES (Style Endpoints) ───────────── */
+
 .licensesTableContainer {
   overflow-x: auto;
   overflow-y: auto;
@@ -1788,15 +1788,15 @@
   border: 1px solid #e5e7eb;
   background-color: #ffffff;
   margin-top: 1rem;
-  /* Masquer la scrollbar horizontale */
-  scrollbar-width: thin; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  
+  scrollbar-width: thin; 
+  -ms-overflow-style: none; 
 }
 
-/* Scrollbar personnalisée pour la table */
+
 .licensesTableContainer::-webkit-scrollbar {
   width: 8px;
-  height: 0; /* Masquer la scrollbar horizontale */
+  height: 0; 
 }
 
 .licensesTableContainer::-webkit-scrollbar:horizontal {
@@ -1895,7 +1895,7 @@
   color: #d1d5db;
 }
 
-/* ───────────── MESSAGES ───────────── */
+
 .noDataMessage {
   text-align: center;
   padding: 3rem 1rem;
@@ -1926,7 +1926,7 @@
   font-size: 1rem;
 }
 
-/* ───────────── BOUTON SYNCHRONISATION ───────────── */
+
 .syncButton {
   display: inline-flex;
   align-items: center;
@@ -1966,7 +1966,7 @@
   }
 }
 
-/* ───────────── COMMENTAIRE ───────────── */
+
 .commentSection {
   margin-top: 1.5rem;
   padding-top: 1.5rem;

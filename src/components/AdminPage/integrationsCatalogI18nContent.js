@@ -1,7 +1,7 @@
-/** Auto-generated catalog i18n overlays — edit integrationsCatalog.js then re-run scripts/genIntegrationsI18n.js */
 export const INTEGRATIONS_CATALOG_I18N = {
   "fr": {
     "categories": {
+      "ai": "IA & copilote",
       "email-security": "Antispam & protection mail",
       "endpoint-security": "Antivirus, EDR & XDR",
       "cloud": "Cloud & identité",
@@ -11,6 +11,9 @@ export const INTEGRATIONS_CATALOG_I18N = {
       "backup": "Sauvegarde"
     },
     "descriptions": {
+      "ai": {
+        "description": "Fournisseur LLM pour copilotes tickets, runbooks et briefings."
+      },
       "checkmk": {
         "description": "Supervision des hôtes, services et rapports de monitoring."
       },
@@ -133,6 +136,11 @@ export const INTEGRATIONS_CATALOG_I18N = {
       }
     },
     "fieldLabels": {
+      "ai": {
+        "AI_PROVIDER": "Fournisseur",
+        "AI_API_KEY": "Clé API",
+        "AI_MODEL": "Modèle (optionnel)"
+      },
       "checkmk": {
         "CHECKMK_API_URL": "URL API Checkmk",
         "CHECKMK_USERNAME": "Nom d'utilisateur",
@@ -164,6 +172,7 @@ export const INTEGRATIONS_CATALOG_I18N = {
   },
   "en": {
     "categories": {
+      "ai": "AI & copilote",
       "email-security": "Antispam & email protection",
       "endpoint-security": "Antivirus, EDR & XDR",
       "cloud": "Cloud & identity",
@@ -173,6 +182,9 @@ export const INTEGRATIONS_CATALOG_I18N = {
       "backup": "Backup"
     },
     "descriptions": {
+      "ai": {
+        "description": "LLM provider for ticket copilots, runbooks and briefings."
+      },
       "checkmk": {
         "description": "Host, service and monitoring report supervision."
       },
@@ -295,6 +307,11 @@ export const INTEGRATIONS_CATALOG_I18N = {
       }
     },
     "fieldLabels": {
+      "ai": {
+        "AI_PROVIDER": "Provider",
+        "AI_API_KEY": "API key",
+        "AI_MODEL": "Model (optional)"
+      },
       "checkmk": {
         "CHECKMK_API_URL": "Checkmk API URL",
         "CHECKMK_USERNAME": "Username",
@@ -326,6 +343,7 @@ export const INTEGRATIONS_CATALOG_I18N = {
   },
   "de": {
     "categories": {
+      "ai": "KI & Copilot",
       "email-security": "Antispam & E-Mail-Schutz",
       "endpoint-security": "Antivirus, EDR & XDR",
       "cloud": "Cloud & Identität",
@@ -335,6 +353,9 @@ export const INTEGRATIONS_CATALOG_I18N = {
       "backup": "Backup"
     },
     "descriptions": {
+      "ai": {
+        "description": "LLM-Anbieter für Ticket-Copiloten, Runbooks und Briefings."
+      },
       "checkmk": {
         "description": "Supervision des hôtes, services et rapports de monitoring."
       },
@@ -457,6 +478,11 @@ export const INTEGRATIONS_CATALOG_I18N = {
       }
     },
     "fieldLabels": {
+      "ai": {
+        "AI_PROVIDER": "Anbieter",
+        "AI_API_KEY": "API-Schlüssel",
+        "AI_MODEL": "Modell (optional)"
+      },
       "checkmk": {
         "CHECKMK_API_URL": "Checkmk API URL",
         "CHECKMK_USERNAME": "Username",
@@ -488,6 +514,7 @@ export const INTEGRATIONS_CATALOG_I18N = {
   },
   "it": {
     "categories": {
+      "ai": "IA & copilota",
       "email-security": "Antispam & protezione email",
       "endpoint-security": "Antivirus, EDR & XDR",
       "cloud": "Cloud & identità",
@@ -497,6 +524,9 @@ export const INTEGRATIONS_CATALOG_I18N = {
       "backup": "Backup"
     },
     "descriptions": {
+      "ai": {
+        "description": "Provider LLM per copiloti ticket, runbook e briefing."
+      },
       "checkmk": {
         "description": "Supervision des hôtes, services et rapports de monitoring."
       },
@@ -619,6 +649,11 @@ export const INTEGRATIONS_CATALOG_I18N = {
       }
     },
     "fieldLabels": {
+      "ai": {
+        "AI_PROVIDER": "Provider",
+        "AI_API_KEY": "Chiave API",
+        "AI_MODEL": "Modello (opzionale)"
+      },
       "checkmk": {
         "CHECKMK_API_URL": "Checkmk API URL",
         "CHECKMK_USERNAME": "Username",
@@ -650,6 +685,7 @@ export const INTEGRATIONS_CATALOG_I18N = {
   },
   "es": {
     "categories": {
+      "ai": "IA y copiloto",
       "email-security": "Antispam y protección de correo",
       "endpoint-security": "Antivirus, EDR y XDR",
       "cloud": "Cloud e identidad",
@@ -659,6 +695,9 @@ export const INTEGRATIONS_CATALOG_I18N = {
       "backup": "Copia de seguridad"
     },
     "descriptions": {
+      "ai": {
+        "description": "Proveedor LLM para copilotos de tickets, runbooks y briefings."
+      },
       "checkmk": {
         "description": "Supervision des hôtes, services et rapports de monitoring."
       },
@@ -781,6 +820,11 @@ export const INTEGRATIONS_CATALOG_I18N = {
       }
     },
     "fieldLabels": {
+      "ai": {
+        "AI_PROVIDER": "Proveedor",
+        "AI_API_KEY": "Clave API",
+        "AI_MODEL": "Modelo (opcional)"
+      },
       "checkmk": {
         "CHECKMK_API_URL": "Checkmk API URL",
         "CHECKMK_USERNAME": "Username",

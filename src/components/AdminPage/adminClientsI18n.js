@@ -1,25 +1,12 @@
 import { createLocaleGetter, interpolate } from "../../i18n/translate";
-
-const BLOCKER_KEYS = [
-  "equipment_infra",
-  "equipment_cyber",
-  "campaigns",
-  "equipment_services",
-  "azure_tenant",
-  "contacts",
-  "tickets",
-  "events_upcoming",
-  "rmm_agents",
-  "client_files",
-];
-
+const BLOCKER_KEYS = ["equipment_infra", "equipment_cyber", "campaigns", "equipment_services", "azure_tenant", "contacts", "tickets", "events_upcoming", "rmm_agents", "client_files"];
 const CLIENTS_COPY = {
   fr: {
     bcp47: "fr-FR",
     page: {
       title: "Gestion des entreprises",
       description: "Liste, recherche et suppression des fiches entreprise.",
-      refresh: "Actualiser",
+      refresh: "Actualiser"
     },
     searchPlaceholder: "Rechercher une entreprise…",
     searchAria: "Rechercher une entreprise",
@@ -32,18 +19,18 @@ const CLIENTS_COPY = {
     columns: {
       enterprise: "Entreprise",
       deletion: "Suppression",
-      linked: "Éléments liés",
+      linked: "Éléments liés"
     },
     status: {
       allowed: "Autorisée",
-      blocked: "Bloquée",
+      blocked: "Bloquée"
     },
     linked: {
       none: "Aucun",
       element: "élément lié",
       elements: "éléments liés",
       detailTitle: "Voir le détail des éléments liés",
-      detailAria: "Détail des éléments liés pour {name}",
+      detailAria: "Détail des éléments liés pour {name}"
     },
     clientNumber: "N° {number}",
     selectDeletableAria: "Sélectionner les entreprises supprimables de la page",
@@ -57,10 +44,9 @@ const CLIENTS_COPY = {
       range: "{start}–{end} sur {total}",
       page: "Page {current} / {total}",
       prevAria: "Page précédente",
-      nextAria: "Page suivante",
+      nextAria: "Page suivante"
     },
-    hint:
-      "Une entreprise ne peut être supprimée que si aucun ticket support actif, événement à venir, équipement, service cloud/IT, campagne ou agent RMM n'y est encore rattaché.",
+    hint: "Une entreprise ne peut être supprimée que si aucun ticket support actif, événement à venir, équipement, service cloud/IT, campagne ou agent RMM n'y est encore rattaché.",
     deleteFallbackName: "cette entreprise",
     blockerLabels: {
       equipment_infra: "Équipements infrastructure",
@@ -72,7 +58,7 @@ const CLIENTS_COPY = {
       tickets: "Tickets support",
       events_upcoming: "Événements à venir",
       rmm_agents: "Agents RMM",
-      client_files: "Fichiers entreprise",
+      client_files: "Fichiers entreprise"
     },
     blockersModal: {
       title: "Éléments liés",
@@ -82,7 +68,7 @@ const CLIENTS_COPY = {
       totalPlural: "éléments liés au total",
       intro: "Retirez ou réaffectez les éléments suivants avant de supprimer l'entreprise :",
       close: "Fermer",
-      closeAria: "Fermer",
+      closeAria: "Fermer"
     },
     toast: {
       loadError: "Impossible de charger les entreprises",
@@ -91,15 +77,15 @@ const CLIENTS_COPY = {
       deletedOne: "Entreprise supprimée.",
       deletedMany: "{count} entreprises supprimées.",
       deletePartialError: "Certaines suppressions ont échoué.",
-      deleteError: "Échec de la suppression",
-    },
+      deleteError: "Échec de la suppression"
+    }
   },
   en: {
     bcp47: "en-GB",
     page: {
       title: "Company management",
       description: "List, search and delete company records.",
-      refresh: "Refresh",
+      refresh: "Refresh"
     },
     searchPlaceholder: "Search a company…",
     searchAria: "Search a company",
@@ -112,18 +98,18 @@ const CLIENTS_COPY = {
     columns: {
       enterprise: "Company",
       deletion: "Deletion",
-      linked: "Linked items",
+      linked: "Linked items"
     },
     status: {
       allowed: "Allowed",
-      blocked: "Blocked",
+      blocked: "Blocked"
     },
     linked: {
       none: "None",
       element: "linked item",
       elements: "linked items",
       detailTitle: "View linked items detail",
-      detailAria: "Linked items detail for {name}",
+      detailAria: "Linked items detail for {name}"
     },
     clientNumber: "No. {number}",
     selectDeletableAria: "Select deletable companies on this page",
@@ -137,10 +123,9 @@ const CLIENTS_COPY = {
       range: "{start}–{end} of {total}",
       page: "Page {current} / {total}",
       prevAria: "Previous page",
-      nextAria: "Next page",
+      nextAria: "Next page"
     },
-    hint:
-      "A company can only be deleted when no active support ticket, upcoming event, equipment, cloud/IT service, campaign or RMM agent is still linked to it.",
+    hint: "A company can only be deleted when no active support ticket, upcoming event, equipment, cloud/IT service, campaign or RMM agent is still linked to it.",
     deleteFallbackName: "this company",
     blockerLabels: {
       equipment_infra: "Infrastructure equipment",
@@ -152,7 +137,7 @@ const CLIENTS_COPY = {
       tickets: "Support tickets",
       events_upcoming: "Upcoming events",
       rmm_agents: "RMM agents",
-      client_files: "Company files",
+      client_files: "Company files"
     },
     blockersModal: {
       title: "Linked items",
@@ -162,7 +147,7 @@ const CLIENTS_COPY = {
       totalPlural: "linked items in total",
       intro: "Remove or reassign the following items before deleting the company:",
       close: "Close",
-      closeAria: "Close",
+      closeAria: "Close"
     },
     toast: {
       loadError: "Unable to load companies",
@@ -171,15 +156,15 @@ const CLIENTS_COPY = {
       deletedOne: "Company deleted.",
       deletedMany: "{count} companies deleted.",
       deletePartialError: "Some deletions failed.",
-      deleteError: "Deletion failed",
-    },
+      deleteError: "Deletion failed"
+    }
   },
   de: {
     bcp47: "de-DE",
     page: {
       title: "Unternehmensverwaltung",
       description: "Unternehmensdatensätze auflisten, suchen und löschen.",
-      refresh: "Aktualisieren",
+      refresh: "Aktualisieren"
     },
     searchPlaceholder: "Unternehmen suchen…",
     searchAria: "Unternehmen suchen",
@@ -192,15 +177,18 @@ const CLIENTS_COPY = {
     columns: {
       enterprise: "Unternehmen",
       deletion: "Löschung",
-      linked: "Verknüpfte Elemente",
+      linked: "Verknüpfte Elemente"
     },
-    status: { allowed: "Erlaubt", blocked: "Blockiert" },
+    status: {
+      allowed: "Erlaubt",
+      blocked: "Blockiert"
+    },
     linked: {
       none: "Keine",
       element: "verknüpftes Element",
       elements: "verknüpfte Elemente",
       detailTitle: "Details der verknüpften Elemente anzeigen",
-      detailAria: "Verknüpfte Elemente für {name}",
+      detailAria: "Verknüpfte Elemente für {name}"
     },
     clientNumber: "Nr. {number}",
     selectDeletableAria: "Löschbare Unternehmen auf dieser Seite auswählen",
@@ -214,10 +202,9 @@ const CLIENTS_COPY = {
       range: "{start}–{end} von {total}",
       page: "Seite {current} / {total}",
       prevAria: "Vorherige Seite",
-      nextAria: "Nächste Seite",
+      nextAria: "Nächste Seite"
     },
-    hint:
-      "Ein Unternehmen kann nur gelöscht werden, wenn kein aktives Support-Ticket, kein bevorstehendes Ereignis, keine Ausrüstung, kein Cloud-/IT-Dienst, keine Kampagne und kein RMM-Agent mehr verknüpft ist.",
+    hint: "Ein Unternehmen kann nur gelöscht werden, wenn kein aktives Support-Ticket, kein bevorstehendes Ereignis, keine Ausrüstung, kein Cloud-/IT-Dienst, keine Kampagne und kein RMM-Agent mehr verknüpft ist.",
     deleteFallbackName: "dieses Unternehmen",
     blockerLabels: {
       equipment_infra: "Infrastrukturausrüstung",
@@ -229,7 +216,7 @@ const CLIENTS_COPY = {
       tickets: "Support-Tickets",
       events_upcoming: "Bevorstehende Ereignisse",
       rmm_agents: "RMM-Agenten",
-      client_files: "Unternehmensdateien",
+      client_files: "Unternehmensdateien"
     },
     blockersModal: {
       title: "Verknüpfte Elemente",
@@ -239,7 +226,7 @@ const CLIENTS_COPY = {
       totalPlural: "verknüpfte Elemente insgesamt",
       intro: "Entfernen oder weisen Sie die folgenden Elemente zu, bevor Sie das Unternehmen löschen:",
       close: "Schließen",
-      closeAria: "Schließen",
+      closeAria: "Schließen"
     },
     toast: {
       loadError: "Unternehmen konnten nicht geladen werden",
@@ -248,15 +235,15 @@ const CLIENTS_COPY = {
       deletedOne: "Unternehmen gelöscht.",
       deletedMany: "{count} Unternehmen gelöscht.",
       deletePartialError: "Einige Löschvorgänge sind fehlgeschlagen.",
-      deleteError: "Löschen fehlgeschlagen",
-    },
+      deleteError: "Löschen fehlgeschlagen"
+    }
   },
   it: {
     bcp47: "it-IT",
     page: {
       title: "Gestione aziende",
       description: "Elencare, cercare ed eliminare le schede azienda.",
-      refresh: "Aggiorna",
+      refresh: "Aggiorna"
     },
     searchPlaceholder: "Cerca un'azienda…",
     searchAria: "Cerca un'azienda",
@@ -269,15 +256,18 @@ const CLIENTS_COPY = {
     columns: {
       enterprise: "Azienda",
       deletion: "Eliminazione",
-      linked: "Elementi collegati",
+      linked: "Elementi collegati"
     },
-    status: { allowed: "Consentita", blocked: "Bloccata" },
+    status: {
+      allowed: "Consentita",
+      blocked: "Bloccata"
+    },
     linked: {
       none: "Nessuno",
       element: "elemento collegato",
       elements: "elementi collegati",
       detailTitle: "Vedi dettaglio elementi collegati",
-      detailAria: "Dettaglio elementi collegati per {name}",
+      detailAria: "Dettaglio elementi collegati per {name}"
     },
     clientNumber: "N. {number}",
     selectDeletableAria: "Seleziona aziende eliminabili in questa pagina",
@@ -291,10 +281,9 @@ const CLIENTS_COPY = {
       range: "{start}–{end} di {total}",
       page: "Pagina {current} / {total}",
       prevAria: "Pagina precedente",
-      nextAria: "Pagina successiva",
+      nextAria: "Pagina successiva"
     },
-    hint:
-      "Un'azienda può essere eliminata solo se non ci sono ticket support attivi, eventi futuri, equipaggiamenti, servizi cloud/IT, campagne o agenti RMM collegati.",
+    hint: "Un'azienda può essere eliminata solo se non ci sono ticket support attivi, eventi futuri, equipaggiamenti, servizi cloud/IT, campagne o agenti RMM collegati.",
     deleteFallbackName: "questa azienda",
     blockerLabels: {
       equipment_infra: "Equipaggiamento infrastruttura",
@@ -306,7 +295,7 @@ const CLIENTS_COPY = {
       tickets: "Ticket supporto",
       events_upcoming: "Eventi imminenti",
       rmm_agents: "Agenti RMM",
-      client_files: "File azienda",
+      client_files: "File azienda"
     },
     blockersModal: {
       title: "Elementi collegati",
@@ -316,7 +305,7 @@ const CLIENTS_COPY = {
       totalPlural: "elementi collegati in totale",
       intro: "Rimuovi o riassegna i seguenti elementi prima di eliminare l'azienda:",
       close: "Chiudi",
-      closeAria: "Chiudi",
+      closeAria: "Chiudi"
     },
     toast: {
       loadError: "Impossibile caricare le aziende",
@@ -325,15 +314,15 @@ const CLIENTS_COPY = {
       deletedOne: "Azienda eliminata.",
       deletedMany: "{count} aziende eliminate.",
       deletePartialError: "Alcune eliminazioni non sono riuscite.",
-      deleteError: "Eliminazione fallita",
-    },
+      deleteError: "Eliminazione fallita"
+    }
   },
   es: {
     bcp47: "es-ES",
     page: {
       title: "Gestión de empresas",
       description: "Listar, buscar y eliminar fichas de empresa.",
-      refresh: "Actualizar",
+      refresh: "Actualizar"
     },
     searchPlaceholder: "Buscar una empresa…",
     searchAria: "Buscar una empresa",
@@ -346,15 +335,18 @@ const CLIENTS_COPY = {
     columns: {
       enterprise: "Empresa",
       deletion: "Eliminación",
-      linked: "Elementos vinculados",
+      linked: "Elementos vinculados"
     },
-    status: { allowed: "Permitida", blocked: "Bloqueada" },
+    status: {
+      allowed: "Permitida",
+      blocked: "Bloqueada"
+    },
     linked: {
       none: "Ninguno",
       element: "elemento vinculado",
       elements: "elementos vinculados",
       detailTitle: "Ver detalle de elementos vinculados",
-      detailAria: "Detalle de elementos vinculados para {name}",
+      detailAria: "Detalle de elementos vinculados para {name}"
     },
     clientNumber: "N.º {number}",
     selectDeletableAria: "Seleccionar empresas eliminables en esta página",
@@ -368,10 +360,9 @@ const CLIENTS_COPY = {
       range: "{start}–{end} de {total}",
       page: "Página {current} / {total}",
       prevAria: "Página anterior",
-      nextAria: "Página siguiente",
+      nextAria: "Página siguiente"
     },
-    hint:
-      "Una empresa solo puede eliminarse si no hay tickets de soporte activos, eventos próximos, equipos, servicios cloud/IT, campañas o agentes RMM vinculados.",
+    hint: "Una empresa solo puede eliminarse si no hay tickets de soporte activos, eventos próximos, equipos, servicios cloud/IT, campañas o agentes RMM vinculados.",
     deleteFallbackName: "esta empresa",
     blockerLabels: {
       equipment_infra: "Equipos de infraestructura",
@@ -383,7 +374,7 @@ const CLIENTS_COPY = {
       tickets: "Tickets de soporte",
       events_upcoming: "Eventos próximos",
       rmm_agents: "Agentes RMM",
-      client_files: "Archivos de empresa",
+      client_files: "Archivos de empresa"
     },
     blockersModal: {
       title: "Elementos vinculados",
@@ -393,7 +384,7 @@ const CLIENTS_COPY = {
       totalPlural: "elementos vinculados en total",
       intro: "Retire o reasigne los siguientes elementos antes de eliminar la empresa:",
       close: "Cerrar",
-      closeAria: "Cerrar",
+      closeAria: "Cerrar"
     },
     toast: {
       loadError: "No se pueden cargar las empresas",
@@ -402,32 +393,30 @@ const CLIENTS_COPY = {
       deletedOne: "Empresa eliminada.",
       deletedMany: "{count} empresas eliminadas.",
       deletePartialError: "Algunas eliminaciones fallaron.",
-      deleteError: "Error al eliminar",
-    },
-  },
+      deleteError: "Error al eliminar"
+    }
+  }
 };
-
 export const getAdminClientsCopy = createLocaleGetter(CLIENTS_COPY);
-
 export function getBlockerLabel(locale, key, fallback = "") {
   const labels = getAdminClientsCopy(locale).blockerLabels || {};
   return labels[key] || fallback || key;
 }
-
 export function formatEnterpriseCount(locale, count) {
   const copy = getAdminClientsCopy(locale);
-  return interpolate(count === 1 ? copy.enterpriseCount : copy.enterpriseCountPlural, { count });
+  return interpolate(count === 1 ? copy.enterpriseCount : copy.enterpriseCountPlural, {
+    count
+  });
 }
-
 export function formatSelectedCount(locale, count) {
   const copy = getAdminClientsCopy(locale);
-  return interpolate(count === 1 ? copy.selectedCount : copy.selectedCountPlural, { count });
+  return interpolate(count === 1 ? copy.selectedCount : copy.selectedCountPlural, {
+    count
+  });
 }
-
 export function formatLinkedElementsLabel(locale, total) {
   const copy = getAdminClientsCopy(locale);
   const label = total > 1 ? copy.linked.elements : copy.linked.element;
   return `${total} ${label}`;
 }
-
 export { interpolate, BLOCKER_KEYS };

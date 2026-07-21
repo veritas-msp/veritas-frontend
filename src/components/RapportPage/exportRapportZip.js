@@ -1,17 +1,6 @@
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
-
-import {
-  REPORT_META,
-  buildExportCommentsEmptyHtml,
-  buildExportHeaderHtml,
-  buildReportDocumentHtml,
-  buildReportPeriodLabel,
-} from "./exportRapportHtmlTemplate";
-
-/**
- * Collecte les règles CSS des feuilles de style du document (pour l'export HTML).
- */
+import { REPORT_META, buildExportCommentsEmptyHtml, buildExportHeaderHtml, buildReportDocumentHtml, buildReportPeriodLabel } from "./exportRapportHtmlTemplate";
 function collectDocumentCSS() {
   let css = "";
   try {
@@ -21,80 +10,69 @@ function collectDocumentCSS() {
         for (const rule of sheet.cssRules) {
           css += rule.cssText + "\n";
         }
-      } catch {
-        // Feuilles externes ou CORS
-      }
+      } catch {}
     }
   } catch (e) {
-    console.warn("Export rapport: collecte CSS", e);
+    console.warn("Report export: CSS collection", e);
   }
   return css;
 }
-
-/**
- * Génère le HTML complet pour un rapport (infrastructure, cybersecurite ou services).
- */
 function buildReportHTML(sectionClone, commentsHtml, config, reportType) {
   const clientName = config?.client?.name || config?.client?.nom || "CLIENT";
-  const meta = REPORT_META[reportType] || { label: "de monitoring" };
+  const meta = REPORT_META[reportType] || {
+    label: "de monitoring"
+  };
   const documentTitle = `${clientName} - ${meta.label}`;
   const periodLabel = buildReportPeriodLabel(config?.client);
-
   const headerHtml = buildExportHeaderHtml({
     clientName,
     periodLabel,
-    reportType,
+    reportType
   });
-
   const commentsBlock = commentsHtml || buildExportCommentsEmptyHtml();
-
   const bodyContent = `
   ${headerHtml}
   <main class="vex-main">
     ${sectionClone.outerHTML}
     ${commentsBlock}
   </main>`;
-
   return buildReportDocumentHtml({
     documentTitle,
     collectedCss: collectDocumentCSS(),
-    bodyContent,
+    bodyContent
   });
 }
-
-/**
- * Génère un blob ZIP des rapports HTML (sans téléchargement).
- * @returns {Promise<{ blob: Blob, fileName: string }>}
- */
-export async function buildRapportZipBlob(ref, config) {
+export async function buildReportZipBlob(ref, config) {
   if (!ref?.current) {
-    throw new Error(
-      "Contenu du résumé non disponible. Ouvrez l'étape « Résumé du rapport » puis réessayez."
-    );
+    throw new Error("Summary content unavailable. Open the “Report summary” step, then try again.");
   }
   if (!config?.client) {
-    throw new Error("Configuration client manquante.");
+    throw new Error("Client configuration missing.");
   }
-
   const root = ref.current;
-  const sections = [
-    { type: "infrastructure", selector: '[data-export-section="infrastructure"]' },
-    { type: "cybersecurite", selector: '[data-export-section="cybersecurite"]' },
-    { type: "services", selector: '[data-export-section="services"]' },
-  ];
-
+  const sections = [{
+    type: "infrastructure",
+    selector: '[data-export-section="infrastructure"]'
+  }, {
+    type: "cybersecurite",
+    selector: '[data-export-section="cybersecurite"]'
+  }, {
+    type: "services",
+    selector: '[data-export-section="services"]'
+  }];
   const zip = new JSZip();
   const clientName = (config.client.name || config.client.nom || "CLIENT").toString().replace(/\s+/g, " ");
   const fileNames = {
-    infrastructure: `${clientName} - Rapport d'infrastructure.html`,
-    cybersecurite: `${clientName} - Rapport de cybersécurité.html`,
-    services: `${clientName} - Rapport des services.html`,
+    infrastructure: `${clientName} - Infrastructure report.html`,
+    cybersecurite: `${clientName} - Cybersecurity report.html`,
+    services: `${clientName} - Services report.html`
   };
-
   const commentsEl = root.querySelector('[data-export-comments="true"]');
   const commentsHtml = commentsEl ? commentsEl.outerHTML : "";
-
-  for (const { type, selector } of sections) {
+  for (const {
+    type,
+    selector
+  } of sections) {
     const el = root.querySelector(selector);
     if (!el) continue;
     const clone = el.cloneNode(true);
@@ -104,16 +82,14 @@ export async function buildRapportZipBlob(ref, config) {
     const html = buildReportHTML(clone, commentsHtml, config, type);
     zip.file(fileNames[type], html);
   }
-
   if (Object.keys(zip.files).length === 0) {
-    throw new Error("Aucun rapport à exporter. Ouvrez l'étape « Résumé du rapport » puis réessayez.");
+    throw new Error("No report to export. Open the “Report summary” step, then try again.");
   }
-
   const start = config.client.reportStartDate;
   const end = config.client.reportEndDate;
-  let zipFileName = "RAPPORTS MONITORING";
+  let zipFileName = "MONITORING REPORTS";
   if (start && end) {
-    const formatZipDate = (d) => {
+    const formatZipDate = d => {
       try {
         const date = new Date(d);
         const day = String(date.getDate()).padStart(2, "0");
@@ -126,18 +102,18 @@ export async function buildRapportZipBlob(ref, config) {
     };
     zipFileName = `RAPPORTS ${formatZipDate(start)} - ${formatZipDate(end)}`;
   }
-
-  const blob = await zip.generateAsync({ type: "blob" });
-  return { blob, fileName: `${zipFileName}.zip` };
+  const blob = await zip.generateAsync({
+    type: "blob"
+  });
+  return {
+    blob,
+    fileName: `${zipFileName}.zip`
+  };
 }
-
-/**
- * Génère et télécharge un ZIP contenant les 3 rapports HTML (Infrastructure, Cybersécurité, Services).
- * @param {React.RefObject} ref - Ref du conteneur ayant les 3 sections avec data-export-section
- * @param {Object} config - { client } (client du rapport)
- * @returns {Promise<void>}
- */
-export async function exportRapportAsZIP(ref, config) {
-  const { blob, fileName } = await buildRapportZipBlob(ref, config);
+export async function exportReportAsZIP(ref, config) {
+  const {
+    blob,
+    fileName
+  } = await buildReportZipBlob(ref, config);
   saveAs(blob, fileName);
 }

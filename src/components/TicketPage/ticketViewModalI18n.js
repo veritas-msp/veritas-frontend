@@ -1,5 +1,4 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 const VIEW_MODAL_COPY = {
   fr: {
     eyebrow: "Vue tickets",
@@ -16,8 +15,7 @@ const VIEW_MODAL_COPY = {
     adminOnlyError: "Seuls les administrateurs peuvent créer ce type de vue.",
     assignmentRequired: "Sélectionnez au moins un utilisateur, profil ou équipe.",
     generalTitle: "Informations générales",
-    generalDesc:
-      "Donnez un nom clair à votre vue pour la retrouver facilement dans la barre latérale.",
+    generalDesc: "Donnez un nom clair à votre vue pour la retrouver facilement dans la barre latérale.",
     nameLabel: "Nom de la vue",
     namePlaceholder: "Ex. N1 · incidents ouverts",
     descriptionLabel: "Description",
@@ -41,8 +39,7 @@ const VIEW_MODAL_COPY = {
     profilesLabel: "Profils",
     teamsLabel: "Équipes",
     filtersTitle: "Règles de filtrage",
-    filtersDesc:
-      "Enchaînez règles et groupes avec des connecteurs ET / OU. Un groupe agit comme des parenthèses : Règle 1 ET (Règle 2 OU Règle 3).",
+    filtersDesc: "Enchaînez règles et groupes avec des connecteurs ET / OU. Un groupe agit comme des parenthèses : Règle 1 ET (Règle 2 OU Règle 3).",
     sourceLabel: "Source",
     sourceActive: "Tickets actifs",
     sourceTrash: "Corbeille",
@@ -51,8 +48,7 @@ const VIEW_MODAL_COPY = {
     ruleLabel: "Règle",
     groupLabel: "Groupe",
     groupSummary: "{count} élément(s) · combinaison interne ET/OU",
-    groupEditorHint:
-      "Les règles de ce groupe sont évaluées ensemble, comme entre parenthèses. Utilisez les connecteurs ET / OU entre chaque élément du groupe.",
+    groupEditorHint: "Les règles de ce groupe sont évaluées ensemble, comme entre parenthèses. Utilisez les connecteurs ET / OU entre chaque élément du groupe.",
     addRuleInGroup: "Règle dans le groupe",
     addSubGroup: "Sous-groupe",
     selectRuleOrGroup: "Sélectionnez une règle ou un groupe dans la liste.",
@@ -81,7 +77,7 @@ const VIEW_MODAL_COPY = {
     sortLabel: "Tri par défaut",
     sortDirectionAsc: "Croissant",
     sortDirectionDesc: "Décroissant",
-    filtersIntro: "Définissez les critères de filtrage des tickets.",
+    filtersIntro: "Définissez les critères de filtrage des tickets."
   },
   en: {
     eyebrow: "Ticket view",
@@ -122,8 +118,7 @@ const VIEW_MODAL_COPY = {
     profilesLabel: "Profiles",
     teamsLabel: "Teams",
     filtersTitle: "Filtering rules",
-    filtersDesc:
-      "Chain rules and groups with AND / OR connectors. A group acts as parentheses: Rule 1 AND (Rule 2 OR Rule 3).",
+    filtersDesc: "Chain rules and groups with AND / OR connectors. A group acts as parentheses: Rule 1 AND (Rule 2 OR Rule 3).",
     sourceLabel: "Source",
     sourceActive: "Active tickets",
     sourceTrash: "Trash",
@@ -132,8 +127,7 @@ const VIEW_MODAL_COPY = {
     ruleLabel: "Rule",
     groupLabel: "Group",
     groupSummary: "{count} item(s) · internal AND/OR combination",
-    groupEditorHint:
-      "Rules in this group are evaluated together, like parentheses. Use AND / OR connectors between each item in the group.",
+    groupEditorHint: "Rules in this group are evaluated together, like parentheses. Use AND / OR connectors between each item in the group.",
     addRuleInGroup: "Rule in group",
     addSubGroup: "Sub-group",
     selectRuleOrGroup: "Select a rule or group from the list.",
@@ -162,7 +156,7 @@ const VIEW_MODAL_COPY = {
     sortLabel: "Default sort",
     sortDirectionAsc: "Ascending",
     sortDirectionDesc: "Descending",
-    filtersIntro: "Define ticket filtering criteria.",
+    filtersIntro: "Define ticket filtering criteria."
   },
   de: {
     eyebrow: "Ticket-Ansicht",
@@ -179,8 +173,7 @@ const VIEW_MODAL_COPY = {
     adminOnlyError: "Nur Administratoren können diesen Ansichtstyp erstellen.",
     assignmentRequired: "Wählen Sie mindestens einen Benutzer, ein Profil oder ein Team.",
     generalTitle: "Allgemeine Informationen",
-    generalDesc:
-      "Wählen Sie einen aussagekräftigen Namen, um diese Ansicht in der Seitenleiste schnell zu finden.",
+    generalDesc: "Wählen Sie einen aussagekräftigen Namen, um diese Ansicht in der Seitenleiste schnell zu finden.",
     nameLabel: "Ansichtsname",
     namePlaceholder: "z. B. L1 · offene Vorfälle",
     descriptionLabel: "Beschreibung",
@@ -204,8 +197,7 @@ const VIEW_MODAL_COPY = {
     profilesLabel: "Profile",
     teamsLabel: "Teams",
     filtersTitle: "Filterregeln",
-    filtersDesc:
-      "Verketten Sie Regeln und Gruppen mit UND-/ODER-Verknüpfungen. Eine Gruppe wirkt wie Klammern: Regel 1 UND (Regel 2 ODER Regel 3).",
+    filtersDesc: "Verketten Sie Regeln und Gruppen mit UND-/ODER-Verknüpfungen. Eine Gruppe wirkt wie Klammern: Regel 1 UND (Regel 2 ODER Regel 3).",
     sourceLabel: "Quelle",
     sourceActive: "Aktive Tickets",
     sourceTrash: "Papierkorb",
@@ -214,8 +206,7 @@ const VIEW_MODAL_COPY = {
     ruleLabel: "Regel",
     groupLabel: "Gruppe",
     groupSummary: "{count} Element(e) · interne UND/ODER-Kombination",
-    groupEditorHint:
-      "Regeln in dieser Gruppe werden gemeinsam ausgewertet, wie in Klammern. Verwenden Sie UND/ODER zwischen den Elementen der Gruppe.",
+    groupEditorHint: "Regeln in dieser Gruppe werden gemeinsam ausgewertet, wie in Klammern. Verwenden Sie UND/ODER zwischen den Elementen der Gruppe.",
     addRuleInGroup: "Regel in der Gruppe",
     addSubGroup: "Untergruppe",
     selectRuleOrGroup: "Wählen Sie eine Regel oder Gruppe aus der Liste.",
@@ -244,7 +235,7 @@ const VIEW_MODAL_COPY = {
     sortLabel: "Standard-Sortierung",
     sortDirectionAsc: "Aufsteigend",
     sortDirectionDesc: "Absteigend",
-    filtersIntro: "Ticket-Filterkriterien definieren.",
+    filtersIntro: "Ticket-Filterkriterien definieren."
   },
   it: {
     eyebrow: "Vista ticket",
@@ -261,8 +252,7 @@ const VIEW_MODAL_COPY = {
     adminOnlyError: "Solo gli amministratori possono creare questo tipo di vista.",
     assignmentRequired: "Seleziona almeno un utente, profilo o team.",
     generalTitle: "Informazioni generali",
-    generalDesc:
-      "Scegli un nome chiaro per trovare facilmente questa vista nella barra laterale.",
+    generalDesc: "Scegli un nome chiaro per trovare facilmente questa vista nella barra laterale.",
     nameLabel: "Nome vista",
     namePlaceholder: "Es. L1 · incidenti aperti",
     descriptionLabel: "Descrizione",
@@ -286,8 +276,7 @@ const VIEW_MODAL_COPY = {
     profilesLabel: "Profili",
     teamsLabel: "Team",
     filtersTitle: "Regole di filtraggio",
-    filtersDesc:
-      "Concatena regole e gruppi con connettori E / O. Un gruppo agisce come parentesi: Regola 1 E (Regola 2 O Regola 3).",
+    filtersDesc: "Concatena regole e gruppi con connettori E / O. Un gruppo agisce come parentesi: Regola 1 E (Regola 2 O Regola 3).",
     sourceLabel: "Origine",
     sourceActive: "Ticket attivi",
     sourceTrash: "Cestino",
@@ -296,8 +285,7 @@ const VIEW_MODAL_COPY = {
     ruleLabel: "Regola",
     groupLabel: "Gruppo",
     groupSummary: "{count} elemento/i · combinazione interna E/O",
-    groupEditorHint:
-      "Le regole di questo gruppo sono valutate insieme, come tra parentesi. Usa i connettori E / O tra ogni elemento del gruppo.",
+    groupEditorHint: "Le regole di questo gruppo sono valutate insieme, come tra parentesi. Usa i connettori E / O tra ogni elemento del gruppo.",
     addRuleInGroup: "Regola nel gruppo",
     addSubGroup: "Sottogruppo",
     selectRuleOrGroup: "Seleziona una regola o un gruppo dall'elenco.",
@@ -326,7 +314,7 @@ const VIEW_MODAL_COPY = {
     sortLabel: "Ordinamento predefinito",
     sortDirectionAsc: "Crescente",
     sortDirectionDesc: "Decrescente",
-    filtersIntro: "Definisci i criteri di filtraggio dei ticket.",
+    filtersIntro: "Definisci i criteri di filtraggio dei ticket."
   },
   es: {
     eyebrow: "Vista de tickets",
@@ -343,8 +331,7 @@ const VIEW_MODAL_COPY = {
     adminOnlyError: "Solo los administradores pueden crear este tipo de vista.",
     assignmentRequired: "Seleccione al menos un usuario, perfil o equipo.",
     generalTitle: "Información general",
-    generalDesc:
-      "Elija un nombre claro para encontrar fácilmente esta vista en la barra lateral.",
+    generalDesc: "Elija un nombre claro para encontrar fácilmente esta vista en la barra lateral.",
     nameLabel: "Nombre de la vista",
     namePlaceholder: "Ej. L1 · incidentes abiertos",
     descriptionLabel: "Descripción",
@@ -368,8 +355,7 @@ const VIEW_MODAL_COPY = {
     profilesLabel: "Perfiles",
     teamsLabel: "Equipos",
     filtersTitle: "Reglas de filtrado",
-    filtersDesc:
-      "Encadene reglas y grupos con conectores Y / O. Un grupo actúa como paréntesis: Regla 1 Y (Regla 2 O Regla 3).",
+    filtersDesc: "Encadene reglas y grupos con conectores Y / O. Un grupo actúa como paréntesis: Regla 1 Y (Regla 2 O Regla 3).",
     sourceLabel: "Origen",
     sourceActive: "Tickets activos",
     sourceTrash: "Papelera",
@@ -378,8 +364,7 @@ const VIEW_MODAL_COPY = {
     ruleLabel: "Regla",
     groupLabel: "Grupo",
     groupSummary: "{count} elemento(s) · combinación interna Y/O",
-    groupEditorHint:
-      "Las reglas de este grupo se evalúan juntas, como entre paréntesis. Use conectores Y / O entre cada elemento del grupo.",
+    groupEditorHint: "Las reglas de este grupo se evalúan juntas, como entre paréntesis. Use conectores Y / O entre cada elemento del grupo.",
     addRuleInGroup: "Regla en el grupo",
     addSubGroup: "Subgrupo",
     selectRuleOrGroup: "Seleccione una regla o un grupo de la lista.",
@@ -408,28 +393,31 @@ const VIEW_MODAL_COPY = {
     sortLabel: "Orden predeterminado",
     sortDirectionAsc: "Ascendente",
     sortDirectionDesc: "Descendente",
-    filtersIntro: "Define los criterios de filtrado de tickets.",
-  },
+    filtersIntro: "Define los criterios de filtrado de tickets."
+  }
 };
-
 export function getTicketViewModalCopy(locale) {
   const t = pickLocaleMessages(VIEW_MODAL_COPY, locale);
   return {
     ...t,
-    formatFooterAssignments: (assignmentCount, ruleCount) =>
-      interpolate(t.footerAssignments, {
-        count: String(assignmentCount),
-        rules: String(ruleCount),
-      }),
-    formatFooterRules: (ruleCount) =>
-      interpolate(t.footerRules, { count: String(ruleCount) }),
-    formatSelectedCount: (count) =>
-      interpolate(t.selectedCount, { count: String(count) }),
-    formatGroupSummary: (count) =>
-      interpolate(t.groupSummary, { count: String(count) }),
-    formatRuleCountLabel: (count) =>
-      interpolate(t.ruleCountLabel, { count: String(count) }),
-    formatFilterGroupSubtitle: (count) =>
-      interpolate(t.filterGroupSubtitle, { count: String(count) }),
+    formatFooterAssignments: (assignmentCount, ruleCount) => interpolate(t.footerAssignments, {
+      count: String(assignmentCount),
+      rules: String(ruleCount)
+    }),
+    formatFooterRules: ruleCount => interpolate(t.footerRules, {
+      count: String(ruleCount)
+    }),
+    formatSelectedCount: count => interpolate(t.selectedCount, {
+      count: String(count)
+    }),
+    formatGroupSummary: count => interpolate(t.groupSummary, {
+      count: String(count)
+    }),
+    formatRuleCountLabel: count => interpolate(t.ruleCountLabel, {
+      count: String(count)
+    }),
+    formatFilterGroupSubtitle: count => interpolate(t.filterGroupSubtitle, {
+      count: String(count)
+    })
   };
 }

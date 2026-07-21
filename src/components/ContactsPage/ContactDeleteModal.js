@@ -5,30 +5,19 @@ import { FaTimes } from "react-icons/fa";
 import { useAppLocale } from "../../hooks/useAppGeneralSettings";
 import { getContactDetailCopy } from "./contactDetailI18n";
 import styles from "../EnterprisesPage/EnterpriseDeleteModal.module.css";
-
 export default function ContactDeleteModal({
   open,
   contactName,
   saving = false,
   onClose,
-  onConfirm,
+  onConfirm
 }) {
   const locale = useAppLocale();
   const copy = useMemo(() => getContactDetailCopy(locale).deleteModal, [locale]);
   const displayName = contactName || copy.defaultName;
-
   if (!open) return null;
-
-  return createPortal(
-    <div className={styles.overlay} onClick={onClose} role="presentation">
-      <div
-        className={styles.shell}
-        onClick={(e) => e.stopPropagation()}
-        role="alertdialog"
-        aria-modal="true"
-        aria-labelledby="contact-delete-modal-title"
-        aria-describedby="contact-delete-modal-desc"
-      >
+  return createPortal(<div className={styles.overlay} onClick={onClose} role="presentation">
+      <div className={styles.shell} onClick={e => e.stopPropagation()} role="alertdialog" aria-modal="true" aria-labelledby="contact-delete-modal-title" aria-describedby="contact-delete-modal-desc">
         <div className={styles.accentBar} aria-hidden />
         <header className={styles.header}>
           <div className={styles.headerMain}>
@@ -44,13 +33,7 @@ export default function ContactDeleteModal({
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            className={styles.closeBtn}
-            onClick={onClose}
-            disabled={saving}
-            aria-label={copy.close}
-          >
+          <button type="button" className={styles.closeBtn} onClick={onClose} disabled={saving} aria-label={copy.close}>
             <FaTimes />
           </button>
         </header>
@@ -60,9 +43,7 @@ export default function ContactDeleteModal({
           <div className={styles.warningBox}>
             <p className={styles.warningTitle}>{copy.consequences}</p>
             <ul className={styles.warningList}>
-              {copy.bullets.map((bullet) => (
-                <li key={bullet}>{bullet}</li>
-              ))}
+              {copy.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}
             </ul>
           </div>
         </div>
@@ -71,27 +52,16 @@ export default function ContactDeleteModal({
           <button type="button" className={styles.ghostBtn} onClick={onClose} disabled={saving}>
             {copy.cancel}
           </button>
-          <button
-            type="button"
-            className={styles.dangerBtn}
-            onClick={onConfirm}
-            disabled={saving}
-          >
-            {saving ? (
-              <>
+          <button type="button" className={styles.dangerBtn} onClick={onConfirm} disabled={saving}>
+            {saving ? <>
                 <Icon icon="mdi:loading" className={styles.spinning} aria-hidden />
                 {copy.deleting}
-              </>
-            ) : (
-              <>
+              </> : <>
                 <Icon icon="mdi:delete-alert-outline" aria-hidden />
                 {copy.confirm}
-              </>
-            )}
+              </>}
           </button>
         </footer>
       </div>
-    </div>,
-    document.getElementById("modal-root") || document.body
-  );
+    </div>, document.getElementById("modal-root") || document.body);
 }

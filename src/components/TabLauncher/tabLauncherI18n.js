@@ -1,5 +1,4 @@
 import { createLocaleGetter } from "../../i18n/translate";
-
 const TAB_LAUNCHER_COPY = {
   fr: {
     title: "Ouvrir un onglet",
@@ -9,7 +8,7 @@ const TAB_LAUNCHER_COPY = {
       exploitation: "Exploitation",
       managed: "Services managés",
       pilotage: "Pilotage",
-      account: "Compte",
+      account: "Compte"
     },
     items: {
       enterprises: "Entreprises",
@@ -43,10 +42,10 @@ const TAB_LAUNCHER_COPY = {
       admin: "Administration",
       adminDesc: "Paramètres et configuration",
       home: "Accueil",
-      homeDesc: "Tableau de bord",
+      homeDesc: "Tableau de bord"
     },
     tabBadge: "Onglet",
-    proBadge: "Pro",
+    proBadge: "Pro"
   },
   en: {
     title: "Open a tab",
@@ -56,7 +55,7 @@ const TAB_LAUNCHER_COPY = {
       exploitation: "Operations",
       managed: "Managed services",
       pilotage: "Management",
-      account: "Account",
+      account: "Account"
     },
     items: {
       enterprises: "Companies",
@@ -69,7 +68,7 @@ const TAB_LAUNCHER_COPY = {
       salesDesc: "Sales requests and projects",
       planning: "Scheduling",
       planningDesc: "Calendar and field work",
-      supervision: "Supervision center",
+      supervision: "Monitoring center",
       supervisionDesc: "Equipment by client · filter in a tab",
       cyber: "Cybersecurity",
       cyberDesc: "Campaigns, antivirus and antispam",
@@ -90,10 +89,10 @@ const TAB_LAUNCHER_COPY = {
       admin: "Administration",
       adminDesc: "Settings and configuration",
       home: "Home",
-      homeDesc: "Dashboard",
+      homeDesc: "Dashboard"
     },
     tabBadge: "Tab",
-    proBadge: "Pro",
+    proBadge: "Pro"
   },
   de: {
     title: "Tab öffnen",
@@ -103,7 +102,7 @@ const TAB_LAUNCHER_COPY = {
       exploitation: "Betrieb",
       managed: "Managed Services",
       pilotage: "Steuerung",
-      account: "Konto",
+      account: "Konto"
     },
     items: {
       enterprises: "Unternehmen",
@@ -137,10 +136,10 @@ const TAB_LAUNCHER_COPY = {
       admin: "Administration",
       adminDesc: "Einstellungen und Konfiguration",
       home: "Startseite",
-      homeDesc: "Dashboard",
+      homeDesc: "Dashboard"
     },
     tabBadge: "Tab",
-    proBadge: "Pro",
+    proBadge: "Pro"
   },
   it: {
     title: "Apri una scheda",
@@ -150,7 +149,7 @@ const TAB_LAUNCHER_COPY = {
       exploitation: "Operazioni",
       managed: "Servizi gestiti",
       pilotage: "Pilotaggio",
-      account: "Account",
+      account: "Account"
     },
     items: {
       enterprises: "Aziende",
@@ -184,10 +183,10 @@ const TAB_LAUNCHER_COPY = {
       admin: "Amministrazione",
       adminDesc: "Impostazioni e configurazione",
       home: "Home",
-      homeDesc: "Dashboard",
+      homeDesc: "Dashboard"
     },
     tabBadge: "Scheda",
-    proBadge: "Pro",
+    proBadge: "Pro"
   },
   es: {
     title: "Abrir una pestaña",
@@ -197,7 +196,7 @@ const TAB_LAUNCHER_COPY = {
       exploitation: "Operaciones",
       managed: "Servicios gestionados",
       pilotage: "Gestión",
-      account: "Cuenta",
+      account: "Cuenta"
     },
     items: {
       enterprises: "Empresas",
@@ -231,51 +230,106 @@ const TAB_LAUNCHER_COPY = {
       admin: "Administración",
       adminDesc: "Ajustes y configuración",
       home: "Inicio",
-      homeDesc: "Panel de control",
+      homeDesc: "Panel de control"
     },
     tabBadge: "Pestaña",
-    proBadge: "Pro",
-  },
+    proBadge: "Pro"
+  }
 };
-
 export const getTabLauncherCopy = createLocaleGetter(TAB_LAUNCHER_COPY);
-
-export const TAB_LAUNCHER_SECTIONS = [
-  {
-    sectionKey: "crm",
-    items: [
-      { docType: "Contrat", icon: "mdi:office-building", labelKey: "enterprises", descKey: "enterprisesDesc", accessKey: "Contrat", opensTab: true },
-      { docType: "Contact", icon: "mdi:account-group-outline", labelKey: "contacts", descKey: "contactsDesc", accessKey: "Contact", opensTab: true },
-    ],
-  },
-  {
-    sectionKey: "exploitation",
-    items: [
-      { docType: "Ticket", icon: "mdi:ticket-outline", labelKey: "support", descKey: "supportDesc", accessKey: "Ticket", opensTab: true },
-      { docType: "TicketSales", icon: "mdi:briefcase-edit-outline", labelKey: "sales", descKey: "salesDesc", accessKey: "TicketSales", proOnly: true },
-      { docType: "Planning", icon: "mdi:calendar-clock-outline", labelKey: "planning", descKey: "planningDesc", accessKey: "Planning", proOnly: true },
-    ],
-  },
-  {
-    sectionKey: "managed",
-    items: [
-      { docType: "Hardware", icon: "mdi:monitor-dashboard", labelKey: "supervision", descKey: "supervisionDesc", accessKey: "Hardware", opensTab: true },
-      { docType: "Cybersecurite", icon: "mdi:shield-check-outline", labelKey: "cyber", descKey: "cyberDesc", accessKey: "Cybersecurite" },
-      { docType: "Service", icon: "mdi:cloud-outline", labelKey: "cloud", descKey: "cloudDesc", accessKey: "Service" },
-      { docType: "Rapport", icon: "mdi:file-chart-outline", labelKey: "reports", descKey: "reportsDesc", accessKey: "Mon", proOnly: true },
-    ],
-  },
-  {
-    sectionKey: "pilotage",
-    items: [
-      { docType: "DocumentsHub", icon: "mdi:folder-multiple-outline", labelKey: "documents", descKey: "documentsDesc", accessKey: "DocumentsHub", opensTab: true, proOnly: true },
-    ],
-  },
-  {
-    sectionKey: "account",
-    items: [
-      { docType: "Home", icon: "mdi:home-outline", labelKey: "home", descKey: "homeDesc" },
-      { docType: "Admin", icon: "mdi:cog-outline", labelKey: "admin", descKey: "adminDesc", adminOnly: true },
-    ],
-  },
-];
+export const TAB_LAUNCHER_SECTIONS = [{
+  sectionKey: "crm",
+  items: [{
+    docType: "Contrat",
+    icon: "mdi:office-building",
+    labelKey: "enterprises",
+    descKey: "enterprisesDesc",
+    accessKey: "Contrat",
+    opensTab: true
+  }, {
+    docType: "Contact",
+    icon: "mdi:account-group-outline",
+    labelKey: "contacts",
+    descKey: "contactsDesc",
+    accessKey: "Contact",
+    opensTab: true
+  }]
+}, {
+  sectionKey: "exploitation",
+  items: [{
+    docType: "Ticket",
+    icon: "mdi:ticket-outline",
+    labelKey: "support",
+    descKey: "supportDesc",
+    accessKey: "Ticket",
+    opensTab: true
+  }, {
+    docType: "TicketSales",
+    icon: "mdi:briefcase-edit-outline",
+    labelKey: "sales",
+    descKey: "salesDesc",
+    accessKey: "TicketSales",
+    proOnly: true
+  }, {
+    docType: "Planning",
+    icon: "mdi:calendar-clock-outline",
+    labelKey: "planning",
+    descKey: "planningDesc",
+    accessKey: "Planning",
+    proOnly: true
+  }]
+}, {
+  sectionKey: "managed",
+  items: [{
+    docType: "Hardware",
+    icon: "mdi:monitor-dashboard",
+    labelKey: "supervision",
+    descKey: "supervisionDesc",
+    accessKey: "Hardware",
+    opensTab: true
+  }, {
+    docType: "Cybersecurite",
+    icon: "mdi:shield-check-outline",
+    labelKey: "cyber",
+    descKey: "cyberDesc",
+    accessKey: "Cybersecurite"
+  }, {
+    docType: "Service",
+    icon: "mdi:cloud-outline",
+    labelKey: "cloud",
+    descKey: "cloudDesc",
+    accessKey: "Service"
+  }, {
+    docType: "Rapport",
+    icon: "mdi:file-chart-outline",
+    labelKey: "reports",
+    descKey: "reportsDesc",
+    accessKey: "Mon",
+    proOnly: true
+  }]
+}, {
+  sectionKey: "pilotage",
+  items: [{
+    docType: "DocumentsHub",
+    icon: "mdi:folder-multiple-outline",
+    labelKey: "documents",
+    descKey: "documentsDesc",
+    accessKey: "DocumentsHub",
+    opensTab: true,
+    proOnly: true
+  }]
+}, {
+  sectionKey: "account",
+  items: [{
+    docType: "Home",
+    icon: "mdi:home-outline",
+    labelKey: "home",
+    descKey: "homeDesc"
+  }, {
+    docType: "Admin",
+    icon: "mdi:cog-outline",
+    labelKey: "admin",
+    descKey: "adminDesc",
+    adminOnly: true
+  }]
+}];

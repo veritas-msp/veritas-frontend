@@ -1,4 +1,4 @@
-/* Centre de supervision · shell aligné Cybersécurité (mspPage via CybersecuritePage.module.css) */
+
 
 .brandMarkSupervision {
   background: var(--msp-accent, #2b5fab) !important;
@@ -147,7 +147,7 @@
   color: var(--msp-accent, #2b5fab);
 }
 
-/* Contenu */
+
 .content {
   display: flex;
   flex-direction: column;
@@ -155,7 +155,7 @@
   min-width: 0;
 }
 
-/* Panneaux */
+
 .panel {
   display: flex;
   flex-direction: column;
@@ -381,7 +381,7 @@
   }
 }
 
-/* Listes */
+
 .actionList {
   display: flex;
   flex-direction: column;
@@ -1051,7 +1051,7 @@
   flex-shrink: 0;
 }
 
-/* RMM */
+
 .rmmFleet {
   display: flex;
   flex-direction: column;
@@ -1458,7 +1458,7 @@
   }
 }
 
-/* États vides */
+
 .emptyState {
   display: flex;
   flex: 1;
@@ -1493,7 +1493,7 @@
   color: var(--msp-muted-light, #8b9bb5);
 }
 
-/* Skeleton */
+
 .skeletonPanelWrap {
   padding: 0 0.25rem;
 }
@@ -1523,7 +1523,7 @@
   }
 }
 
-/* Dark mode · panneaux & contenu */
+
 :global(html.dark) .panel {
   background: #1a2540;
   border-color: #2f4260;

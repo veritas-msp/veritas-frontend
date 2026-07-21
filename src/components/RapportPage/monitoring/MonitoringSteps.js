@@ -1,17 +1,15 @@
 import React, { useMemo, useState, lazy, Suspense } from "react";
-
 import styles from "./RapportMonitoringBuilder.module.css";
 import CheckMKMonitoringModal from "./CheckMKMonitoringModal";
 import { getModuleIcon as getMonitoringIcon } from "../../Monitoring/MonitoringSummary/monitoringUtils";
-
 import InternetStep from "./steps/InternetStep";
 import FirewallStep from "./steps/FirewallStep";
-import ServeursStep from "./steps/ServeursStep";
-import StockageStep from "./steps/StockageStep";
+import ServersStep from "./steps/ServeursStep";
+import StorageStep from "./steps/StockageStep";
 import SwitchStep from "./steps/SwitchStep";
 import BorneWifiStep from "./steps/BorneWifiStep";
 import TOIPStep from "./steps/TOIPStep";
-import SauvegardeStep from "./steps/SauvegardeStep";
+import BackupStep from "./steps/SauvegardeStep";
 import AntispamStep from "./steps/AntispamStep";
 import Office365Step from "./steps/Office365Step";
 import NDDStep from "./steps/NDDStep";
@@ -19,64 +17,41 @@ import SummaryStep from "./steps/SummaryStep";
 import EquipmentEditModal from "./EquipmentEditModal";
 import { findEquipmentLocation } from "./equipmentPatchUtils";
 import { getCheckMKCachedData } from "./checkmkReportCacheUtils";
-
 const AntivirusStepLazy = lazy(() => import("./steps/AntivirusStep"));
-
-export const MONITORING_STEP_ORDER = [
-  "Internet",
-  "Firewall",
-  "Serveurs",
-  "Stockage",
-  "Switch",
-  "BorneWifi",
-  "TOIP",
-  "Sauvegarde",
-  "Antivirus",
-  "Antispam",
-  "Office365",
-  "NDD",
-];
-
+export const MONITORING_STEP_ORDER = ["Internet", "Firewall", "Servers", "Storage", "Switch", "BorneWifi", "TOIP", "Backup", "Antivirus", "Antispam", "Office365", "NDD"];
 export const MODULE_LABELS = {
   Internet: "Internet",
   Firewall: "Firewall",
-  Serveurs: "Serveurs",
-  Stockage: "Stockage",
+  Servers: "Servers",
+  Storage: "Storage",
   Switch: "Switch",
-  BorneWifi: "Bornes WiFi",
+  BorneWifi: "Wi-Fi APs",
   TOIP: "TOIP / VOIP",
-  Sauvegarde: "Sauvegarde",
+  Backup: "Backup",
   Antivirus: "Antivirus",
   Antispam: "Antispam",
   Office365: "Office 365",
-  NDD: "Noms de domaine",
+  NDD: "Domain names"
 };
-
 export function getClientMonitoringModules(client) {
   if (!client) return {};
-
-  // Source unique : snapshot v_b_clients.modules (exposé en frontend via client.modules_monitoring)
   const monitoringFromSnapshot = client.modules_monitoring || {};
   return monitoringFromSnapshot;
 }
-
 function getEquipementList(equipements, key) {
   const list = equipements?.[key];
   return Array.isArray(list) ? list : [];
 }
-
 function getSolutionsList(raw) {
   if (Array.isArray(raw)) return raw;
   if (raw && Array.isArray(raw.solutions)) return raw.solutions;
   return [];
 }
-
-function getSauvegardeInstances(raw) {
+function getBackupInstances(raw) {
   if (!raw) return [];
   if (Array.isArray(raw.instances)) return raw.instances;
   return [];
 }
-
 function hasOffice365Equipment(client) {
   const raw = client?.equipements?.Office365;
   if (raw && typeof raw === "object") {
@@ -89,38 +64,28 @@ function hasOffice365Equipment(client) {
       }
     }
   }
-  return Boolean(
-    client?.has_azure_credentials ||
-      client?.hasAzureCredentials ||
-      client?.azureHasCredentials
-  );
+  return Boolean(client?.has_azure_credentials || client?.hasAzureCredentials || client?.azureHasCredentials);
 }
-
-/** Une étape n'apparaît que si le matériel / service correspondant est présent dans la fiche client. */
 export function isMonitoringStepEnabled(client, stepKey) {
   if (!client) return false;
   const eq = client.equipements || {};
-
   switch (stepKey) {
     case "Internet":
       return getEquipementList(eq, "Internet").length > 0;
     case "Firewall":
       return getEquipementList(eq, "Firewalls").length > 0;
-    case "Serveurs":
-      return getEquipementList(eq, "Serveurs").length > 0;
-    case "Stockage":
-      return (
-        getEquipementList(eq, "NAS").length + getEquipementList(eq, "SAN").length >
-        0
-      );
+    case "Servers":
+      return getEquipementList(eq, "Servers").length > 0;
+    case "Storage":
+      return getEquipementList(eq, "NAS").length + getEquipementList(eq, "SAN").length > 0;
     case "Switch":
       return getEquipementList(eq, "Switch").length > 0;
     case "BorneWifi":
       return getEquipementList(eq, "BorneWifi").length > 0;
     case "TOIP":
       return getSolutionsList(eq.TOIP).length > 0;
-    case "Sauvegarde":
-      return getSauvegardeInstances(eq.Sauvegarde).length > 0;
+    case "Backup":
+      return getBackupInstances(eq.Backup).length > 0;
     case "Antivirus":
       return getSolutionsList(eq.Antivirus).length > 0;
     case "Antispam":
@@ -133,15 +98,11 @@ export function isMonitoringStepEnabled(client, stepKey) {
       return false;
   }
 }
-
 export function getEnabledMonitoringSteps(client) {
-  const enabledSteps = MONITORING_STEP_ORDER.filter((stepKey) =>
-    isMonitoringStepEnabled(client, stepKey)
-  );
+  const enabledSteps = MONITORING_STEP_ORDER.filter(stepKey => isMonitoringStepEnabled(client, stepKey));
   if (enabledSteps.length === 0) return [];
   return [...enabledSteps, "summary"];
 }
-
 export default function MonitoringSteps({
   client,
   onFinish,
@@ -164,7 +125,7 @@ export default function MonitoringSteps({
   allCommentsChronological = [],
   summaryContentRef = null,
   stockageReportState = null,
-  onSetStockageReportState,
+  onSetStorageReportState
 }) {
   const [internalIndex, setInternalIndex] = useState(0);
   const [isSyncingAntivirus, setIsSyncingAntivirus] = useState(false);
@@ -173,16 +134,15 @@ export default function MonitoringSteps({
     equipment: null,
     moduleKey: null,
     equipmentKey: null,
-    preLoadedData: null,
+    preLoadedData: null
   });
   const [editEquipmentModal, setEditEquipmentModal] = useState({
     open: false,
     equipment: null,
     moduleKey: null,
     equipmentIndex: -1,
-    equipmentListKey: null,
+    equipmentListKey: null
   });
-
   const reportPeriod = useMemo(() => {
     const start = client?.reportStartDate;
     const end = client?.reportEndDate;
@@ -191,602 +151,321 @@ export default function MonitoringSteps({
       start: start,
       end: end,
       startTime: start,
-      endTime: end,
+      endTime: end
     };
   }, [client?.reportStartDate, client?.reportEndDate]);
-
-  const handleOpenCheckMKDetail = (item, { moduleKey, equipmentKey }) => {
+  const handleOpenCheckMKDetail = (item, {
+    moduleKey,
+    equipmentKey
+  }) => {
     const preLoadedData = getCheckMKCachedData(equipmentCheckMKData, item, equipmentKey);
-    const resolvedKey =
-      item?.id != null ? String(item.id) : equipmentKey != null ? String(equipmentKey) : null;
+    const resolvedKey = item?.id != null ? String(item.id) : equipmentKey != null ? String(equipmentKey) : null;
     setCheckMKModal({
       isOpen: true,
       equipment: item,
       moduleKey,
       equipmentKey: resolvedKey,
-      preLoadedData,
+      preLoadedData
     });
   };
-
   const handleCloseCheckMKModal = () => {
     setCheckMKModal({
       isOpen: false,
       equipment: null,
       moduleKey: null,
       equipmentKey: null,
-      preLoadedData: null,
+      preLoadedData: null
     });
   };
-
   const handleRefreshCheckMKModal = async () => {
     if (!checkMKModal.equipment || typeof onSyncCheckMK !== "function") return;
     await onSyncCheckMK(checkMKModal.equipment, {
       moduleKey: checkMKModal.moduleKey,
-      equipmentKey: checkMKModal.equipmentKey,
+      equipmentKey: checkMKModal.equipmentKey
     });
   };
-
-  const handleEditEquipment = (item, { moduleKey }) => {
-    const { equipmentListKey, equipmentIndex } = findEquipmentLocation(client, moduleKey, item);
+  const handleEditEquipment = (item, {
+    moduleKey
+  }) => {
+    const {
+      equipmentListKey,
+      equipmentIndex
+    } = findEquipmentLocation(client, moduleKey, item);
     setEditEquipmentModal({
       open: true,
       equipment: item,
       moduleKey,
       equipmentIndex,
-      equipmentListKey,
+      equipmentListKey
     });
   };
-
   const handleCloseEditEquipmentModal = () => {
     setEditEquipmentModal({
       open: false,
       equipment: null,
       moduleKey: null,
       equipmentIndex: -1,
-      equipmentListKey: null,
+      equipmentListKey: null
     });
   };
-
   const handleEquipmentSaved = async (formData, createdRow, sourceEquipment, savedModuleKey) => {
     const moduleKey = savedModuleKey ?? editEquipmentModal.moduleKey;
     const equipment = sourceEquipment ?? editEquipmentModal.equipment;
     const equipmentIndex = editEquipmentModal.equipmentIndex;
     const equipmentListKey = editEquipmentModal.equipmentListKey;
     if (typeof onEquipmentSaved === "function") {
-      await onEquipmentSaved(
-        formData,
-        createdRow,
-        equipment,
-        moduleKey,
-        equipmentIndex,
-        equipmentListKey
-      );
+      await onEquipmentSaved(formData, createdRow, equipment, moduleKey, equipmentIndex, equipmentListKey);
       return;
     }
     if (typeof onRefreshClient === "function") {
       await onRefreshClient();
     }
   };
-
-  const infraStepProps = useMemo(
-    () => ({
-      reportPeriod,
-      onOpenCheckMKDetail: handleOpenCheckMKDetail,
-      onOpenComments,
-      onTicketCreatedForEquipment,
-      onRefreshClient,
-      onEditEquipment: handleEditEquipment,
-      onAntivirusSyncStateChange: setIsSyncingAntivirus,
-      commentCounts: equipmentCommentCounts,
-      ticketCounts: equipmentTicketCounts,
-      highlightedEquipmentKey,
-      monitoringSyncStatus,
-      equipmentCheckMKData,
-      isSyncingMonitoring,
-      onSyncCheckMK,
-      syncingEquipmentKey,
-    }),
-    [
-      reportPeriod,
-      onOpenComments,
-      onTicketCreatedForEquipment,
-      onRefreshClient,
-      setIsSyncingAntivirus,
-      equipmentCommentCounts,
-      equipmentTicketCounts,
-      highlightedEquipmentKey,
-      monitoringSyncStatus,
-      equipmentCheckMKData,
-      isSyncingMonitoring,
-      onSyncCheckMK,
-      syncingEquipmentKey,
-    ]
-  );
-
-  const setCurrentIndex = (updater) => {
-    setInternalIndex((prev) => {
-      const next =
-        typeof updater === "function" ? updater(prev) : updater;
+  const infraStepProps = useMemo(() => ({
+    reportPeriod,
+    onOpenCheckMKDetail: handleOpenCheckMKDetail,
+    onOpenComments,
+    onTicketCreatedForEquipment,
+    onRefreshClient,
+    onEditEquipment: handleEditEquipment,
+    onAntivirusSyncStateChange: setIsSyncingAntivirus,
+    commentCounts: equipmentCommentCounts,
+    ticketCounts: equipmentTicketCounts,
+    highlightedEquipmentKey,
+    monitoringSyncStatus,
+    equipmentCheckMKData,
+    isSyncingMonitoring,
+    onSyncCheckMK,
+    syncingEquipmentKey
+  }), [reportPeriod, onOpenComments, onTicketCreatedForEquipment, onRefreshClient, setIsSyncingAntivirus, equipmentCommentCounts, equipmentTicketCounts, highlightedEquipmentKey, monitoringSyncStatus, equipmentCheckMKData, isSyncingMonitoring, onSyncCheckMK, syncingEquipmentKey]);
+  const setCurrentIndex = updater => {
+    setInternalIndex(prev => {
+      const next = typeof updater === "function" ? updater(prev) : updater;
       if (typeof onStepChange === "function") {
         onStepChange(next);
       }
       return next;
     });
   };
-
   const steps = useMemo(() => getEnabledMonitoringSteps(client), [client]);
-
   const hasSteps = steps.length > 0;
-
   if (!client) {
-    return (
-      <div className={styles.rapportListSection}>
+    return <div className={styles.rapportListSection}>
         <div className={styles.rapportListEmpty}>
-          Sélectionnez d&apos;abord un client pour construire le rapport de monitoring.
+          Select a client first to build the monitoring report.
         </div>
-      </div>
-    );
+      </div>;
   }
-
   if (!hasSteps) {
-    return (
-      <div className={styles.builderSection}>
+    return <div className={styles.builderSection}>
         <div className={styles.builderSubtitle}>
-          Aucun équipement ou service configuré pour ce client.
+          No equipment or service configured for this client.
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  const currentIndex =
-    typeof activeStepIndex === "number" ? activeStepIndex : internalIndex;
-
+  const currentIndex = typeof activeStepIndex === "number" ? activeStepIndex : internalIndex;
   const currentStepKey = steps[currentIndex];
   const isSummary = currentStepKey === "summary";
-
   const canGoPrev = currentIndex > 0;
   const canGoNext = currentIndex < steps.length - 1;
-
   const handlePrev = () => {
     if (!canGoPrev) return;
-    setCurrentIndex((idx) => Math.max(0, idx - 1));
+    setCurrentIndex(idx => Math.max(0, idx - 1));
   };
-
   const handleNext = () => {
     if (!canGoNext) {
       if (typeof onFinish === "function") {
-        onFinish({ client, steps });
+        onFinish({
+          client,
+          steps
+        });
       }
       return;
     }
-    setCurrentIndex((idx) => Math.min(steps.length - 1, idx + 1));
+    setCurrentIndex(idx => Math.min(steps.length - 1, idx + 1));
   };
-
-  const getStepLabel = (stepKey) => {
-    if (stepKey === "summary") return "Résumé du rapport";
+  const getStepLabel = stepKey => {
+    if (stepKey === "summary") return "Report summary";
     return MODULE_LABELS[stepKey] || stepKey;
   };
-
   const renderCurrentStep = () => {
     switch (currentStepKey) {
       case "Internet":
-        return (
-          <InternetStep
-            client={client}
-            {...infraStepProps}
-          />
-        );
+        return <InternetStep client={client} {...infraStepProps} />;
       case "Firewall":
-        return (
-          <FirewallStep
-            client={client}
-            {...infraStepProps}
-          />
-        );
-      case "Serveurs":
-        return (
-          <ServeursStep
-            client={client}
-            {...infraStepProps}
-          />
-        );
-      case "Stockage":
-        return (
-          <StockageStep
-            client={client}
-            {...infraStepProps}
-            persistedState={stockageReportState}
-            onPersistState={onSetStockageReportState}
-          />
-        );
+        return <FirewallStep client={client} {...infraStepProps} />;
+      case "Servers":
+        return <ServersStep client={client} {...infraStepProps} />;
+      case "Storage":
+        return <StorageStep client={client} {...infraStepProps} persistedState={stockageReportState} onPersistState={onSetStorageReportState} />;
       case "Switch":
-        return (
-          <SwitchStep
-            client={client}
-            {...infraStepProps}
-          />
-        );
+        return <SwitchStep client={client} {...infraStepProps} />;
       case "BorneWifi":
-        return (
-          <BorneWifiStep
-            client={client}
-            {...infraStepProps}
-          />
-        );
+        return <BorneWifiStep client={client} {...infraStepProps} />;
       case "TOIP":
-        return (
-          <TOIPStep
-            client={client}
-            {...infraStepProps}
-          />
-        );
-      case "Sauvegarde":
-        return (
-          <SauvegardeStep
-            client={client}
-            onRefreshClient={onRefreshClient}
-            onOpenComments={onOpenComments}
-            onTicketCreatedForEquipment={onTicketCreatedForEquipment}
-            commentCounts={equipmentCommentCounts}
-            ticketCounts={equipmentTicketCounts}
-            highlightedEquipmentKey={highlightedEquipmentKey}
-          />
-        );
+        return <TOIPStep client={client} {...infraStepProps} />;
+      case "Backup":
+        return <BackupStep client={client} onRefreshClient={onRefreshClient} onOpenComments={onOpenComments} onTicketCreatedForEquipment={onTicketCreatedForEquipment} commentCounts={equipmentCommentCounts} ticketCounts={equipmentTicketCounts} highlightedEquipmentKey={highlightedEquipmentKey} />;
       case "Antivirus":
-        return (
-          <Suspense fallback={<div style={{ padding: "1rem" }}>Chargement Antivirus…</div>}>
-            <AntivirusStepLazy
-              client={client}
-              {...infraStepProps}
-            />
-          </Suspense>
-        );
+        return <Suspense fallback={<div style={{
+          padding: "1rem"
+        }}>Loading Antivirus…</div>}>
+            <AntivirusStepLazy client={client} {...infraStepProps} />
+          </Suspense>;
       case "Antispam":
-        return (
-          <AntispamStep
-            client={client}
-            onRefreshClient={onRefreshClient}
-            onOpenComments={onOpenComments}
-            onTicketCreatedForEquipment={onTicketCreatedForEquipment}
-            commentCounts={equipmentCommentCounts}
-            ticketCounts={equipmentTicketCounts}
-            highlightedEquipmentKey={highlightedEquipmentKey}
-            reportPeriod={reportPeriod}
-          />
-        );
+        return <AntispamStep client={client} onRefreshClient={onRefreshClient} onOpenComments={onOpenComments} onTicketCreatedForEquipment={onTicketCreatedForEquipment} commentCounts={equipmentCommentCounts} ticketCounts={equipmentTicketCounts} highlightedEquipmentKey={highlightedEquipmentKey} reportPeriod={reportPeriod} />;
       case "Office365":
-        return (
-          <Office365Step
-            client={client}
-            reportPeriod={reportPeriod}
-            onRefreshClient={onRefreshClient}
-            onOpenComments={onOpenComments}
-            onTicketCreatedForEquipment={onTicketCreatedForEquipment}
-            commentCounts={equipmentCommentCounts}
-            ticketCounts={equipmentTicketCounts}
-            highlightedEquipmentKey={highlightedEquipmentKey}
-          />
-        );
+        return <Office365Step client={client} reportPeriod={reportPeriod} onRefreshClient={onRefreshClient} onOpenComments={onOpenComments} onTicketCreatedForEquipment={onTicketCreatedForEquipment} commentCounts={equipmentCommentCounts} ticketCounts={equipmentTicketCounts} highlightedEquipmentKey={highlightedEquipmentKey} />;
       case "NDD":
-        return (
-          <NDDStep
-            client={client}
-            onRefreshClient={onRefreshClient}
-            onOpenComments={onOpenComments}
-            onTicketCreatedForEquipment={onTicketCreatedForEquipment}
-            commentCounts={equipmentCommentCounts}
-            ticketCounts={equipmentTicketCounts}
-            highlightedEquipmentKey={highlightedEquipmentKey}
-          />
-        );
+        return <NDDStep client={client} onRefreshClient={onRefreshClient} onOpenComments={onOpenComments} onTicketCreatedForEquipment={onTicketCreatedForEquipment} commentCounts={equipmentCommentCounts} ticketCounts={equipmentTicketCounts} highlightedEquipmentKey={highlightedEquipmentKey} />;
       case "summary":
-        return (
-          <SummaryStep
-            client={client}
-            equipmentCheckMKData={equipmentCheckMKData}
-            allComments={allCommentsChronological}
-            equipmentComments={equipmentComments}
-            equipmentCommentCounts={equipmentCommentCounts}
-            equipmentTicketCounts={equipmentTicketCounts}
-            stockageReportState={stockageReportState}
-            summaryContentRef={summaryContentRef}
-          />
-        );
+        return <SummaryStep client={client} equipmentCheckMKData={equipmentCheckMKData} allComments={allCommentsChronological} equipmentComments={equipmentComments} equipmentCommentCounts={equipmentCommentCounts} equipmentTicketCounts={equipmentTicketCounts} stockageReportState={stockageReportState} summaryContentRef={summaryContentRef} />;
       default:
         return null;
     }
   };
-
-  const hasInfraSteps = steps.some((stepKey) =>
-    [
-      "Internet",
-      "Firewall",
-      "Serveurs",
-      "Stockage",
-      "Switch",
-      "BorneWifi",
-      "TOIP",
-    ].includes(stepKey)
-  );
-
-  const hasCyberSteps = steps.some((stepKey) =>
-    ["Sauvegarde", "Antivirus", "Antispam"].includes(stepKey)
-  );
-
-  const hasServiceSteps = steps.some((stepKey) =>
-    ["Office365", "NDD"].includes(stepKey)
-  );
-
+  const hasInfraSteps = steps.some(stepKey => ["Internet", "Firewall", "Servers", "Storage", "Switch", "BorneWifi", "TOIP"].includes(stepKey));
+  const hasCyberSteps = steps.some(stepKey => ["Backup", "Antivirus", "Antispam"].includes(stepKey));
+  const hasServiceSteps = steps.some(stepKey => ["Office365", "NDD"].includes(stepKey));
   const hasSummaryStep = steps.includes("summary");
-
-  return (
-    <div className={styles.builderMain}>
-      {/* Colonne timeline locale */}
+  return <div className={styles.builderMain}>
+      {}
       <div className={styles.timelineCard}>
-        <div className={styles.timelineTitle}>Étapes du rapport</div>
+        <div className={styles.timelineTitle}>Report steps</div>
         <div className={styles.timelineSections}>
-          {/* INFRASTRUCTURE */}
-          {hasInfraSteps && (
-            <div className={`${styles.timelineSection} ${styles.timelineSectionInfra}`}>
+          {}
+          {hasInfraSteps && <div className={`${styles.timelineSection} ${styles.timelineSectionInfra}`}>
               <div className={styles.timelineSectionHeader}>
                 <span className={styles.timelineSectionLabel}>INFRASTRUCTURE</span>
               </div>
               <ol className={styles.timelineList}>
                 {steps.map((stepKey, index) => {
-                  if (
-                    ![
-                      "Internet",
-                      "Firewall",
-                      "Serveurs",
-                      "Stockage",
-                      "Switch",
-                      "BorneWifi",
-                      "TOIP",
-                    ].includes(stepKey)
-                  ) {
-                    return null;
-                  }
-
-                  const isActive = index === currentIndex;
-                  const isCompleted = index < currentIndex;
-                  const icon = getMonitoringIcon(stepKey.toLowerCase());
-
-                  return (
-                    <li
-                      key={stepKey || index}
-                      className={styles.timelineItem}
-                    >
-                      <button
-                        type="button"
-                        className={styles.timelineButton}
-                        onClick={() => setCurrentIndex(index)}
-                      >
-                        <span
-                          className={`${styles.timelineBullet} ${
-                            isActive || isCompleted
-                              ? styles.timelineBulletActive
-                              : ""
-                          }`}
-                        />
+              if (!["Internet", "Firewall", "Servers", "Storage", "Switch", "BorneWifi", "TOIP"].includes(stepKey)) {
+                return null;
+              }
+              const isActive = index === currentIndex;
+              const isCompleted = index < currentIndex;
+              const icon = getMonitoringIcon(stepKey.toLowerCase());
+              return <li key={stepKey || index} className={styles.timelineItem}>
+                      <button type="button" className={styles.timelineButton} onClick={() => setCurrentIndex(index)}>
+                        <span className={`${styles.timelineBullet} ${isActive || isCompleted ? styles.timelineBulletActive : ""}`} />
                         <div className={styles.timelineLabel}>
                           <div className={styles.timelineLabelInner}>
-                            {icon && (
-                              <span className={styles.timelineIcon}>
+                            {icon && <span className={styles.timelineIcon}>
                                 {icon}
-                              </span>
-                            )}
+                              </span>}
                             <span>{getStepLabel(stepKey)}</span>
                           </div>
                         </div>
                       </button>
-                    </li>
-                  );
-                })}
+                    </li>;
+            })}
               </ol>
-            </div>
-          )}
+            </div>}
 
-          {/* CYBERSÉCURITÉ */}
-          {hasCyberSteps && (
-            <div className={`${styles.timelineSection} ${styles.timelineSectionCyber}`}>
+          {}
+          {hasCyberSteps && <div className={`${styles.timelineSection} ${styles.timelineSectionCyber}`}>
               <div className={styles.timelineSectionHeader}>
-                <span className={styles.timelineSectionLabel}>CYBERSÉCURITÉ</span>
+                <span className={styles.timelineSectionLabel}>CYBERSECURITY</span>
               </div>
               <ol className={styles.timelineList}>
                 {steps.map((stepKey, index) => {
-                  if (
-                    ![
-                      "Sauvegarde",
-                      "Antivirus",
-                      "Antispam",
-                    ].includes(stepKey)
-                  ) {
-                    return null;
-                  }
-
-                  const isActive = index === currentIndex;
-                  const isCompleted = index < currentIndex;
-                  const icon = getMonitoringIcon(stepKey.toLowerCase());
-
-                  return (
-                    <li
-                      key={stepKey || index}
-                      className={styles.timelineItem}
-                    >
-                      <button
-                        type="button"
-                        className={styles.timelineButton}
-                        onClick={() => setCurrentIndex(index)}
-                      >
-                        <span
-                          className={`${styles.timelineBullet} ${
-                            isActive || isCompleted
-                              ? styles.timelineBulletActive
-                              : ""
-                          }`}
-                        />
+              if (!["Backup", "Antivirus", "Antispam"].includes(stepKey)) {
+                return null;
+              }
+              const isActive = index === currentIndex;
+              const isCompleted = index < currentIndex;
+              const icon = getMonitoringIcon(stepKey.toLowerCase());
+              return <li key={stepKey || index} className={styles.timelineItem}>
+                      <button type="button" className={styles.timelineButton} onClick={() => setCurrentIndex(index)}>
+                        <span className={`${styles.timelineBullet} ${isActive || isCompleted ? styles.timelineBulletActive : ""}`} />
                         <div className={styles.timelineLabel}>
                           <div className={styles.timelineLabelInner}>
-                            {icon && (
-                              <span className={styles.timelineIcon}>
+                            {icon && <span className={styles.timelineIcon}>
                                 {icon}
-                              </span>
-                            )}
+                              </span>}
                             <span>{getStepLabel(stepKey)}</span>
                           </div>
                         </div>
                       </button>
-                    </li>
-                  );
-                })}
+                    </li>;
+            })}
               </ol>
-            </div>
-          )}
+            </div>}
 
-          {/* SERVICES */}
-          {hasServiceSteps && (
-            <div className={`${styles.timelineSection} ${styles.timelineSectionServices}`}>
+          {}
+          {hasServiceSteps && <div className={`${styles.timelineSection} ${styles.timelineSectionServices}`}>
               <div className={styles.timelineSectionHeader}>
                 <span className={styles.timelineSectionLabel}>SERVICES</span>
               </div>
               <ol className={styles.timelineList}>
                 {steps.map((stepKey, index) => {
-                  if (!["Office365", "NDD"].includes(stepKey)) {
-                    return null;
-                  }
-
-                  const isActive = index === currentIndex;
-                  const isCompleted = index < currentIndex;
-                  const icon = getMonitoringIcon(stepKey.toLowerCase());
-
-                  return (
-                    <li
-                      key={stepKey || index}
-                      className={styles.timelineItem}
-                    >
-                      <button
-                        type="button"
-                        className={styles.timelineButton}
-                        onClick={() => setCurrentIndex(index)}
-                      >
-                        <span
-                          className={`${styles.timelineBullet} ${
-                            isActive || isCompleted
-                              ? styles.timelineBulletActive
-                              : ""
-                          }`}
-                        />
+              if (!["Office365", "NDD"].includes(stepKey)) {
+                return null;
+              }
+              const isActive = index === currentIndex;
+              const isCompleted = index < currentIndex;
+              const icon = getMonitoringIcon(stepKey.toLowerCase());
+              return <li key={stepKey || index} className={styles.timelineItem}>
+                      <button type="button" className={styles.timelineButton} onClick={() => setCurrentIndex(index)}>
+                        <span className={`${styles.timelineBullet} ${isActive || isCompleted ? styles.timelineBulletActive : ""}`} />
                         <div className={styles.timelineLabel}>
                           <div className={styles.timelineLabelInner}>
-                            {icon && (
-                              <span className={styles.timelineIcon}>
+                            {icon && <span className={styles.timelineIcon}>
                                 {icon}
-                              </span>
-                            )}
+                              </span>}
                             <span>{getStepLabel(stepKey)}</span>
                           </div>
                         </div>
                       </button>
-                    </li>
-                  );
-                })}
+                    </li>;
+            })}
               </ol>
-            </div>
-          )}
+            </div>}
 
-          {/* Résumé du rapport tout en bas */}
-          {hasSummaryStep && (
-            <div className={`${styles.timelineSection} ${styles.timelineSectionReport}`}>
+          {}
+          {hasSummaryStep && <div className={`${styles.timelineSection} ${styles.timelineSectionReport}`}>
               <div className={styles.timelineSectionHeader}>
-                <span className={styles.timelineSectionLabel}>RAPPORT</span>
+                <span className={styles.timelineSectionLabel}>REPORT</span>
               </div>
               <ol className={styles.timelineList}>
                 {steps.map((stepKey, index) => {
-                  if (stepKey !== "summary") {
-                    return null;
-                  }
-
-                  const isActive = index === currentIndex;
-                  const isCompleted = index < currentIndex;
-                  const icon = getMonitoringIcon("summary");
-
-                  return (
-                    <li
-                      key={stepKey || index}
-                      className={styles.timelineItem}
-                    >
-                      <button
-                        type="button"
-                        className={styles.timelineButton}
-                        onClick={() => setCurrentIndex(index)}
-                      >
-                        <span
-                          className={`${styles.timelineBullet} ${
-                            isActive || isCompleted
-                              ? styles.timelineBulletActive
-                              : ""
-                          }`}
-                        />
+              if (stepKey !== "summary") {
+                return null;
+              }
+              const isActive = index === currentIndex;
+              const isCompleted = index < currentIndex;
+              const icon = getMonitoringIcon("summary");
+              return <li key={stepKey || index} className={styles.timelineItem}>
+                      <button type="button" className={styles.timelineButton} onClick={() => setCurrentIndex(index)}>
+                        <span className={`${styles.timelineBullet} ${isActive || isCompleted ? styles.timelineBulletActive : ""}`} />
                         <div className={styles.timelineLabel}>
                           <div className={styles.timelineLabelInner}>
-                            {icon && (
-                              <span className={styles.timelineIcon}>
+                            {icon && <span className={styles.timelineIcon}>
                                 {icon}
-                              </span>
-                            )}
-                            <span>Résumé du rapport</span>
+                              </span>}
+                            <span>Report summary</span>
                           </div>
                         </div>
                       </button>
-                    </li>
-                  );
-                })}
+                    </li>;
+            })}
               </ol>
-            </div>
-          )}
+            </div>}
         </div>
       </div>
 
-      {/* Colonne contenu de l'étape */}
+      {}
       <div className={styles.builderStepContent}>
-        {(isSyncingMonitoring || isSyncingAntivirus || isSyncingOffice365Report) && (
-          <div className={styles.syncSkeleton}>
+        {(isSyncingMonitoring || isSyncingAntivirus || isSyncingOffice365Report) && <div className={styles.syncSkeleton}>
             <div className={styles.syncSkeletonBar} />
             <div className={styles.syncSkeletonBarShort} />
-          </div>
-        )}
+          </div>}
         {renderCurrentStep()}
       </div>
 
-      {/* Modal détail CheckMK */}
-      <CheckMKMonitoringModal
-        isOpen={checkMKModal.isOpen}
-        onClose={handleCloseCheckMKModal}
-        equipment={checkMKModal.equipment}
-        reportPeriod={reportPeriod}
-        preLoadedData={
-          checkMKModal.equipment
-            ? getCheckMKCachedData(
-                equipmentCheckMKData,
-                checkMKModal.equipment,
-                checkMKModal.equipmentKey
-              )
-            : null
-        }
-        onRefresh={handleRefreshCheckMKModal}
-        refreshing={syncingEquipmentKey === checkMKModal.equipmentKey}
-      />
-      <EquipmentEditModal
-        open={editEquipmentModal.open}
-        onClose={handleCloseEditEquipmentModal}
-        client={client}
-        equipment={editEquipmentModal.equipment}
-        moduleKey={editEquipmentModal.moduleKey}
-        onSaved={handleEquipmentSaved}
-        onDeleted={onRefreshClient}
-        backgroundSave
-      />
-    </div>
-  );
+      {}
+      <CheckMKMonitoringModal isOpen={checkMKModal.isOpen} onClose={handleCloseCheckMKModal} equipment={checkMKModal.equipment} reportPeriod={reportPeriod} preLoadedData={checkMKModal.equipment ? getCheckMKCachedData(equipmentCheckMKData, checkMKModal.equipment, checkMKModal.equipmentKey) : null} onRefresh={handleRefreshCheckMKModal} refreshing={syncingEquipmentKey === checkMKModal.equipmentKey} />
+      <EquipmentEditModal open={editEquipmentModal.open} onClose={handleCloseEditEquipmentModal} client={client} equipment={editEquipmentModal.equipment} moduleKey={editEquipmentModal.moduleKey} onSaved={handleEquipmentSaved} onDeleted={onRefreshClient} backgroundSave />
+    </div>;
 }
-

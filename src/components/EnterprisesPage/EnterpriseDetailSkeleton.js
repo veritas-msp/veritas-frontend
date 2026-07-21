@@ -1,9 +1,7 @@
 import React from "react";
 import styles from "./EnterpriseDetailPage.module.css";
-
 export default function EnterpriseDetailSkeleton() {
-  return (
-    <div className={`${styles.contratDetailPage} ${styles.enterpriseDetailPage} msp-page-grid`}>
+  return <div className={`${styles.contratDetailPage} ${styles.enterpriseDetailPage} msp-page-grid`}>
       <header className={styles.pageHero}>
         <div className={styles.heroRow}>
           <div className={`${styles.skeleton} ${styles.skeletonBackBtn}`} />
@@ -45,6 +43,5 @@ export default function EnterpriseDetailSkeleton() {
           </aside>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }

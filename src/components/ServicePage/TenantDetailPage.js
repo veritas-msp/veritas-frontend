@@ -6,40 +6,36 @@ import API_BASE_URL from "../../config";
 import styles from "./TenantDetailPage.module.css";
 import SmartTooltip from "../SmartTooltip";
 import DashboardTab from "./TenantDetailTabs/DashboardTab";
-import LicencesTab from "./TenantDetailTabs/LicencesTab";
-import UtilisateursTab from "./TenantDetailTabs/UtilisateursTab";
+import LicensesTab from "./TenantDetailTabs/LicencesTab";
+import UsersTab from "./TenantDetailTabs/UtilisateursTab";
 import ExchangeTab from "./TenantDetailTabs/ExchangeTab";
 import TeamsTab from "./TenantDetailTabs/TeamsTab";
 import OneDriveTab from "./TenantDetailTabs/OneDriveTab";
 import SharePointTab from "./TenantDetailTabs/SharePointTab";
 import SecuriteTab from "./TenantDetailTabs/SecuriteTab";
-import { getLicenseDisplayName, getSortedUsers, getSortIcon, exportUsersToCSV } from "./TenantDetailTabs/utils";
-import { fetchOffice365Exchange, fetchOffice365Teams, fetchOffice365Security } from "../../api/office365";
 import { getClientMfaDetails, deleteClientOffice365Credentials } from "../../api/clientOffice365";
 import { fetchClientModules, updateClient } from "../../api/clients";
 import { useAppLocale } from "../../hooks/useAppGeneralSettings";
 import { getEnterpriseConfigModalsCopy } from "../EnterprisesPage/enterpriseConfigModalsI18n";
 import { interpolate } from "../../i18n/translate";
-
-export default function TenantDetailPage({ onNavigate, tenantData }) {
+export default function TenantDetailPage({
+  onNavigate,
+  tenantData
+}) {
   const locale = useAppLocale();
   const configCopy = useMemo(() => getEnterpriseConfigModalsCopy(locale), [locale]);
-  // IMPORTANT: Initialiser detailData avec tenantData ET utiliser une clé unique pour isoler chaque instance
-  // Chaque onglet doit avoir ses propres états isolés
   const [detailData, setDetailData] = useState(() => {
-    // Créer une copie profonde pour éviter les références partagées
-    return tenantData ? { ...tenantData } : null;
+    return tenantData ? {
+      ...tenantData
+    } : null;
   });
-  
   const [loading, setLoading] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [syncProgress, setSyncProgress] = useState(0);
   const [syncStatus, setSyncStatus] = useState('');
   const [statistics, setStatistics] = useState(null);
   const [lastSync, setLastSync] = useState(null);
-  const [viewMode, setViewMode] = useState('dashboard'); // 'dashboard' | 'licences' | 'utilisateurs' | 'exchange' | 'teams' | 'onedrive' | 'sharepoint' | 'securite'
-  
-  // États pour les données spécifiques par section (comme dans O365.js)
+  const [viewMode, setViewMode] = useState('dashboard');
   const [exchangeData, setExchangeData] = useState(null);
   const [teamsData, setTeamsData] = useState(null);
   const [onedriveData, setOnedriveData] = useState(null);
@@ -47,27 +43,18 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
   const [securityData, setSecurityData] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState(null);
   const [mfaDetails, setMfaDetails] = useState([]);
-  
-  // Ref pour suivre le clientId actuel et éviter les mélanges de données entre onglets
   const currentClientIdRef = useRef(null);
   const abortControllerRef = useRef(null);
-  
-  // États pour le tri des utilisateurs
   const [sortColumn, setSortColumn] = useState(null);
-  const [sortDirection, setSortDirection] = useState('asc'); // 'asc' ou 'desc'
-  
-  // État pour le mode d'affichage de l'activité email (jour/semaine)
-  const [emailActivityViewMode, setEmailActivityViewMode] = useState('day'); // 'day' ou 'week'
-  
-  // État pour la période de synchronisation (semaine, mois, trimestre)
-  const [selectedPeriod, setSelectedPeriod] = useState('D30'); // 'D7' (semaine), 'D30' (mois), 'D90' (trimestre)
+  const [sortDirection, setSortDirection] = useState('asc');
+  const [emailActivityViewMode, setEmailActivityViewMode] = useState('day');
+  const [selectedPeriod, setSelectedPeriod] = useState('D30');
   const [deletingTenant, setDeletingTenant] = useState(false);
-  
-  // IMPORTANT: Réinitialiser tous les états quand tenantData change (nouvel onglet ou changement de client)
   useEffect(() => {
     if (tenantData?.clientId !== detailData?.clientId) {
-      // Nouveau client ou nouvel onglet - réinitialiser tous les états
-      const newDetailData = tenantData ? { ...tenantData } : null;
+      const newDetailData = tenantData ? {
+        ...tenantData
+      } : null;
       setDetailData(newDetailData);
       setStatistics(null);
       setExchangeData(null);
@@ -83,35 +70,25 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
       setSortDirection('asc');
       setEmailActivityViewMode('day');
       setSelectedPeriod('D30');
-      
-      // Réinitialiser les refs
       currentClientIdRef.current = newDetailData?.clientId || null;
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
       abortControllerRef.current = new AbortController();
     }
-  }, [tenantData?.clientId, detailData?.clientId]); // Seulement quand le clientId change
-
-  // Fonction pour gérer le tri des colonnes utilisateurs
-  const handleSort = (columnKey) => {
+  }, [tenantData?.clientId, detailData?.clientId]);
+  const handleSort = columnKey => {
     if (sortColumn === columnKey) {
-      // Inverser la direction si on clique sur la même colonne
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
-      // Nouvelle colonne, trier par ordre croissant
       setSortColumn(columnKey);
       setSortDirection('asc');
     }
   };
-  
-  // Fonction pour trier les utilisateurs
-  const getSortedUsers = (usersList) => {
+  const getSortedUsers = usersList => {
     if (!sortColumn) return usersList;
-    
     const sorted = [...usersList].sort((a, b) => {
       let aValue, bValue;
-      
       switch (sortColumn) {
         case 'nom':
           aValue = (a.name || a.displayName || '').toLowerCase();
@@ -125,13 +102,12 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
           aValue = a.createdDate ? new Date(a.createdDate).getTime() : 0;
           bValue = b.createdDate ? new Date(b.createdDate).getTime() : 0;
           break;
-        case 'derniereConnexion':
+        case 'derniereLogin':
           aValue = a.lastLoginDate ? new Date(a.lastLoginDate).getTime() : 0;
           bValue = b.lastLoginDate ? new Date(b.lastLoginDate).getTime() : 0;
           break;
         case 'statut':
-          // Trier par statut : Bloqué < Inactif (>90j) < Inactif < Actif
-          const getStatusValue = (user) => {
+          const getStatusValue = user => {
             if (user.accountEnabled === false) return 0;
             const lastLogin = user.lastLoginDate ? new Date(user.lastLoginDate) : null;
             const period90Days = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
@@ -146,45 +122,43 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
           bValue = getStatusValue(b);
           break;
         case 'licence':
-          aValue = (a.licenses || 'Aucune').toLowerCase();
-          bValue = (b.licenses || 'Aucune').toLowerCase();
+          aValue = (a.licenses || 'None').toLowerCase();
+          bValue = (b.licenses || 'None').toLowerCase();
           break;
         default:
           return 0;
       }
-      
       if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
       if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
       return 0;
     });
-    
     return sorted;
   };
-  
-  // Fonction pour obtenir l'icône de tri
-  const getSortIcon = (columnKey) => {
+  const getSortIcon = columnKey => {
     if (sortColumn !== columnKey) {
-      return <FaSort style={{ fontSize: '0.75rem', opacity: 0.4, marginLeft: '0.25rem' }} />;
+      return <FaSort style={{
+        fontSize: '0.75rem',
+        opacity: 0.4,
+        marginLeft: '0.25rem'
+      }} />;
     }
-    return sortDirection === 'asc' 
-      ? <FaSortUp style={{ fontSize: '0.75rem', marginLeft: '0.25rem', color: '#3b82f6' }} />
-      : <FaSortDown style={{ fontSize: '0.75rem', marginLeft: '0.25rem', color: '#3b82f6' }} />;
+    return sortDirection === 'asc' ? <FaSortUp style={{
+      fontSize: '0.75rem',
+      marginLeft: '0.25rem',
+      color: '#3b82f6'
+    }} /> : <FaSortDown style={{
+      fontSize: '0.75rem',
+      marginLeft: '0.25rem',
+      color: '#3b82f6'
+    }} />;
   };
-  
-  // Fonction pour exporter les utilisateurs en CSV
   const exportUsersToCSV = () => {
     if (!users || users.length === 0) {
-      toast.error('Aucun utilisateur à exporter');
+      toast.error('No users to export');
       return;
     }
-    
-    // Utiliser les utilisateurs triés si un tri est actif
     const usersToExport = getSortedUsers(users);
-    
-    // Préparer les en-têtes CSV
-    const headers = ['Nom', 'Email', 'Date de création', 'Dernière connexion', 'Statut', 'Licences'];
-    
-    // Préparer les lignes de données
+    const headers = ['Name', 'Email', 'Created on', 'Last sign-in', 'Status', 'Licenses'];
     const rows = usersToExport.map(user => {
       const lastLogin = user.lastLoginDate ? new Date(user.lastLoginDate) : null;
       const createdDate = user.createdDate ? new Date(user.createdDate) : null;
@@ -192,160 +166,94 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
       const isInactive = !lastLogin || lastLogin < period90Days;
       const period30Days = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
       const isActive30 = lastLogin && lastLogin >= period30Days;
-      
-      const statusLabel = user.accountEnabled === false
-        ? 'Bloqué'
-        : isActive30
-        ? 'Actif'
-        : isInactive
-        ? 'Inactif (>90j)'
-        : 'Inactif';
-      
-      return [
-        user.name || user.displayName || '',
-        user.email || user.userPrincipalName || '',
-        createdDate ? createdDate.toLocaleDateString('fr-FR') : '',
-        lastLogin ? lastLogin.toLocaleDateString('fr-FR') : 'Jamais',
-        statusLabel,
-        user.licenses || 'Aucune'
-      ];
+      const statusLabel = user.accountEnabled === false ? 'Blocked' : isActive30 ? 'Active' : isInactive ? 'Inactive (>90d)' : 'Inactive';
+      return [user.name || user.displayName || '', user.email || user.userPrincipalName || '', createdDate ? createdDate.toLocaleDateString('en-GB') : '', lastLogin ? lastLogin.toLocaleDateString('en-GB') : 'Never', statusLabel, user.licenses || 'None'];
     });
-    
-    // Créer le contenu CSV
-    const csvContent = [
-      headers.join(';'),
-      ...rows.map(row => row.map(cell => {
-        // Échapper les guillemets et les points-virgules dans les cellules
-        const cellStr = String(cell || '');
-        if (cellStr.includes(';') || cellStr.includes('"') || cellStr.includes('\n')) {
-          return `"${cellStr.replace(/"/g, '""')}"`;
-        }
-        return cellStr;
-      }).join(';'))
-    ].join('\n');
-    
-    // Créer le BOM UTF-8 pour Excel
+    const csvContent = [headers.join(';'), ...rows.map(row => row.map(cell => {
+      const cellStr = String(cell || '');
+      if (cellStr.includes(';') || cellStr.includes('"') || cellStr.includes('\n')) {
+        return `"${cellStr.replace(/"/g, '""')}"`;
+      }
+      return cellStr;
+    }).join(';'))].join('\n');
     const BOM = '\uFEFF';
-    const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([BOM + csvContent], {
+      type: 'text/csv;charset=utf-8;'
+    });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    
-    // Nom du fichier avec la date
     const dateStr = new Date().toISOString().split('T')[0];
     const clientName = detailData?.clientName || 'client';
     link.download = `utilisateurs_${clientName}_${dateStr}.csv`;
-    
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-    
-    toast.success(`Export CSV réussi : ${usersToExport.length} utilisateur(s) exporté(s)`);
+    toast.success(`CSV export successful: ${usersToExport.length} user(s) exported`);
   };
-
-  // Mettre à jour la référence du clientId actuel quand detailData change
   useEffect(() => {
     currentClientIdRef.current = detailData?.clientId || null;
   }, [detailData?.clientId]);
-
-  // Charger les données depuis la base de données
-  // IMPORTANT: Ne charger que si detailData.clientId correspond bien à tenantData.clientId
-  // pour éviter les chargements croisés entre onglets
   useEffect(() => {
     const targetClientId = detailData?.clientId;
     if (targetClientId && targetClientId === tenantData?.clientId) {
-      // Vérifier que c'est bien le client actuel avant de charger
       if (currentClientIdRef.current === targetClientId || currentClientIdRef.current === null) {
         loadStoredTenantData();
       }
     }
   }, [detailData?.clientId, tenantData?.clientId]);
-
-  // IMPORTANT: Ne plus charger automatiquement depuis l'API
-  // Les données sont chargées uniquement depuis le snapshot en base de données
-  // L'API n'est appelée que lors d'une synchronisation manuelle via handleSync
-
-  // Mettre à jour le titre de l'onglet quand les données sont chargées
   useEffect(() => {
     if (window.updateTabTitle && detailData?.clientName) {
-      window.updateTabTitle("TenantDetail", { 
+      window.updateTabTitle("TenantDetail", {
         clientId: detailData.clientId,
-        tenantId: detailData.tenantId 
+        tenantId: detailData.tenantId
       }, `${detailData.clientName} - Tenant Microsoft`);
     }
   }, [detailData]);
-
-  // Charger les détails MFA (v_b_clients_c_azure_mfa) pour l'onglet Utilisateurs
   useEffect(() => {
     if (!detailData?.clientId) return;
     let cancelled = false;
-    getClientMfaDetails(detailData.clientId)
-      .then((result) => {
-        if (!cancelled && result?.userMfaDetails) {
-          setMfaDetails(result.userMfaDetails);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) setMfaDetails([]);
-      });
-    return () => { cancelled = true; };
+    getClientMfaDetails(detailData.clientId).then(result => {
+      if (!cancelled && result?.userMfaDetails) {
+        setMfaDetails(result.userMfaDetails);
+      }
+    }).catch(() => {
+      if (!cancelled) setMfaDetails([]);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [detailData?.clientId]);
-
   const loadStoredTenantData = async () => {
     if (!detailData?.clientId) return;
-
-    // Créer un nouvel AbortController pour cette requête
     const abortController = new AbortController();
     abortControllerRef.current = abortController;
-    
-    // Capturer le clientId au début de la fonction pour vérifier qu'il n'a pas changé
     const targetClientId = detailData.clientId;
-
     try {
-      // 1. Récupérer les snapshots depuis v_b_clients_m_o365
-      const response = await fetch(
-        `${API_BASE_URL}/clients/${targetClientId}/o365`,
-        { 
-          credentials: 'include',
-          signal: abortController.signal
-        }
-      );
-
+      const response = await fetch(`${API_BASE_URL}/clients/${targetClientId}/o365`, {
+        credentials: 'include',
+        signal: abortController.signal
+      });
       if (response.ok) {
         const result = await response.json();
-        
-        // Vérifier que le clientId n'a pas changé pendant le chargement
         if (currentClientIdRef.current !== targetClientId) {
-          return; // Ne pas mettre à jour les états si le client a changé
+          return;
         }
-        
         if (result.success && result.data?.length > 0) {
-          // 2. Si tenantId est défini dans detailData, chercher le snapshot correspondant
-          // Sinon, récupérer le tenantId depuis les credentials Azure pour faire la correspondance
           let targetTenantId = detailData.tenantId;
-          
           if (!targetTenantId) {
-            // Récupérer le tenantId depuis les credentials Azure (v_b_clients_azure)
             try {
-              const credResponse = await fetch(
-                `${API_BASE_URL}/client-office365/${targetClientId}`,
-                { 
-                  credentials: 'include',
-                  signal: abortController.signal
-                }
-              );
-              
-              // Vérifier à nouveau que le clientId n'a pas changé
+              const credResponse = await fetch(`${API_BASE_URL}/client-office365/${targetClientId}`, {
+                credentials: 'include',
+                signal: abortController.signal
+              });
               if (currentClientIdRef.current !== targetClientId) {
                 return;
               }
-              
               if (credResponse.ok) {
                 const credResult = await credResponse.json();
                 targetTenantId = credResult?.credentials?.tenantId || null;
-                
-                // Mettre à jour detailData avec le tenantId trouvé (seulement si le client n'a pas changé)
                 if (targetTenantId && currentClientIdRef.current === targetClientId) {
                   setDetailData(prev => {
                     if (prev?.clientId !== targetClientId) {
@@ -364,103 +272,63 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
               }
             }
           }
-
-          // 3. Trouver le snapshot correspondant
-          // Priorité : correspondance par tenantId, sinon prendre le plus récent
           let tenantRecord = null;
-          
           if (targetTenantId) {
-            tenantRecord = result.data.find(
-              t =>
-                t.data?.tenantId === targetTenantId ||
-                t.item_key === targetTenantId
-            );
+            tenantRecord = result.data.find(t => t.data?.tenantId === targetTenantId || t.item_key === targetTenantId);
           }
-          
-          // Si pas trouvé par tenantId, prendre le snapshot le plus récent
           if (!tenantRecord && result.data.length > 0) {
-            tenantRecord = result.data[0]; // Déjà trié par updated_at DESC
+            tenantRecord = result.data[0];
           }
-
           if (tenantRecord) {
-            // Vérifier que le clientId n'a pas changé avant de mettre à jour les états
-            if (currentClientIdRef.current !== targetClientId) {
-              return; // Ne pas mettre à jour les états si le client a changé
-            }
-            
-            // Vérifier que le snapshot correspond bien au tenantId du client
-            if (targetTenantId && tenantRecord.data?.tenantId && tenantRecord.data.tenantId !== targetTenantId) {
-              return; // Ne pas charger les données si elles ne correspondent pas
-            }
-            
-            const snapshotLastUpdate = tenantRecord.data?.lastUpdate || null;
-            
-            // Vérifier une dernière fois avant de mettre à jour les états
             if (currentClientIdRef.current !== targetClientId) {
               return;
             }
-            
+            if (targetTenantId && tenantRecord.data?.tenantId && tenantRecord.data.tenantId !== targetTenantId) {
+              return;
+            }
+            const snapshotLastUpdate = tenantRecord.data?.lastUpdate || null;
+            if (currentClientIdRef.current !== targetClientId) {
+              return;
+            }
             setLastSync(snapshotLastUpdate || tenantRecord.updated_at);
-            
-            // Récupérer TOUTES les données depuis le snapshot (même format que O365.js)
             if (tenantRecord.data) {
-              // Extraire les données spécifiques par section
               const snapshotData = tenantRecord.data;
-              
-              // Exchange
               if (snapshotData.exchangeData !== null && snapshotData.exchangeData !== undefined) {
                 setExchangeData(snapshotData.exchangeData);
               } else if (snapshotData.exchange) {
-                // Ancien format possible
                 setExchangeData(snapshotData.exchange);
               } else {
                 setExchangeData(null);
               }
-              
-              // Teams
               if (snapshotData.teamsData !== null && snapshotData.teamsData !== undefined) {
                 setTeamsData(snapshotData.teamsData);
               } else if (snapshotData.teams) {
-                // Ancien format possible
                 setTeamsData(snapshotData.teams);
               } else {
                 setTeamsData(null);
               }
-              
-              // OneDrive
               if (snapshotData.onedriveData !== null && snapshotData.onedriveData !== undefined) {
                 setOnedriveData(snapshotData.onedriveData);
               } else if (snapshotData.onedrive) {
-                // Ancien format possible
                 setOnedriveData(snapshotData.onedrive);
               } else {
                 setOnedriveData(null);
               }
-              
-              // SharePoint
               if (snapshotData.sharepointData !== null && snapshotData.sharepointData !== undefined) {
                 setSharepointData(snapshotData.sharepointData);
               } else if (snapshotData.sharepoint) {
-                // Ancien format possible
                 setSharepointData(snapshotData.sharepoint);
               } else {
                 setSharepointData(null);
               }
-              
-              // Security
               if (snapshotData.securityData !== null && snapshotData.securityData !== undefined) {
                 setSecurityData(snapshotData.securityData);
               } else if (snapshotData.security) {
-                // Ancien format possible
                 setSecurityData(snapshotData.security);
               } else {
                 setSecurityData(null);
               }
-              
-              // Connection status peut être dans les données ou null
               setConnectionStatus(tenantRecord.data.connectionStatus || null);
-              
-              // Mettre à jour le tenantId dans detailData si ce n'était pas déjà fait (seulement si le client n'a pas changé)
               if (!detailData.tenantId && tenantRecord.data.tenantId && currentClientIdRef.current === targetClientId) {
                 setDetailData(prev => {
                   if (prev?.clientId !== targetClientId) {
@@ -472,7 +340,6 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
                   };
                 });
               }
-              
               setStatistics(tenantRecord.data);
             }
           }
@@ -483,25 +350,19 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
         return;
       }
     } finally {
-      // Nettoyer la référence de l'AbortController si c'était notre requête
       if (abortControllerRef.current === abortController) {
         abortControllerRef.current = null;
       }
     }
   };
-
-  // Données détaillées extraites du snapshot (même format que dans le module O365)
-  // Ces valeurs sont calculées AVANT le return conditionnel pour respecter les règles des hooks
   const licences = statistics?.licences || statistics?.licenses || [];
   const users = statistics?.users || [];
   const adoptionScore = statistics?.adoptionScore || null;
-
-  // Mapping des identifiants de licences vers des noms lisibles (identique à O365.js)
   const licenseNameMapping = {
     'ENTERPRISEPACK': 'Microsoft 365 E3',
     'ENTERPRISEPREMIUM': 'Microsoft 365 E5',
-    'STANDARDWOFFPACK_FACULTY': 'Office 365 Éducation (Enseignants)',
-    'STANDARDWOFFPACK_STUDENT': 'Office 365 Éducation (Étudiants)',
+    'STANDARDWOFFPACK_FACULTY': 'Office 365 Education (Faculty)',
+    'STANDARDWOFFPACK_STUDENT': 'Office 365 Education (Students)',
     'O365_BUSINESS': 'Microsoft 365 Business Basic',
     'O365_BUSINESS_ESSENTIALS': 'Microsoft 365 Business Essentials',
     'O365_BUSINESS_PREMIUM': 'Microsoft 365 Business Premium',
@@ -509,14 +370,11 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
     'EXCHANGEENTERPRISE': 'Exchange Online Plan 2',
     'SHAREPOINTSTANDARD': 'SharePoint Online Plan 1',
     'SHAREPOINTENTERPRISE': 'SharePoint Online Plan 2',
-    'TEAMS1': 'Microsoft Teams (Essentiel)',
-    'FLOW_FREE': 'Power Automate (Gratuit)',
-    // Ajouter d'autres mappings si nécessaire
+    'TEAMS1': 'Microsoft Teams (Essential)',
+    'FLOW_FREE': 'Power Automate (Free)'
   };
-
-  // Fonction pour obtenir le nom lisible d'une licence
-  const getLicenseDisplayName = (licenseId) => {
-    if (!licenseId) return 'Licence inconnue';
+  const getLicenseDisplayName = licenseId => {
+    if (!licenseId) return 'Unknown license';
     const normalizedId = licenseId.toUpperCase().trim();
     if (licenseNameMapping[normalizedId]) {
       return licenseNameMapping[normalizedId];
@@ -526,43 +384,29 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
         return value;
       }
     }
-    const formatted = licenseId
-      .replace(/_/g, ' ')
-      .replace(/-/g, ' ')
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(' ');
+    const formatted = licenseId.replace(/_/g, ' ').replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
     return formatted;
   };
-
-  // Calculer les métriques du dashboard (comme dans O365.js)
-  // IMPORTANT: Ce hook doit être appelé AVANT tout return conditionnel
   const dashboardMetrics = useMemo(() => {
     if (!users || users.length === 0) return null;
-    
     const now = new Date();
     const period30Days = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
     const period90Days = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
-    
     const activeUsers30 = users.filter(u => {
       const lastLogin = u.lastLoginDate ? new Date(u.lastLoginDate) : null;
       return lastLogin && lastLogin >= period30Days;
     }).length;
-    
     const activeUsers90 = users.filter(u => {
       const lastLogin = u.lastLoginDate ? new Date(u.lastLoginDate) : null;
       return lastLogin && lastLogin >= period90Days;
     }).length;
-    
-    const adoptionRate = users.length > 0 ? Math.round((activeUsers30 / users.length) * 100) : 0;
-    
-    const validLicences = licences.filter(lic => {
+    const adoptionRate = users.length > 0 ? Math.round(activeUsers30 / users.length * 100) : 0;
+    const validLicenses = licences.filter(lic => {
       const total = lic.total || 0;
       return total < 10000 && total > 0;
     });
-    const totalLicenses = validLicences.reduce((sum, lic) => sum + (lic.total || 0), 0);
-    const usedLicenses = validLicences.reduce((sum, lic) => sum + (lic.utilisees || 0), 0);
-    
+    const totalLicenses = validLicenses.reduce((sum, lic) => sum + (lic.total || 0), 0);
+    const usedLicenses = validLicenses.reduce((sum, lic) => sum + (lic.utilisees || 0), 0);
     return {
       totalUsers: users.length,
       activeUsers30,
@@ -572,65 +416,42 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
       usedLicenses
     };
   }, [users, licences]);
-
   const handleSync = async () => {
-    // IMPORTANT: La synchronisation doit utiliser le clientId pour récupérer les credentials
-    // depuis v_b_clients_azure via le backend, puis sauvegarder dans v_b_clients_m_o365
     if (!detailData?.clientId) {
-      toast.error('Aucun client ID disponible pour la synchronisation');
+      toast.error('No client ID available for sync');
       return;
     }
-
-    // Capturer le clientId au début de la synchronisation
     const targetClientId = detailData.clientId;
-    
-    // Annuler les requêtes en cours
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
-    
-    // Créer un nouvel AbortController pour cette synchronisation
     const abortController = new AbortController();
     abortControllerRef.current = abortController;
-
     setSyncing(true);
     setSyncProgress(0);
-    setSyncStatus('Préparation...');
-
+    setSyncStatus('Preparing...');
     const progressInterval = setInterval(() => {
       setSyncProgress(prev => {
         if (prev >= 90) return prev;
         return prev + 10;
       });
     }, 500);
-
     try {
-      // Vérifier que le clientId n'a pas changé
       if (currentClientIdRef.current !== targetClientId) {
-        throw new Error('Le client a changé pendant la synchronisation');
+        throw new Error('The client changed during sync');
       }
-      // Déclencher la même synchronisation que dans le module de monitoring O365 (si présent)
-      // Cela appelle exactement la fonction loadDataFromAPI utilisée dans O365.js
       if (typeof window !== 'undefined' && typeof window.__office365SyncTrigger === 'function') {
         try {
           window.__office365SyncTrigger();
         } catch (e) {
-          console.error('Erreur lors de la synchronisation via le module O365:', e);
+          console.error('Error syncing via the O365 module:', e);
         }
       }
-
-      setSyncStatus('Synchronisation en cours...');
+      setSyncStatus('Syncing...');
       setSyncProgress(50);
-
-      // Appeler l'API d'intégration Office 365 qui va :
-      // 1. Récupérer les credentials depuis v_b_clients_azure via clientId
-      // 2. Synchroniser toutes les données depuis Microsoft Graph
-      // 3. Sauvegarder le snapshot dans v_b_clients_m_o365
       const headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       };
-
-      // Calculer les dates de début et fin selon la période sélectionnée
       const endDate = new Date();
       let startDate = new Date();
       switch (selectedPeriod) {
@@ -646,51 +467,32 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
         default:
           startDate = new Date(endDate.getTime() - 30 * 24 * 60 * 60 * 1000);
       }
-
-      const syncResponse = await fetch(
-        `${API_BASE_URL}/office365/sync-all?clientId=${targetClientId}&period=${selectedPeriod}&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`,
-        {
-          method: 'GET',
-          headers,
-          credentials: 'include',
-          signal: abortController.signal
-        }
-      );
-
-      // Vérifier que le clientId n'a pas changé
+      const syncResponse = await fetch(`${API_BASE_URL}/office365/sync-all?clientId=${targetClientId}&period=${selectedPeriod}&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`, {
+        method: 'GET',
+        headers,
+        credentials: 'include',
+        signal: abortController.signal
+      });
       if (currentClientIdRef.current !== targetClientId) {
-        throw new Error('Le client a changé pendant la synchronisation');
+        throw new Error('The client changed during sync');
       }
-
       const syncResult = await syncResponse.json().catch(() => ({}));
-
       if (!syncResponse.ok || !syncResult.success) {
-        throw new Error(syncResult.error || `Erreur HTTP ${syncResponse.status}`);
+        throw new Error(syncResult.error || `HTTP error ${syncResponse.status}`);
       }
-
-      // Vérifier une dernière fois que le clientId n'a pas changé
       if (currentClientIdRef.current !== targetClientId) {
         return;
       }
-
-      // VÉRIFICATION CRITIQUE : S'assurer que les données retournées correspondent bien au client
-      // Récupérer les credentials Azure du client pour vérifier le tenantId
       let expectedTenantId = null;
       try {
-        const credResponse = await fetch(
-          `${API_BASE_URL}/client-office365/${targetClientId}`,
-          { 
-            headers, 
-            credentials: 'include',
-            signal: abortController.signal
-          }
-        );
-        
-        // Vérifier que le clientId n'a pas changé
+        const credResponse = await fetch(`${API_BASE_URL}/client-office365/${targetClientId}`, {
+          headers,
+          credentials: 'include',
+          signal: abortController.signal
+        });
         if (currentClientIdRef.current !== targetClientId) {
-          throw new Error('Le client a changé pendant la vérification des credentials');
+          throw new Error('The client changed during credential verification');
         }
-        
         if (credResponse.ok) {
           const credResult = await credResponse.json();
           expectedTenantId = credResult?.credentials?.tenantId || null;
@@ -700,38 +502,28 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
           return;
         }
       }
-
-      // Vérifier que le tenantId dans les données synchronisées correspond bien au client
       if (expectedTenantId && syncResult.data?.tenantId && syncResult.data.tenantId !== expectedTenantId) {
-        throw new Error(`Les données synchronisées ne correspondent pas au client ${targetClientId}. TenantId attendu: ${expectedTenantId}, reçu: ${syncResult.data.tenantId}`);
+        throw new Error(`Synced data does not match client ${targetClientId}. Expected TenantId: ${expectedTenantId}, received: ${syncResult.data.tenantId}`);
       }
-
       setSyncStatus('Finalisation...');
       setSyncProgress(100);
-
-      // Mettre à jour la date de dernière synchronisation
       if (syncResult.lastUpdate && currentClientIdRef.current === targetClientId) {
         setLastSync(syncResult.lastUpdate);
       }
-
-      // Recharger les données stockées depuis v_b_clients_m_o365
       await loadStoredTenantData();
-      
-      // Vérifier une dernière fois avant d'afficher le succès
       if (currentClientIdRef.current === targetClientId) {
-        toast.success('Données tenant Microsoft synchronisées avec succès');
+        toast.success('Microsoft tenant data synced successfully');
       }
     } catch (error) {
       if (error.name === 'AbortError') {
         return;
       }
-      console.error('Erreur lors de la synchronisation:', error);
+      console.error('Error during sync:', error);
       if (currentClientIdRef.current === targetClientId) {
-        toast.error(error.message || 'Erreur lors de la synchronisation');
+        toast.error(error.message || 'Error during sync');
       }
     } finally {
       clearInterval(progressInterval);
-      // Nettoyer seulement si c'était notre synchronisation
       if (abortControllerRef.current === abortController) {
         setTimeout(() => {
           setSyncProgress(0);
@@ -739,18 +531,16 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
         }, 800);
         abortControllerRef.current = null;
       }
-      // Ne mettre à jour syncing que si le client n'a pas changé
       if (currentClientIdRef.current === targetClientId) {
         setSyncing(false);
       }
     }
   };
-
   const handleDeleteTenant = async () => {
     if (!detailData?.clientId || !onNavigate) return;
     const clientName = detailData.clientName || detailData.name || configCopy.confirm.deleteMicrosoftTenantFromList.fallbackClient;
     const confirmMessage = interpolate(configCopy.confirm.deleteMicrosoftTenantFromList.message, {
-      client: clientName,
+      client: clientName
     });
     if (!window.confirm(confirmMessage)) {
       return;
@@ -758,59 +548,60 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
     setDeletingTenant(true);
     try {
       await deleteClientOffice365Credentials(detailData.clientId);
-      const { modules_monitoring } = await fetchClientModules(detailData.clientId);
+      const {
+        modules_monitoring
+      } = await fetchClientModules(detailData.clientId);
       await updateClient(detailData.clientId, {
-        modules_monitoring: { ...modules_monitoring, Office365: false },
+        modules_monitoring: {
+          ...modules_monitoring,
+          Office365: false
+        },
         office365_data: null
       });
-      toast.success('Tenant supprimé du client');
-      onNavigate('Service', { activeTab: 'microsoft', refresh: Date.now() }, { closeCurrent: true });
+      toast.success('Tenant removed from client');
+      onNavigate('Service', {
+        activeTab: 'microsoft',
+        refresh: Date.now()
+      }, {
+        closeCurrent: true
+      });
     } catch (error) {
-      console.error('Erreur suppression tenant:', error);
-      toast.error(error.message || 'Erreur lors de la suppression du tenant');
+      console.error('Error deleting tenant:', error);
+      toast.error(error.message || 'Error deleting the tenant');
     } finally {
       setDeletingTenant(false);
     }
   };
-
   if (!detailData) {
-    return (
-      <div className={styles.detailPage}>
+    return <div className={styles.detailPage}>
         <div className={styles.emptyState}>
           <Icon icon="mdi:alert-circle" className={styles.emptyIcon} />
-          <h2>Aucune donnée tenant</h2>
-          <p>Veuillez sélectionner un tenant Microsoft depuis la page services</p>
-          <button className={styles.backButton} onClick={() => onNavigate('Service', { activeTab: 'microsoft' })}>
+          <h2>No tenant data</h2>
+          <p>Please select a Microsoft tenant from the services page</p>
+          <button className={styles.backButton} onClick={() => onNavigate('Service', {
+          activeTab: 'microsoft'
+        })}>
             <FaArrowLeft />
           </button>
-          {tenantData?.clientId && (
-            <SmartTooltip as="span" content="Aller au détail de l'entreprise">
-              <button
-                className={`${styles.headerActionButton} ${styles.headerActionButtonInactive}`}
-                onClick={() => onNavigate('ContratDetail', { clientId: tenantData?.clientId, name: tenantData?.clientName })}
-              >
+          {tenantData?.clientId && <SmartTooltip as="span" content="Go to company details">
+              <button className={`${styles.headerActionButton} ${styles.headerActionButtonInactive}`} onClick={() => onNavigate('ContratDetail', {
+            clientId: tenantData?.clientId,
+            name: tenantData?.clientName
+          })}>
                 <Icon icon="mdi:building" className={styles.headerActionIcon} />
               </button>
-            </SmartTooltip>
-          )}
+            </SmartTooltip>}
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  // Calculer les statistiques globales (à partir du snapshot stocké, même données que dans O365.js)
   const calculateStats = () => {
     const totalUsers = users.length;
     const activeUsers = users.filter(u => u.accountEnabled !== false).length;
     const inactiveUsers = users.filter(u => u.accountEnabled === false).length;
-
-    // Même logique que dans le module O365 : total = somme des "total", used = somme des "utilisees"
     const totalLicenses = licences.reduce((sum, lic) => sum + (lic.total || 0), 0);
     const usedLicenses = licences.reduce((sum, lic) => sum + (lic.utilisees || 0), 0);
-
-    // Nombre de domaines distincts (à partir de userPrincipalName / email)
     const domainSet = new Set();
-    users.forEach((u) => {
+    users.forEach(u => {
       const raw = (u.userPrincipalName || u.email || '').toString().trim();
       const at = raw.indexOf('@');
       if (at !== -1) {
@@ -821,7 +612,6 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
       }
     });
     const domainCount = domainSet.size;
-
     return {
       totalUsers,
       activeUsers,
@@ -831,24 +621,18 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
       domainCount
     };
   };
-
   const stats = calculateStats();
-
-  // Helper pour formater les licences (reprise de la logique du module O365)
-  const formatLicenseRow = (lic) => {
+  const formatLicenseRow = lic => {
     const total = lic.total || 0;
     const used = lic.utilisees || lic.used || 0;
     const available = Math.max(0, total - used);
-    const usageRate = total > 0 ? Math.round((used / total) * 100) : 0;
-
-    // Déterminer le statut (logique inspirée de O365.js)
+    const usageRate = total > 0 ? Math.round(used / total * 100) : 0;
     let status = 'normal';
     let statusText = 'Normal';
     let statusColor = '#10b981';
-
     if (available >= 3) {
       status = 'warning';
-      statusText = 'Attention';
+      statusText = 'Warning';
       statusColor = '#f59e0b';
     } else if (usageRate >= 90) {
       status = 'optimal';
@@ -859,102 +643,116 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
       statusText = 'Gaspillage';
       statusColor = '#ef4444';
     }
-
-    return { total, used, available, usageRate, status, statusText, statusColor };
+    return {
+      total,
+      used,
+      available,
+      usageRate,
+      status,
+      statusText,
+      statusColor
+    };
   };
-
-  const TABS = [
-    { key: 'dashboard', icon: 'mdi:view-dashboard', label: 'Dashboard' },
-    { key: 'licences', icon: 'mdi:license', label: 'Licences' },
-    { key: 'utilisateurs', icon: 'mdi:account-multiple', label: 'Utilisateurs' },
-    { key: 'exchange', icon: 'simple-icons:microsoftexchange', label: 'Exchange' },
-    { key: 'teams', icon: 'simple-icons:microsoftteams', label: 'Teams' },
-    { key: 'onedrive', icon: 'entypo-social:onedrive', label: 'OneDrive' },
-    { key: 'sharepoint', icon: 'mdi:microsoft-sharepoint', label: 'SharePoint' },
-    { key: 'securite', icon: 'mdi:shield-check', label: 'Sécurité' }
-  ];
-
-  return (
-    <div className={styles.detailPage}>
-      {/* En-tête · même structure qu'AntivirusDetailPage : gauche (retour, entreprise, titre), onglets, droite (période, sync) */}
+  const TABS = [{
+    key: 'dashboard',
+    icon: 'mdi:view-dashboard',
+    label: 'Dashboard'
+  }, {
+    key: 'licences',
+    icon: 'mdi:license',
+    label: 'Licenses'
+  }, {
+    key: 'utilisateurs',
+    icon: 'mdi:account-multiple',
+    label: 'Users'
+  }, {
+    key: 'exchange',
+    icon: 'simple-icons:microsoftexchange',
+    label: 'Exchange'
+  }, {
+    key: 'teams',
+    icon: 'simple-icons:microsoftteams',
+    label: 'Teams'
+  }, {
+    key: 'onedrive',
+    icon: 'entypo-social:onedrive',
+    label: 'OneDrive'
+  }, {
+    key: 'sharepoint',
+    icon: 'mdi:microsoft-sharepoint',
+    label: 'SharePoint'
+  }, {
+    key: 'securite',
+    icon: 'mdi:shield-check',
+    label: 'Security'
+  }];
+  return <div className={styles.detailPage}>
+      {}
       <div className={styles.header}>
         <div className={styles.headerLeft}>
-          <button className={styles.backButton} onClick={() => onNavigate('Service', { activeTab: 'microsoft' })}>
+          <button className={styles.backButton} onClick={() => onNavigate('Service', {
+          activeTab: 'microsoft'
+        })}>
             <FaArrowLeft />
           </button>
-          {onNavigate && detailData.clientId && (
-            <SmartTooltip as="span" content="Aller au détail de l'entreprise">
-              <button
-                className={`${styles.headerActionButton} ${styles.headerActionButtonInactive}`}
-                onClick={() => onNavigate('ContratDetail', { clientId: detailData.clientId, name: detailData.clientName })}
-              >
+          {onNavigate && detailData.clientId && <SmartTooltip as="span" content="Go to company details">
+              <button className={`${styles.headerActionButton} ${styles.headerActionButtonInactive}`} onClick={() => onNavigate('ContratDetail', {
+            clientId: detailData.clientId,
+            name: detailData.clientName
+          })}>
                 <Icon icon="mdi:building" className={styles.headerActionIcon} />
               </button>
-            </SmartTooltip>
-          )}
+            </SmartTooltip>}
           <div className={styles.headerTitle}>
-            <Icon icon="mdi:microsoft-azure" className={styles.headerLogo} style={{ fontSize: '1.75rem', color: '#0078d4' }} />
+            <Icon icon="mdi:microsoft-azure" className={styles.headerLogo} style={{
+            fontSize: '1.75rem',
+            color: '#0078d4'
+          }} />
             <div className={styles.headerTitleBlock}>
               <h1>
                 {detailData.clientName || detailData.nom || detailData.name || 'Tenant Microsoft'}
               </h1>
-              {(detailData.tenantId || statistics?.tenantId) && (
-                <div className={styles.headerMeta}>
+              {(detailData.tenantId || statistics?.tenantId) && <div className={styles.headerMeta}>
                   <span className={styles.headerMetaItem}>
                     Id tenant: {detailData.tenantId || statistics?.tenantId || '-'}
                   </span>
-                </div>
-              )}
+                </div>}
             </div>
           </div>
         </div>
         <div className={styles.headerTabsContainer}>
-          {TABS.map(tab => (
-            <button
-              key={tab.key}
-              type="button"
-              className={`${styles.headerTabButton} ${viewMode === tab.key ? styles.headerTabButtonActive : ''}`}
-              onClick={() => setViewMode(tab.key)}
-            >
-              <Icon icon={tab.icon} style={{ fontSize: '1rem' }} />
+          {TABS.map(tab => <button key={tab.key} type="button" className={`${styles.headerTabButton} ${viewMode === tab.key ? styles.headerTabButtonActive : ''}`} onClick={() => setViewMode(tab.key)}>
+              <Icon icon={tab.icon} style={{
+            fontSize: '1rem'
+          }} />
               {tab.label}
-            </button>
-          ))}
+            </button>)}
         </div>
         <div className={styles.headerRight}>
           <div className={styles.headerActions}>
             <div className={styles.syncInfo}>
-              {lastSync && (
-                <span className={styles.lastSyncText}>
-                  Mis à jour: {new Date(lastSync).toLocaleDateString('fr-FR')} à {new Date(lastSync).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
-                </span>
-              )}
-              {syncing && (
-                <div className={styles.syncProgress}>
+              {lastSync && <span className={styles.lastSyncText}>
+                  Updated: {new Date(lastSync).toLocaleDateString('en-GB')} at {new Date(lastSync).toLocaleTimeString('en-GB', {
+                hour: '2-digit',
+                minute: '2-digit'
+              })}
+                </span>}
+              {syncing && <div className={styles.syncProgress}>
                   <div className={styles.syncProgressBar}>
-                    <div className={styles.syncProgressFill} style={{ width: `${syncProgress}%` }}></div>
+                    <div className={styles.syncProgressFill} style={{
+                  width: `${syncProgress}%`
+                }}></div>
                   </div>
                   <span className={styles.syncProgressText}>{syncStatus}</span>
-                </div>
-              )}
+                </div>}
             </div>
-            <SmartTooltip as="span" content="Synchroniser les données">
-              <button
-                type="button"
-                className={styles.syncButton}
-                onClick={handleSync}
-                disabled={syncing || loading}
-              >
+            <SmartTooltip as="span" content="Sync data">
+              <button type="button" className={styles.syncButton} onClick={handleSync} disabled={syncing || loading}>
                 <FaSync className={syncing ? styles.spinning : ''} />
               </button>
             </SmartTooltip>
-            <SmartTooltip as="span" content="Supprimer le tenant du client">
-              <button
-                type="button"
-                className={styles.deleteTenantButton}
-                onClick={handleDeleteTenant}
-                disabled={deletingTenant || loading}
-              >
+            <SmartTooltip as="span" content="Remove tenant from client">
+              <button type="button" className={styles.deleteTenantButton} onClick={handleDeleteTenant} disabled={deletingTenant || loading}>
                 <Icon icon={deletingTenant ? 'mdi:loading' : 'mdi:delete-outline'} className={deletingTenant ? styles.spinning : ''} />
               </button>
             </SmartTooltip>
@@ -962,183 +760,133 @@ export default function TenantDetailPage({ onNavigate, tenantData }) {
         </div>
       </div>
 
-      {/* Contenu principal : Indicateurs (uniquement Dashboard) puis contenu de l'onglet */}
+      {}
       <div className={styles.content} key={viewMode}>
-        {syncing && (
-          <div className={styles.syncSkeleton}>
+        {syncing && <div className={styles.syncSkeleton}>
             <div className={styles.skeletonStatsCards}>
-              {[1, 2, 3].map((i) => (
-                <div key={i} className={styles.skeletonStatCard}>
+              {[1, 2, 3].map(i => <div key={i} className={styles.skeletonStatCard}>
                   <div className={`${styles.skeletonShimmer} ${styles.skeletonStatCardIcon}`} />
                   <div className={styles.skeletonStatCardContent}>
                     <div className={`${styles.skeletonShimmer} ${styles.skeletonStatCardValue}`} />
                     <div className={`${styles.skeletonShimmer} ${styles.skeletonStatCardLabel}`} />
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
             <div className={`${styles.skeletonShimmer} ${styles.skeletonTableTitle}`} />
             <div className={styles.skeletonTable}>
               <div className={styles.skeletonTableHeader}>
-                {[1, 2, 3, 4, 5].map((j) => (
-                  <div key={j} className={`${styles.skeletonShimmer} ${styles.skeletonTableHeaderCell}`} />
-                ))}
+                {[1, 2, 3, 4, 5].map(j => <div key={j} className={`${styles.skeletonShimmer} ${styles.skeletonTableHeaderCell}`} />)}
               </div>
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((row) => (
-                <div key={row} className={styles.skeletonTableRow}>
-                  {[1, 2, 3, 4, 5].map((j) => (
-                    <div key={j} className={`${styles.skeletonShimmer} ${styles.skeletonTableCell}`} />
-                  ))}
-                </div>
-              ))}
+              {[1, 2, 3, 4, 5, 6, 7, 8].map(row => <div key={row} className={styles.skeletonTableRow}>
+                  {[1, 2, 3, 4, 5].map(j => <div key={j} className={`${styles.skeletonShimmer} ${styles.skeletonTableCell}`} />)}
+                </div>)}
             </div>
-          </div>
-        )}
+          </div>}
 
-        {!syncing && viewMode === 'dashboard' && (
-          <section className={styles.kpiSection}>
+        {!syncing && viewMode === 'dashboard' && <section className={styles.kpiSection}>
             <h2 className={styles.sectionTitle}>Indicateurs</h2>
             <div className={styles.statsCards}>
               <div className={styles.statCard}>
-                <div className={styles.statCardIcon} style={{ color: '#15D1A0' }}>
+                <div className={styles.statCardIcon} style={{
+              color: '#15D1A0'
+            }}>
                   <Icon icon="mdi:account-multiple" />
                 </div>
                 <div className={styles.statCardContent}>
                   <div className={styles.statCardValue}>{stats.totalUsers}</div>
-                  <div className={styles.statCardLabel}>Utilisateurs</div>
+                  <div className={styles.statCardLabel}>Users</div>
                 </div>
               </div>
               <div className={styles.statCard}>
-                <div className={styles.statCardIcon} style={{ color: '#10b981' }}>
+                <div className={styles.statCardIcon} style={{
+              color: '#10b981'
+            }}>
                   <Icon icon="mdi:check-circle" />
                 </div>
                 <div className={styles.statCardContent}>
-                  <div className={styles.statCardValue} style={{ color: '#10b981' }}>{stats.activeUsers}</div>
-                  <div className={styles.statCardLabel}>Actifs</div>
+                  <div className={styles.statCardValue} style={{
+                color: '#10b981'
+              }}>{stats.activeUsers}</div>
+                  <div className={styles.statCardLabel}>Active</div>
                 </div>
               </div>
               <div className={styles.statCard}>
-                <div className={styles.statCardIcon} style={{ color: '#ef4444' }}>
+                <div className={styles.statCardIcon} style={{
+              color: '#ef4444'
+            }}>
                   <Icon icon="mdi:account-off" />
                 </div>
                 <div className={styles.statCardContent}>
-                  <div className={styles.statCardValue} style={{ color: '#ef4444' }}>{stats.inactiveUsers}</div>
-                  <div className={styles.statCardLabel}>Inactifs</div>
+                  <div className={styles.statCardValue} style={{
+                color: '#ef4444'
+              }}>{stats.inactiveUsers}</div>
+                  <div className={styles.statCardLabel}>Inactive</div>
                 </div>
               </div>
             </div>
-            <div className={styles.statsCards} style={{ marginTop: '1rem' }}>
+            <div className={styles.statsCards} style={{
+          marginTop: '1rem'
+        }}>
               <div className={styles.statCard}>
-                <div className={styles.statCardIcon} style={{ color: 'var(--text-muted)' }}>
+                <div className={styles.statCardIcon} style={{
+              color: 'var(--text-muted)'
+            }}>
                   <Icon icon="mdi:license" />
                 </div>
                 <div className={styles.statCardContent}>
                   <div className={styles.statCardValue}>{stats.totalLicenses}</div>
-                  <div className={styles.statCardLabel}>Licences total</div>
+                  <div className={styles.statCardLabel}>Total licenses</div>
                 </div>
               </div>
               <div className={styles.statCard}>
-                <div className={styles.statCardIcon} style={{ color: '#f59e0b' }}>
+                <div className={styles.statCardIcon} style={{
+              color: '#f59e0b'
+            }}>
                   <Icon icon="mdi:license-check" />
                 </div>
                 <div className={styles.statCardContent}>
-                  <div className={styles.statCardValue} style={{ color: '#f59e0b' }}>{stats.usedLicenses}</div>
-                  <div className={styles.statCardLabel}>Licences utilisées</div>
+                  <div className={styles.statCardValue} style={{
+                color: '#f59e0b'
+              }}>{stats.usedLicenses}</div>
+                  <div className={styles.statCardLabel}>Licenses used</div>
                 </div>
               </div>
               <div className={styles.statCard}>
-                <div className={styles.statCardIcon} style={{ color: '#3b82f6' }}>
+                <div className={styles.statCardIcon} style={{
+              color: '#3b82f6'
+            }}>
                   <Icon icon="mdi:domain" />
                 </div>
                 <div className={styles.statCardContent}>
-                  <div className={styles.statCardValue} style={{ color: '#3b82f6' }}>{stats.domainCount}</div>
-                  <div className={styles.statCardLabel}>Domaines (utilisateurs)</div>
+                  <div className={styles.statCardValue} style={{
+                color: '#3b82f6'
+              }}>{stats.domainCount}</div>
+                  <div className={styles.statCardLabel}>Domains (users)</div>
                 </div>
               </div>
             </div>
-          </section>
-        )}
-        {loading ? (
-          <div className={styles.loadingState}>
+          </section>}
+        {loading ? <div className={styles.loadingState}>
             <Icon icon="mdi:loading" className={styles.loadingSpinner} />
-            <p>Chargement des détails tenant...</p>
-          </div>
-        ) : (
-          <>
-            {/* Dashboard : infos générales + stats globales + adoption */}
-            {viewMode === 'dashboard' && !syncing && (
-              <DashboardTab 
-                detailData={detailData}
-                dashboardMetrics={dashboardMetrics}
-                adoptionScore={adoptionScore}
-                tenantId={statistics?.tenantId || detailData?.tenantId}
-                securityData={securityData}
-                users={users}
-                styles={styles}
-                theme="dark"
-              />
-            )}
+            <p>Loading tenant details...</p>
+          </div> : <>
+            {}
+            {viewMode === 'dashboard' && !syncing && <DashboardTab detailData={detailData} dashboardMetrics={dashboardMetrics} adoptionScore={adoptionScore} tenantId={statistics?.tenantId || detailData?.tenantId} securityData={securityData} users={users} styles={styles} theme="dark" />}
 
-            {viewMode === 'licences' && !syncing && (
-              <LicencesTab 
-                licences={licences}
-                dashboardMetrics={dashboardMetrics}
-                styles={styles}
-                theme="dark"
-                getLicenseDisplayName={getLicenseDisplayName}
-              />
-            )}
+            {viewMode === 'licences' && !syncing && <LicensesTab licences={licences} dashboardMetrics={dashboardMetrics} styles={styles} theme="dark" getLicenseDisplayName={getLicenseDisplayName} />}
 
-            {viewMode === 'utilisateurs' && !syncing && (
-              <UtilisateursTab 
-                users={users}
-                dashboardMetrics={dashboardMetrics}
-                detailData={detailData}
-                mfaDetails={mfaDetails}
-                theme="dark"
-              />
-            )}
+            {viewMode === 'utilisateurs' && !syncing && <UsersTab users={users} dashboardMetrics={dashboardMetrics} detailData={detailData} mfaDetails={mfaDetails} theme="dark" />}
 
-            {viewMode === 'exchange' && !syncing && (
-              <ExchangeTab 
-                exchangeData={exchangeData}
-                theme="dark"
-              />
-            )}
+            {viewMode === 'exchange' && !syncing && <ExchangeTab exchangeData={exchangeData} theme="dark" />}
 
-            {viewMode === 'teams' && !syncing && (
-              <TeamsTab 
-                teamsData={teamsData}
-                theme="dark"
-              />
-            )}
+            {viewMode === 'teams' && !syncing && <TeamsTab teamsData={teamsData} theme="dark" />}
 
-            {viewMode === 'onedrive' && !syncing && (
-              <OneDriveTab 
-                onedriveData={onedriveData}
-                theme="dark"
-              />
-            )}
+            {viewMode === 'onedrive' && !syncing && <OneDriveTab onedriveData={onedriveData} theme="dark" />}
 
-            {viewMode === 'sharepoint' && !syncing && (
-              <SharePointTab 
-                sharepointData={sharepointData}
-                theme="dark"
-              />
-            )}
+            {viewMode === 'sharepoint' && !syncing && <SharePointTab sharepointData={sharepointData} theme="dark" />}
 
-            {viewMode === 'securite' && !syncing && (
-              <SecuriteTab 
-                securityData={securityData}
-                users={users}
-                mfaDetails={mfaDetails}
-                clientId={detailData?.clientId}
-                theme="dark"
-              />
-            )}
-          </>
-        )}
+            {viewMode === 'securite' && !syncing && <SecuriteTab securityData={securityData} users={users} mfaDetails={mfaDetails} clientId={detailData?.clientId} theme="dark" />}
+          </>}
       </div>
-    </div>
-  );
+    </div>;
 }

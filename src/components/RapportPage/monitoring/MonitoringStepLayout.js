@@ -1,15 +1,13 @@
 import React from "react";
 import { Icon } from "@iconify/react";
-
 import equipmentStyles from "../../EquipementPage/EquipmentPage.module.css";
 import styles from "./RapportMonitoringBuilder.module.css";
-
-export function MonitoringStepShell({ children, className = "" }) {
-  return (
-    <div className={`${styles.stepShell} ${className}`.trim()}>{children}</div>
-  );
+export function MonitoringStepShell({
+  children,
+  className = ""
+}) {
+  return <div className={`${styles.stepShell} ${className}`.trim()}>{children}</div>;
 }
-
 export function MonitoringStepHeader({
   title,
   subtitle,
@@ -17,104 +15,58 @@ export function MonitoringStepHeader({
   showSearch = false,
   searchValue = "",
   onSearchChange,
-  searchPlaceholder = "Rechercher par nom, site, IP...",
+  searchPlaceholder = "Search by name, site, IP...",
   onSearchClear,
   headerActions = null,
-  footer = null,
+  footer = null
 }) {
   const secondaryText = subtitle || countLabel;
-
-  return (
-    <div className={styles.stepHeaderBlock}>
+  return <div className={styles.stepHeaderBlock}>
       <div className={styles.stepHeaderRow}>
         <div className={styles.stepHeaderInfo}>
           <div className={styles.stepTitle}>{title}</div>
-          {secondaryText ? (
-            <div className={styles.stepSubtitle}>{secondaryText}</div>
-          ) : null}
+          {secondaryText ? <div className={styles.stepSubtitle}>{secondaryText}</div> : null}
         </div>
         <div className={styles.stepHeaderToolbar}>
-          {showSearch ? (
-            <div className={styles.infraTableSearchBox}>
-              <input
-                type="text"
-                value={searchValue}
-                onChange={(e) => onSearchChange?.(e.target.value)}
-                placeholder={searchPlaceholder}
-                className={styles.infraTableSearchInput}
-              />
-              {searchValue ? (
-                <button
-                  type="button"
-                  onClick={() => (onSearchClear ? onSearchClear() : onSearchChange?.(""))}
-                  className={styles.infraTableSearchClear}
-                  title="Effacer"
-                >
+          {showSearch ? <div className={styles.infraTableSearchBox}>
+              <input type="text" value={searchValue} onChange={e => onSearchChange?.(e.target.value)} placeholder={searchPlaceholder} className={styles.infraTableSearchInput} />
+              {searchValue ? <button type="button" onClick={() => onSearchClear ? onSearchClear() : onSearchChange?.("")} className={styles.infraTableSearchClear} title="Effacer">
                   <Icon icon="mdi:close" fontSize={16} />
-                </button>
-              ) : null}
-            </div>
-          ) : null}
-          {headerActions ? (
-            <div className={styles.stepHeaderActions}>{headerActions}</div>
-          ) : null}
+                </button> : null}
+            </div> : null}
+          {headerActions ? <div className={styles.stepHeaderActions}>{headerActions}</div> : null}
         </div>
       </div>
       {footer}
-    </div>
-  );
+    </div>;
 }
-
 export function MonitoringStepSyncButton({
   onClick,
   disabled = false,
   loading = false,
-  label = "Synchroniser",
-  loadingLabel = "Synchronisation...",
+  label = "Synchronize",
+  loadingLabel = "Synchronizing...",
   title,
-  icon = "mdi:sync",
+  icon = "mdi:sync"
 }) {
-  return (
-    <button
-      type="button"
-      className={styles.stepSyncButton}
-      onClick={onClick}
-      disabled={disabled || loading}
-      title={title || label}
-    >
-      <Icon
-        icon={icon}
-        width={16}
-        height={16}
-        className={loading ? styles.spinIcon : undefined}
-      />
+  return <button type="button" className={styles.stepSyncButton} onClick={onClick} disabled={disabled || loading} title={title || label}>
+      <Icon icon={icon} width={16} height={16} className={loading ? styles.spinIcon : undefined} />
       <span>{loading ? loadingLabel : label}</span>
-    </button>
-  );
+    </button>;
 }
-
 export function MonitoringStepToolbarButton({
   onClick,
   disabled = false,
   icon,
   label,
   title,
-  children,
+  children
 }) {
-  return (
-    <button
-      type="button"
-      className={styles.stepToolbarButton}
-      onClick={onClick}
-      disabled={disabled}
-      title={title || label}
-    >
+  return <button type="button" className={styles.stepToolbarButton} onClick={onClick} disabled={disabled} title={title || label}>
       {icon ? <Icon icon={icon} width={16} height={16} /> : null}
       <span>{children ?? label}</span>
-    </button>
-  );
+    </button>;
 }
-
 export function MonitoringStepSection({
   title,
   count = null,
@@ -122,92 +74,49 @@ export function MonitoringStepSection({
   children,
   emptyMessage = null,
   isEmpty = false,
-  className = "",
+  className = ""
 }) {
-  return (
-    <section className={`${styles.stepSection} ${className}`.trim()}>
-      {(title || headerActions) && (
-        <div className={styles.stepSectionHeader}>
-          {title ? (
-            <h4 className={styles.stepSectionTitle}>
+  return <section className={`${styles.stepSection} ${className}`.trim()}>
+      {(title || headerActions) && <div className={styles.stepSectionHeader}>
+          {title ? <h4 className={styles.stepSectionTitle}>
               {title}
-              {count != null ? (
-                <span className={styles.stepSectionCount}>({count})</span>
-              ) : null}
-            </h4>
-          ) : (
-            <span />
-          )}
-          {headerActions ? (
-            <div className={styles.stepSectionActions}>{headerActions}</div>
-          ) : null}
-        </div>
-      )}
-      {isEmpty && emptyMessage ? (
-        <div className={styles.infraTableEmpty}>{emptyMessage}</div>
-      ) : (
-        children
-      )}
-    </section>
-  );
+              {count != null ? <span className={styles.stepSectionCount}>({count})</span> : null}
+            </h4> : <span />}
+          {headerActions ? <div className={styles.stepSectionActions}>{headerActions}</div> : null}
+        </div>}
+      {isEmpty && emptyMessage ? <div className={styles.infraTableEmpty}>{emptyMessage}</div> : children}
+    </section>;
 }
-
 export function MonitoringStepSubsectionHeader({
   title,
   searchValue = "",
   onSearchChange,
   onSearchClear,
-  searchPlaceholder = "Rechercher...",
-  headerActions = null,
+  searchPlaceholder = "Search...",
+  headerActions = null
 }) {
-  return (
-    <div className={styles.stepSubsectionHeader}>
+  return <div className={styles.stepSubsectionHeader}>
       {title ? <h5 className={styles.stepSubsectionTitle}>{title}</h5> : <span />}
       <div className={styles.stepSubsectionToolbar}>
-        {onSearchChange ? (
-          <div className={styles.stepSubsectionSearch}>
+        {onSearchChange ? <div className={styles.stepSubsectionSearch}>
             <Icon icon="mdi:magnify" className={styles.stepSubsectionSearchIcon} />
-            <input
-              type="text"
-              value={searchValue}
-              onChange={(e) => onSearchChange(e.target.value)}
-              placeholder={searchPlaceholder}
-              className={styles.stepSubsectionSearchInput}
-            />
-            {searchValue ? (
-              <button
-                type="button"
-                onClick={() => (onSearchClear ? onSearchClear() : onSearchChange(""))}
-                className={styles.stepSubsectionSearchClear}
-                title="Effacer"
-              >
+            <input type="text" value={searchValue} onChange={e => onSearchChange(e.target.value)} placeholder={searchPlaceholder} className={styles.stepSubsectionSearchInput} />
+            {searchValue ? <button type="button" onClick={() => onSearchClear ? onSearchClear() : onSearchChange("")} className={styles.stepSubsectionSearchClear} title="Effacer">
                 <Icon icon="mdi:close" fontSize={14} />
-              </button>
-            ) : null}
-          </div>
-        ) : null}
-        {headerActions ? (
-          <div className={styles.stepSectionActions}>{headerActions}</div>
-        ) : null}
+              </button> : null}
+          </div> : null}
+        {headerActions ? <div className={styles.stepSectionActions}>{headerActions}</div> : null}
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export function MonitoringStepTableWrap({
   children,
   scrollable = false,
-  className = "",
+  className = ""
 }) {
-  return (
-    <div className={equipmentStyles.hardwarePageEmbedded}>
-      <div
-        className={`${equipmentStyles.tableWrapper} ${
-          scrollable ? styles.stepTableScroll : ""
-        } ${className}`.trim()}
-      >
+  return <div className={equipmentStyles.hardwarePageEmbedded}>
+      <div className={`${equipmentStyles.tableWrapper} ${scrollable ? styles.stepTableScroll : ""} ${className}`.trim()}>
         {children}
       </div>
-    </div>
-  );
+    </div>;
 }

@@ -1,5 +1,4 @@
-import { createLocaleGetter, interpolate } from "../../i18n/translate";
-
+import { createLocaleGetter } from "../../i18n/translate";
 const SLA_COPY = {
   fr: {
     loadError: "Impossible de charger les paramètres SLA",
@@ -28,14 +27,22 @@ const SLA_COPY = {
     timeModes: {
       calendar: "Heures calendaires (24h/24)",
       business_hours: "Heures ouvrées",
-      business_days: "Jours ouvrés",
+      business_days: "Jours ouvrés"
     },
     timeModeHints: {
       calendar: "Les délais entreprise (en heures) s'additionnent en continu, y compris la nuit et le week-end.",
       business_hours: "Les délais comptent uniquement pendant les plages d'ouverture ci-dessous. Hors horaires, le compteur est en pause.",
-      business_days: "Chaque unité de délai correspond à une journée ouvrée complète (jusqu'à l'heure de fermeture du jour).",
+      business_days: "Chaque unité de délai correspond à une journée ouvrée complète (jusqu'à l'heure de fermeture du jour)."
     },
-    weekdays: { 0: "Dimanche", 1: "Lundi", 2: "Mardi", 3: "Mercredi", 4: "Jeudi", 5: "Vendredi", 6: "Samedi" },
+    weekdays: {
+      0: "Dimanche",
+      1: "Lundi",
+      2: "Mardi",
+      3: "Mercredi",
+      4: "Jeudi",
+      5: "Vendredi",
+      6: "Samedi"
+    }
   },
   en: {
     loadError: "Unable to load SLA settings",
@@ -64,14 +71,22 @@ const SLA_COPY = {
     timeModes: {
       calendar: "Calendar hours (24/7)",
       business_hours: "Business hours",
-      business_days: "Business days",
+      business_days: "Business days"
     },
     timeModeHints: {
       calendar: "Enterprise deadlines (in hours) accumulate continuously, including nights and weekends.",
       business_hours: "Deadlines count only during the opening hours below. Outside hours, the counter is paused.",
-      business_days: "Each delay unit equals one full business day (until closing time).",
+      business_days: "Each delay unit equals one full business day (until closing time)."
     },
-    weekdays: { 0: "Sunday", 1: "Monday", 2: "Tuesday", 3: "Wednesday", 4: "Thursday", 5: "Friday", 6: "Saturday" },
+    weekdays: {
+      0: "Sunday",
+      1: "Monday",
+      2: "Tuesday",
+      3: "Wednesday",
+      4: "Thursday",
+      5: "Friday",
+      6: "Saturday"
+    }
   },
   de: {
     loadError: "SLA-Einstellungen konnten nicht geladen werden",
@@ -87,20 +102,35 @@ const SLA_COPY = {
     scheduleTitle: "Support-Öffnungszeiten",
     scheduleDescription: "Zeiträume für Geschäftsstunden und -tage. Außerhalb pausiert der SLA-Zähler.",
     weekdaysTemplate: "Mo–Fr 9–18 Uhr",
-    dayColumn: "Tag", openColumn: "Geöffnet", startColumn: "Beginn", endColumn: "Ende",
+    dayColumn: "Tag",
+    openColumn: "Geöffnet",
+    startColumn: "Beginn",
+    endColumn: "Ende",
     applicationTitle: "Anwendung",
     applicationDescription: "Gilt für alle Tickets nach dem Speichern. Bereits berechnete Fristen werden nicht neu berechnet.",
     bullet1: "Fristen pro Unternehmen bleiben in der Kundendatei (Support) definiert.",
     bullet2: "Die erste öffentliche Antwort schließt die Annahmeverpflichtung ab.",
     bullet3: "Im Modus Arbeitstage entspricht 1 dem Ende des 1. Arbeitstags.",
     noOpenDays: "Keine Arbeitstage konfiguriert",
-    timeModes: { calendar: "Kalenderstunden (24/7)", business_hours: "Geschäftsstunden", business_days: "Arbeitstage" },
+    timeModes: {
+      calendar: "Kalenderstunden (24/7)",
+      business_hours: "Geschäftsstunden",
+      business_days: "Arbeitstage"
+    },
     timeModeHints: {
       calendar: "Fristen (in Stunden) laufen kontinuierlich, auch nachts und am Wochenende.",
       business_hours: "Fristen zählen nur während der Öffnungszeiten unten. Außerhalb pausiert der Zähler.",
-      business_days: "Jede Einheit entspricht einem vollen Arbeitstag (bis Schließzeit).",
+      business_days: "Jede Einheit entspricht einem vollen Arbeitstag (bis Schließzeit)."
     },
-    weekdays: { 0: "Sonntag", 1: "Montag", 2: "Dienstag", 3: "Mittwoch", 4: "Donnerstag", 5: "Freitag", 6: "Samstag" },
+    weekdays: {
+      0: "Sonntag",
+      1: "Montag",
+      2: "Dienstag",
+      3: "Mittwoch",
+      4: "Donnerstag",
+      5: "Freitag",
+      6: "Samstag"
+    }
   },
   it: {
     loadError: "Impossibile caricare le impostazioni SLA",
@@ -116,20 +146,35 @@ const SLA_COPY = {
     scheduleTitle: "Orari di apertura del supporto",
     scheduleDescription: "Fasce per ore e giorni lavorativi. Fuori da questi intervalli, il contatore SLA è in pausa.",
     weekdaysTemplate: "Lun–Ven 9–18",
-    dayColumn: "Giorno", openColumn: "Aperto", startColumn: "Inizio", endColumn: "Fine",
+    dayColumn: "Giorno",
+    openColumn: "Aperto",
+    startColumn: "Inizio",
+    endColumn: "Fine",
     applicationTitle: "Applicazione",
     applicationDescription: "Si applica a tutti i ticket creati dopo il salvataggio. Le scadenze già calcolate non vengono ricalcolate.",
     bullet1: "Le scadenze per azienda restano nella scheda cliente (sezione Supporto).",
     bullet2: "La prima risposta pubblica chiude l'impegno di presa in carico.",
     bullet3: "In modalità giorni lavorativi, 1 corrisponde alla fine del 1° giorno lavorativo.",
     noOpenDays: "Nessun giorno lavorativo configurato",
-    timeModes: { calendar: "Ore di calendario (24/7)", business_hours: "Ore lavorative", business_days: "Giorni lavorativi" },
+    timeModes: {
+      calendar: "Ore di calendario (24/7)",
+      business_hours: "Ore lavorative",
+      business_days: "Giorni lavorativi"
+    },
     timeModeHints: {
       calendar: "Le scadenze (in ore) si accumulano continuamente, anche di notte e nel weekend.",
       business_hours: "Le scadenze contano solo durante gli orari di apertura sotto. Fuori orario, pausa.",
-      business_days: "Ogni unità corrisponde a un giorno lavorativo completo (fino alla chiusura).",
+      business_days: "Ogni unità corrisponde a un giorno lavorativo completo (fino alla chiusura)."
     },
-    weekdays: { 0: "Domenica", 1: "Lunedì", 2: "Martedì", 3: "Mercoledì", 4: "Giovedì", 5: "Venerdì", 6: "Sabato" },
+    weekdays: {
+      0: "Domenica",
+      1: "Lunedì",
+      2: "Martedì",
+      3: "Mercoledì",
+      4: "Giovedì",
+      5: "Venerdì",
+      6: "Sabato"
+    }
   },
   es: {
     loadError: "No se pudieron cargar los ajustes SLA",
@@ -145,44 +190,54 @@ const SLA_COPY = {
     scheduleTitle: "Horario de apertura del soporte",
     scheduleDescription: "Franjas para horas y días laborables. Fuera de ellas, el contador SLA está en pausa.",
     weekdaysTemplate: "Lun–Vie 9h–18h",
-    dayColumn: "Día", openColumn: "Abierto", startColumn: "Inicio", endColumn: "Fin",
+    dayColumn: "Día",
+    openColumn: "Abierto",
+    startColumn: "Inicio",
+    endColumn: "Fin",
     applicationTitle: "Aplicación",
     applicationDescription: "Se aplica a todos los tickets creados tras guardar. Los vencimientos ya calculados no se recalculan.",
     bullet1: "Los plazos por empresa siguen en la ficha cliente (sección Soporte).",
     bullet2: "La primera respuesta pública cierra el compromiso de acuse.",
     bullet3: "En modo días laborables, 1 corresponde al final del 1.er día laborable.",
     noOpenDays: "Ningún día laborable configurado",
-    timeModes: { calendar: "Horas calendario (24/7)", business_hours: "Horas laborables", business_days: "Días laborables" },
+    timeModes: {
+      calendar: "Horas calendario (24/7)",
+      business_hours: "Horas laborables",
+      business_days: "Días laborables"
+    },
     timeModeHints: {
       calendar: "Los plazos (en horas) se acumulan continuamente, incluidas noches y fines de semana.",
       business_hours: "Los plazos cuentan solo durante los horarios de apertura abajo. Fuera de horario, pausa.",
-      business_days: "Cada unidad equivale a un día laborable completo (hasta la hora de cierre).",
+      business_days: "Cada unidad equivale a un día laborable completo (hasta la hora de cierre)."
     },
-    weekdays: { 0: "Domingo", 1: "Lunes", 2: "Martes", 3: "Miércoles", 4: "Jueves", 5: "Viernes", 6: "Sábado" },
-  },
+    weekdays: {
+      0: "Domingo",
+      1: "Lunes",
+      2: "Martes",
+      3: "Miércoles",
+      4: "Jueves",
+      5: "Viernes",
+      6: "Sábado"
+    }
+  }
 };
-
 export const getSlaCopy = createLocaleGetter(SLA_COPY);
-
 export function formatWeekScheduleSummaryLocalized(settings, locale) {
   const copy = getSlaCopy(locale);
-  const openDays = (settings?.weekSchedule || []).filter((row) => row.enabled);
+  const openDays = (settings?.weekSchedule || []).filter(row => row.enabled);
   if (!openDays.length) return copy.noOpenDays;
   const first = openDays[0];
-  const sameHours = openDays.every((row) => row.open === first.open && row.close === first.close);
-  const days = openDays.map((row) => copy.weekdays[row.day]).join(", ");
+  const sameHours = openDays.every(row => row.open === first.open && row.close === first.close);
+  const days = openDays.map(row => copy.weekdays[row.day]).join(", ");
   if (sameHours) return `${days} · ${first.open}–${first.close}`;
   return days;
 }
-
 export function getSlaTimeModeLabel(locale, mode) {
   return getSlaCopy(locale).timeModes?.[mode] || mode;
 }
-
 export function getSlaTimeModeHint(locale, mode) {
   return getSlaCopy(locale).timeModeHints?.[mode] || "";
 }
-
 export function getWeekdayLabel(locale, day) {
   return getSlaCopy(locale).weekdays?.[day] || String(day);
 }

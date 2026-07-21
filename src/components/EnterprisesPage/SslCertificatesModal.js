@@ -13,44 +13,41 @@ import { addClientSslCertificate, checkClientSslCertificates, checkClientSslCert
 import layout from "./EnterpriseFormModal.module.css";
 import styles from "./SslCertificatesModal.module.css";
 import NumberStepperInput from "../Misc/NumberStepperInput/NumberStepperInput";
-import {
-  computeSslStats,
-  filterSslCertificates,
-  formatSslDate,
-  formatSslDateTime,
-  formatSslSanList,
-  getSslCertStatus,
-  getSslExpiryBarWidth,
-  getSslHostLabel,
-  sortSslCertificates,
-} from "./sslCertificateUtils";
-
+import { computeSslStats, filterSslCertificates, formatSslDate, formatSslDateTime, formatSslSanList, getSslCertStatus, getSslExpiryBarWidth, getSslHostLabel, sortSslCertificates } from "./sslCertificateUtils";
 function getExpiryBarClass(daysRemaining) {
   if (daysRemaining == null) return styles.expiryBarUnknown;
   if (daysRemaining < 0) return styles.expiryBarExpired;
   if (daysRemaining <= 30) return styles.expiryBarWarning;
   return styles.expiryBarActive;
 }
-
 function getStatusClassName(statusKey) {
   if (statusKey === "active") return styles.statusActive;
   if (statusKey === "warning") return styles.statusWarning;
   if (statusKey === "expired" || statusKey === "error") return styles.statusExpired;
   return styles.statusUnknown;
 }
-
 function matchesProblemFilter(cert) {
   const key = getSslCertStatus(cert).key;
   return key === "error" || key === "expired";
 }
-
-function SslCertCard({ cert, copy, onEdit, onDelete, onCheck, checking, deleting }) {
-  const { meta, actions, statusLabels, bcp47 } = copy;
+function SslCertCard({
+  cert,
+  copy,
+  onEdit,
+  onDelete,
+  onCheck,
+  checking,
+  deleting
+}) {
+  const {
+    meta,
+    actions,
+    statusLabels,
+    bcp47
+  } = copy;
   const status = getSslCertStatus(cert, statusLabels);
   const barWidth = getSslExpiryBarWidth(cert.daysRemaining);
-
-  return (
-    <article className={`${styles.certCard} ${styles[`certCard_${status.key}`]}`}>
+  return <article className={`${styles.certCard} ${styles[`certCard_${status.key}`]}`}>
       <div className={styles.certCardMain}>
         <div className={styles.certCardHead}>
           <div className={styles.certHostWrap}>
@@ -96,18 +93,13 @@ function SslCertCard({ cert, copy, onEdit, onDelete, onCheck, checking, deleting
           </div>
         </div>
 
-        {cert.daysRemaining != null && !cert.error ? (
-          <div className={styles.expiryBarTrack} aria-hidden>
-            <div
-              className={`${styles.expiryBarFill} ${getExpiryBarClass(cert.daysRemaining)}`}
-              style={{ width: `${barWidth}%` }}
-            />
-          </div>
-        ) : null}
+        {cert.daysRemaining != null && !cert.error ? <div className={styles.expiryBarTrack} aria-hidden>
+            <div className={`${styles.expiryBarFill} ${getExpiryBarClass(cert.daysRemaining)}`} style={{
+          width: `${barWidth}%`
+        }} />
+          </div> : null}
 
-        {cert.authorizationError ? (
-          <p className={styles.certWarning}>{cert.authorizationError}</p>
-        ) : null}
+        {cert.authorizationError ? <p className={styles.certWarning}>{cert.authorizationError}</p> : null}
         {cert.error ? <p className={styles.certError}>{cert.error}</p> : null}
 
         <details className={styles.certDetails}>
@@ -138,11 +130,7 @@ function SslCertCard({ cert, copy, onEdit, onDelete, onCheck, checking, deleting
             <div className={styles.certMetaItem}>
               <span className={styles.certMetaLabel}>{meta.trustChain}</span>
               <span className={styles.certMetaValue}>
-                {cert.authorized === true
-                  ? meta.trustValid
-                  : cert.authorized === false
-                    ? meta.trustInvalid
-                    : "-"}
+                {cert.authorized === true ? meta.trustValid : cert.authorized === false ? meta.trustInvalid : "-"}
               </span>
             </div>
           </div>
@@ -150,47 +138,24 @@ function SslCertCard({ cert, copy, onEdit, onDelete, onCheck, checking, deleting
       </div>
 
       <div className={styles.certCardActions}>
-        <button
-          type="button"
-          className={styles.iconBtn}
-          onClick={() => onCheck?.(cert)}
-          disabled={checking || deleting}
-          title={checking ? actions.checking : actions.check}
-          aria-label={checking ? actions.checkingAria : actions.checkAria}
-        >
+        <button type="button" className={styles.iconBtn} onClick={() => onCheck?.(cert)} disabled={checking || deleting} title={checking ? actions.checking : actions.check} aria-label={checking ? actions.checkingAria : actions.checkAria}>
           <Icon icon={checking ? "mdi:loading" : "mdi:shield-sync-outline"} aria-hidden />
         </button>
-        <button
-          type="button"
-          className={styles.iconBtn}
-          onClick={() => onEdit?.(cert)}
-          disabled={checking || deleting}
-          title={actions.edit}
-          aria-label={actions.editAria}
-        >
+        <button type="button" className={styles.iconBtn} onClick={() => onEdit?.(cert)} disabled={checking || deleting} title={actions.edit} aria-label={actions.editAria}>
           <Icon icon="mdi:pencil-outline" aria-hidden />
         </button>
-        <button
-          type="button"
-          className={`${styles.iconBtn} ${styles.iconBtnDanger}`}
-          onClick={() => onDelete?.(cert)}
-          disabled={checking || deleting}
-          title={actions.delete}
-          aria-label={actions.deleteAria}
-        >
+        <button type="button" className={`${styles.iconBtn} ${styles.iconBtnDanger}`} onClick={() => onDelete?.(cert)} disabled={checking || deleting} title={actions.delete} aria-label={actions.deleteAria}>
           <Icon icon="mdi:trash-can-outline" aria-hidden />
         </button>
       </div>
-    </article>
-  );
+    </article>;
 }
-
 export default function SslCertificatesModal({
   isOpen,
   onClose,
   certificates = [],
   clientId,
-  onRefresh,
+  onRefresh
 }) {
   const locale = useAppLocale();
   const configCopy = useMemo(() => getEnterpriseConfigModalsCopy(locale), [locale]);
@@ -208,7 +173,6 @@ export default function SslCertificatesModal({
   const [statusFilter, setStatusFilter] = useState("all");
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [error, setError] = useState(null);
-
   const stats = useMemo(() => computeSslStats(certificates), [certificates]);
   const sortedCerts = useMemo(() => sortSslCertificates(certificates), [certificates]);
   const filteredCerts = useMemo(() => {
@@ -217,33 +181,30 @@ export default function SslCertificatesModal({
     }
     return filterSslCertificates(sortedCerts, statusFilter);
   }, [sortedCerts, statusFilter]);
-
   useEffect(() => {
     if (!isOpen) setDeleteTarget(null);
   }, [isOpen]);
-
   if (!isOpen) return null;
-
-  const getKpiValue = (key) => {
+  const getKpiValue = key => {
     if (key === "all") return stats.total;
     if (key === "active") return stats.active;
     if (key === "warning") return stats.warning;
     if (key === "problem") return stats.problem;
     return 0;
   };
-
-  const handleKpiClick = (filter) => {
+  const handleKpiClick = filter => {
     setStatusFilter(filter === "problem" ? "problem" : filter);
     setActiveSection("inventory");
   };
-
   const handleCheckAll = async () => {
     if (!clientId) return;
     setChecking(true);
     setError(null);
     try {
       const result = await checkClientSslCertificates(clientId);
-      toast.success(interpolate(copy.toasts.checkAllSuccess, { count: String(result.checked || 0) }));
+      toast.success(interpolate(copy.toasts.checkAllSuccess, {
+        count: String(result.checked || 0)
+      }));
       await onRefresh?.();
     } catch (err) {
       const message = err.message || copy.toasts.checkAllError;
@@ -253,7 +214,6 @@ export default function SslCertificatesModal({
       setChecking(false);
     }
   };
-
   const handleAdd = async () => {
     if (!clientId || !newHost.trim()) {
       setError(copy.toasts.hostnameRequired);
@@ -267,14 +227,14 @@ export default function SslCertificatesModal({
         await updateClientSslCertificate(clientId, editingCert.id, {
           hostname: newHost.trim(),
           port: Number(newPort) || 443,
-          checkIntervalHours: interval,
+          checkIntervalHours: interval
         });
         toast.success(copy.toasts.hostUpdated);
       } else {
         await addClientSslCertificate(clientId, {
           hostname: newHost.trim(),
           port: Number(newPort) || 443,
-          checkIntervalHours: interval,
+          checkIntervalHours: interval
         });
         toast.success(copy.toasts.hostAdded);
       }
@@ -292,25 +252,21 @@ export default function SslCertificatesModal({
       setAdding(false);
     }
   };
-
-  const handleEditCert = (cert) => {
+  const handleEditCert = cert => {
     setEditingCert(cert);
     setNewHost(cert.hostname || "");
     setNewPort(String(cert.port || 443));
     setCheckIntervalHours(String(cert.checkIntervalHours || 24));
     setActiveSection("add");
   };
-
-  const requestDeleteCert = (cert) => {
+  const requestDeleteCert = cert => {
     if (!clientId || !cert?.id) return;
     setDeleteTarget(cert);
   };
-
   const cancelDeleteCert = () => {
     if (deletingCertId) return;
     setDeleteTarget(null);
   };
-
   const confirmDeleteCert = async () => {
     if (!clientId || !deleteTarget?.id) return;
     setDeletingCertId(deleteTarget.id);
@@ -333,14 +289,15 @@ export default function SslCertificatesModal({
       setDeletingCertId(null);
     }
   };
-
-  const handleCheckCert = async (cert) => {
+  const handleCheckCert = async cert => {
     if (!clientId || !cert?.id) return;
     setCheckingCertId(cert.id);
     setError(null);
     try {
       await checkClientSslCertificate(clientId, cert.id);
-      toast.success(interpolate(copy.toasts.checkCertSuccess, { host: getSslHostLabel(cert) }));
+      toast.success(interpolate(copy.toasts.checkCertSuccess, {
+        host: getSslHostLabel(cert)
+      }));
       await onRefresh?.();
     } catch (err) {
       const message = err.message || copy.toasts.checkCertError;
@@ -350,7 +307,6 @@ export default function SslCertificatesModal({
       setCheckingCertId(null);
     }
   };
-
   const handlePrimaryAction = () => {
     if (activeSection === "add") {
       handleAdd();
@@ -358,52 +314,17 @@ export default function SslCertificatesModal({
     }
     handleCheckAll();
   };
-
-  const primaryDisabled =
-    activeSection === "add"
-      ? adding || !newHost.trim()
-      : checking || !clientId || certificates.length === 0;
-
-  const primaryLabel =
-    activeSection === "add"
-      ? adding
-        ? common.saving
-        : editingCert
-          ? copy.primary.update
-          : copy.primary.addHost
-      : checking
-        ? copy.primary.checking
-        : copy.primary.checkAll;
-
-  const primaryIcon =
-    activeSection === "add"
-      ? adding
-        ? "mdi:loading"
-        : "mdi:plus"
-      : checking
-        ? "mdi:loading"
-        : "mdi:shield-sync-outline";
-
-  const renderOverview = () => (
-    <>
+  const primaryDisabled = activeSection === "add" ? adding || !newHost.trim() : checking || !clientId || certificates.length === 0;
+  const primaryLabel = activeSection === "add" ? adding ? common.saving : editingCert ? copy.primary.update : copy.primary.addHost : checking ? copy.primary.checking : copy.primary.checkAll;
+  const primaryIcon = activeSection === "add" ? adding ? "mdi:loading" : "mdi:plus" : checking ? "mdi:loading" : "mdi:shield-sync-outline";
+  const renderOverview = () => <>
       <div className={layout.sectionHead}>
         <h3 className={layout.sectionTitle}>{copy.overview.title}</h3>
         <p className={layout.sectionDesc}>{copy.overview.description}</p>
       </div>
 
       <div className={styles.kpiRow}>
-        {copy.kpiItems.map((item) => (
-          <button
-            key={item.key}
-            type="button"
-            className={`${styles.kpiCard} ${
-              activeSection === "inventory" &&
-              (statusFilter === item.filter || (item.filter === "problem" && statusFilter === "problem"))
-                ? styles.kpiCardActiveFilter
-                : ""
-            }`}
-            onClick={() => handleKpiClick(item.filter)}
-          >
+        {copy.kpiItems.map(item => <button key={item.key} type="button" className={`${styles.kpiCard} ${activeSection === "inventory" && (statusFilter === item.filter || item.filter === "problem" && statusFilter === "problem") ? styles.kpiCardActiveFilter : ""}`} onClick={() => handleKpiClick(item.filter)}>
             <div className={`${styles.kpiIconWrap} ${styles[`kpiIcon_${item.tone}`]}`}>
               <Icon icon={item.icon} aria-hidden />
             </div>
@@ -411,16 +332,13 @@ export default function SslCertificatesModal({
               <span className={styles.kpiValue}>{getKpiValue(item.key)}</span>
               <span className={styles.kpiLabel}>{item.label}</span>
             </div>
-          </button>
-        ))}
+          </button>)}
       </div>
 
-      {stats.unknown > 0 ? (
-        <div className={styles.infoBox}>
+      {stats.unknown > 0 ? <div className={styles.infoBox}>
           <Icon icon="mdi:information-outline" className={styles.infoBoxIcon} aria-hidden />
           <p>{copy.formatUnknownNotice(stats.unknown)}</p>
-        </div>
-      ) : null}
+        </div> : null}
 
       <div className={styles.infoBox}>
         <Icon icon="mdi:timer-outline" className={styles.infoBoxIcon} aria-hidden />
@@ -432,21 +350,13 @@ export default function SslCertificatesModal({
           <Icon icon="mdi:web-plus" aria-hidden />
           {copy.overview.addHostBtn}
         </button>
-        <button
-          type="button"
-          className={layout.ghostBtn}
-          onClick={() => setActiveSection("inventory")}
-          disabled={certificates.length === 0}
-        >
+        <button type="button" className={layout.ghostBtn} onClick={() => setActiveSection("inventory")} disabled={certificates.length === 0}>
           <Icon icon="mdi:format-list-bulleted" aria-hidden />
           {copy.overview.viewCertsBtn}
         </button>
       </div>
-    </>
-  );
-
-  const renderAdd = () => (
-    <>
+    </>;
+  const renderAdd = () => <>
       <div className={layout.sectionHead}>
         <h3 className={layout.sectionTitle}>
           {editingCert ? copy.add.titleEdit : copy.add.titleNew}
@@ -462,70 +372,35 @@ export default function SslCertificatesModal({
             <label className={`${layout.label} ${layout.labelRequired}`} htmlFor="ssl-host-input">
               {copy.add.hostname}
             </label>
-            <input
-              id="ssl-host-input"
-              type="text"
-              className={layout.input}
-              value={newHost}
-              onChange={(e) => setNewHost(e.target.value)}
-              placeholder={copy.add.hostnamePlaceholder}
-              autoComplete="off"
-            />
+            <input id="ssl-host-input" type="text" className={layout.input} value={newHost} onChange={e => setNewHost(e.target.value)} placeholder={copy.add.hostnamePlaceholder} autoComplete="off" />
           </div>
           <div className={layout.field}>
             <label className={layout.label} htmlFor="ssl-port-input">
               {copy.add.port}
             </label>
-            <NumberStepperInput
-              id="ssl-port-input"
-              min={1}
-              max={65535}
-              inputClassName={layout.input}
-              value={newPort}
-              onChange={setNewPort}
-              increaseAriaLabel={copy.add.portIncrease}
-              decreaseAriaLabel={copy.add.portDecrease}
-            />
+            <NumberStepperInput id="ssl-port-input" min={1} max={65535} inputClassName={layout.input} value={newPort} onChange={setNewPort} increaseAriaLabel={copy.add.portIncrease} decreaseAriaLabel={copy.add.portDecrease} />
           </div>
           <div className={layout.field}>
             <label className={layout.label} htmlFor="ssl-interval-input">
               {copy.add.interval}
             </label>
-            <NumberStepperInput
-              id="ssl-interval-input"
-              min={1}
-              max={8760}
-              inputClassName={layout.input}
-              value={checkIntervalHours}
-              onChange={setCheckIntervalHours}
-              increaseAriaLabel={copy.add.intervalIncrease}
-              decreaseAriaLabel={copy.add.intervalDecrease}
-            />
+            <NumberStepperInput id="ssl-interval-input" min={1} max={8760} inputClassName={layout.input} value={checkIntervalHours} onChange={setCheckIntervalHours} increaseAriaLabel={copy.add.intervalIncrease} decreaseAriaLabel={copy.add.intervalDecrease} />
           </div>
         </div>
 
-        {editingCert ? (
-          <div className={styles.formActions}>
-            <button
-              type="button"
-              className={layout.ghostBtn}
-              onClick={() => {
-                setEditingCert(null);
-                setNewHost("");
-                setNewPort("443");
-                setCheckIntervalHours("24");
-              }}
-            >
+        {editingCert ? <div className={styles.formActions}>
+            <button type="button" className={layout.ghostBtn} onClick={() => {
+          setEditingCert(null);
+          setNewHost("");
+          setNewPort("443");
+          setCheckIntervalHours("24");
+        }}>
               {copy.add.cancelEdit}
             </button>
-          </div>
-        ) : null}
+          </div> : null}
       </div>
-    </>
-  );
-
-  const renderInventory = () => (
-    <>
+    </>;
+  const renderInventory = () => <>
       <div className={layout.sectionHead}>
         <h3 className={layout.sectionTitle}>{copy.inventory.title}</h3>
         <p className={layout.sectionDesc}>{copy.inventory.description}</p>
@@ -537,38 +412,15 @@ export default function SslCertificatesModal({
           {statusFilter !== "all" ? copy.inventory.filteredSuffix : ""}
         </p>
         <div className={styles.filterChips}>
-          {copy.filterOptions.map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              className={`${styles.filterChip} ${
-                statusFilter === option.value ? styles.filterChipActive : ""
-              }`}
-              onClick={() => setStatusFilter(option.value)}
-            >
+          {copy.filterOptions.map(option => <button key={option.value} type="button" className={`${styles.filterChip} ${statusFilter === option.value ? styles.filterChipActive : ""}`} onClick={() => setStatusFilter(option.value)}>
               {option.label}
-            </button>
-          ))}
+            </button>)}
         </div>
       </div>
 
-      {filteredCerts.length > 0 ? (
-        <div className={styles.certList}>
-          {filteredCerts.map((cert) => (
-            <SslCertCard
-              key={cert.id || cert.hostname}
-              cert={cert}
-              copy={copy}
-              onEdit={handleEditCert}
-              onDelete={requestDeleteCert}
-              onCheck={handleCheckCert}
-              checking={checkingCertId === cert.id}
-              deleting={deletingCertId === cert.id}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className={styles.emptyState}>
+      {filteredCerts.length > 0 ? <div className={styles.certList}>
+          {filteredCerts.map(cert => <SslCertCard key={cert.id || cert.hostname} cert={cert} copy={copy} onEdit={handleEditCert} onDelete={requestDeleteCert} onCheck={handleCheckCert} checking={checkingCertId === cert.id} deleting={deletingCertId === cert.id} />)}
+        </div> : <div className={styles.emptyState}>
           <Icon icon="mdi:certificate-outline" className={styles.emptyIcon} aria-hidden />
           <p className={styles.emptyTitle}>
             {certificates.length === 0 ? copy.empty.noneTitle : copy.empty.noFilterTitle}
@@ -576,34 +428,16 @@ export default function SslCertificatesModal({
           <p className={styles.emptyHint}>
             {certificates.length === 0 ? copy.empty.noneHint : copy.empty.noFilterHint}
           </p>
-          {certificates.length === 0 ? (
-            <button
-              type="button"
-              className={`${layout.primaryBtn} ${styles.emptyAction}`}
-              onClick={() => setActiveSection("add")}
-            >
+          {certificates.length === 0 ? <button type="button" className={`${layout.primaryBtn} ${styles.emptyAction}`} onClick={() => setActiveSection("add")}>
               <Icon icon="mdi:web-plus" aria-hidden />
               {copy.empty.addBtn}
-            </button>
-          ) : null}
-        </div>
-      )}
-    </>
-  );
-
+            </button> : null}
+        </div>}
+    </>;
   const deleteHostLabel = deleteTarget ? getSslHostLabel(deleteTarget) : "";
-
-  return (
-    <>
-      {createPortal(
-    <div className={layout.overlay} onClick={onClose} role="presentation">
-      <div
-        className={layout.shell}
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="ssl-modal-title"
-      >
+  return <>
+      {createPortal(<div className={layout.overlay} onClick={onClose} role="presentation">
+      <div className={layout.shell} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="ssl-modal-title">
         <div className={layout.accentBar} aria-hidden />
 
         <header className={layout.header}>
@@ -619,55 +453,30 @@ export default function SslCertificatesModal({
               <p className={layout.subtitle}>{copy.subtitle}</p>
             </div>
           </div>
-          <button
-            type="button"
-            className={layout.closeBtn}
-            onClick={onClose}
-            disabled={checking || adding || deletingCertId != null}
-            aria-label={common.close}
-          >
+          <button type="button" className={layout.closeBtn} onClick={onClose} disabled={checking || adding || deletingCertId != null} aria-label={common.close}>
             <FaTimes />
           </button>
         </header>
 
         <div className={layout.body}>
           <nav className={layout.nav} aria-label={copy.navAria}>
-            {copy.navSections.map((section) => {
-              const badge =
-                section.id === "inventory"
-                  ? stats.total
-                  : section.id === "add" && newHost.trim()
-                    ? "…"
-                    : null;
-              return (
-                <button
-                  key={section.id}
-                  type="button"
-                  className={`${layout.navItem} ${
-                    activeSection === section.id ? layout.navItemActive : ""
-                  }`}
-                  onClick={() => setActiveSection(section.id)}
-                  aria-current={activeSection === section.id ? "step" : undefined}
-                >
+            {copy.navSections.map(section => {
+              const badge = section.id === "inventory" ? stats.total : section.id === "add" && newHost.trim() ? "…" : null;
+              return <button key={section.id} type="button" className={`${layout.navItem} ${activeSection === section.id ? layout.navItemActive : ""}`} onClick={() => setActiveSection(section.id)} aria-current={activeSection === section.id ? "step" : undefined}>
                   <Icon icon={section.icon} className={layout.navItemIcon} aria-hidden />
                   <span className={layout.navItemText}>
                     <span className={layout.navItemLabel}>{section.label}</span>
                     <span className={layout.navItemHint}>{section.description}</span>
                   </span>
-                  {badge != null && badge !== 0 ? (
-                    <span className={layout.navBadge}>{badge}</span>
-                  ) : null}
-                </button>
-              );
+                  {badge != null && badge !== 0 ? <span className={layout.navBadge}>{badge}</span> : null}
+                </button>;
             })}
           </nav>
 
           <div className={layout.content}>
-            {error ? (
-              <div className={styles.errorBanner} role="alert">
+            {error ? <div className={styles.errorBanner} role="alert">
                 {error}
-              </div>
-            ) : null}
+              </div> : null}
             {activeSection === "overview" && renderOverview()}
             {activeSection === "add" && renderAdd()}
             {activeSection === "inventory" && renderInventory()}
@@ -676,43 +485,19 @@ export default function SslCertificatesModal({
 
         <footer className={layout.footer}>
           <span className={layout.footerHint}>
-            {activeSection === "add"
-              ? copy.footer.hostRequired
-              : copy.formatHostCount(stats.total)}
+            {activeSection === "add" ? copy.footer.hostRequired : copy.formatHostCount(stats.total)}
           </span>
           <div className={layout.footerActions}>
-            <button
-              type="button"
-              className={layout.primaryBtn}
-              onClick={handlePrimaryAction}
-              disabled={primaryDisabled}
-            >
-              <Icon
-                icon={primaryIcon}
-                className={checking || adding ? layout.spinning : undefined}
-                aria-hidden
-              />
+            <button type="button" className={layout.primaryBtn} onClick={handlePrimaryAction} disabled={primaryDisabled}>
+              <Icon icon={primaryIcon} className={checking || adding ? layout.spinning : undefined} aria-hidden />
               {primaryLabel}
             </button>
           </div>
         </footer>
       </div>
-    </div>,
-    document.getElementById("modal-root") || document.body
-      )}
-      <ConfirmModal
-        open={Boolean(deleteTarget)}
-        title={configCopy.confirm.removeSslMonitoring.title}
-        message={interpolate(configCopy.confirm.removeSslMonitoring.message, {
-          host: deleteHostLabel,
-        })}
-        confirmLabel={common.remove}
-        variant="danger"
-        icon="mdi:delete-alert-outline"
-        loading={Boolean(deletingCertId)}
-        onClose={cancelDeleteCert}
-        onConfirm={confirmDeleteCert}
-      />
-    </>
-  );
+    </div>, document.getElementById("modal-root") || document.body)}
+      <ConfirmModal open={Boolean(deleteTarget)} title={configCopy.confirm.removeSslMonitoring.title} message={interpolate(configCopy.confirm.removeSslMonitoring.message, {
+      host: deleteHostLabel
+    })} confirmLabel={common.remove} variant="danger" icon="mdi:delete-alert-outline" loading={Boolean(deletingCertId)} onClose={cancelDeleteCert} onConfirm={confirmDeleteCert} />
+    </>;
 }

@@ -34,8 +34,7 @@ export default {
     average: "Media",
     edited: "modificato",
     confidentialUse: "Uso riservato",
-    attachmentFormats:
-      "PDF, JPG, PNG, DOC, DOCX, CSV, XLS, XLSX, MP4, 3GP, MP3, OGG, AAC, AMR, M4A",
+    attachmentFormats: "PDF, JPG, PNG, DOC, DOCX, CSV, XLS, XLSX, MP4, 3GP, MP3, OGG, AAC, AMR, M4A"
   },
   layout: {
     brandSub: "Portale clienti",
@@ -82,15 +81,14 @@ export default {
     stopImpersonation: "Esci dall'impersonazione",
     loadError: "Errore durante il caricamento del portale.",
     stopImpersonationSuccess: "Sei tornato alla sessione agente.",
-    stopImpersonationError: "Impossibile uscire dall'impersonazione.",
+    stopImpersonationError: "Impossibile uscire dall'impersonazione."
   },
   dashboard: {
     pageTitle: "Panoramica",
     healthBadge: "Salute IT {pct}%",
     actionRequiredTitleOne: "{count} ticket richiede la tua attenzione",
     actionRequiredTitleMany: "{count} ticket richiedono la tua attenzione",
-    actionRequiredDesc:
-      "È necessaria la convalida della risoluzione o una tua risposta per procedere.",
+    actionRequiredDesc: "È necessaria la convalida della risoluzione o una tua risposta per procedere.",
     autoCloseAt: "Chiusura automatica il {date}",
     pendingYourResponse: "In attesa della tua risposta",
     seeInSupport: "Vedi in Supporto",
@@ -152,7 +150,7 @@ export default {
     cloudSummaryUsersMany: "{count} utenti",
     cloudSummaryServicesOne: "{count} servizio",
     cloudSummaryServicesMany: "{count} servizi",
-    cloudSummaryBackup: "{instances} istanza/e · {jobs} job",
+    cloudSummaryBackup: "{instances} istanza/e · {jobs} job"
   },
   overviewCatalog: {
     workstations: "Postazioni",
@@ -169,14 +167,13 @@ export default {
     save: "Backup",
     antivirus: "Antivirus",
     antispam: "Antispam",
-    ndd: "Domini",
+    ndd: "Domini"
   },
   devices: {
     eyebrow: "Infrastruttura",
     pageTitle: "I miei dispositivi",
     emptyTitle: "Nessun dispositivo registrato",
-    emptyDesc:
-      "Il parco e l'infrastruttura appariranno qui una volta configurati dal team Veritas.",
+    emptyDesc: "Il parco e l'infrastruttura appariranno qui una volta configurati dal team Veritas.",
     tabOverview: "Riepilogo",
     tabDevices: "Dispositivi",
     filterAll: "Tutti",
@@ -195,7 +192,7 @@ export default {
     agentOffline: "Agente offline",
     agentUnknown: "Stato sconosciuto",
     noItemsInCategory: "Nessun dispositivo in questa categoria.",
-    noWorkstationsData: "Dati dettagliati postazioni non disponibili.",
+    noWorkstationsData: "Dati dettagliati postazioni non disponibili."
   },
   contract: {
     eyebrow: "Contratto",
@@ -207,14 +204,13 @@ export default {
     infraGroupTitle: "Infrastruttura",
     cloudGroupTitle: "Cloud e cybersicurezza",
     optionActive: "Sottoscritto",
-    optionInactive: "Non sottoscritto",
+    optionInactive: "Non sottoscritto"
   },
   services: {
     eyebrow: "Servizi",
     pageTitle: "I miei servizi",
     emptyTitle: "Nessun servizio cloud configurato",
-    emptyDesc:
-      "Microsoft 365, backup, antivirus e altri servizi appariranno qui una volta attivati.",
+    emptyDesc: "Microsoft 365, backup, antivirus e altri servizi appariranno qui una volta attivati.",
     filterAll: "Tutti",
     filterByType: "Filtra per tipo",
     tableService: "Servizio",
@@ -252,7 +248,7 @@ export default {
     domain: "Dominio",
     jobCount: "{count} job",
     jobCountOne: "{count} job",
-    saveJobLabel: "Job di backup",
+    saveJobLabel: "Job di backup"
   },
   fleet: {
     workstations: "Postazioni di lavoro",
@@ -325,7 +321,7 @@ export default {
     health: {
       controlled: "Parco sotto controllo",
       vigilance: "Punti da monitorare",
-      watch: "Parco da tenere sotto osservazione",
+      watch: "Parco da tenere sotto osservazione"
     },
     chartLabels: {
       notSpecified: "Non specificato",
@@ -356,21 +352,19 @@ export default {
       disk512to1tb: "512 GB – 1 TB",
       disk1tbPlus: "1 TB e oltre",
       powerDesktop: "PC fisso",
-      powerGeneric: "Postazione generica",
-    },
+      powerGeneric: "Postazione generica"
+    }
   },
   profile: {
     eyebrow: "Account",
     pageTitle: "Il mio profilo",
     loadingProfile: "Caricamento del profilo…",
     photoSectionTitle: "Foto del profilo",
-    photoSectionDesc:
-      "Il tuo avatar appare nelle conversazioni di supporto con il team Veritas.",
+    photoSectionDesc: "Il tuo avatar appare nelle conversazioni di supporto con il team Veritas.",
     identityTitle: "Identità",
     identityDesc: "Aggiorna le informazioni di accesso e di visualizzazione.",
     coordinatesTitle: "Recapiti",
-    coordinatesDesc:
-      "Email e numeri di telefono condivisi con il team Veritas. L'email preferita viene usata anche per l'accesso.",
+    coordinatesDesc: "Email e numeri di telefono condivisi con il team Veritas. L'email preferita viene usata anche per l'accesso.",
     coordinatesEmpty: "Nessun recapito inserito. Clicca Modifica per aggiungerne.",
     editCoordinates: "Modifica",
     saveCoordinates: "Salva",
@@ -393,14 +387,11 @@ export default {
       enabled: "Attivato",
       pending: "Configurazione in corso",
       off: "Disattivato",
-      enabledDesc:
-        "Il tuo account è protetto da un codice monouso generato da un'app di autenticazione.",
-      pendingDesc:
-        "La configurazione MFA è stata avviata ma non completata. Scansiona il QR code e convalida un codice.",
-      offDesc:
-        "Aggiungi un livello di sicurezza con Microsoft Authenticator, Google Authenticator o un'app compatibile TOTP.",
+      enabledDesc: "Il tuo account è protetto da un codice monouso generato da un'app di autenticazione.",
+      pendingDesc: "La configurazione MFA è stata avviata ma non completata. Scansiona il QR code e convalida un codice.",
+      offDesc: "Aggiungi un livello di sicurezza con Microsoft Authenticator, Google Authenticator o un'app compatibile TOTP.",
       continueSetup: "Continua la configurazione",
-      enable: "Attiva MFA",
+      enable: "Attiva MFA"
     },
     loadError: "Impossibile caricare il profilo",
     modals: {
@@ -409,27 +400,27 @@ export default {
         title: "Modifica nome visualizzato",
         label: "Nome visualizzato",
         hint: "Da 2 a 50 caratteri.",
-        placeholder: "Il tuo nome",
+        placeholder: "Il tuo nome"
       },
       email: {
         title: "Modifica email",
         label: "Indirizzo email",
         hint: "Deve essere univoco sulla piattaforma.",
-        placeholder: "nome@azienda.com",
+        placeholder: "nome@azienda.com"
       },
       password: {
         title: "Cambia password",
         label: "Nuova password",
         hint: "Almeno 6 caratteri.",
         confirmLabel: "Conferma password",
-        confirmAction: "Aggiorna",
+        confirmAction: "Aggiorna"
       },
       portalEmail: {
         title: "Modifica email di accesso",
         desc: "L'email preferita diventerà il tuo identificativo di accesso al portale dopo il salvataggio.",
         previous: "Email precedente",
         next: "Nuova email preferita",
-        confirmAction: "Conferma e salva",
+        confirmAction: "Conferma e salva"
       },
       mfa: {
         title: "Configura autenticazione a due fattori",
@@ -437,8 +428,8 @@ export default {
         qrAlt: "QR code MFA",
         manualKey: "Chiave manuale:",
         codePlaceholder: "000000",
-        enable: "Attiva MFA",
-      },
+        enable: "Attiva MFA"
+      }
     },
     toast: {
       usernameTooShort: "Il nome visualizzato deve contenere almeno 2 caratteri.",
@@ -456,8 +447,8 @@ export default {
       contactIncomplete: "Completa o rimuovi i recapiti vuoti prima di salvare.",
       mfaSetupError: "Errore durante la configurazione MFA.",
       mfaEnabled: "Autenticazione a due fattori attivata.",
-      mfaInvalidCode: "Codice non valido.",
-    },
+      mfaInvalidCode: "Codice non valido."
+    }
   },
   ticket: {
     status: {
@@ -466,21 +457,27 @@ export default {
       pending: "In attesa",
       in_progress: "In corso",
       resolved: "Risolto",
-      closed: "Chiuso",
+      closed: "Chiuso"
     },
     priority: {
       low: "Bassa",
       normal: "Normale",
       high: "Alta",
-      urgent: "Urgente",
+      urgent: "Urgente"
     },
     types: {
-      incident: { label: "Incidente", hint: "Guasto o interruzione del servizio" },
-      demande: { label: "Richiesta", hint: "Esigenza o domanda" },
+      incident: {
+        label: "Incidente",
+        hint: "Guasto o interruzione del servizio"
+      },
+      demande: {
+        label: "Richiesta",
+        hint: "Esigenza o domanda"
+      }
     },
     typeLabels: {
       probleme: "Problema",
-      changement: "Modifica",
+      changement: "Modifica"
     },
     channels: {
       web: "Portale clienti",
@@ -488,18 +485,18 @@ export default {
       email: "Email",
       chat: "Chat",
       api: "API",
-      whatsapp: "WhatsApp",
+      whatsapp: "WhatsApp"
     },
     statusFilters: {
       action_required: "Azione richiesta",
       open: "Aperti",
       all: "Tutti",
       resolved: "Risolti",
-      closed: "Chiusi",
+      closed: "Chiusi"
     },
     badges: {
       validationRequired: "Convalida richiesta",
-      actionRequired: "Azione richiesta",
+      actionRequired: "Azione richiesta"
     },
     list: {
       eyebrow: "Supporto",
@@ -524,7 +521,7 @@ export default {
       rated: "Valutazione inviata",
       notRated: "Non valutato",
       openTicketAria: "Apri ticket {id}",
-      loadError: "Impossibile caricare i ticket.",
+      loadError: "Impossibile caricare i ticket."
     },
     detail: {
       loading: "Caricamento ticket…",
@@ -538,8 +535,7 @@ export default {
       editMessageAria: "Modifica messaggio",
       editMessageTitle: "Modifica messaggio",
       validationQuestion: "La soluzione proposta ti soddisfa?",
-      validationMeta:
-        "Conferma se il problema è risolto oppure rifiuta per un ulteriore intervento.",
+      validationMeta: "Conferma se il problema è risolto oppure rifiuta per un ulteriore intervento.",
       validationCommentPlaceholder: "Commento facoltativo…",
       rejectResolution: "No, il problema persiste",
       acceptResolution: "Sì, è risolto",
@@ -552,11 +548,9 @@ export default {
       ticketClosed: "chiuso",
       ticketResolved: "risolto",
       ticketFinishedTitle: "Ticket {status}",
-      ticketFinishedText:
-        "Puoi consultare la cronologia ma non puoi più inviare nuovi messaggi.",
+      ticketFinishedText: "Puoi consultare la cronologia ma non puoi più inviare nuovi messaggi.",
       satisfactionInviteTitle: "La tua opinione conta",
-      satisfactionInviteText:
-        "Condividi la tua esperienza in pochi secondi · il tuo feedback ci aiuta a migliorare il supporto.",
+      satisfactionInviteText: "Condividi la tua esperienza in pochi secondi · il tuo feedback ci aiuta a migliorare il supporto.",
       giveFeedback: "Lascia un feedback",
       thanksTitle: "Grazie per il tuo feedback!",
       thanksText: "La tua valutazione è stata registrata",
@@ -567,8 +561,7 @@ export default {
       modalEditTitle: "Modifica la mia valutazione",
       modalViewTitle: "La tua valutazione",
       modalNewTitle: "Il tuo feedback sul supporto",
-      modalSubtitle:
-        "Valuta ogni aspetto da 1 a 5 stelle e aggiungi un commento se lo desideri.",
+      modalSubtitle: "Valuta ogni aspetto da 1 a 5 stelle e aggiungi un commento se lo desideri.",
       commentLabel: "Commento",
       commentOptional: "Commento (facoltativo)",
       commentPlaceholder: "Condividi un commento libero sulla tua esperienza…",
@@ -582,8 +575,7 @@ export default {
       starNoteLabel: "Valutazione",
       starNoteFor: "Valutazione · {label}",
       validationAccepted: "Grazie! Il ticket è stato chiuso.",
-      validationRejected:
-        "Il tuo feedback è stato inviato al supporto. Il ticket è di nuovo aperto.",
+      validationRejected: "Il tuo feedback è stato inviato al supporto. Il ticket è di nuovo aperto.",
       validationError: "Impossibile salvare la tua risposta.",
       satisfactionIncomplete: "Valuta ogni criterio da 1 a 5 stelle.",
       satisfactionThanks: "Grazie per il tuo feedback!",
@@ -596,7 +588,7 @@ export default {
       messageEmpty: "Il messaggio non può essere vuoto.",
       messageEdited: "Messaggio aggiornato.",
       messageEditError: "Impossibile modificare il messaggio.",
-      loadError: "Impossibile caricare il ticket.",
+      loadError: "Impossibile caricare il ticket."
     },
     infoPanel: {
       aria: "Informazioni ticket",
@@ -621,25 +613,19 @@ export default {
       respondedAt: "Risposta:",
       activity: "Attività",
       messages: "Messaggi:",
-      feedbackRecorded: "Feedback registrato",
+      feedbackRecorded: "Feedback registrato"
     },
     create: {
       eyebrow: "Helpdesk",
       pageTitle: "Nuovo ticket di supporto",
-      pageSubtitle:
-        "Descrivi la tua richiesta affinché il team di supporto possa aiutarti rapidamente.",
+      pageSubtitle: "Descrivi la tua richiesta affinché il team di supporto possa aiutarti rapidamente.",
       createBtn: "Crea ticket",
       creating: "Creazione…",
       dropTitle: "Trascina qui i file per allegarli al ticket",
       dropHint: "{formats} · 15 MB max per file, {max} max",
       tipsTitle: "Suggerimenti",
       tipsAria: "Mostra suggerimenti di compilazione",
-      tips: [
-        "Descrivi con precisione il problema o l'esigenza, includendo il contesto aziendale.",
-        "Indica l'impatto sulla tua attività (persone coinvolte, servizi interessati).",
-        "Elenca le azioni già tentate per accelerare la diagnosi.",
-        "Allega screenshot o documenti utili al supporto.",
-      ],
+      tips: ["Descrivi con precisione il problema o l'esigenza, includendo il contesto aziendale.", "Indica l'impatto sulla tua attività (persone coinvolte, servizi interessati).", "Elenca le azioni già tentate per accelerare la diagnosi.", "Allega screenshot o documenti utili al supporto."],
       detailsTitle: "Dettagli del ticket",
       subject: "Oggetto",
       description: "Descrizione dettagliata",
@@ -649,12 +635,12 @@ export default {
       issueNatureOptions: {
         hardware: "Hardware",
         software: "Software",
-        unsure: "Non lo so",
+        unsure: "Non lo so"
       },
       issueNatureLabels: {
         hardware: "Hardware",
         software: "Software",
-        unsure: "Non specificato",
+        unsure: "Non specificato"
       },
       documents: "Documenti",
       dropFilesTitle: "Trascina i file qui o sfoglia",
@@ -715,12 +701,11 @@ export default {
       confirmCreate: "Conferma creazione",
       titlePlaceholders: {
         incident: "Postazione irraggiungibile · errore di rete all'avvio",
-        demande: "Creazione account per nuovo collaboratore",
+        demande: "Creazione account per nuovo collaboratore"
       },
       descriptionPlaceholders: {
         incident: "Descrivi il problema e il suo impatto sulla tua attività.",
-        demande:
-          "Specifica la tua esigenza, il contesto aziendale e la data desiderata, se applicabile.",
+        demande: "Specifica la tua esigenza, il contesto aziendale e la data desiderata, se applicabile."
       },
       loadDashboardError: "Impossibile caricare i dati aziendali.",
       invalidAttachment: "Allegato non valido",
@@ -732,30 +717,30 @@ export default {
       attachmentsFailed: "Ticket creato, ma gli allegati non sono stati inviati.",
       createError: "Impossibile creare il ticket.",
       contactSlotFrom: "Dal {date} alle {time}{note}",
-      contactSlotRange: "{date} · {start} – {end}{note}",
+      contactSlotRange: "{date} · {start} – {end}{note}"
     },
     satisfactionCriteria: {
       responsiveness: {
         label: "Reattività",
-        hint: "Rapidità di gestione e follow-up della richiesta",
+        hint: "Rapidità di gestione e follow-up della richiesta"
       },
       solution_quality: {
         label: "Qualità della soluzione",
-        hint: "Pertinenza ed efficacia della risoluzione fornita",
+        hint: "Pertinenza ed efficacia della risoluzione fornita"
       },
       communication: {
         label: "Comunicazione",
-        hint: "Chiarezza, ascolto e cortesia negli scambi",
+        hint: "Chiarezza, ascolto e cortesia negli scambi"
       },
       professionalism: {
         label: "Professionalità",
-        hint: "Competenza e atteggiamento del team di supporto",
+        hint: "Competenza e atteggiamento del team di supporto"
       },
       overall: {
         label: "Impressione generale",
-        hint: "La tua soddisfazione complessiva su questa richiesta",
-      },
-    },
+        hint: "La tua soddisfazione complessiva su questa richiesta"
+      }
+    }
   },
   vault: {
     eyebrow: "Cassaforte",
@@ -769,11 +754,9 @@ export default {
     filterAria: "Filtra per tipo",
     allTypes: "Tutti i tipi",
     emptyDocumentsTitle: "Nessun documento",
-    emptyDocumentsHint:
-      "Il team di supporto può caricare qui fatture, contratti, guide e report.",
+    emptyDocumentsHint: "Il team di supporto può caricare qui fatture, contratti, guide e report.",
     emptySecretsTitle: "Nessun accesso condiviso",
-    emptySecretsHint:
-      "Il supporto può condividere qui una password o un accesso temporaneo, con scadenza e limiti di visualizzazione.",
+    emptySecretsHint: "Il supporto può condividere qui una password o un accesso temporaneo, con scadenza e limiti di visualizzazione.",
     expiresAt: "Scade il {date}",
     viewsRemainingOne: "{remaining} visualizzazione rimanente su {max}",
     viewsRemainingMany: "{remaining} visualizzazioni rimanenti su {max}",
@@ -787,8 +770,7 @@ export default {
     loginLabel: "Nome utente",
     secretLabel: "Password / segreto",
     revealMeta: "Scade il {date} · {views}",
-    revealWarning:
-      "Non condividere questo segreto via email non crittografata. Puoi richiederne l'eliminazione immediata una volta utilizzato.",
+    revealWarning: "Non condividere questo segreto via email non crittografata. Puoi richiederne l'eliminazione immediata una volta utilizzato.",
     deleteAccess: "Elimina questo accesso",
     deleting: "Eliminazione…",
     deleteSuccess: "Accesso eliminato.",
@@ -797,12 +779,10 @@ export default {
     copied: "Copiato negli appunti.",
     copyError: "Impossibile copiare.",
     deleteModalTitle: "Elimina questo accesso",
-    deleteModalSubtitle:
-      "Questa azione è definitiva. L'accesso verrà rimosso dalla cassaforte.",
+    deleteModalSubtitle: "Questa azione è definitiva. L'accesso verrà rimosso dalla cassaforte.",
     deleteModalFallback: "Accesso condiviso",
     deleteModalWarningTitle: "Prima di continuare",
-    deleteModalWarning1:
-      "Assicurati di aver copiato le credenziali di cui hai ancora bisogno.",
+    deleteModalWarning1: "Assicurati di aver copiato le credenziali di cui hai ancora bisogno.",
     deleteModalWarning2: "Scadenza iniziale: {date}{views}.",
     deleteModalWarning3: "Non potrai più visualizzare questo segreto dopo l'eliminazione.",
     deleteModalConfirm: "Elimina definitivamente",
@@ -812,7 +792,7 @@ export default {
       Rapport: "Report",
       Contrat: "Contratto",
       Procédure: "Procedura",
-      Autre: "Altro",
-    },
-  },
+      Autre: "Altro"
+    }
+  }
 };

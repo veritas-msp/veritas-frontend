@@ -11,12 +11,7 @@ import CollectorFormModal from "./CollectorFormModal";
 import CollectorDeleteModal from "./CollectorDeleteModal";
 import CollectorLogsModal from "./CollectorLogsModal";
 import CollectorFoldersModal from "./CollectorFoldersModal";
-import {
-  COLLECTOR_PROVIDER_PRESETS,
-  findCollectorProviderPreset,
-  formatCollectorStatPercent,
-  resolveCollectorEmailStats,
-} from "./collectorConstants";
+import { COLLECTOR_PROVIDER_PRESETS, findCollectorProviderPreset, formatCollectorStatPercent, resolveCollectorEmailStats } from "./collectorConstants";
 import { sanitizeHtml } from "../../utils/sanitizeHtml";
 import IngestionRuleFormModal from "./IngestionRuleFormModal";
 import IngestionRuleTestModal from "./IngestionRuleTestModal";
@@ -34,333 +29,417 @@ import SolutionCatalogEntryModal from "./SolutionCatalogEntryModal";
 import NotificationEventFormModal from "./NotificationEventFormModal";
 import WebhookFormModal from "./WebhookFormModal";
 import { buildDefaultWebhookDraft } from "./webhookConstants";
-import {
-  NOTIFICATION_CHANNEL_OPTIONS,
-  WEBHOOK_CHANNEL_ICON_BY_KEY,
-  TEAMS_THEME_COLOR_PRESETS,
-  buildDefaultNotificationEvent,
-  getSourceOption,
-  getElementOption,
-  isSoonElementKey,
-  parseEmailTags,
-} from "./notificationEventConstants";
-import {
-  buildDefaultScheduledAlertRule,
-  describeScheduledAlertRule,
-} from "./scheduledAlertConstants";
+import { NOTIFICATION_CHANNEL_OPTIONS, WEBHOOK_CHANNEL_ICON_BY_KEY, TEAMS_THEME_COLOR_PRESETS, buildDefaultNotificationEvent, getSourceOption, getElementOption, isSoonElementKey, parseEmailTags } from "./notificationEventConstants";
+import { buildDefaultScheduledAlertRule, describeScheduledAlertRule } from "./scheduledAlertConstants";
 import AdminTicketViews from "./AdminTicketViews";
 import { fetchTeams } from "../../api/teams";
-import {
-  buildDefaultExclusionRule,
-  normalizeIngestionAction,
-} from "./ingestionRuleConstants";
-import {
-  normalizeExclusionFilterRoot,
-  validateMailFilterRoot,
-} from "../../utils/mailIngestionRules";
+import { buildDefaultExclusionRule, normalizeIngestionAction } from "./ingestionRuleConstants";
+import { normalizeExclusionFilterRoot, validateMailFilterRoot } from "../../utils/mailIngestionRules";
 import { isCommunityEdition } from "../../config/edition";
 import { fetchUsers } from "../../api/users";
 import { fetchSettings } from "../../api/settings";
 import { fetchClientsList } from "../../api/clients";
-import {
-  createTicketCategorySection,
-  createTicketCategory,
-  deleteTicketCategorySection,
-  deleteTicketCategory,
-  fetchTicketCategorySections,
-  fetchTicketCategories,
-  updateTicketCategorySection,
-  updateTicketCategory,
-  fetchSolutionCatalog,
-  createSolutionCatalogEntry,
-  updateSolutionCatalogEntry,
-  deleteSolutionCatalogEntry,
-} from "../../api/tickets";
+import { createTicketCategorySection, createTicketCategory, deleteTicketCategorySection, deleteTicketCategory, fetchTicketCategorySections, fetchTicketCategories, updateTicketCategorySection, updateTicketCategory, fetchSolutionCatalog, createSolutionCatalogEntry, updateSolutionCatalogEntry, deleteSolutionCatalogEntry } from "../../api/tickets";
 import API_BASE_URL from "../../config";
-import {
-  fetchTicketAutomationConfig,
-  getTicketAutomationConfig,
-  saveTicketAutomationConfig,
-} from "../../utils/ticketAutomationStorage";
+import { fetchTicketAutomationConfig, getTicketAutomationConfig, saveTicketAutomationConfig } from "../../utils/ticketAutomationStorage";
 import { normalizeMailCollectSettings } from "../../utils/mailCollectSettingsConstants";
 import ProFeatureBadge from "../Misc/ProFeature/ProFeatureBadge";
 import CommunityFeatureBadge from "../Misc/ProFeature/CommunityFeatureBadge";
 import { useVeritasEdition } from "../../hooks/useVeritasEdition";
-import {
-  getCommunityTicketMacrosLimit,
-  getCommunityTicketTemplatesLimit,
-} from "../../config/edition";
-import {
-  buildDefaultMacroAction,
-  normalizeMacroActionForEditor,
-} from "../../utils/macroActionUtils";
+import { getCommunityTicketMacrosLimit, getCommunityTicketTemplatesLimit } from "../../config/edition";
+import { buildDefaultMacroAction, normalizeMacroActionForEditor } from "../../utils/macroActionUtils";
 import { useAppLocale } from "../../hooks/useAppGeneralSettings";
 import { getAdminDeleteConfirmsCopy } from "./adminModalsI18n";
-import {
-  formatSupportSettingsCount,
-  formatSupportSettingsRange,
-  getMacroActionTypes,
-  getMacroBoundedFieldValues,
-  getMacroFieldModeOptions,
-  getMacroFieldOptions,
-  getSupportSettingsViewMeta,
-  getTicketAdminViews,
-} from "./adminSupportSettingsI18n";
+import { formatSupportSettingsCount, formatSupportSettingsRange, getMacroActionTypes, getMacroBoundedFieldValues, getMacroFieldModeOptions, getMacroFieldOptions, getSupportSettingsViewMeta, getTicketAdminViews } from "./adminSupportSettingsI18n";
 import { useAdminSupportSettingsCopy } from "../../hooks/useAdminCopy";
 import { useCommonCopy } from "../../hooks/useCommonCopy";
 import { interpolate } from "../../i18n/translate";
-import {
-  describeLocalizedExclusionRuleFilters,
-  describeLocalizedRuleCollector,
-  getAdminMailCollectCopy,
-  getRuleActionLabel,
-} from "./adminMailCollectI18n";
-
-const TICKET_ADMIN_VIEWS_EXCLUDED = new Set([
-  "notifications",
-  "webhooks",
-  "support-credits",
-  "collectors",
-  "email-ingestion",
-  "scheduled-alerts",
-  "sales-forms",
-]);
-
+import { describeLocalizedExclusionRuleFilters, describeLocalizedRuleCollector, getAdminMailCollectCopy, getRuleActionLabel } from "./adminMailCollectI18n";
+const TICKET_ADMIN_VIEWS_EXCLUDED = new Set(["notifications", "webhooks", "support-credits", "collectors", "email-ingestion", "scheduled-alerts", "sales-forms"]);
 const TICKET_VIEW_META = {
   collectors: {
-    title: "Boîtes mail à collecter",
-    description: "Connexions IMAP/POP3, fréquence de récupération et journaux d'absorption des emails entrants.",
+    title: "Mailboxes to collect",
+    description: "IMAP/POP3 connections, fetch frequency and incoming email ingestion logs."
   },
   "email-ingestion": {
-    title: "Tri des emails entrants",
-    description: "Règles évaluées dans l'ordre pour créer un ticket, ignorer un message ou y répondre automatiquement.",
+    title: "Incoming email routing",
+    description: "Rules evaluated in order to create a ticket, ignore a message or reply automatically."
   },
   "scheduled-alerts": {
-    title: "Alertes planifiées",
-    description: "Planifications CRON pour contrats, licences et SLA · notifications par mail ou Teams.",
+    title: "Scheduled alerts",
+    description: "CRON schedules for contracts, licenses and SLA · notifications via mail or Teams."
   },
   "sales-forms": {
-    title: "Formulaires prestations & installations",
-    description: "Nature des demandes et champs affichés lors de la création d'une prestation ou installation.",
+    title: "Professional services & installation forms",
+    description: "Request types and fields shown when creating a professional service or installation request."
   },
   "support-credits": {
-    title: "Carnets tickets",
-    description: "Créditez les entreprises avec des carnets prépayés, dates de validité et suivi des consommations.",
+    title: "Ticket packs",
+    description: "Credit companies with prepaid packs, validity dates and usage tracking."
   },
   notifications: {
-    title: "Événements et historique",
-    description: "Règles de notification automatique, canaux de diffusion et journal des envois.",
+    title: "Events and history",
+    description: "Automatic notification rules, delivery channels and send log."
   },
   webhooks: {
-    title: "Points de sortie webhook",
-    description: "Connecteurs Teams ou HTTP utilisés par les notifications et les annonces.",
-  },
+    title: "Webhook endpoints",
+    description: "Teams or HTTP connectors used by notifications and announcements."
+  }
 };
-
-const MESSAGE_VARIABLE_GROUPS = [
-  {
-    label: "Dates",
-    variables: [
-      { key: "{{now.fr}}", description: "Date/heure actuelle format FR" },
-      { key: "{{now.date}}", description: "Date actuelle format FR" },
-      { key: "{{now.time}}", description: "Heure actuelle format FR" },
-    ],
-  },
-  {
-    label: "Agent",
-    variables: [
-      { key: "{{agent.id}}", description: "ID de l'utilisateur connecté qui déclenche l'action" },
-      { key: "{{agent.username}}", description: "Nom / username de l'utilisateur actuel" },
-      { key: "{{agent.email}}", description: "Email de l'utilisateur actuel" },
-      { key: "{{agent.role}}", description: "Rôle de l'utilisateur actuel" },
-    ],
-  },
-  {
-    label: "Contexte notification",
-    variables: [
-      { key: "{{source}}", description: "Source de l'événement (tickets, entreprise, cyber...)" },
-      { key: "{{element}}", description: "Élément déclencheur (updated, created, resolved...)" },
-      { key: "{{enterpriseId}}", description: "ID entreprise de la notification" },
-      { key: "{{enterpriseName}}", description: "Nom entreprise (résolu automatiquement)" },
-      { key: "{{daysUntil}}", description: "Nombre de jours restants (événements *_soon)" },
-      { key: "{{contractEndDate}}", description: "Date de fin de contrat (si disponible)" },
-    ],
-  },
-  {
-    label: "Entreprise",
-    variables: [
-      { key: "{{entreprise.id}}", description: "ID entreprise" },
-      { key: "{{entreprise.nom}}", description: "Nom entreprise" },
-      { key: "{{entreprise.siret}}", description: "Identifiant légal" },
-      { key: "{{entreprise.adresse}}", description: "Adresse" },
-      { key: "{{entreprise.lieux.0}}", description: "Premier lieu/site" },
-      { key: "{{entreprise.lieuxCount}}", description: "Nombre de lieux/sites" },
-      { key: "{{entreprise.secteur}}", description: "Secteur d'activité" },
-      { key: "{{entreprise.contratStatut}}", description: "Statut contrat (Actif/Suspendu)" },
-      { key: "{{entreprise.contratTypeEntreprise}}", description: "Type d'entreprise (si renseigné)" },
-      { key: "{{entreprise.contratDateDebut}}", description: "Date début contrat" },
-      { key: "{{entreprise.contratDateFin}}", description: "Date fin contrat" },
-      { key: "{{entreprise.contrat.suspendu}}", description: "Contrat suspendu (bool)" },
-      { key: "{{entreprise.options}}", description: "Options contrat actives (format texte)" },
-      { key: "{{entreprise.modules}}", description: "Modules monitoring actifs (format texte)" },
-      { key: "{{entreprise.optionsContrat.Curatif}}", description: "Option contrat Curatif" },
-      { key: "{{entreprise.optionsContrat.Support}}", description: "Option contrat Support" },
-      { key: "{{entreprise.optionsContrat.Preventif}}", description: "Option contrat Préventif" },
-      { key: "{{entreprise.optionsContrat.Hebergement}}", description: "Option contrat Hébergement" },
-      { key: "{{entreprise.modulesMonitoring.Internet}}", description: "Module monitoring Internet" },
-      { key: "{{entreprise.modulesMonitoring.Firewall}}", description: "Module monitoring Firewall" },
-      { key: "{{entreprise.modulesMonitoring.Serveurs}}", description: "Module monitoring Serveurs" },
-      { key: "{{entreprise.modulesMonitoring.Stockage}}", description: "Module monitoring Stockage" },
-      { key: "{{entreprise.modulesMonitoring.Switch}}", description: "Module monitoring Switch" },
-      { key: "{{entreprise.modulesMonitoring.BorneWifi}}", description: "Module monitoring Borne WiFi" },
-      { key: "{{entreprise.modulesMonitoring.Antivirus}}", description: "Module monitoring Antivirus" },
-      { key: "{{entreprise.modulesMonitoring.Antispam}}", description: "Module monitoring Antispam" },
-      { key: "{{entreprise.modulesMonitoring.NDD}}", description: "Module monitoring NDD" },
-      { key: "{{entreprise.modulesMonitoring.Office365}}", description: "Module monitoring Office365" },
-      { key: "{{entreprise.modulesMonitoring.Sauvegarde}}", description: "Module monitoring Sauvegarde" },
-      { key: "{{entreprise.infra.internetCount}}", description: "Nb connexions internet" },
-      { key: "{{entreprise.infra.firewallCount}}", description: "Nb firewalls" },
-      { key: "{{entreprise.infra.serverCount}}", description: "Nb serveurs" },
-      { key: "{{entreprise.infra.storageCount}}", description: "Nb stockages" },
-      { key: "{{entreprise.infra.switchCount}}", description: "Nb switches" },
-      { key: "{{entreprise.infra.wifiCount}}", description: "Nb bornes wifi" },
-      { key: "{{entreprise.cyber.antivirusCount}}", description: "Nb antivirus" },
-      { key: "{{entreprise.cyber.antispamCount}}", description: "Nb antispam" },
-      { key: "{{entreprise.cyber.backupCount}}", description: "Nb sauvegardes" },
-      { key: "{{entreprise.services.domainCount}}", description: "Nb noms de domaine" },
-      { key: "{{entreprise.services.domainNames.0}}", description: "Premier nom de domaine" },
-      { key: "{{entreprise.services.tenantCount}}", description: "Nb tenants Microsoft" },
-      { key: "{{entreprise.services.tenantNames.0}}", description: "Premier tenant Microsoft" },
-      { key: "{{entreprise.commercial.username}}", description: "Commercial (nom)" },
-      { key: "{{entreprise.commercial.email}}", description: "Commercial (email)" },
-    ],
-  },
-  {
-    label: "Ticket",
-    variables: [
-      { key: "{{ticket.id}}", description: "ID ticket" },
-      { key: "{{ticket.ticket_number}}", description: "Numéro ticket" },
-      { key: "{{ticket.title}}", description: "Titre ticket" },
-      { key: "{{ticket.status}}", description: "Statut ticket" },
-      { key: "{{oldStatus}}", description: "Ancien statut ticket (changement statut)" },
-      { key: "{{newStatus}}", description: "Nouveau statut ticket (changement statut)" },
-    ],
-  },
-  {
-    label: "Contact",
-    variables: [
-      { key: "{{contact.id}}", description: "ID contact" },
-      { key: "{{contact.nom}}", description: "Nom contact" },
-      { key: "{{contact.prenom}}", description: "Prénom contact" },
-      { key: "{{contact.email}}", description: "Email contact" },
-      { key: "{{contact.telephone}}", description: "Téléphone contact" },
-      { key: "{{contact.poste}}", description: "Poste contact" },
-    ],
-  },
-  {
-    label: "Campagne cyber",
-    variables: [
-      { key: "{{campaign.id}}", description: "ID campagne" },
-      { key: "{{campaign.name}}", description: "Nom campagne" },
-      { key: "{{campaign.status}}", description: "Statut campagne" },
-      { key: "{{campaign.start_date}}", description: "Date début campagne" },
-      { key: "{{campaign.end_date}}", description: "Date fin campagne" },
-    ],
-  },
-  {
-    label: "Rapport",
-    variables: [
-      { key: "{{report.id}}", description: "ID rapport" },
-      { key: "{{report.name}}", description: "Nom rapport" },
-      { key: "{{report.report_period}}", description: "Période du rapport" },
-      { key: "{{report.client_name}}", description: "Nom client du rapport" },
-    ],
-  },
-  {
-    label: "Matériel",
-    variables: [
-      { key: "{{material.name}}", description: "Nom du matériel" },
-      { key: "{{material.id}}", description: "ID du matériel" },
-      { key: "{{material.type}}", description: "Type du matériel" },
-    ],
-  },
-  {
-    label: "Éléments techniques",
-    variables: [
-      { key: "{{changedFields.0}}", description: "1er champ modifié" },
-      { key: "{{changedFields.1}}", description: "2e champ modifié" },
-      { key: "{{changes.0.field}}", description: "Nom du 1er champ détaillé" },
-      { key: "{{changes.0.oldValue}}", description: "Ancienne valeur du 1er changement" },
-      { key: "{{changes.0.newValue}}", description: "Nouvelle valeur du 1er changement" },
-    ],
-  },
-  {
-    label: "Variables legacy template",
-    variables: [
-      { key: "{{agent.username}}", description: "Nom d'utilisateur de l'agent connecté" },
-      { key: "{{agent.email}}", description: "Adresse email de l'agent connecté" },
-      { key: "{{demandeur.prenom}}", description: "Prénom du demandeur (legacy)" },
-      { key: "{{demandeur.nom_complet}}", description: "Nom complet du demandeur (legacy)" },
-      { key: "{{ticket.numero}}", description: "Numéro du ticket (legacy)" },
-      { key: "{{ticket.titre}}", description: "Titre ticket (legacy)" },
-      { key: "{{ticket.statut}}", description: "Statut ticket FR (legacy)" },
-    ],
-  },
-];
-const MESSAGE_VARIABLE_GROUPS_SORTED = [...MESSAGE_VARIABLE_GROUPS].sort((a, b) =>
-  String(a?.label || "").localeCompare(String(b?.label || ""), "fr", { sensitivity: "base" })
-);
-const GENERIC_VARIABLE_SECTION_LABELS = ["Contexte notification", "Dates", "Agent"];
-
+const MESSAGE_VARIABLE_GROUPS = [{
+  label: "Dates",
+  variables: [{
+    key: "{{now.fr}}",
+    description: "Current date/time (FR format)"
+  }, {
+    key: "{{now.date}}",
+    description: "Current date (FR format)"
+  }, {
+    key: "{{now.time}}",
+    description: "Current time (FR format)"
+  }]
+}, {
+  label: "Agent",
+  variables: [{
+    key: "{{agent.id}}",
+    description: "ID of the logged-in user triggering the action"
+  }, {
+    key: "{{agent.username}}",
+    description: "Name / username of the current user"
+  }, {
+    key: "{{agent.email}}",
+    description: "Email of the current user"
+  }, {
+    key: "{{agent.role}}",
+    description: "Role of the current user"
+  }]
+}, {
+  label: "Notification context",
+  variables: [{
+    key: "{{source}}",
+    description: "Event source (tickets, company, cyber...)"
+  }, {
+    key: "{{element}}",
+    description: "Trigger element (updated, created, resolved...)"
+  }, {
+    key: "{{enterpriseId}}",
+    description: "Notification company ID"
+  }, {
+    key: "{{enterpriseName}}",
+    description: "Company name (resolved automatically)"
+  }, {
+    key: "{{daysUntil}}",
+    description: "Days remaining (events *_soon)"
+  }, {
+    key: "{{contractEndDate}}",
+    description: "Contract end date (if available)"
+  }]
+}, {
+  label: "Company",
+  variables: [{
+    key: "{{entreprise.id}}",
+    description: "Company ID"
+  }, {
+    key: "{{entreprise.nom}}",
+    description: "Company name"
+  }, {
+    key: "{{entreprise.siret}}",
+    description: "Legal identifier"
+  }, {
+    key: "{{entreprise.adresse}}",
+    description: "Address"
+  }, {
+    key: "{{entreprise.lieux.0}}",
+    description: "First site/location"
+  }, {
+    key: "{{entreprise.lieuxCount}}",
+    description: "Number of sites/locations"
+  }, {
+    key: "{{entreprise.secteur}}",
+    description: "Industry sector"
+  }, {
+    key: "{{entreprise.contratStatut}}",
+    description: "Contract status (Active/Suspended)"
+  }, {
+    key: "{{entreprise.contratTypeEntreprise}}",
+    description: "Company type (if provided)"
+  }, {
+    key: "{{entreprise.contratDateDebut}}",
+    description: "Contract start date"
+  }, {
+    key: "{{entreprise.contratDateFin}}",
+    description: "Contract end date"
+  }, {
+    key: "{{entreprise.contrat.suspendu}}",
+    description: "Contract suspended (bool)"
+  }, {
+    key: "{{entreprise.options}}",
+    description: "Active contract options (text format)"
+  }, {
+    key: "{{entreprise.modules}}",
+    description: "Active monitoring modules (text format)"
+  }, {
+    key: "{{entreprise.optionsContrat.Curatif}}",
+    description: "Curative contract option"
+  }, {
+    key: "{{entreprise.optionsContrat.Support}}",
+    description: "Support contract option"
+  }, {
+    key: "{{entreprise.optionsContrat.Preventif}}",
+    description: "Preventive contract option"
+  }, {
+    key: "{{entreprise.optionsContrat.Hebergement}}",
+    description: "Hosting contract option"
+  }, {
+    key: "{{entreprise.modulesMonitoring.Internet}}",
+    description: "Internet monitoring module"
+  }, {
+    key: "{{entreprise.modulesMonitoring.Firewall}}",
+    description: "Firewall monitoring module"
+  }, {
+    key: "{{entreprise.modulesMonitoring.Serveurs}}",
+    description: "Servers monitoring module"
+  }, {
+    key: "{{entreprise.modulesMonitoring.Stockage}}",
+    description: "Storage monitoring module"
+  }, {
+    key: "{{entreprise.modulesMonitoring.Switch}}",
+    description: "Switch monitoring module"
+  }, {
+    key: "{{entreprise.modulesMonitoring.BorneWifi}}",
+    description: "WiFi AP monitoring module"
+  }, {
+    key: "{{entreprise.modulesMonitoring.Antivirus}}",
+    description: "Antivirus monitoring module"
+  }, {
+    key: "{{entreprise.modulesMonitoring.Antispam}}",
+    description: "Antispam monitoring module"
+  }, {
+    key: "{{entreprise.modulesMonitoring.NDD}}",
+    description: "Domain names monitoring module"
+  }, {
+    key: "{{entreprise.modulesMonitoring.Office365}}",
+    description: "Office 365 monitoring module"
+  }, {
+    key: "{{entreprise.modulesMonitoring.Sauvegarde}}",
+    description: "Backup monitoring module"
+  }, {
+    key: "{{entreprise.infra.internetCount}}",
+    description: "Internet connection count"
+  }, {
+    key: "{{entreprise.infra.firewallCount}}",
+    description: "Firewall count"
+  }, {
+    key: "{{entreprise.infra.serverCount}}",
+    description: "Server count"
+  }, {
+    key: "{{entreprise.infra.storageCount}}",
+    description: "Storage count"
+  }, {
+    key: "{{entreprise.infra.switchCount}}",
+    description: "Switch count"
+  }, {
+    key: "{{entreprise.infra.wifiCount}}",
+    description: "Wi-Fi AP count"
+  }, {
+    key: "{{entreprise.cyber.antivirusCount}}",
+    description: "Antivirus count"
+  }, {
+    key: "{{entreprise.cyber.antispamCount}}",
+    description: "Antispam count"
+  }, {
+    key: "{{entreprise.cyber.backupCount}}",
+    description: "Backup count"
+  }, {
+    key: "{{entreprise.services.domainCount}}",
+    description: "Domain name count"
+  }, {
+    key: "{{entreprise.services.domainNames.0}}",
+    description: "First domain name"
+  }, {
+    key: "{{entreprise.services.tenantCount}}",
+    description: "Microsoft tenant count"
+  }, {
+    key: "{{entreprise.services.tenantNames.0}}",
+    description: "First Microsoft tenant"
+  }, {
+    key: "{{entreprise.commercial.username}}",
+    description: "Sales rep (name)"
+  }, {
+    key: "{{entreprise.commercial.email}}",
+    description: "Sales rep (email)"
+  }]
+}, {
+  label: "Ticket",
+  variables: [{
+    key: "{{ticket.id}}",
+    description: "ID ticket"
+  }, {
+    key: "{{ticket.ticket_number}}",
+    description: "Ticket number"
+  }, {
+    key: "{{ticket.title}}",
+    description: "Ticket title"
+  }, {
+    key: "{{ticket.status}}",
+    description: "Ticket status"
+  }, {
+    key: "{{oldStatus}}",
+    description: "Previous ticket status (status change)"
+  }, {
+    key: "{{newStatus}}",
+    description: "New ticket status (status change)"
+  }]
+}, {
+  label: "Contact",
+  variables: [{
+    key: "{{contact.id}}",
+    description: "Contact ID"
+  }, {
+    key: "{{contact.nom}}",
+    description: "Contact last name"
+  }, {
+    key: "{{contact.prenom}}",
+    description: "Contact first name"
+  }, {
+    key: "{{contact.email}}",
+    description: "Contact email"
+  }, {
+    key: "{{contact.telephone}}",
+    description: "Contact phone"
+  }, {
+    key: "{{contact.poste}}",
+    description: "Contact job title"
+  }]
+}, {
+  label: "Cyber campaign",
+  variables: [{
+    key: "{{campaign.id}}",
+    description: "Campaign ID"
+  }, {
+    key: "{{campaign.name}}",
+    description: "Campaign name"
+  }, {
+    key: "{{campaign.status}}",
+    description: "Campaign status"
+  }, {
+    key: "{{campaign.start_date}}",
+    description: "Campaign start date"
+  }, {
+    key: "{{campaign.end_date}}",
+    description: "Campaign end date"
+  }]
+}, {
+  label: "Report",
+  variables: [{
+    key: "{{report.id}}",
+    description: "Report ID"
+  }, {
+    key: "{{report.name}}",
+    description: "Report name"
+  }, {
+    key: "{{report.report_period}}",
+    description: "Report period"
+  }, {
+    key: "{{report.client_name}}",
+    description: "Report client name"
+  }]
+}, {
+  label: "Equipment",
+  variables: [{
+    key: "{{material.name}}",
+    description: "Equipment name"
+  }, {
+    key: "{{material.id}}",
+    description: "Equipment ID"
+  }, {
+    key: "{{material.type}}",
+    description: "Equipment type"
+  }]
+}, {
+  label: "Technical fields",
+  variables: [{
+    key: "{{changedFields.0}}",
+    description: "1st changed field"
+  }, {
+    key: "{{changedFields.1}}",
+    description: "2nd changed field"
+  }, {
+    key: "{{changes.0.field}}",
+    description: "Name of the 1st detailed field"
+  }, {
+    key: "{{changes.0.oldValue}}",
+    description: "Old value of the 1st change"
+  }, {
+    key: "{{changes.0.newValue}}",
+    description: "New value of the 1st change"
+  }]
+}, {
+  label: "Variables legacy template",
+  variables: [{
+    key: "{{agent.username}}",
+    description: "Logged-in agent username"
+  }, {
+    key: "{{agent.email}}",
+    description: "Logged-in agent email address"
+  }, {
+    key: "{{demandeur.prenom}}",
+    description: "Requester first name (legacy)"
+  }, {
+    key: "{{demandeur.nom_complet}}",
+    description: "Requester full name (legacy)"
+  }, {
+    key: "{{ticket.numero}}",
+    description: "Ticket number (legacy)"
+  }, {
+    key: "{{ticket.titre}}",
+    description: "Ticket title (legacy)"
+  }, {
+    key: "{{ticket.statut}}",
+    description: "Ticket status FR (legacy)"
+  }]
+}];
+const MESSAGE_VARIABLE_GROUPS_SORTED = [...MESSAGE_VARIABLE_GROUPS].sort((a, b) => String(a?.label || "").localeCompare(String(b?.label || ""), "fr", {
+  sensitivity: "base"
+}));
+const GENERIC_VARIABLE_SECTION_LABELS = ["Notification context", "Dates", "Agent"];
 const resolveNotificationVariableSectionLabels = (sourceKey, elementKey) => {
   const source = String(sourceKey || "").trim().toLowerCase();
   const element = String(elementKey || "").trim().toLowerCase();
   const labels = new Set(GENERIC_VARIABLE_SECTION_LABELS);
-
-  if (source === "entreprise") labels.add("Entreprise");
+  if (source === "entreprise") labels.add("Company");
   if (source === "contact") {
     labels.add("Contact");
-    labels.add("Entreprise");
+    labels.add("Company");
   }
   if (source === "tickets") {
     labels.add("Ticket");
-    labels.add("Entreprise");
+    labels.add("Company");
   }
   if (source === "cyber") {
-    labels.add("Campagne cyber");
-    labels.add("Entreprise");
+    labels.add("Cyber campaign");
+    labels.add("Company");
   }
   if (source === "rapport") {
-    labels.add("Rapport");
-    labels.add("Entreprise");
+    labels.add("Report");
+    labels.add("Company");
   }
   if (source === "infrastructure") {
-    labels.add("Matériel");
-    labels.add("Entreprise");
+    labels.add("Equipment");
+    labels.add("Company");
   }
-  if (source === "services") labels.add("Entreprise");
-
+  if (source === "services") labels.add("Company");
   if (element.includes("updated")) {
-    labels.add("Éléments techniques");
+    labels.add("Technical fields");
   }
-
   return labels;
 };
-
-const pickMacroOptionLabel = (options, value) =>
-  (options || []).find((opt) => String(opt.value) === String(value))?.label ||
-  String(value || "").trim() ||
-  "-";
-
+const pickMacroOptionLabel = (options, value) => (options || []).find(opt => String(opt.value) === String(value))?.label || String(value || "").trim() || "-";
 const truncateMacroText = (text, max = 48) => {
-  const raw = String(text || "")
-    .replace(/<[^>]+>/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
+  const raw = String(text || "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
   if (!raw) return "";
   return raw.length <= max ? raw : `${raw.slice(0, max - 1)}…`;
 };
-
 const buildDefaultCollector = () => ({
   id: `collector-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
   name: "",
@@ -379,9 +458,12 @@ const buildDefaultCollector = () => ({
   checkIntervalMinutes: 5,
   ingestEnabled: true,
   logs: [],
-  stats: { collected: 0, validated: 0, ignored: 0 },
+  stats: {
+    collected: 0,
+    validated: 0,
+    ignored: 0
+  }
 });
-
 const ensureUniqueCollectorIds = (collectors = []) => {
   const seen = new Set();
   return (Array.isArray(collectors) ? collectors : []).map((collector, idx) => {
@@ -389,43 +471,38 @@ const ensureUniqueCollectorIds = (collectors = []) => {
     const baseId = rawId || `collector-${Date.now()}-${idx}-${Math.random().toString(16).slice(2, 8)}`;
     if (!seen.has(baseId)) {
       seen.add(baseId);
-      return { ...collector, id: baseId };
+      return {
+        ...collector,
+        id: baseId
+      };
     }
     const nextId = `${baseId}-${idx}-${Math.random().toString(16).slice(2, 6)}`;
     seen.add(nextId);
-    return { ...collector, id: nextId };
+    return {
+      ...collector,
+      id: nextId
+    };
   });
 };
-
-const parseCsvIds = (raw) =>
-  String(raw || "")
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean);
-
-const stringifyAgentIds = (ids) => ids.map((id) => String(id).trim()).filter(Boolean).join(",");
-
-const DEFAULT_NOTIFICATION_EVENTS = [
-  {
-    source: "tickets",
-    element: "created",
-    channel: "webhook",
-    webhookId: "",
-    useTemplate: false,
-    templateId: "",
-    enabled: true,
-  },
-  {
-    source: "tickets",
-    element: "updated",
-    channel: "webhook",
-    webhookId: "",
-    useTemplate: false,
-    templateId: "",
-    enabled: true,
-  },
-];
-
+const parseCsvIds = raw => String(raw || "").split(",").map(item => item.trim()).filter(Boolean);
+const stringifyAgentIds = ids => ids.map(id => String(id).trim()).filter(Boolean).join(",");
+const DEFAULT_NOTIFICATION_EVENTS = [{
+  source: "tickets",
+  element: "created",
+  channel: "webhook",
+  webhookId: "",
+  useTemplate: false,
+  templateId: "",
+  enabled: true
+}, {
+  source: "tickets",
+  element: "updated",
+  channel: "webhook",
+  webhookId: "",
+  useTemplate: false,
+  templateId: "",
+  enabled: true
+}];
 const buildDefaultNotificationSettings = () => ({
   onTicketCreated: false,
   onTicketResolved: false,
@@ -434,7 +511,7 @@ const buildDefaultNotificationSettings = () => ({
     ticketAutoReply: false,
     ticketCreated: false,
     ticketResolved: false,
-    ticketCommented: false,
+    ticketCommented: false
   },
   webhooks: [],
   notificationEvents: DEFAULT_NOTIFICATION_EVENTS.map((item, idx) => ({
@@ -452,25 +529,21 @@ const buildDefaultNotificationSettings = () => ({
     templateId: item.templateId || "",
     customMessage: String(item.customMessage || ""),
     teamsThemeColor: String(item.teamsThemeColor || "#13BA8E"),
-    enabled: item.enabled !== false,
-  })),
+    enabled: item.enabled !== false
+  }))
 });
-
-export default function AdminTickets({ isCommunity = false, restrictedView = null }) {
+export default function AdminTickets({
+  isCommunity = false,
+  restrictedView = null
+}) {
   const locale = useAppLocale();
   const mc = useMemo(() => getAdminMailCollectCopy(locale), [locale]);
   const ss = useAdminSupportSettingsCopy();
-  const entityStatusLabels = useMemo(
-    () => ({
-      activeLabel: ss.common.statusActive,
-      inactiveLabel: ss.common.statusInactive,
-    }),
-    [ss.common.statusActive, ss.common.statusInactive]
-  );
-  const formatTableRange = useCallback(
-    (start, end, total) => formatSupportSettingsRange(locale, start, end, total),
-    [locale]
-  );
+  const entityStatusLabels = useMemo(() => ({
+    activeLabel: ss.common.statusActive,
+    inactiveLabel: ss.common.statusInactive
+  }), [ss.common.statusActive, ss.common.statusInactive]);
+  const formatTableRange = useCallback((start, end, total) => formatSupportSettingsRange(locale, start, end, total), [locale]);
   const deleteCopy = useMemo(() => getAdminDeleteConfirmsCopy(locale), [locale]);
   const common = useCommonCopy();
   const supportViewMeta = useMemo(() => getSupportSettingsViewMeta(locale), [locale]);
@@ -478,22 +551,14 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
   const macroFieldOptions = useMemo(() => getMacroFieldOptions(locale), [locale]);
   const macroFieldModeOptions = useMemo(() => getMacroFieldModeOptions(locale), [locale]);
   const macroBoundedFieldValues = useMemo(() => getMacroBoundedFieldValues(locale), [locale]);
-  const { limits } = useVeritasEdition();
+  const {
+    limits
+  } = useVeritasEdition();
   const maxTemplates = isCommunity ? getCommunityTicketTemplatesLimit(limits) : null;
   const maxMacros = isCommunity ? getCommunityTicketMacrosLimit(limits) : null;
-  const ticketAdminViews = useMemo(
-    () =>
-      restrictedView
-        ? []
-        : getTicketAdminViews(locale).filter((view) => !TICKET_ADMIN_VIEWS_EXCLUDED.has(view.key)),
-    [restrictedView, locale]
-  );
-  const allowedTicketViews = useMemo(
-    () => (restrictedView ? [restrictedView] : ticketAdminViews.map((view) => view.key)),
-    [restrictedView, ticketAdminViews]
-  );
+  const ticketAdminViews = useMemo(() => restrictedView ? [] : getTicketAdminViews(locale).filter(view => !TICKET_ADMIN_VIEWS_EXCLUDED.has(view.key)), [restrictedView, locale]);
+  const allowedTicketViews = useMemo(() => restrictedView ? [restrictedView] : ticketAdminViews.map(view => view.key), [restrictedView, ticketAdminViews]);
   const [activeView, setActiveView] = useState(restrictedView || "templates");
-
   useEffect(() => {
     if (restrictedView) {
       setActiveView(restrictedView);
@@ -506,11 +571,8 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       if (allowedTicketViews.includes(storedView)) {
         setActiveView(storedView);
       }
-    } catch {
-      // ignore invalid stored view
-    }
+    } catch {}
   }, [allowedTicketViews, restrictedView]);
-
   useEffect(() => {
     if (restrictedView) {
       if (activeView !== restrictedView) setActiveView(restrictedView);
@@ -528,10 +590,19 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
   const [showCategorySectionModal, setShowCategorySectionModal] = useState(false);
   const [categorySectionModalMode, setCategorySectionModalMode] = useState("create");
   const [editingCategorySectionId, setEditingCategorySectionId] = useState(null);
-  const [categorySectionDraft, setCategorySectionDraft] = useState({ name: "", description: "", enabled: true });
+  const [categorySectionDraft, setCategorySectionDraft] = useState({
+    name: "",
+    description: "",
+    enabled: true
+  });
   const [categoryModalMode, setCategoryModalMode] = useState("create");
   const [editingCategoryId, setEditingCategoryId] = useState(null);
-  const [categoryDraft, setCategoryDraft] = useState({ section: "", name: "", description: "", enabled: true });
+  const [categoryDraft, setCategoryDraft] = useState({
+    section: "",
+    name: "",
+    description: "",
+    enabled: true
+  });
   const [categoryDeleteTarget, setCategoryDeleteTarget] = useState(null);
   const [categorySectionDeleteTarget, setCategorySectionDeleteTarget] = useState(null);
   const [deletingCategory, setDeletingCategory] = useState(false);
@@ -546,7 +617,7 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
     category: "intervention",
     label: "",
     displayOrder: 0,
-    isActive: true,
+    isActive: true
   });
   const [savingSolutionCatalogEntry, setSavingSolutionCatalogEntry] = useState(false);
   const [solutionCatalogDeleteTarget, setSolutionCatalogDeleteTarget] = useState(null);
@@ -558,65 +629,55 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
   const filteredCategorySections = useMemo(() => {
     const q = sectionSearch.trim().toLowerCase();
     if (!q) return ticketCategorySections;
-    return ticketCategorySections.filter((section) =>
-      `${section.name || ""} ${section.description || ""}`.toLowerCase().includes(q)
-    );
+    return ticketCategorySections.filter(section => `${section.name || ""} ${section.description || ""}`.toLowerCase().includes(q));
   }, [ticketCategorySections, sectionSearch]);
   const filteredTicketCategories = useMemo(() => {
     const q = categorySearch.trim().toLowerCase();
     if (!q) return ticketCategories;
-    return ticketCategories.filter((category) =>
-      `${category.section || ""} ${category.name || ""} ${category.description || ""}`
-        .toLowerCase()
-        .includes(q)
-    );
+    return ticketCategories.filter(category => `${category.section || ""} ${category.name || ""} ${category.description || ""}`.toLowerCase().includes(q));
   }, [ticketCategories, categorySearch]);
   const templatesPagination = useTablePagination(commentTemplates, {
-    rangeFormatter: formatTableRange,
+    rangeFormatter: formatTableRange
   });
-  const macrosPagination = useTablePagination(macros, { rangeFormatter: formatTableRange });
+  const macrosPagination = useTablePagination(macros, {
+    rangeFormatter: formatTableRange
+  });
   const categorySectionsPagination = useTablePagination(filteredCategorySections, {
     resetDeps: [sectionSearch],
-    rangeFormatter: formatTableRange,
+    rangeFormatter: formatTableRange
   });
   const categoriesPagination = useTablePagination(filteredTicketCategories, {
     resetDeps: [categorySearch],
-    rangeFormatter: formatTableRange,
+    rangeFormatter: formatTableRange
   });
   const filteredSolutionInterventions = useMemo(() => {
     const q = solutionInterventionSearch.trim().toLowerCase();
-    const rows = solutionCatalogEntries.filter((entry) => entry.category === "intervention");
+    const rows = solutionCatalogEntries.filter(entry => entry.category === "intervention");
     if (!q) return rows;
-    return rows.filter((entry) => String(entry.label || "").toLowerCase().includes(q));
+    return rows.filter(entry => String(entry.label || "").toLowerCase().includes(q));
   }, [solutionCatalogEntries, solutionInterventionSearch]);
   const filteredSolutionActions = useMemo(() => {
     const q = solutionActionSearch.trim().toLowerCase();
-    const rows = solutionCatalogEntries.filter((entry) => entry.category === "action");
+    const rows = solutionCatalogEntries.filter(entry => entry.category === "action");
     if (!q) return rows;
-    return rows.filter((entry) => String(entry.label || "").toLowerCase().includes(q));
+    return rows.filter(entry => String(entry.label || "").toLowerCase().includes(q));
   }, [solutionCatalogEntries, solutionActionSearch]);
   const solutionInterventionsPagination = useTablePagination(filteredSolutionInterventions, {
     resetDeps: [solutionInterventionSearch],
-    rangeFormatter: formatTableRange,
+    rangeFormatter: formatTableRange
   });
   const solutionActionsPagination = useTablePagination(filteredSolutionActions, {
     resetDeps: [solutionActionSearch],
-    rangeFormatter: formatTableRange,
+    rangeFormatter: formatTableRange
   });
   const [emailInboxes, setEmailInboxes] = useState(() => getTicketAutomationConfig().emailInboxes || []);
   const [mailCollectors, setMailCollectors] = useState(() => getTicketAutomationConfig().mailCollectors || []);
   const [exclusionRules, setExclusionRules] = useState(() => getTicketAutomationConfig().exclusionRules || []);
   const [autoReplyRules, setAutoReplyRules] = useState(() => getTicketAutomationConfig().autoReplyRules || []);
-  const [autoReplyTemplate, setAutoReplyTemplate] = useState(
-    () => getTicketAutomationConfig().autoReplyTemplate || ""
-  );
-  const [notificationSettings, setNotificationSettings] = useState(
-    () => getTicketAutomationConfig().notificationSettings || buildDefaultNotificationSettings()
-  );
+  const [autoReplyTemplate, setAutoReplyTemplate] = useState(() => getTicketAutomationConfig().autoReplyTemplate || "");
+  const [notificationSettings, setNotificationSettings] = useState(() => getTicketAutomationConfig().notificationSettings || buildDefaultNotificationSettings());
   const [availableClients, setAvailableClients] = useState([]);
-  const [scheduledAlertRules, setScheduledAlertRules] = useState(
-    () => getTicketAutomationConfig().scheduledAlertRules || []
-  );
+  const [scheduledAlertRules, setScheduledAlertRules] = useState(() => getTicketAutomationConfig().scheduledAlertRules || []);
   const [availableAgents, setAvailableAgents] = useState([]);
   const [ticketViewProfiles, setTicketViewProfiles] = useState([]);
   const [ticketViewUsers, setTicketViewUsers] = useState([]);
@@ -639,7 +700,10 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
   const variableSectionRefs = useRef({});
   const [templateModalMode, setTemplateModalMode] = useState("create");
   const [editingTemplateId, setEditingTemplateId] = useState(null);
-  const [templateDraft, setTemplateDraft] = useState({ name: "", content: "" });
+  const [templateDraft, setTemplateDraft] = useState({
+    name: "",
+    content: ""
+  });
   const [savingTemplate, setSavingTemplate] = useState(false);
   const [savingMacro, setSavingMacro] = useState(false);
   const [savingCategory, setSavingCategory] = useState(false);
@@ -655,7 +719,7 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
   const [editingMacroId, setEditingMacroId] = useState(null);
   const [macroDraft, setMacroDraft] = useState({
     name: "",
-    actions: [buildDefaultMacroAction()],
+    actions: [buildDefaultMacroAction()]
   });
   const [showCollectorModal, setShowCollectorModal] = useState(false);
   const [collectorModalMode, setCollectorModalMode] = useState("create");
@@ -689,7 +753,7 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
     body: "",
     fromAddress: "",
     fromName: "",
-    collectorId: "",
+    collectorId: ""
   });
   const [showNotificationEventModal, setShowNotificationEventModal] = useState(false);
   const [notificationEventModalMode, setNotificationEventModalMode] = useState("create");
@@ -701,20 +765,12 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
     webhookId: "",
     title: "",
     message: "",
-    teamsThemeColor: "#13BA8E",
+    teamsThemeColor: "#13BA8E"
   });
   const [sendingCustomNotification, setSendingCustomNotification] = useState(false);
   const [showCustomNotificationPreview, setShowCustomNotificationPreview] = useState(false);
   const customNotificationEditorRef = useRef(null);
-  const visibleMessageVariableGroups =
-    messageVariablesModalTarget === "notification"
-      ? MESSAGE_VARIABLE_GROUPS_SORTED.filter((group) =>
-          resolveNotificationVariableSectionLabels(
-            notificationEventDraft.source || "tickets",
-            notificationEventDraft.element || "updated"
-          ).has(group.label)
-        )
-      : MESSAGE_VARIABLE_GROUPS_SORTED;
+  const visibleMessageVariableGroups = messageVariablesModalTarget === "notification" ? MESSAGE_VARIABLE_GROUPS_SORTED.filter(group => resolveNotificationVariableSectionLabels(notificationEventDraft.source || "tickets", notificationEventDraft.element || "updated").has(group.label)) : MESSAGE_VARIABLE_GROUPS_SORTED;
   const notificationEventEditorRef = useRef(null);
   const [showWebhookModal, setShowWebhookModal] = useState(false);
   const [webhookModalMode, setWebhookModalMode] = useState("create");
@@ -728,7 +784,6 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
   const [retryingNotificationLogId, setRetryingNotificationLogId] = useState("");
   const [notificationLogsPage, setNotificationLogsPage] = useState(1);
   const notificationLogsPerPage = 10;
-
   const loadTicketCategoriesAdmin = async () => {
     try {
       const rows = await fetchTicketCategories();
@@ -749,7 +804,9 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
   };
   const loadSolutionCatalogAdmin = async () => {
     try {
-      const rows = await fetchSolutionCatalog({ includeInactive: true });
+      const rows = await fetchSolutionCatalog({
+        includeInactive: true
+      });
       setSolutionCatalogEntries(Array.isArray(rows) ? rows : []);
     } catch (error) {
       toast.error(error?.message || ss.solutions.toast.loadError);
@@ -758,182 +815,121 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
   };
   useEffect(() => {
     let isMounted = true;
-    fetchTicketAutomationConfig()
-      .then((config) => {
-        if (!isMounted) return;
-        setCommentTemplates(Array.isArray(config?.commentTemplates) ? config.commentTemplates : []);
-        setMacros(Array.isArray(config?.macros) ? config.macros : []);
-        setEmailInboxes(Array.isArray(config?.emailInboxes) ? config.emailInboxes : []);
-        setMailCollectors(ensureUniqueCollectorIds(Array.isArray(config?.mailCollectors) ? config.mailCollectors : []));
-        setExclusionRules(Array.isArray(config?.exclusionRules) ? config.exclusionRules : []);
-        setAutoReplyRules(Array.isArray(config?.autoReplyRules) ? config.autoReplyRules : []);
-        setAutoReplyTemplate(String(config?.autoReplyTemplate || ""));
-        setNotificationSettings(
-          config?.notificationSettings || buildDefaultNotificationSettings()
-        );
-        setScheduledAlertRules(Array.isArray(config?.scheduledAlertRules) ? config.scheduledAlertRules : []);
-      })
-      .catch((error) => {
-        toast.error(error?.message || ss.templates.toast.loadError);
-      });
+    fetchTicketAutomationConfig().then(config => {
+      if (!isMounted) return;
+      setCommentTemplates(Array.isArray(config?.commentTemplates) ? config.commentTemplates : []);
+      setMacros(Array.isArray(config?.macros) ? config.macros : []);
+      setEmailInboxes(Array.isArray(config?.emailInboxes) ? config.emailInboxes : []);
+      setMailCollectors(ensureUniqueCollectorIds(Array.isArray(config?.mailCollectors) ? config.mailCollectors : []));
+      setExclusionRules(Array.isArray(config?.exclusionRules) ? config.exclusionRules : []);
+      setAutoReplyRules(Array.isArray(config?.autoReplyRules) ? config.autoReplyRules : []);
+      setAutoReplyTemplate(String(config?.autoReplyTemplate || ""));
+      setNotificationSettings(config?.notificationSettings || buildDefaultNotificationSettings());
+      setScheduledAlertRules(Array.isArray(config?.scheduledAlertRules) ? config.scheduledAlertRules : []);
+    }).catch(error => {
+      toast.error(error?.message || ss.templates.toast.loadError);
+    });
     return () => {
       isMounted = false;
     };
   }, []);
-
   useEffect(() => {
     loadTicketCategoriesAdmin();
     loadTicketCategorySectionsAdmin();
     loadSolutionCatalogAdmin();
   }, []);
-
   useEffect(() => {
     let isMounted = true;
-    fetchClientsList()
-      .then((rows) => {
-        if (!isMounted) return;
-        setAvailableClients(Array.isArray(rows) ? rows : []);
-      })
-      .catch(() => {
-        if (!isMounted) return;
-        setAvailableClients([]);
-      });
+    fetchClientsList().then(rows => {
+      if (!isMounted) return;
+      setAvailableClients(Array.isArray(rows) ? rows : []);
+    }).catch(() => {
+      if (!isMounted) return;
+      setAvailableClients([]);
+    });
     return () => {
       isMounted = false;
     };
   }, []);
-
   useEffect(() => {
     let isMounted = true;
-    fetchSettings()
-      .then((rows) => {
-        if (!isMounted) return;
-        const settingsObject = Array.isArray(rows)
-          ? rows.reduce((acc, row) => {
-              const key = row?.key;
-              if (!key) return acc;
-              acc[key] = row?.value ?? "";
-              return acc;
-            }, {})
-          : {};
-        const enabledCandidates = [
-          settingsObject.TEAMS_ENABLED,
-          settingsObject.MICROSOFT_TEAMS_ENABLED,
-          settingsObject.TEAMS_INTEGRATION_ENABLED,
-        ];
-        const hasEnabledFlag = enabledCandidates.some((raw) =>
-          ["1", "true", "yes", "on"].includes(String(raw || "").toLowerCase())
-        );
-        const hasTeamsEndpoint = Boolean(
-          String(settingsObject.TEAMS_WEBHOOK_URL || settingsObject.MICROSOFT_TEAMS_WEBHOOK_URL || "").trim()
-        );
-        setIsTeamsIntegrationActive(Boolean(hasEnabledFlag || hasTeamsEndpoint));
-      })
-      .catch(() => {
-        setIsTeamsIntegrationActive(false);
-      });
-
+    fetchSettings().then(rows => {
+      if (!isMounted) return;
+      const settingsObject = Array.isArray(rows) ? rows.reduce((acc, row) => {
+        const key = row?.key;
+        if (!key) return acc;
+        acc[key] = row?.value ?? "";
+        return acc;
+      }, {}) : {};
+      const enabledCandidates = [settingsObject.TEAMS_ENABLED, settingsObject.MICROSOFT_TEAMS_ENABLED, settingsObject.TEAMS_INTEGRATION_ENABLED];
+      const hasEnabledFlag = enabledCandidates.some(raw => ["1", "true", "yes", "on"].includes(String(raw || "").toLowerCase()));
+      const hasTeamsEndpoint = Boolean(String(settingsObject.TEAMS_WEBHOOK_URL || settingsObject.MICROSOFT_TEAMS_WEBHOOK_URL || "").trim());
+      setIsTeamsIntegrationActive(Boolean(hasEnabledFlag || hasTeamsEndpoint));
+    }).catch(() => {
+      setIsTeamsIntegrationActive(false);
+    });
     return () => {
       isMounted = false;
     };
   }, []);
-
   useEffect(() => {
     let isMounted = true;
-    fetch(`${API_BASE_URL}/profiles`, { credentials: "include" })
-      .then((res) => (res.ok ? res.json() : []))
-      .then((data) => {
-        if (!isMounted) return;
-        const raw = Array.isArray(data) ? data : data.profiles || [];
-        setTicketViewProfiles(raw);
-      })
-      .catch(() => {
-        if (isMounted) setTicketViewProfiles([]);
-      });
-
-    fetchTeams()
-      .then((rows) => {
-        if (!isMounted) return;
-        setTicketViewTeams(Array.isArray(rows) ? rows : []);
-      })
-      .catch(() => {
-        if (isMounted) setTicketViewTeams([]);
-      });
-
+    fetch(`${API_BASE_URL}/profiles`, {
+      credentials: "include"
+    }).then(res => res.ok ? res.json() : []).then(data => {
+      if (!isMounted) return;
+      const raw = Array.isArray(data) ? data : data.profiles || [];
+      setTicketViewProfiles(raw);
+    }).catch(() => {
+      if (isMounted) setTicketViewProfiles([]);
+    });
+    fetchTeams().then(rows => {
+      if (!isMounted) return;
+      setTicketViewTeams(Array.isArray(rows) ? rows : []);
+    }).catch(() => {
+      if (isMounted) setTicketViewTeams([]);
+    });
     return () => {
       isMounted = false;
     };
   }, []);
-
   useEffect(() => {
     let isMounted = true;
-    fetchUsers()
-      .then((users) => {
-        if (!isMounted) return;
-        const normalizedUsers = Array.isArray(users)
-          ? users
-              .filter((user) => user?.is_active !== false)
-              .map((user) => ({
-                id: String(user?.id || "").trim(),
-                label:
-                  String(user?.username || "").trim() ||
-                  String(user?.email || "").trim() ||
-                  String(user?.id || "").trim(),
-              }))
-              .filter((user) => user.id)
-          : [];
-        setAvailableAgents(normalizedUsers);
-        setTicketViewUsers(Array.isArray(users) ? users : []);
-      })
-      .catch(() => {
-        if (isMounted) {
-          setAvailableAgents([]);
-          setTicketViewUsers([]);
-        }
-      });
+    fetchUsers().then(users => {
+      if (!isMounted) return;
+      const normalizedUsers = Array.isArray(users) ? users.filter(user => user?.is_active !== false).map(user => ({
+        id: String(user?.id || "").trim(),
+        label: String(user?.username || "").trim() || String(user?.email || "").trim() || String(user?.id || "").trim()
+      })).filter(user => user.id) : [];
+      setAvailableAgents(normalizedUsers);
+      setTicketViewUsers(Array.isArray(users) ? users : []);
+    }).catch(() => {
+      if (isMounted) {
+        setAvailableAgents([]);
+        setTicketViewUsers([]);
+      }
+    });
     return () => {
       isMounted = false;
     };
   }, []);
-
-  const persist = async (
-    nextTemplates,
-    nextMacros,
-    nextInboxes,
-    nextExclusions,
-    nextAutoReplyRules,
-    nextAutoReplyTemplate,
-    successMessage,
-    nextScheduledAlertRules,
-    nextMailCollectors,
-    nextNotificationSettings
-  ) => {
+  const persist = async (nextTemplates, nextMacros, nextInboxes, nextExclusions, nextAutoReplyRules, nextAutoReplyTemplate, successMessage, nextScheduledAlertRules, nextMailCollectors, nextNotificationSettings) => {
     await saveTicketAutomationConfig({
       commentTemplates: nextTemplates,
       macros: nextMacros,
       emailInboxes: Array.isArray(nextInboxes) ? nextInboxes : emailInboxes,
       exclusionRules: Array.isArray(nextExclusions) ? nextExclusions : exclusionRules,
       autoReplyRules: Array.isArray(nextAutoReplyRules) ? nextAutoReplyRules : autoReplyRules,
-      autoReplyTemplate: String(
-        typeof nextAutoReplyTemplate === "string" ? nextAutoReplyTemplate : autoReplyTemplate
-      ),
-      notificationSettings:
-        typeof nextNotificationSettings === "object" && nextNotificationSettings
-          ? nextNotificationSettings
-          : notificationSettings,
-      scheduledAlertRules: Array.isArray(nextScheduledAlertRules)
-        ? nextScheduledAlertRules
-        : scheduledAlertRules,
+      autoReplyTemplate: String(typeof nextAutoReplyTemplate === "string" ? nextAutoReplyTemplate : autoReplyTemplate),
+      notificationSettings: typeof nextNotificationSettings === "object" && nextNotificationSettings ? nextNotificationSettings : notificationSettings,
+      scheduledAlertRules: Array.isArray(nextScheduledAlertRules) ? nextScheduledAlertRules : scheduledAlertRules,
       mailCollectors: Array.isArray(nextMailCollectors) ? nextMailCollectors : mailCollectors,
-      mailCollectSettings: normalizeMailCollectSettings(
-        getTicketAutomationConfig()?.mailCollectSettings
-      ),
+      mailCollectSettings: normalizeMailCollectSettings(getTicketAutomationConfig()?.mailCollectSettings)
     });
     if (successMessage) {
       toast.success(successMessage);
     }
   };
-
   const openCreateCategoryModal = () => {
     setCategoryModalMode("create");
     setEditingCategoryId(null);
@@ -941,29 +937,31 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       section: String(ticketCategorySections?.[0]?.name || ss.categories.uncategorized),
       name: "",
       description: "",
-      enabled: true,
+      enabled: true
     });
     setShowCategoryModal(true);
   };
-
-  const openEditCategoryModal = (category) => {
+  const openEditCategoryModal = category => {
     setCategoryModalMode("edit");
     setEditingCategoryId(String(category?.id || ""));
     setCategoryDraft({
       section: String(category?.section || ""),
       name: String(category?.name || ""),
       description: String(category?.description || ""),
-      enabled: category?.enabled !== false,
+      enabled: category?.enabled !== false
     });
     setShowCategoryModal(true);
   };
-
   const closeCategoryModal = () => {
     setShowCategoryModal(false);
     setEditingCategoryId(null);
-    setCategoryDraft({ section: "", name: "", description: "", enabled: true });
+    setCategoryDraft({
+      section: "",
+      name: "",
+      description: "",
+      enabled: true
+    });
   };
-
   const saveCategoryFromModal = async () => {
     const name = String(categoryDraft?.name || "").trim();
     if (!name) {
@@ -977,7 +975,7 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
           section: String(categoryDraft?.section || "").trim() || ss.categories.uncategorized,
           name,
           description: String(categoryDraft?.description || "").trim(),
-          enabled: categoryDraft?.enabled !== false,
+          enabled: categoryDraft?.enabled !== false
         });
         toast.success(ss.categories.toast.categoryAdded);
       } else {
@@ -985,7 +983,7 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
           section: String(categoryDraft?.section || "").trim() || ss.categories.uncategorized,
           name,
           description: String(categoryDraft?.description || "").trim(),
-          enabled: categoryDraft?.enabled !== false,
+          enabled: categoryDraft?.enabled !== false
         });
         toast.success(ss.categories.toast.categoryUpdated);
       }
@@ -997,13 +995,11 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       setSavingCategory(false);
     }
   };
-
-  const removeCategory = async (categoryId) => {
+  const removeCategory = async categoryId => {
     await deleteTicketCategory(categoryId);
     toast.success(ss.categories.toast.categoryDeleted);
     await loadTicketCategoriesAdmin();
   };
-
   const confirmRemoveCategory = async () => {
     if (!categoryDeleteTarget?.id) return;
     setDeletingCategory(true);
@@ -1016,9 +1012,8 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       setDeletingCategory(false);
     }
   };
-
-  const openCreateSolutionCatalogModal = (category) => {
-    const rows = solutionCatalogEntries.filter((entry) => entry.category === category);
+  const openCreateSolutionCatalogModal = category => {
+    const rows = solutionCatalogEntries.filter(entry => entry.category === category);
     const maxOrder = rows.reduce((max, entry) => Math.max(max, Number(entry.displayOrder) || 0), 0);
     setSolutionCatalogModalMode("create");
     setEditingSolutionCatalogId(null);
@@ -1026,29 +1021,31 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       category,
       label: "",
       displayOrder: maxOrder + 10,
-      isActive: true,
+      isActive: true
     });
     setShowSolutionCatalogModal(true);
   };
-
-  const openEditSolutionCatalogModal = (entry) => {
+  const openEditSolutionCatalogModal = entry => {
     setSolutionCatalogModalMode("edit");
     setEditingSolutionCatalogId(String(entry?.id || ""));
     setSolutionCatalogDraft({
       category: entry?.category || "intervention",
       label: String(entry?.label || ""),
       displayOrder: Number(entry?.displayOrder) || 0,
-      isActive: entry?.isActive !== false,
+      isActive: entry?.isActive !== false
     });
     setShowSolutionCatalogModal(true);
   };
-
   const closeSolutionCatalogModal = () => {
     setShowSolutionCatalogModal(false);
     setEditingSolutionCatalogId(null);
-    setSolutionCatalogDraft({ category: "intervention", label: "", displayOrder: 0, isActive: true });
+    setSolutionCatalogDraft({
+      category: "intervention",
+      label: "",
+      displayOrder: 0,
+      isActive: true
+    });
   };
-
   const saveSolutionCatalogFromModal = async () => {
     const label = String(solutionCatalogDraft?.label || "").trim();
     if (!label) {
@@ -1062,14 +1059,14 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
           category: solutionCatalogDraft.category,
           label,
           displayOrder: Number(solutionCatalogDraft.displayOrder) || 0,
-          isActive: solutionCatalogDraft.isActive !== false,
+          isActive: solutionCatalogDraft.isActive !== false
         });
         toast.success(ss.solutions.toast.added);
       } else {
         await updateSolutionCatalogEntry(editingSolutionCatalogId, {
           label,
           displayOrder: Number(solutionCatalogDraft.displayOrder) || 0,
-          isActive: solutionCatalogDraft.isActive !== false,
+          isActive: solutionCatalogDraft.isActive !== false
         });
         toast.success(ss.solutions.toast.updated);
       }
@@ -1081,7 +1078,6 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       setSavingSolutionCatalogEntry(false);
     }
   };
-
   const confirmRemoveSolutionCatalogEntry = async () => {
     if (!solutionCatalogDeleteTarget?.id) return;
     setDeletingSolutionCatalogEntry(true);
@@ -1096,31 +1092,35 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       setDeletingSolutionCatalogEntry(false);
     }
   };
-
   const openCreateCategorySectionModal = () => {
     setCategorySectionModalMode("create");
     setEditingCategorySectionId(null);
-    setCategorySectionDraft({ name: "", description: "", enabled: true });
+    setCategorySectionDraft({
+      name: "",
+      description: "",
+      enabled: true
+    });
     setShowCategorySectionModal(true);
   };
-
-  const openEditCategorySectionModal = (section) => {
+  const openEditCategorySectionModal = section => {
     setCategorySectionModalMode("edit");
     setEditingCategorySectionId(String(section?.id || ""));
     setCategorySectionDraft({
       name: String(section?.name || ""),
       description: String(section?.description || ""),
-      enabled: section?.enabled !== false,
+      enabled: section?.enabled !== false
     });
     setShowCategorySectionModal(true);
   };
-
   const closeCategorySectionModal = () => {
     setShowCategorySectionModal(false);
     setEditingCategorySectionId(null);
-    setCategorySectionDraft({ name: "", description: "", enabled: true });
+    setCategorySectionDraft({
+      name: "",
+      description: "",
+      enabled: true
+    });
   };
-
   const saveCategorySectionFromModal = async () => {
     const name = String(categorySectionDraft?.name || "").trim();
     if (!name) {
@@ -1133,14 +1133,14 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
         await createTicketCategorySection({
           name,
           description: String(categorySectionDraft?.description || "").trim(),
-          enabled: categorySectionDraft?.enabled !== false,
+          enabled: categorySectionDraft?.enabled !== false
         });
         toast.success(ss.categories.toast.sectionAdded);
       } else {
         await updateTicketCategorySection(editingCategorySectionId, {
           name,
           description: String(categorySectionDraft?.description || "").trim(),
-          enabled: categorySectionDraft?.enabled !== false,
+          enabled: categorySectionDraft?.enabled !== false
         });
         toast.success(ss.categories.toast.sectionUpdated);
       }
@@ -1153,28 +1153,22 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       setSavingCategorySection(false);
     }
   };
-
-  const removeCategorySection = async (sectionId) => {
+  const removeCategorySection = async sectionId => {
     await deleteTicketCategorySection(sectionId);
     toast.success(ss.categories.toast.sectionDeleted);
     await loadTicketCategorySectionsAdmin();
     await loadTicketCategoriesAdmin();
   };
-
   const confirmRemoveCategorySection = async () => {
     if (!categorySectionDeleteTarget?.id) return;
     const linkedCount = countCategoriesForSection(categorySectionDeleteTarget);
     if (linkedCount > 0) {
-      toast.warn(
-        linkedCount === 1
-          ? interpolate(ss.categories.sectionDeleteWarnOne, {
-              name: categorySectionDeleteTarget?.name || ss.categories.thisSection,
-            })
-          : interpolate(ss.categories.sectionDeleteWarnMany, {
-              name: categorySectionDeleteTarget?.name || ss.categories.thisSection,
-              count: linkedCount,
-            })
-      );
+      toast.warn(linkedCount === 1 ? interpolate(ss.categories.sectionDeleteWarnOne, {
+        name: categorySectionDeleteTarget?.name || ss.categories.thisSection
+      }) : interpolate(ss.categories.sectionDeleteWarnMany, {
+        name: categorySectionDeleteTarget?.name || ss.categories.thisSection,
+        count: linkedCount
+      }));
       setCategorySectionDeleteTarget(null);
       return;
     }
@@ -1188,34 +1182,35 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       setDeletingCategorySection(false);
     }
   };
-
-  const addTemplate = (draft) => {
+  const addTemplate = draft => {
     if (!draft.name.trim()) {
       toast.error(ss.templates.toast.nameRequired);
       return;
     }
     if (maxTemplates != null && commentTemplates.length >= maxTemplates) {
-      toast.warn(interpolate(ss.templates.toast.limitWarn, { max: maxTemplates }));
+      toast.warn(interpolate(ss.templates.toast.limitWarn, {
+        max: maxTemplates
+      }));
       return;
     }
     const created = {
       id: `tpl-${Date.now()}`,
       name: draft.name.trim(),
-      content: String(draft.content || ""),
+      content: String(draft.content || "")
     };
     const nextTemplates = [...commentTemplates, created];
     setCommentTemplates(nextTemplates);
-    persist(nextTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, ss.templates.toast.added)
-      .then(() => {
-        setShowTemplateModal(false);
-        setTemplateDraft({ name: "", content: "" });
-      })
-      .catch((error) => {
-        toast.error(error?.message || ss.templates.toast.addError);
+    persist(nextTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, ss.templates.toast.added).then(() => {
+      setShowTemplateModal(false);
+      setTemplateDraft({
+        name: "",
+        content: ""
       });
+    }).catch(error => {
+      toast.error(error?.message || ss.templates.toast.addError);
+    });
   };
-
-  const addMacro = async (draft) => {
+  const addMacro = async draft => {
     if (!draft.name.trim()) {
       toast.error(ss.macros.toast.nameRequired);
       return false;
@@ -1225,29 +1220,23 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       return false;
     }
     if (maxMacros != null && macros.length >= maxMacros) {
-      toast.warn(interpolate(ss.macros.toast.limitWarn, { max: maxMacros }));
+      toast.warn(interpolate(ss.macros.toast.limitWarn, {
+        max: maxMacros
+      }));
       return false;
     }
     const created = {
       id: `macro-${Date.now()}`,
       name: draft.name.trim(),
-      actions: draft.actions.map((action) => ({
+      actions: draft.actions.map(action => ({
         ...buildDefaultMacroAction(),
-        ...action,
-      })),
+        ...action
+      }))
     };
     const nextMacros = [...macros, created];
     setMacros(nextMacros);
     try {
-      await persist(
-        commentTemplates,
-        nextMacros,
-        emailInboxes,
-        exclusionRules,
-        autoReplyRules,
-        autoReplyTemplate,
-        ss.macros.toast.added
-      );
+      await persist(commentTemplates, nextMacros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, ss.macros.toast.added);
       closeMacroModal();
       return true;
     } catch (error) {
@@ -1255,104 +1244,89 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       return false;
     }
   };
-
   const updateTemplate = (id, patch) => {
-    const nextTemplates = commentTemplates.map((tpl) => (tpl.id === id ? { ...tpl, ...patch } : tpl));
+    const nextTemplates = commentTemplates.map(tpl => tpl.id === id ? {
+      ...tpl,
+      ...patch
+    } : tpl);
     setCommentTemplates(nextTemplates);
-    persist(nextTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate).catch((error) => {
+    persist(nextTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate).catch(error => {
       toast.error(error?.message || ss.templates.toast.updateError);
     });
   };
-
   const openCreateTemplateModal = () => {
     if (maxTemplates != null && commentTemplates.length >= maxTemplates) {
-      toast.warn(interpolate(ss.templates.toast.limitWarn, { max: maxTemplates }));
+      toast.warn(interpolate(ss.templates.toast.limitWarn, {
+        max: maxTemplates
+      }));
       return;
     }
     setTemplateModalMode("create");
     setEditingTemplateId(null);
-    setTemplateDraft({ name: "", content: "" });
+    setTemplateDraft({
+      name: "",
+      content: ""
+    });
     setShowTemplateModal(true);
   };
-
-  const openEditTemplateModal = (template) => {
+  const openEditTemplateModal = template => {
     setTemplateModalMode("edit");
     setEditingTemplateId(template.id);
     setTemplateDraft({
       name: String(template.name || ""),
-      content: String(template.content || ""),
+      content: String(template.content || "")
     });
     setShowTemplateModal(true);
   };
-
   const closeTemplateModal = () => {
     setShowTemplateModal(false);
     setEditingTemplateId(null);
     selectedTemplateImageRef.current = null;
     setSelectedImageWidthPx("");
-    setTemplateDraft({ name: "", content: "" });
+    setTemplateDraft({
+      name: "",
+      content: ""
+    });
   };
-
-  const openTemplatePreviewModal = (template) => {
+  const openTemplatePreviewModal = template => {
     setTemplatePreviewTarget(template || null);
     setShowTemplatePreviewModal(true);
   };
-
   const closeTemplatePreviewModal = () => {
     setShowTemplatePreviewModal(false);
     setTemplatePreviewTarget(null);
   };
-
   const saveTemplateFromModal = async () => {
-    const cleanedTemplateContent = String(templateDraft.content || "").replace(
-      /\soutline:\s*[^;"']+;?/gi,
-      ""
-    );
+    const cleanedTemplateContent = String(templateDraft.content || "").replace(/\soutline:\s*[^;"']+;?/gi, "");
     const payload = {
       name: String(templateDraft.name || "").trim(),
-      content: cleanedTemplateContent,
+      content: cleanedTemplateContent
     };
     if (!payload.name) {
       toast.error(ss.templates.toast.nameRequired);
       return;
     }
-
     setSavingTemplate(true);
     try {
       if (templateModalMode === "create") {
         const created = {
           id: `tpl-${Date.now()}`,
           name: payload.name,
-          content: payload.content,
+          content: payload.content
         };
         const nextTemplates = [...commentTemplates, created];
         setCommentTemplates(nextTemplates);
-        await persist(
-          nextTemplates,
-          macros,
-          emailInboxes,
-          exclusionRules,
-          autoReplyRules,
-          autoReplyTemplate,
-          ss.templates.toast.added
-        );
+        await persist(nextTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, ss.templates.toast.added);
         closeTemplateModal();
         return;
       }
       if (!editingTemplateId) return;
-      const nextTemplates = commentTemplates.map((tpl) =>
-        tpl.id === editingTemplateId ? { ...tpl, ...payload } : tpl
-      );
+      const nextTemplates = commentTemplates.map(tpl => tpl.id === editingTemplateId ? {
+        ...tpl,
+        ...payload
+      } : tpl);
       setCommentTemplates(nextTemplates);
-      await persist(
-        nextTemplates,
-        macros,
-        emailInboxes,
-        exclusionRules,
-        autoReplyRules,
-        autoReplyTemplate,
-        ss.templates.toast.updated
-      );
+      await persist(nextTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, ss.templates.toast.updated);
       closeTemplateModal();
     } catch (error) {
       toast.error(error?.message || ss.templates.toast.saveError);
@@ -1360,74 +1334,59 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       setSavingTemplate(false);
     }
   };
-
-  const execTemplateCommand = (command) => {
+  const execTemplateCommand = command => {
     if (!templateEditorRef.current) return;
     templateEditorRef.current.focus();
     document.execCommand(command, false);
-    setTemplateDraft((prev) => ({
+    setTemplateDraft(prev => ({
       ...prev,
-      content: String(templateEditorRef.current?.innerHTML || "").replace(/\soutline:\s*[^;"']+;?/gi, ""),
+      content: String(templateEditorRef.current?.innerHTML || "").replace(/\soutline:\s*[^;"']+;?/gi, "")
     }));
   };
-
-  const insertTemplateVariable = (token) => {
+  const insertTemplateVariable = token => {
     if (!templateEditorRef.current) return;
     templateEditorRef.current.focus();
     document.execCommand("insertText", false, token);
-    setTemplateDraft((prev) => ({
+    setTemplateDraft(prev => ({
       ...prev,
-      content: String(templateEditorRef.current?.innerHTML || "").replace(/\soutline:\s*[^;"']+;?/gi, ""),
+      content: String(templateEditorRef.current?.innerHTML || "").replace(/\soutline:\s*[^;"']+;?/gi, "")
     }));
   };
-
   const openMessageVariablesModal = (target = "template") => {
     const normalizedTarget = target === "notification" ? "notification" : "template";
     if (isCommunity && normalizedTarget === "template") return;
     setMessageVariablesModalTarget(normalizedTarget);
-    const firstVisibleLabel =
-      normalizedTarget === "notification"
-        ? MESSAGE_VARIABLE_GROUPS_SORTED.find((group) =>
-            resolveNotificationVariableSectionLabels(
-              notificationEventDraft.source || "tickets",
-              notificationEventDraft.element || "updated"
-            ).has(group.label)
-          )?.label
-        : MESSAGE_VARIABLE_GROUPS_SORTED[0]?.label;
+    const firstVisibleLabel = normalizedTarget === "notification" ? MESSAGE_VARIABLE_GROUPS_SORTED.find(group => resolveNotificationVariableSectionLabels(notificationEventDraft.source || "tickets", notificationEventDraft.element || "updated").has(group.label))?.label : MESSAGE_VARIABLE_GROUPS_SORTED[0]?.label;
     setActiveVariableSection(firstVisibleLabel || "");
     setShowMessageVariablesModal(true);
   };
-
   const closeMessageVariablesModal = () => {
     setShowMessageVariablesModal(false);
   };
-
-  const insertMessageVariableFromModal = (token) => {
+  const insertMessageVariableFromModal = token => {
     if (messageVariablesModalTarget === "notification") {
       if (!notificationEventEditorRef.current) return;
       notificationEventEditorRef.current.focus();
       document.execCommand("insertText", false, token);
-      setNotificationEventDraft((prev) => ({
+      setNotificationEventDraft(prev => ({
         ...prev,
-        customMessage: String(notificationEventEditorRef.current?.innerHTML || "").replace(
-          /\soutline:\s*[^;"']+;?/gi,
-          ""
-        ),
+        customMessage: String(notificationEventEditorRef.current?.innerHTML || "").replace(/\soutline:\s*[^;"']+;?/gi, "")
       }));
     } else {
       insertTemplateVariable(token);
     }
   };
-
-  const jumpToVariableSection = (sectionLabel) => {
+  const jumpToVariableSection = sectionLabel => {
     setActiveVariableSection(sectionLabel);
     const sectionNode = variableSectionRefs.current?.[sectionLabel];
     if (sectionNode && typeof sectionNode.scrollIntoView === "function") {
-      sectionNode.scrollIntoView({ behavior: "smooth", block: "start" });
+      sectionNode.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
     }
   };
-
-  const handleTemplateEditorClick = (event) => {
+  const handleTemplateEditorClick = event => {
     if (selectedTemplateImageRef.current) {
       selectedTemplateImageRef.current.style.outline = "";
     }
@@ -1442,73 +1401,68 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
     selectedTemplateImageRef.current = null;
     setSelectedImageWidthPx("");
   };
-
-  const resizeSelectedTemplateImage = (size) => {
+  const resizeSelectedTemplateImage = size => {
     const imageNode = selectedTemplateImageRef.current;
     if (!imageNode) {
-      toast.info("Clique d'abord sur une image dans le contenu.");
+      toast.info("Click an image in the content first.");
       return;
     }
     imageNode.style.width = `${size}%`;
     imageNode.style.height = "auto";
     imageNode.style.maxWidth = "100%";
-    setTemplateDraft((prev) => ({
+    setTemplateDraft(prev => ({
       ...prev,
-      content: String(templateEditorRef.current?.innerHTML || prev.content).replace(/\soutline:\s*[^;"']+;?/gi, ""),
+      content: String(templateEditorRef.current?.innerHTML || prev.content).replace(/\soutline:\s*[^;"']+;?/gi, "")
     }));
   };
-
   const resizeSelectedTemplateImageCustom = () => {
     const imageNode = selectedTemplateImageRef.current;
     if (!imageNode) {
-      toast.info("Clique d'abord sur une image dans le contenu.");
+      toast.info("Click an image in the content first.");
       return;
     }
-    const rawWidth = window.prompt("Largeur de l'image (en px)", "320");
+    const rawWidth = window.prompt("Image width (px)", "320");
     if (!rawWidth) return;
     const width = Number(rawWidth);
     if (!Number.isFinite(width) || width <= 0) {
-      toast.error("Valeur de largeur invalide.");
+      toast.error("Invalid width value.");
       return;
     }
     imageNode.style.width = `${Math.round(width)}px`;
     imageNode.style.height = "auto";
     imageNode.style.maxWidth = "100%";
-    setTemplateDraft((prev) => ({
+    setTemplateDraft(prev => ({
       ...prev,
-      content: String(templateEditorRef.current?.innerHTML || prev.content).replace(/\soutline:\s*[^;"']+;?/gi, ""),
+      content: String(templateEditorRef.current?.innerHTML || prev.content).replace(/\soutline:\s*[^;"']+;?/gi, "")
     }));
   };
-
   const applySelectedTemplateImageWidth = () => {
     const imageNode = selectedTemplateImageRef.current;
     if (!imageNode) {
-      toast.info("Clique d'abord sur une image dans le contenu.");
+      toast.info("Click an image in the content first.");
       return;
     }
     const width = Number(selectedImageWidthPx);
     if (!Number.isFinite(width) || width <= 0) {
-      toast.error("Largeur invalide.");
+      toast.error("Invalid width.");
       return;
     }
     imageNode.style.width = `${Math.round(width)}px`;
     imageNode.style.height = "auto";
     imageNode.style.maxWidth = "100%";
-    setTemplateDraft((prev) => ({
+    setTemplateDraft(prev => ({
       ...prev,
-      content: String(templateEditorRef.current?.innerHTML || prev.content).replace(/\soutline:\s*[^;"']+;?/gi, ""),
+      content: String(templateEditorRef.current?.innerHTML || prev.content).replace(/\soutline:\s*[^;"']+;?/gi, "")
     }));
   };
-
   const insertTemplateImage = () => {
     templateImageInputRef.current?.click();
   };
-
-  const handleTemplateImageUpload = (event) => {
+  const handleTemplateImageUpload = event => {
     const file = event.target.files?.[0];
     if (!file) return;
     if (!String(file.type || "").startsWith("image/")) {
-      toast.error("Sélectionne un fichier image.");
+      toast.error("Select an image file.");
       event.target.value = "";
       return;
     }
@@ -1517,80 +1471,68 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       if (!templateEditorRef.current) return;
       templateEditorRef.current.focus();
       document.execCommand("insertImage", false, String(reader.result || ""));
-      setTemplateDraft((prev) => ({
+      setTemplateDraft(prev => ({
         ...prev,
-        content: String(templateEditorRef.current?.innerHTML || "").replace(/\soutline:\s*[^;"']+;?/gi, ""),
+        content: String(templateEditorRef.current?.innerHTML || "").replace(/\soutline:\s*[^;"']+;?/gi, "")
       }));
       event.target.value = "";
     };
     reader.onerror = () => {
-      toast.error("Impossible de charger l'image.");
+      toast.error("Unable to load the image.");
       event.target.value = "";
     };
     reader.readAsDataURL(file);
   };
-
   const updateMacro = async (id, patch, successMessage = null) => {
-    const nextMacros = macros.map((macro) => (macro.id === id ? { ...macro, ...patch } : macro));
+    const nextMacros = macros.map(macro => macro.id === id ? {
+      ...macro,
+      ...patch
+    } : macro);
     setMacros(nextMacros);
     try {
-      await persist(
-        commentTemplates,
-        nextMacros,
-        emailInboxes,
-        exclusionRules,
-        autoReplyRules,
-        autoReplyTemplate,
-        successMessage
-      );
+      await persist(commentTemplates, nextMacros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, successMessage);
       return true;
     } catch (error) {
       toast.error(error?.message || ss.macros.toast.updateError);
       return false;
     }
   };
-
   const openCreateMacroModal = () => {
     if (maxMacros != null && macros.length >= maxMacros) {
-      toast.warn(interpolate(ss.macros.toast.limitWarn, { max: maxMacros }));
+      toast.warn(interpolate(ss.macros.toast.limitWarn, {
+        max: maxMacros
+      }));
       return;
     }
     setMacroModalMode("create");
     setEditingMacroId(null);
     setMacroDraft({
       name: "",
-      actions: [buildDefaultMacroAction()],
+      actions: [buildDefaultMacroAction()]
     });
     setShowMacroModal(true);
   };
-
-  const openEditMacroModal = (macro) => {
+  const openEditMacroModal = macro => {
     setMacroModalMode("edit");
     setEditingMacroId(macro.id);
     setMacroDraft({
       name: String(macro?.name || ""),
-      actions: Array.isArray(macro?.actions) && macro.actions.length > 0
-        ? macro.actions.map((action) => normalizeMacroActionForEditor(action))
-        : [buildDefaultMacroAction()],
+      actions: Array.isArray(macro?.actions) && macro.actions.length > 0 ? macro.actions.map(action => normalizeMacroActionForEditor(action)) : [buildDefaultMacroAction()]
     });
     setShowMacroModal(true);
   };
-
   const closeMacroModal = () => {
     setShowMacroModal(false);
     setEditingMacroId(null);
     setMacroDraft({
       name: "",
-      actions: [buildDefaultMacroAction()],
+      actions: [buildDefaultMacroAction()]
     });
   };
-
   const saveMacroFromModal = async () => {
     const payload = {
       name: String(macroDraft.name || "").trim(),
-      actions: Array.isArray(macroDraft.actions)
-        ? macroDraft.actions.map((action) => normalizeMacroActionForEditor(action))
-        : [],
+      actions: Array.isArray(macroDraft.actions) ? macroDraft.actions.map(action => normalizeMacroActionForEditor(action)) : []
     };
     if (!payload.name) {
       toast.error(ss.macros.toast.nameRequired);
@@ -1615,49 +1557,42 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       setSavingMacro(false);
     }
   };
-
   const updateDraftMacroAction = (actionId, patch) => {
-    setMacroDraft((prev) => {
-      const nextActions = (prev.actions || []).map((action) =>
-        action.id === actionId ? { ...action, ...patch } : action
-      );
-      return { ...prev, actions: nextActions };
+    setMacroDraft(prev => {
+      const nextActions = (prev.actions || []).map(action => action.id === actionId ? {
+        ...action,
+        ...patch
+      } : action);
+      return {
+        ...prev,
+        actions: nextActions
+      };
     });
   };
-
   const addDraftMacroAction = () => {
-    setMacroDraft((prev) => ({
+    setMacroDraft(prev => ({
       ...prev,
-      actions: [...(prev.actions || []), buildDefaultMacroAction()],
+      actions: [...(prev.actions || []), buildDefaultMacroAction()]
     }));
   };
-
-  const removeDraftMacroAction = (actionId) => {
-    setMacroDraft((prev) => {
-      const filtered = (prev.actions || []).filter((action) => action.id !== actionId);
-      return { ...prev, actions: filtered.length ? filtered : [buildDefaultMacroAction()] };
+  const removeDraftMacroAction = actionId => {
+    setMacroDraft(prev => {
+      const filtered = (prev.actions || []).filter(action => action.id !== actionId);
+      return {
+        ...prev,
+        actions: filtered.length ? filtered : [buildDefaultMacroAction()]
+      };
     });
   };
-
-  const updateMacroAction = (macroActions, actionId, patch) =>
-    (macroActions || []).map((action) =>
-      action.id === actionId ? { ...action, ...patch } : action
-    );
-
-  const removeTemplate = async (id) => {
-    const nextTemplates = commentTemplates.filter((tpl) => tpl.id !== id);
+  const updateMacroAction = (macroActions, actionId, patch) => (macroActions || []).map(action => action.id === actionId ? {
+    ...action,
+    ...patch
+  } : action);
+  const removeTemplate = async id => {
+    const nextTemplates = commentTemplates.filter(tpl => tpl.id !== id);
     setCommentTemplates(nextTemplates);
-    await persist(
-      nextTemplates,
-      macros,
-      emailInboxes,
-      exclusionRules,
-      autoReplyRules,
-      autoReplyTemplate,
-      ss.templates.toast.deleted
-    );
+    await persist(nextTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, ss.templates.toast.deleted);
   };
-
   const confirmRemoveTemplate = async () => {
     if (!templateDeleteTarget?.id) return;
     setDeletingTemplate(true);
@@ -1670,21 +1605,11 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       setDeletingTemplate(false);
     }
   };
-
-  const removeMacro = async (id) => {
-    const nextMacros = macros.filter((macro) => macro.id !== id);
+  const removeMacro = async id => {
+    const nextMacros = macros.filter(macro => macro.id !== id);
     setMacros(nextMacros);
-    await persist(
-      commentTemplates,
-      nextMacros,
-      emailInboxes,
-      exclusionRules,
-      autoReplyRules,
-      autoReplyTemplate,
-      ss.macros.toast.deleted
-    );
+    await persist(commentTemplates, nextMacros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, ss.macros.toast.deleted);
   };
-
   const confirmRemoveMacro = async () => {
     if (!macroDeleteTarget?.id) return;
     setDeletingMacro(true);
@@ -1697,66 +1622,60 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       setDeletingMacro(false);
     }
   };
-
   const addEmailInbox = () => {
-    const nextInboxes = [
-      ...emailInboxes,
-      { id: `inbox-${Date.now()}`, address: "", provider: "", enabled: true },
-    ];
+    const nextInboxes = [...emailInboxes, {
+      id: `inbox-${Date.now()}`,
+      address: "",
+      provider: "",
+      enabled: true
+    }];
     setEmailInboxes(nextInboxes);
   };
-
   const updateEmailInbox = (id, patch) => {
-    const nextInboxes = emailInboxes.map((item) => (item.id === id ? { ...item, ...patch } : item));
+    const nextInboxes = emailInboxes.map(item => item.id === id ? {
+      ...item,
+      ...patch
+    } : item);
     setEmailInboxes(nextInboxes);
   };
-
-  const removeEmailInbox = (id) => {
-    const nextInboxes = emailInboxes.filter((item) => item.id !== id);
+  const removeEmailInbox = id => {
+    const nextInboxes = emailInboxes.filter(item => item.id !== id);
     setEmailInboxes(nextInboxes);
   };
-
   const openCreateExclusionRuleModal = () => {
     setExclusionRuleModalMode("create");
     setEditingExclusionRuleId(null);
     setExclusionRuleDraft(buildDefaultExclusionRule());
     setShowExclusionRuleModal(true);
   };
-
-  const openEditExclusionRuleModal = (rule) => {
+  const openEditExclusionRuleModal = rule => {
     setExclusionRuleModalMode("edit");
     setEditingExclusionRuleId(rule.id);
     setExclusionRuleDraft({
       ...buildDefaultExclusionRule(),
       ...rule,
-      filterRoot: normalizeExclusionFilterRoot(rule),
+      filterRoot: normalizeExclusionFilterRoot(rule)
     });
     setShowExclusionRuleModal(true);
   };
-
-  const closeExclusionRuleModal = ({ force = false } = {}) => {
+  const closeExclusionRuleModal = ({
+    force = false
+  } = {}) => {
     if (!force && savingExclusionRule) return;
     setShowExclusionRuleModal(false);
     setEditingExclusionRuleId(null);
     setExclusionRuleDraft(buildDefaultExclusionRule());
   };
-
   const updateExclusionRule = (id, patch) => {
-    const nextRules = exclusionRules.map((item) => (item.id === id ? { ...item, ...patch } : item));
+    const nextRules = exclusionRules.map(item => item.id === id ? {
+      ...item,
+      ...patch
+    } : item);
     setExclusionRules(nextRules);
-    persist(
-      commentTemplates,
-      macros,
-      emailInboxes,
-      nextRules,
-      autoReplyRules,
-      autoReplyTemplate,
-      exclusionRuleModalMode === "create" ? mc.toast.ruleAdded : mc.toast.ruleUpdated
-    ).catch((error) => {
+    persist(commentTemplates, macros, emailInboxes, nextRules, autoReplyRules, autoReplyTemplate, exclusionRuleModalMode === "create" ? mc.toast.ruleAdded : mc.toast.ruleUpdated).catch(error => {
       toast.error(error?.message || mc.toast.ruleSaveError);
     });
   };
-
   const saveExclusionRuleFromModal = async () => {
     const filterRoot = normalizeExclusionFilterRoot(exclusionRuleDraft);
     const filterValidationError = validateMailFilterRoot(filterRoot);
@@ -1776,42 +1695,30 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       collectorId: String(exclusionRuleDraft.collectorId || "").trim(),
       filterRoot,
       action,
-      criteria: [],
+      criteria: []
     };
-    const nextRules =
-      exclusionRuleModalMode === "create"
-        ? [...exclusionRules, payload]
-        : exclusionRules.map((item) => (item.id === editingExclusionRuleId ? payload : item));
+    const nextRules = exclusionRuleModalMode === "create" ? [...exclusionRules, payload] : exclusionRules.map(item => item.id === editingExclusionRuleId ? payload : item);
     setExclusionRules(nextRules);
     setSavingExclusionRule(true);
     try {
-      await persist(
-        commentTemplates,
-        macros,
-        emailInboxes,
-        nextRules,
-        autoReplyRules,
-        autoReplyTemplate,
-        exclusionRuleModalMode === "create" ? mc.toast.ruleAdded : mc.toast.ruleUpdated
-      );
+      await persist(commentTemplates, macros, emailInboxes, nextRules, autoReplyRules, autoReplyTemplate, exclusionRuleModalMode === "create" ? mc.toast.ruleAdded : mc.toast.ruleUpdated);
       setSavingExclusionRule(false);
-      closeExclusionRuleModal({ force: true });
+      closeExclusionRuleModal({
+        force: true
+      });
     } catch (error) {
       toast.error(error?.message || mc.toast.ruleSaveError);
     } finally {
       setSavingExclusionRule(false);
     }
   };
-
-  const requestRemoveExclusionRule = (rule) => {
+  const requestRemoveExclusionRule = rule => {
     setExclusionRuleDeleteTarget(rule);
   };
-
   const closeExclusionRuleDeleteModal = () => {
     if (deletingExclusionRule) return;
     setExclusionRuleDeleteTarget(null);
   };
-
   const confirmRemoveExclusionRule = async () => {
     if (!exclusionRuleDeleteTarget?.id) return;
     setDeletingExclusionRule(true);
@@ -1824,23 +1731,13 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       setDeletingExclusionRule(false);
     }
   };
-
-  const removeExclusionRule = async (id) => {
-    const nextRules = exclusionRules.filter((item) => item.id !== id);
+  const removeExclusionRule = async id => {
+    const nextRules = exclusionRules.filter(item => item.id !== id);
     setExclusionRules(nextRules);
-    await persist(
-      commentTemplates,
-      macros,
-      emailInboxes,
-      nextRules,
-      autoReplyRules,
-      autoReplyTemplate,
-      mc.toast.ruleDeleted
-    );
+    await persist(commentTemplates, macros, emailInboxes, nextRules, autoReplyRules, autoReplyTemplate, mc.toast.ruleDeleted);
   };
-
   const moveExclusionRule = (ruleId, direction) => {
-    const currentIndex = exclusionRules.findIndex((rule) => rule.id === ruleId);
+    const currentIndex = exclusionRules.findIndex(rule => rule.id === ruleId);
     if (currentIndex < 0) return;
     const targetIndex = currentIndex + direction;
     if (targetIndex < 0 || targetIndex >= exclusionRules.length) return;
@@ -1848,18 +1745,10 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
     const [item] = nextRules.splice(currentIndex, 1);
     nextRules.splice(targetIndex, 0, item);
     setExclusionRules(nextRules);
-    persist(
-      commentTemplates,
-      macros,
-      emailInboxes,
-      nextRules,
-      autoReplyRules,
-      autoReplyTemplate
-    ).catch((error) => {
+    persist(commentTemplates, macros, emailInboxes, nextRules, autoReplyRules, autoReplyTemplate).catch(error => {
       toast.error(error?.message || mc.toast.ruleSaveError);
     });
   };
-
   const runExclusionRulesTest = async () => {
     setTestingRules(true);
     setRulesTestResult(null);
@@ -1867,12 +1756,14 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       const response = await fetch(`${API_BASE_URL}/tickets/collectors/test-rules`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           sample: rulesTestDraft,
           rules: exclusionRules,
-          collectorId: rulesTestDraft.collectorId || "",
-        }),
+          collectorId: rulesTestDraft.collectorId || ""
+        })
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || payload?.success === false) {
@@ -1885,15 +1776,13 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       setTestingRules(false);
     }
   };
-
   const addNotificationEvent = () => {
     setNotificationEventModalMode("create");
     setEditingNotificationEventId(null);
     setNotificationEventDraft(buildDefaultNotificationEvent());
     setShowNotificationEventModal(true);
   };
-
-  const openEditNotificationEvent = (eventItem) => {
+  const openEditNotificationEvent = eventItem => {
     const source = getSourceOption(eventItem.source || "tickets");
     const element = getElementOption(source.key, eventItem.element || "");
     setNotificationEventModalMode("edit");
@@ -1913,18 +1802,16 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       templateId: eventItem.templateId || "",
       customMessage: String(eventItem.customMessage || ""),
       teamsThemeColor: String(eventItem.teamsThemeColor || "#13BA8E"),
-      enabled: eventItem.enabled !== false,
+      enabled: eventItem.enabled !== false
     });
     setShowNotificationEventModal(true);
   };
-
   const closeNotificationEventModal = () => {
     if (savingNotificationEvent) return;
     setShowNotificationEventModal(false);
     setEditingNotificationEventId(null);
     setNotificationEventDraft(buildDefaultNotificationEvent());
   };
-
   const saveNotificationEventFromModal = async () => {
     const source = getSourceOption(notificationEventDraft.source || "tickets");
     const element = getElementOption(source.key, notificationEventDraft.element || "");
@@ -1933,135 +1820,89 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
     const requiresEmailRecipients = channel === "mail";
     const isSoonEvent = isSoonElementKey(element.key);
     const parsedDaysBefore = Number(notificationEventDraft.daysBefore ?? 30);
-    const customMessageFromEditor = notificationEventEditorRef.current
-      ? String(notificationEventEditorRef.current.innerHTML || "")
-      : String(notificationEventDraft.customMessage || "");
+    const customMessageFromEditor = notificationEventEditorRef.current ? String(notificationEventEditorRef.current.innerHTML || "") : String(notificationEventDraft.customMessage || "");
     const payload = {
       id: notificationEventDraft.id || `notif-event-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
       source: source.key,
       element: element.key,
       scopeType: notificationEventDraft.scopeType === "enterprise" ? "enterprise" : "all",
-      enterpriseId:
-        notificationEventDraft.scopeType === "enterprise"
-          ? String(notificationEventDraft.enterpriseId || "").trim()
-          : "",
-      daysBefore: isSoonEvent ? (Number.isFinite(parsedDaysBefore) && parsedDaysBefore > 0 ? parsedDaysBefore : 30) : null,
+      enterpriseId: notificationEventDraft.scopeType === "enterprise" ? String(notificationEventDraft.enterpriseId || "").trim() : "",
+      daysBefore: isSoonEvent ? Number.isFinite(parsedDaysBefore) && parsedDaysBefore > 0 ? parsedDaysBefore : 30 : null,
       channel,
       webhookId: requiresWebhook ? String(notificationEventDraft.webhookId || "").trim() : "",
       emailTo: requiresEmailRecipients ? String(notificationEventDraft.emailTo || "").trim() : "",
       emailCc: requiresEmailRecipients ? String(notificationEventDraft.emailCc || "").trim() : "",
       useTemplate: notificationEventDraft.useTemplate === true,
-      templateId:
-        notificationEventDraft.useTemplate === true
-          ? String(notificationEventDraft.templateId || "").trim()
-          : "",
-      customMessage:
-        notificationEventDraft.useTemplate === true
-          ? ""
-          : String(customMessageFromEditor || "").replace(/\soutline:\s*[^;"']+;?/gi, ""),
+      templateId: notificationEventDraft.useTemplate === true ? String(notificationEventDraft.templateId || "").trim() : "",
+      customMessage: notificationEventDraft.useTemplate === true ? "" : String(customMessageFromEditor || "").replace(/\soutline:\s*[^;"']+;?/gi, ""),
       teamsThemeColor: String(notificationEventDraft.teamsThemeColor || "#13BA8E").trim() || "#13BA8E",
-      enabled: notificationEventDraft.enabled !== false,
+      enabled: notificationEventDraft.enabled !== false
     };
     const emailToList = parseEmailTags(payload.emailTo);
     if (requiresWebhook && !payload.webhookId) {
-      toast.error("Sélectionne un webhook pour ce canal.");
+      toast.error("Select a webhook for this channel.");
       return;
     }
     if (requiresEmailRecipients && emailToList.length === 0) {
-      toast.error("Renseigne au moins un destinataire email.");
+      toast.error("Enter at least one email recipient.");
       return;
     }
     if (payload.scopeType === "enterprise" && !payload.enterpriseId) {
-      toast.error("Sélectionne une entreprise.");
+      toast.error("Select a company.");
       return;
     }
     if (isSoonEvent && (!Number.isFinite(parsedDaysBefore) || parsedDaysBefore <= 0)) {
-      toast.error("Saisis le délai avant notification en jours (valeur > 0).");
+      toast.error("Enter the notification lead time in days (value > 0).");
       return;
     }
     if (payload.useTemplate && !payload.templateId) {
-      toast.error("Sélectionne un template.");
+      toast.error("Select a template.");
       return;
     }
     setSavingNotificationEvent(true);
     try {
-      const currentEvents = Array.isArray(notificationSettings?.notificationEvents)
-        ? notificationSettings.notificationEvents
-        : [];
-      const nextEvents =
-        notificationEventModalMode === "create"
-          ? [...currentEvents, payload]
-          : currentEvents.map((eventItem) => (eventItem.id === editingNotificationEventId ? payload : eventItem));
+      const currentEvents = Array.isArray(notificationSettings?.notificationEvents) ? notificationSettings.notificationEvents : [];
+      const nextEvents = notificationEventModalMode === "create" ? [...currentEvents, payload] : currentEvents.map(eventItem => eventItem.id === editingNotificationEventId ? payload : eventItem);
       const nextSettings = {
         ...notificationSettings,
-        notificationEvents: nextEvents,
+        notificationEvents: nextEvents
       };
       setNotificationSettings(nextSettings);
-      await persist(
-        commentTemplates,
-        macros,
-        emailInboxes,
-        exclusionRules,
-        autoReplyRules,
-        autoReplyTemplate,
-        notificationEventModalMode === "create" ? "Notification ajoutée" : "Notification mise à jour",
-        scheduledAlertRules,
-        mailCollectors,
-        nextSettings
-      );
+      await persist(commentTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, notificationEventModalMode === "create" ? "Notification added" : "Notification updated", scheduledAlertRules, mailCollectors, nextSettings);
       closeNotificationEventModal();
     } catch (error) {
-      toast.error(error?.message || "Erreur de sauvegarde des notifications");
+      toast.error(error?.message || "Error saving notifications");
     } finally {
       setSavingNotificationEvent(false);
     }
   };
-
   useEffect(() => {
     const totalLogs = (notificationSettings?.logs || []).length;
     const totalPages = Math.max(1, Math.ceil(totalLogs / notificationLogsPerPage));
-    setNotificationLogsPage((prev) => Math.min(Math.max(prev, 1), totalPages));
+    setNotificationLogsPage(prev => Math.min(Math.max(prev, 1), totalPages));
   }, [notificationSettings?.logs]);
-
   useEffect(() => {
     if (!showCustomNotificationModal || !customNotificationEditorRef.current) return;
     customNotificationEditorRef.current.innerHTML = String(customNotificationDraft.message || "");
   }, [showCustomNotificationModal]);
-
   const totalNotificationLogs = (notificationSettings?.logs || []).length;
   const notificationLogsTotalPages = Math.max(1, Math.ceil(totalNotificationLogs / notificationLogsPerPage));
   const notificationLogsStartIndex = (notificationLogsPage - 1) * notificationLogsPerPage;
-  const paginatedNotificationLogs = (notificationSettings?.logs || []).slice(
-    notificationLogsStartIndex,
-    notificationLogsStartIndex + notificationLogsPerPage
-  );
-
-  const removeNotificationEvent = (eventId) => {
-    setNotificationSettings((prev) => {
+  const paginatedNotificationLogs = (notificationSettings?.logs || []).slice(notificationLogsStartIndex, notificationLogsStartIndex + notificationLogsPerPage);
+  const removeNotificationEvent = eventId => {
+    setNotificationSettings(prev => {
       const currentEvents = Array.isArray(prev?.notificationEvents) ? prev.notificationEvents : [];
-      const nextEvents = currentEvents.filter((item) => item.id !== eventId);
+      const nextEvents = currentEvents.filter(item => item.id !== eventId);
       const nextSettings = {
         ...prev,
-        notificationEvents: nextEvents,
+        notificationEvents: nextEvents
       };
-      persist(
-        commentTemplates,
-        macros,
-        emailInboxes,
-        exclusionRules,
-        autoReplyRules,
-        autoReplyTemplate,
-        "Notification supprimée",
-        scheduledAlertRules,
-        mailCollectors,
-        nextSettings
-      ).catch((error) => {
-        toast.error(error?.message || "Erreur de sauvegarde des notifications");
+      persist(commentTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, "Notification deleted", scheduledAlertRules, mailCollectors, nextSettings).catch(error => {
+        toast.error(error?.message || "Error saving notifications");
       });
       return nextSettings;
     });
   };
-
   const addNotificationWebhook = () => {
     setWebhookModalMode("create");
     setEditingWebhookId(null);
@@ -2070,8 +1911,7 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
     setWebhookTestStatus(null);
     setShowWebhookModal(true);
   };
-
-  const openEditNotificationWebhook = (webhook) => {
+  const openEditNotificationWebhook = webhook => {
     setWebhookModalMode("edit");
     setEditingWebhookId(webhook.id);
     setWebhookDraft({
@@ -2080,13 +1920,12 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       channel: webhook.channel || "teams",
       channelName: webhook.channelName || "",
       url: webhook.url || "",
-      enabled: webhook.enabled !== false,
+      enabled: webhook.enabled !== false
     });
     setWebhookTestMessage("");
     setWebhookTestStatus(null);
     setShowWebhookModal(true);
   };
-
   const closeWebhookModal = () => {
     if (testingWebhookConnection || savingWebhook) return;
     setShowWebhookModal(false);
@@ -2095,86 +1934,72 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
     setWebhookTestStatus(null);
     setWebhookDraft(buildDefaultWebhookDraft());
   };
-
   const updateNotificationWebhook = (webhookId, patch) => {
-    setNotificationSettings((prev) => ({
+    setNotificationSettings(prev => ({
       ...prev,
-      webhooks: (Array.isArray(prev?.webhooks) ? prev.webhooks : []).map((webhook) =>
-        webhook.id === webhookId ? { ...webhook, ...patch } : webhook
-      ),
+      webhooks: (Array.isArray(prev?.webhooks) ? prev.webhooks : []).map(webhook => webhook.id === webhookId ? {
+        ...webhook,
+        ...patch
+      } : webhook)
     }));
   };
-
-  const removeNotificationWebhook = (webhookId) => {
-    setNotificationSettings((prev) => {
+  const removeNotificationWebhook = webhookId => {
+    setNotificationSettings(prev => {
       const nextSettings = {
         ...prev,
-        webhooks: (Array.isArray(prev?.webhooks) ? prev.webhooks : []).filter((webhook) => webhook.id !== webhookId),
+        webhooks: (Array.isArray(prev?.webhooks) ? prev.webhooks : []).filter(webhook => webhook.id !== webhookId)
       };
-      persist(
-        commentTemplates,
-        macros,
-        emailInboxes,
-        exclusionRules,
-        autoReplyRules,
-        autoReplyTemplate,
-        "Webhook supprimé",
-        scheduledAlertRules,
-        mailCollectors,
-        nextSettings
-      ).catch((error) => {
-        toast.error(error?.message || "Erreur de sauvegarde des notifications");
+      persist(commentTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, "Webhook deleted", scheduledAlertRules, mailCollectors, nextSettings).catch(error => {
+        toast.error(error?.message || "Error saving notifications");
       });
       return nextSettings;
     });
   };
-
   const testWebhookDraft = async () => {
     setTestingWebhookConnection(true);
     setWebhookTestMessage("");
     setWebhookTestStatus(null);
     try {
       const urlValue = String(webhookDraft.url || "").trim();
-      if (!urlValue) throw new Error("L'URL du webhook est requise.");
+      if (!urlValue) throw new Error("Webhook URL is required.");
       const response = await fetch(`${API_BASE_URL}/tickets/notifications/webhooks/test`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           channel: webhookDraft.channel || "webhook",
-          url: urlValue,
-        }),
+          url: urlValue
+        })
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || payload?.success === false) {
-        throw new Error(payload?.error || "Test webhook échoué.");
+        throw new Error(payload?.error || "Webhook test failed.");
       }
       if (payload?.detectedChannelName && !String(webhookDraft.channelName || "").trim()) {
-        setWebhookDraft((prev) => ({ ...prev, channelName: String(payload.detectedChannelName || "").trim() }));
+        setWebhookDraft(prev => ({
+          ...prev,
+          channelName: String(payload.detectedChannelName || "").trim()
+        }));
       }
-      setWebhookTestMessage(payload?.message || "Webhook valide. Tu peux enregistrer.");
+      setWebhookTestMessage(payload?.message || "Webhook is valid. You can save.");
       setWebhookTestStatus("success");
     } catch (error) {
       const rawMessage = String(error?.message || "").trim().toLowerCase();
-      if (
-        rawMessage === "fetch failed" ||
-        rawMessage.includes("failed to fetch") ||
-        rawMessage.includes("networkerror") ||
-        rawMessage.includes("network error")
-      ) {
-        setWebhookTestMessage("Impossible de joindre le webhook. Vérifie l'URL, l'accès réseau et réessaie.");
+      if (rawMessage === "fetch failed" || rawMessage.includes("failed to fetch") || rawMessage.includes("networkerror") || rawMessage.includes("network error")) {
+        setWebhookTestMessage("Unable to reach the webhook. Check the URL, network access and try again.");
       } else {
-        setWebhookTestMessage(error?.message || "Le test du webhook a échoué. Vérifie la configuration puis réessaie.");
+        setWebhookTestMessage(error?.message || "Webhook test failed. Check the configuration and try again.");
       }
       setWebhookTestStatus("error");
     } finally {
       setTestingWebhookConnection(false);
     }
   };
-
-  const testNotificationWebhook = async (webhook) => {
+  const testNotificationWebhook = async webhook => {
     if (!webhook?.url) {
-      toast.error("URL webhook manquante.");
+      toast.error("Missing webhook URL.");
       return;
     }
     setTestingWebhookId(String(webhook.id || ""));
@@ -2182,74 +2007,65 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       const response = await fetch(`${API_BASE_URL}/tickets/notifications/webhooks/test`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           channel: webhook.channel || "webhook",
-          url: String(webhook.url || "").trim(),
-        }),
+          url: String(webhook.url || "").trim()
+        })
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || payload?.success === false) {
-        throw new Error(payload?.error || "Test webhook échoué.");
+        throw new Error(payload?.error || "Webhook test failed.");
       }
-      toast.success(payload?.message || "Webhook testé avec succès.");
+      toast.success(payload?.message || "Webhook tested successfully.");
     } catch (error) {
       const rawMessage = String(error?.message || "").trim().toLowerCase();
-      if (
-        rawMessage === "fetch failed" ||
-        rawMessage.includes("failed to fetch") ||
-        rawMessage.includes("networkerror") ||
-        rawMessage.includes("network error")
-      ) {
-        toast.error("Impossible de joindre le webhook. Vérifie l'URL et l'accès réseau.");
+      if (rawMessage === "fetch failed" || rawMessage.includes("failed to fetch") || rawMessage.includes("networkerror") || rawMessage.includes("network error")) {
+        toast.error("Unable to reach the webhook. Check the URL and network access.");
       } else {
-        toast.error(error?.message || "Le test du webhook a échoué.");
+        toast.error(error?.message || "Webhook test failed.");
       }
     } finally {
       setTestingWebhookId("");
     }
   };
-
-  const retryNotificationLog = async (logItem) => {
+  const retryNotificationLog = async logItem => {
     const logId = String(logItem?.id || "").trim();
     if (!logId) {
-      toast.error("Log invalide: identifiant manquant.");
+      toast.error("Invalid log: missing identifier.");
       return;
     }
     setRetryingNotificationLogId(logId);
     try {
       const response = await fetch(`${API_BASE_URL}/tickets/notifications/logs/${encodeURIComponent(logId)}/retry`, {
         method: "POST",
-        credentials: "include",
+        credentials: "include"
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || payload?.success === false) {
-        throw new Error(payload?.error || "Relance de notification impossible.");
+        throw new Error(payload?.error || "Unable to resend notification.");
       }
-      toast.success(payload?.message || "Notification relancée avec succès.");
+      toast.success(payload?.message || "Notification resent successfully.");
       const refreshedConfig = await fetchTicketAutomationConfig();
       setNotificationSettings(refreshedConfig?.notificationSettings || buildDefaultNotificationSettings());
     } catch (error) {
-      toast.error(error?.message || "Relance de notification impossible.");
+      toast.error(error?.message || "Unable to resend notification.");
     } finally {
       setRetryingNotificationLogId("");
     }
   };
-
   const sendCustomWebhookNotification = async () => {
     const webhookId = String(customNotificationDraft?.webhookId || "").trim();
     const title = String(customNotificationDraft?.title || "").trim();
-    const message = String(
-      customNotificationEditorRef.current?.innerHTML || customNotificationDraft?.message || ""
-    )
-      .replace(/\soutline:\s*[^;"']+;?/gi, "")
-      .trim();
+    const message = String(customNotificationEditorRef.current?.innerHTML || customNotificationDraft?.message || "").replace(/\soutline:\s*[^;"']+;?/gi, "").trim();
     if (!webhookId) {
-      toast.error("Sélectionne un webhook.");
+      toast.error("Select a webhook.");
       return;
     }
     if (!message) {
-      toast.error("Le message est requis.");
+      toast.error("Message is required.");
       return;
     }
     setSendingCustomNotification(true);
@@ -2257,60 +2073,56 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       const response = await fetch(`${API_BASE_URL}/tickets/notifications/webhooks/custom-send`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           webhookId,
           title,
           message,
-          teamsThemeColor: String(customNotificationDraft?.teamsThemeColor || "#13BA8E"),
-        }),
+          teamsThemeColor: String(customNotificationDraft?.teamsThemeColor || "#13BA8E")
+        })
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || payload?.success === false) {
-        throw new Error(payload?.error || "Impossible d'envoyer l'annonce.");
+        throw new Error(payload?.error || "Unable to send the announcement.");
       }
       const refreshedConfig = await fetchTicketAutomationConfig();
       setNotificationSettings(refreshedConfig?.notificationSettings || buildDefaultNotificationSettings());
-      toast.success(payload?.message || "Annonce envoyée.");
+      toast.success(payload?.message || "Announcement sent.");
       setShowCustomNotificationModal(false);
-      setCustomNotificationDraft((prev) => ({
+      setCustomNotificationDraft(prev => ({
         ...prev,
         title: "",
         message: "",
-        teamsThemeColor: "#13BA8E",
+        teamsThemeColor: "#13BA8E"
       }));
     } catch (error) {
-      toast.error(error?.message || "Impossible d'envoyer l'annonce.");
+      toast.error(error?.message || "Unable to send the announcement.");
     } finally {
       setSendingCustomNotification(false);
     }
   };
-
   const execCustomNotificationMessageCommand = (command, value = null) => {
     if (!customNotificationEditorRef.current) return;
     customNotificationEditorRef.current.focus();
     document.execCommand(command, false, value);
-    setCustomNotificationDraft((prev) => ({
+    setCustomNotificationDraft(prev => ({
       ...prev,
-      message: String(customNotificationEditorRef.current?.innerHTML || "").replace(
-        /\soutline:\s*[^;"']+;?/gi,
-        ""
-      ),
+      message: String(customNotificationEditorRef.current?.innerHTML || "").replace(/\soutline:\s*[^;"']+;?/gi, "")
     }));
   };
-
   const insertCustomNotificationImageUrl = () => {
     if (!customNotificationEditorRef.current) return;
-    const rawUrl = window.prompt("URL publique de l'image (https://...)", "https://");
+    const rawUrl = window.prompt("Public image URL (https://...)", "https://");
     if (!rawUrl) return;
     const url = String(rawUrl || "").trim();
     if (!/^https?:\/\//i.test(url)) {
-      toast.error("URL image invalide. Utilise une URL http(s) publique.");
+      toast.error("Invalid image URL. Use a public http(s) URL.");
       return;
     }
     execCustomNotificationMessageCommand("insertImage", url);
   };
-
   const saveWebhookFromModal = async () => {
     const payload = {
       id: webhookDraft.id || `notif-webhook-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
@@ -2318,81 +2130,57 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       channel: String(webhookDraft.channel || "teams").trim() || "teams",
       channelName: String(webhookDraft.channelName || "").trim(),
       url: String(webhookDraft.url || "").trim(),
-      enabled: webhookDraft.enabled !== false,
+      enabled: webhookDraft.enabled !== false
     };
     if (!payload.name) {
-      toast.error("Le nom du webhook est requis.");
+      toast.error("Webhook name is required.");
       return;
     }
     if (!payload.url) {
-      toast.error("L'URL du webhook est requise.");
+      toast.error("Webhook URL is required.");
       return;
     }
-    const nextWebhooks =
-      webhookModalMode === "create"
-        ? [...(notificationSettings?.webhooks || []), payload]
-        : (notificationSettings?.webhooks || []).map((item) => (item.id === editingWebhookId ? payload : item));
-    const nextSettings = { ...notificationSettings, webhooks: nextWebhooks };
+    const nextWebhooks = webhookModalMode === "create" ? [...(notificationSettings?.webhooks || []), payload] : (notificationSettings?.webhooks || []).map(item => item.id === editingWebhookId ? payload : item);
+    const nextSettings = {
+      ...notificationSettings,
+      webhooks: nextWebhooks
+    };
     setSavingWebhook(true);
     try {
       setNotificationSettings(nextSettings);
-      await persist(
-        commentTemplates,
-        macros,
-        emailInboxes,
-        exclusionRules,
-        autoReplyRules,
-        autoReplyTemplate,
-        webhookModalMode === "create" ? "Webhook ajouté" : "Webhook mis à jour",
-        scheduledAlertRules,
-        mailCollectors,
-        nextSettings
-      );
+      await persist(commentTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, webhookModalMode === "create" ? "Webhook added" : "Webhook updated", scheduledAlertRules, mailCollectors, nextSettings);
       closeWebhookModal();
     } catch (error) {
-      toast.error(error?.message || "Erreur de sauvegarde des notifications");
+      toast.error(error?.message || "Error saving notifications");
     } finally {
       setSavingWebhook(false);
     }
   };
-
   const saveEmailIngestionSettings = async () => {
     try {
-      await persist(
-        commentTemplates,
-        macros,
-        emailInboxes,
-        exclusionRules,
-        autoReplyRules,
-        autoReplyTemplate,
-        "Business Rules sauvegardées"
-      );
+      await persist(commentTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, "Business Rules saved");
     } catch (error) {
-      toast.error(error?.message || "Erreur lors de la sauvegarde des paramètres de collecte");
+      toast.error(error?.message || "Error saving collection settings");
     }
   };
-
   const addAutoReplyRule = () => {
-    setAutoReplyRules((prev) => [
-      ...prev,
-      {
-        id: `autoreply-${Date.now()}`,
-        matchOn: "requester_email",
-        operator: "contains",
-        value: "",
-        enabled: true,
-      },
-    ]);
+    setAutoReplyRules(prev => [...prev, {
+      id: `autoreply-${Date.now()}`,
+      matchOn: "requester_email",
+      operator: "contains",
+      value: "",
+      enabled: true
+    }]);
   };
-
   const updateAutoReplyRule = (id, patch) => {
-    setAutoReplyRules((prev) => prev.map((rule) => (rule.id === id ? { ...rule, ...patch } : rule)));
+    setAutoReplyRules(prev => prev.map(rule => rule.id === id ? {
+      ...rule,
+      ...patch
+    } : rule));
   };
-
-  const removeAutoReplyRule = (id) => {
-    setAutoReplyRules((prev) => prev.filter((rule) => rule.id !== id));
+  const removeAutoReplyRule = id => {
+    setAutoReplyRules(prev => prev.filter(rule => rule.id !== id));
   };
-
   const openCreateCollectorModal = () => {
     setCollectorModalMode("create");
     setEditingCollectorId(null);
@@ -2400,19 +2188,19 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
     setCollectorProviderKey("");
     setShowCollectorModal(true);
   };
-
-  const openEditCollectorModal = (collector) => {
+  const openEditCollectorModal = collector => {
     setCollectorModalMode("edit");
     setEditingCollectorId(collector.id);
     setCollectorDraft({
       ...buildDefaultCollector(),
-      ...collector,
+      ...collector
     });
     setCollectorProviderKey(findCollectorProviderPreset(collector).key);
     setShowCollectorModal(true);
   };
-
-  const closeCollectorModal = ({ force = false } = {}) => {
+  const closeCollectorModal = ({
+    force = false
+  } = {}) => {
     if (!force && (savingCollector || testingCollectorConnection)) return;
     setShowCollectorModal(false);
     setEditingCollectorId(null);
@@ -2423,43 +2211,43 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
     setTestingCollectorConnection(false);
     setCollectorProviderKey("");
   };
-
-  const applyCollectorProviderPreset = (providerKey) => {
-    const selected = COLLECTOR_PROVIDER_PRESETS.find((item) => item.key === providerKey);
+  const applyCollectorProviderPreset = providerKey => {
+    const selected = COLLECTOR_PROVIDER_PRESETS.find(item => item.key === providerKey);
     if (!selected || selected.comingSoon) return;
     setCollectorProviderKey(providerKey);
   };
-
   const appendCollectorDraftLog = (level, message) => {
     const entry = {
       id: `collector-log-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
       level: String(level || "info"),
       message: String(message || ""),
-      createdAt: new Date().toISOString(),
+      createdAt: new Date().toISOString()
     };
-    setCollectorDraft((prev) => {
+    setCollectorDraft(prev => {
       const current = Array.isArray(prev?.logs) ? prev.logs : [];
       return {
         ...prev,
-        logs: [entry, ...current].slice(0, 200),
+        logs: [entry, ...current].slice(0, 200)
       };
     });
   };
-
-  const openCollectorLogsModal = (collector) => {
+  const openCollectorLogsModal = collector => {
     setLogsCollectorName(String(collector?.name || mc.common.collectorFallback));
     setLogsModalRows(Array.isArray(collector?.logs) ? collector.logs : []);
     setLogsModalOpen(true);
   };
-
   const testCollectorConnection = async () => {
     setTestingCollectorConnection(true);
     try {
       const response = await fetch(`${API_BASE_URL}/tickets/collectors/test-connection`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ collector: collectorDraft }),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          collector: collectorDraft
+        })
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || payload?.success === false) {
@@ -2469,18 +2257,14 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       appendCollectorDraftLog("success", mc.collectorForm.logConnectionSuccess);
     } catch (error) {
       toast.error(error?.message || mc.toast.imapTestError);
-      appendCollectorDraftLog(
-        "error",
-        interpolate(mc.collectorForm.logConnectionFailed, {
-          error: error?.message || mc.collectorForm.unknownError,
-        })
-      );
+      appendCollectorDraftLog("error", interpolate(mc.collectorForm.logConnectionFailed, {
+        error: error?.message || mc.collectorForm.unknownError
+      }));
     } finally {
       setTestingCollectorConnection(false);
     }
   };
-
-  const forceCollectorFetch = async (collector) => {
+  const forceCollectorFetch = async collector => {
     const collectorId = String(collector?.id || "");
     if (!collectorId) return;
     setForcingCollectorId(collectorId);
@@ -2488,32 +2272,31 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       const response = await fetch(`${API_BASE_URL}/tickets/collectors/force-fetch`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ collector }),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          collector
+        })
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || payload?.success === false) {
         throw new Error(payload?.error || mc.toast.forceFetchFailed);
       }
       const stats = payload?.stats || {};
-      toast.success(
-        interpolate(mc.toast.forceFetchSuccess, {
-          attached: Number(stats.attached || 0),
-          ignored: Number(stats.ignored || 0),
-        })
-      );
+      toast.success(interpolate(mc.toast.forceFetchSuccess, {
+        attached: Number(stats.attached || 0),
+        ignored: Number(stats.ignored || 0)
+      }));
       const freshConfig = await fetchTicketAutomationConfig();
-      setMailCollectors(
-        ensureUniqueCollectorIds(Array.isArray(freshConfig?.mailCollectors) ? freshConfig.mailCollectors : [])
-      );
+      setMailCollectors(ensureUniqueCollectorIds(Array.isArray(freshConfig?.mailCollectors) ? freshConfig.mailCollectors : []));
     } catch (error) {
       toast.error(error?.message || mc.toast.forceFetchError);
     } finally {
       setForcingCollectorId("");
     }
   };
-
-  const openFoldersModal = async (targetField) => {
+  const openFoldersModal = async targetField => {
     setFoldersModalTargetField(targetField);
     setFoldersModalOpen(true);
     setLoadingCollectorFolders(true);
@@ -2522,8 +2305,12 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       const response = await fetch(`${API_BASE_URL}/tickets/collectors/folders`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ collector: collectorDraft }),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          collector: collectorDraft
+        })
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || payload?.success === false) {
@@ -2533,31 +2320,25 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       appendCollectorDraftLog("info", mc.collectorForm.logFoldersSuccess);
     } catch (error) {
       toast.error(error?.message || mc.toast.foldersError);
-      appendCollectorDraftLog(
-        "error",
-        interpolate(mc.collectorForm.logFoldersFailed, {
-          error: error?.message || mc.collectorForm.unknownError,
-        })
-      );
+      appendCollectorDraftLog("error", interpolate(mc.collectorForm.logFoldersFailed, {
+        error: error?.message || mc.collectorForm.unknownError
+      }));
     } finally {
       setLoadingCollectorFolders(false);
     }
   };
-
-  const applyFolderSelection = (folderName) => {
+  const applyFolderSelection = folderName => {
     const key = String(foldersModalTargetField || "inboxFolder");
-    setCollectorDraft((prev) => ({
+    setCollectorDraft(prev => ({
       ...prev,
-      [key]: String(folderName || ""),
+      [key]: String(folderName || "")
     }));
     setFoldersModalOpen(false);
   };
-
   const saveCollectorFromModal = async () => {
     const username = String(collectorDraft.username || "").trim();
     const server = String(collectorDraft.server || "").trim();
     const name = String(collectorDraft.name || username).trim();
-
     if (!username) {
       toast.error(mc.toast.emailRequired);
       return;
@@ -2570,7 +2351,6 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       toast.error(mc.toast.passwordRequired);
       return;
     }
-
     const payload = {
       ...buildDefaultCollector(),
       ...collectorDraft,
@@ -2581,45 +2361,30 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       security: "ssl",
       inboxFolder: String(collectorDraft.inboxFolder || "INBOX").trim() || "INBOX",
       acceptedFolder: String(collectorDraft.acceptedFolder || "").trim(),
-      refusedFolder: String(collectorDraft.refusedFolder || "").trim(),
+      refusedFolder: String(collectorDraft.refusedFolder || "").trim()
     };
-    const nextCollectors = ensureUniqueCollectorIds(
-      collectorModalMode === "create"
-        ? [...mailCollectors, payload]
-        : mailCollectors.map((item) => (item.id === editingCollectorId ? payload : item))
-    );
+    const nextCollectors = ensureUniqueCollectorIds(collectorModalMode === "create" ? [...mailCollectors, payload] : mailCollectors.map(item => item.id === editingCollectorId ? payload : item));
     setMailCollectors(nextCollectors);
     setSavingCollector(true);
     try {
-      await persist(
-        commentTemplates,
-        macros,
-        emailInboxes,
-        exclusionRules,
-        autoReplyRules,
-        autoReplyTemplate,
-        collectorModalMode === "create" ? mc.toast.collectorAdded : mc.toast.collectorUpdated,
-        scheduledAlertRules,
-        nextCollectors
-      );
+      await persist(commentTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, collectorModalMode === "create" ? mc.toast.collectorAdded : mc.toast.collectorUpdated, scheduledAlertRules, nextCollectors);
       setSavingCollector(false);
-      closeCollectorModal({ force: true });
+      closeCollectorModal({
+        force: true
+      });
     } catch (error) {
       toast.error(error?.message || mc.toast.collectorSaveError);
     } finally {
       setSavingCollector(false);
     }
   };
-
-  const requestRemoveCollector = (collector) => {
+  const requestRemoveCollector = collector => {
     setCollectorDeleteTarget(collector);
   };
-
   const closeCollectorDeleteModal = () => {
     if (deletingCollector) return;
     setCollectorDeleteTarget(null);
   };
-
   const confirmRemoveCollector = async () => {
     if (!collectorDeleteTarget?.id) return;
     setDeletingCollector(true);
@@ -2630,52 +2395,39 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       setDeletingCollector(false);
     }
   };
-
-  const removeCollector = async (collectorId) => {
-    const nextCollectors = mailCollectors.filter((item) => item.id !== collectorId);
+  const removeCollector = async collectorId => {
+    const nextCollectors = mailCollectors.filter(item => item.id !== collectorId);
     setMailCollectors(nextCollectors);
     try {
-      await persist(
-        commentTemplates,
-        macros,
-        emailInboxes,
-        exclusionRules,
-        autoReplyRules,
-        autoReplyTemplate,
-        mc.toast.collectorDeleted,
-        scheduledAlertRules,
-        nextCollectors
-      );
+      await persist(commentTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, mc.toast.collectorDeleted, scheduledAlertRules, nextCollectors);
     } catch (error) {
       toast.error(error?.message || mc.toast.collectorDeleteError);
     }
   };
-
   const openCreateScheduledAlertModal = () => {
     setScheduledAlertModalMode("create");
     setEditingScheduledAlertId(null);
     setScheduledAlertDraft(buildDefaultScheduledAlertRule());
     setShowScheduledAlertModal(true);
   };
-
-  const openEditScheduledAlertModal = (rule) => {
+  const openEditScheduledAlertModal = rule => {
     setScheduledAlertModalMode("edit");
     setEditingScheduledAlertId(rule.id);
     setScheduledAlertDraft({
       ...buildDefaultScheduledAlertRule(),
       ...rule,
-      channels: Array.isArray(rule.channels) ? [...rule.channels] : ["mail"],
+      channels: Array.isArray(rule.channels) ? [...rule.channels] : ["mail"]
     });
     setShowScheduledAlertModal(true);
   };
-
-  const closeScheduledAlertModal = ({ force = false } = {}) => {
+  const closeScheduledAlertModal = ({
+    force = false
+  } = {}) => {
     if (!force && savingScheduledAlert) return;
     setShowScheduledAlertModal(false);
     setEditingScheduledAlertId(null);
     setScheduledAlertDraft(buildDefaultScheduledAlertRule());
   };
-
   const saveScheduledAlertFromModal = async () => {
     const payload = {
       ...buildDefaultScheduledAlertRule(),
@@ -2684,206 +2436,144 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
       cron: String(scheduledAlertDraft.cron || "").trim() || "0 8 * * *",
       recipients: String(scheduledAlertDraft.recipients || "").trim(),
       channels: Array.isArray(scheduledAlertDraft.channels) ? scheduledAlertDraft.channels : [],
-      thresholdDays: Number(scheduledAlertDraft.thresholdDays ?? 30),
+      thresholdDays: Number(scheduledAlertDraft.thresholdDays ?? 30)
     };
     if (!payload.name) {
-      toast.error("Le nom de la règle est requis.");
+      toast.error("Rule name is required.");
       return;
     }
     if (payload.channels.length === 0) {
-      toast.error("Sélectionnez au moins un canal de notification.");
+      toast.error("Select at least one notification channel.");
       return;
     }
     if (payload.channels.includes("mail") && !payload.recipients) {
-      toast.error("Indiquez au moins un destinataire mail.");
+      toast.error("Enter at least one email recipient.");
       return;
     }
-    const nextRules =
-      scheduledAlertModalMode === "create"
-        ? [...scheduledAlertRules, payload]
-        : scheduledAlertRules.map((item) => (item.id === editingScheduledAlertId ? payload : item));
+    const nextRules = scheduledAlertModalMode === "create" ? [...scheduledAlertRules, payload] : scheduledAlertRules.map(item => item.id === editingScheduledAlertId ? payload : item);
     setScheduledAlertRules(nextRules);
     setSavingScheduledAlert(true);
     try {
-      await persist(
-        commentTemplates,
-        macros,
-        emailInboxes,
-        exclusionRules,
-        autoReplyRules,
-        autoReplyTemplate,
-        scheduledAlertModalMode === "create" ? "Règle CRON ajoutée" : "Règle CRON mise à jour",
-        nextRules
-      );
-      closeScheduledAlertModal({ force: true });
+      await persist(commentTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, scheduledAlertModalMode === "create" ? "CRON rule added" : "CRON rule updated", nextRules);
+      closeScheduledAlertModal({
+        force: true
+      });
     } catch (error) {
-      toast.error(error?.message || "Erreur lors de la sauvegarde de la règle CRON");
+      toast.error(error?.message || "Error saving CRON rule");
     } finally {
       setSavingScheduledAlert(false);
     }
   };
-
-  const requestRemoveScheduledAlertRule = (rule) => {
+  const requestRemoveScheduledAlertRule = rule => {
     setScheduledAlertDeleteTarget(rule);
   };
-
   const confirmRemoveScheduledAlertRule = async () => {
     if (!scheduledAlertDeleteTarget?.id) return;
-    const nextRules = scheduledAlertRules.filter((item) => item.id !== scheduledAlertDeleteTarget.id);
+    const nextRules = scheduledAlertRules.filter(item => item.id !== scheduledAlertDeleteTarget.id);
     setScheduledAlertRules(nextRules);
     setSavingScheduledAlert(true);
     try {
-      await persist(
-        commentTemplates,
-        macros,
-        emailInboxes,
-        exclusionRules,
-        autoReplyRules,
-        autoReplyTemplate,
-        "Règle CRON supprimée",
-        nextRules
-      );
+      await persist(commentTemplates, macros, emailInboxes, exclusionRules, autoReplyRules, autoReplyTemplate, "CRON rule deleted", nextRules);
       setScheduledAlertDeleteTarget(null);
     } catch (error) {
-      toast.error(error?.message || "Erreur lors de la suppression");
+      toast.error(error?.message || "Error deleting");
     } finally {
       setSavingScheduledAlert(false);
     }
   };
-
-  const resolveAgentLabel = (agentId) =>
-    availableAgents.find((agent) => String(agent.id) === String(agentId))?.label || String(agentId);
-
-  const resolveWebhookLabel = (webhookId) =>
-    (notificationSettings?.webhooks || []).find((item) => String(item.id) === String(webhookId))?.name ||
-    String(webhookId || "").trim() ||
-    "-";
-
-  const macroCategoryOptions = useMemo(
-    () =>
-      (ticketCategories || [])
-        .filter((item) => item?.enabled !== false)
-        .map((item) => ({
-          value: String(item.name || "").trim(),
-          label: item.section ? `${item.section} · ${item.name}` : String(item.name || ""),
-        }))
-        .filter((item) => item.value),
-    [ticketCategories]
-  );
-
+  const resolveAgentLabel = agentId => availableAgents.find(agent => String(agent.id) === String(agentId))?.label || String(agentId);
+  const resolveWebhookLabel = webhookId => (notificationSettings?.webhooks || []).find(item => String(item.id) === String(webhookId))?.name || String(webhookId || "").trim() || "-";
+  const macroCategoryOptions = useMemo(() => (ticketCategories || []).filter(item => item?.enabled !== false).map(item => ({
+    value: String(item.name || "").trim(),
+    label: item.section ? `${item.section} · ${item.name}` : String(item.name || "")
+  })).filter(item => item.value), [ticketCategories]);
   const categoryCountBySectionName = useMemo(() => {
     const counts = new Map();
-    (ticketCategories || []).forEach((category) => {
+    (ticketCategories || []).forEach(category => {
       const sectionName = String(category?.section || "").trim();
       if (!sectionName) return;
       counts.set(sectionName, (counts.get(sectionName) || 0) + 1);
     });
     return counts;
   }, [ticketCategories]);
-
-  const countCategoriesForSection = (section) =>
-    categoryCountBySectionName.get(String(section?.name || "").trim()) || 0;
-
-  const requestRemoveCategorySection = (section) => {
+  const countCategoriesForSection = section => categoryCountBySectionName.get(String(section?.name || "").trim()) || 0;
+  const requestRemoveCategorySection = section => {
     const linkedCount = countCategoriesForSection(section);
     if (linkedCount > 0) {
-      toast.warn(
-        linkedCount === 1
-          ? interpolate(ss.categories.sectionDeleteWarnOne, {
-              name: section?.name || ss.categories.thisSection,
-            })
-          : interpolate(ss.categories.sectionDeleteWarnMany, {
-              name: section?.name || ss.categories.thisSection,
-              count: linkedCount,
-            })
-      );
+      toast.warn(linkedCount === 1 ? interpolate(ss.categories.sectionDeleteWarnOne, {
+        name: section?.name || ss.categories.thisSection
+      }) : interpolate(ss.categories.sectionDeleteWarnMany, {
+        name: section?.name || ss.categories.thisSection,
+        count: linkedCount
+      }));
       return;
     }
     setCategorySectionDeleteTarget(section);
   };
-
-  const macroWebhookOptions = useMemo(
-    () =>
-      (notificationSettings?.webhooks || [])
-        .filter((item) => item?.enabled !== false && String(item.url || "").trim())
-        .map((item) => ({
-          value: String(item.id),
-          label: `${item.name || "Webhook"} (${String(item.channel || "webhook").toUpperCase()})`,
-        })),
-    [notificationSettings?.webhooks]
-  );
-
-  const isMacroActionProLocked = (actionType) =>
-    isCommunity && macroActionTypes.some((item) => item.value === actionType && item.proOnly);
-
-  const describeMacroAction = (action) => {
+  const macroWebhookOptions = useMemo(() => (notificationSettings?.webhooks || []).filter(item => item?.enabled !== false && String(item.url || "").trim()).map(item => ({
+    value: String(item.id),
+    label: `${item.name || "Webhook"} (${String(item.channel || "webhook").toUpperCase()})`
+  })), [notificationSettings?.webhooks]);
+  const isMacroActionProLocked = actionType => isCommunity && macroActionTypes.some(item => item.value === actionType && item.proOnly);
+  const describeMacroAction = action => {
     const typeLabel = pickMacroOptionLabel(macroActionTypes, action.type);
     switch (action.type) {
-      case "set_field": {
-        const fieldLabel = pickMacroOptionLabel(macroFieldOptions, action.field);
-        const modeLabel = pickMacroOptionLabel(
-          macroFieldModeOptions[action.field] || [],
-          action.fieldMode
-        );
-        if (action.field === "assigned_to_me") {
-          return `${typeLabel} · ${fieldLabel}`;
+      case "set_field":
+        {
+          const fieldLabel = pickMacroOptionLabel(macroFieldOptions, action.field);
+          const modeLabel = pickMacroOptionLabel(macroFieldModeOptions[action.field] || [], action.fieldMode);
+          if (action.field === "assigned_to_me") {
+            return `${typeLabel} · ${fieldLabel}`;
+          }
+          if (action.field === "assigned_user_id" || action.field === "followers") {
+            const names = parseCsvIds(action.value).map(id => resolveAgentLabel(id));
+            const modePrefix = modeLabel ? `${modeLabel} · ` : "";
+            return names.length ? `${typeLabel} · ${fieldLabel} · ${modePrefix}${names.join(", ")}` : `${typeLabel} · ${fieldLabel}${modeLabel ? ` · ${modeLabel}` : ""}`;
+          }
+          if (action.field === "category") {
+            const categoryLabel = macroCategoryOptions.find(opt => opt.value === action.value)?.label || action.value;
+            return categoryLabel ? `${typeLabel} · ${fieldLabel} → ${categoryLabel}` : `${typeLabel} · ${fieldLabel}`;
+          }
+          if (Array.isArray(macroBoundedFieldValues[action.field])) {
+            const valueLabel = pickMacroOptionLabel(macroBoundedFieldValues[action.field], action.value);
+            return `${typeLabel} · ${fieldLabel} → ${valueLabel}`;
+          }
+          const valueText = truncateMacroText(action.value);
+          return valueText ? `${typeLabel} · ${fieldLabel} → ${valueText}` : `${typeLabel} · ${fieldLabel}`;
         }
-        if (action.field === "assigned_user_id" || action.field === "followers") {
-          const names = parseCsvIds(action.value).map((id) => resolveAgentLabel(id));
-          const modePrefix = modeLabel ? `${modeLabel} · ` : "";
-          return names.length
-            ? `${typeLabel} · ${fieldLabel} · ${modePrefix}${names.join(", ")}`
-            : `${typeLabel} · ${fieldLabel}${modeLabel ? ` · ${modeLabel}` : ""}`;
+      case "add_comment":
+        {
+          const visibility = action.isInternal ? ss.macros.describe.visibilityInternal : ss.macros.describe.visibilityPublic;
+          const preview = truncateMacroText(action.comment);
+          return preview ? `${typeLabel} (${visibility}) · ${preview}` : `${typeLabel} (${visibility})`;
         }
-        if (action.field === "category") {
-          const categoryLabel =
-            macroCategoryOptions.find((opt) => opt.value === action.value)?.label || action.value;
-          return categoryLabel
-            ? `${typeLabel} · ${fieldLabel} → ${categoryLabel}`
-            : `${typeLabel} · ${fieldLabel}`;
+      case "open_email":
+        {
+          const subject = truncateMacroText(action.emailSubject, 36);
+          const to = truncateMacroText(action.emailTo, 24);
+          if (subject && to) return `${typeLabel} · ${to} · ${subject}`;
+          if (subject) return `${typeLabel} · ${subject}`;
+          if (to) return `${typeLabel} · ${to}`;
+          return typeLabel;
         }
-        if (Array.isArray(macroBoundedFieldValues[action.field])) {
-          const valueLabel = pickMacroOptionLabel(macroBoundedFieldValues[action.field], action.value);
-          return `${typeLabel} · ${fieldLabel} → ${valueLabel}`;
+      case "teams_message":
+        {
+          const webhookLabel = resolveWebhookLabel(action.teamsWebhookId);
+          const preview = truncateMacroText(action.teamsMessage);
+          return preview ? `${typeLabel} · ${webhookLabel} · ${preview}` : `${typeLabel} · ${webhookLabel}`;
         }
-        const valueText = truncateMacroText(action.value);
-        return valueText
-          ? `${typeLabel} · ${fieldLabel} → ${valueText}`
-          : `${typeLabel} · ${fieldLabel}`;
-      }
-      case "add_comment": {
-        const visibility = action.isInternal
-          ? ss.macros.describe.visibilityInternal
-          : ss.macros.describe.visibilityPublic;
-        const preview = truncateMacroText(action.comment);
-        return preview ? `${typeLabel} (${visibility}) · ${preview}` : `${typeLabel} (${visibility})`;
-      }
-      case "open_email": {
-        const subject = truncateMacroText(action.emailSubject, 36);
-        const to = truncateMacroText(action.emailTo, 24);
-        if (subject && to) return `${typeLabel} · ${to} · ${subject}`;
-        if (subject) return `${typeLabel} · ${subject}`;
-        if (to) return `${typeLabel} · ${to}`;
-        return typeLabel;
-      }
-      case "teams_message": {
-        const webhookLabel = resolveWebhookLabel(action.teamsWebhookId);
-        const preview = truncateMacroText(action.teamsMessage);
-        return preview ? `${typeLabel} · ${webhookLabel} · ${preview}` : `${typeLabel} · ${webhookLabel}`;
-      }
-      case "planning_alert": {
-        const title = truncateMacroText(action.reminderTitle, 28);
-        const offset = Number(action.reminderOffsetMinutes || 60);
-        return title ? `${typeLabel} · ${title} (+${offset} min)` : typeLabel;
-      }
+      case "planning_alert":
+        {
+          const title = truncateMacroText(action.reminderTitle, 28);
+          const offset = Number(action.reminderOffsetMinutes || 60);
+          return title ? `${typeLabel} · ${title} (+${offset} min)` : typeLabel;
+        }
       case "manage_tags":
-      case "add_tags": {
-        const modeLabel =
-          action.tagsMode === "remove" ? ss.macros.describe.tagsRemove : ss.macros.describe.tagsAdd;
-        return action.tagsText
-          ? `${typeLabel} · ${modeLabel} · ${truncateMacroText(action.tagsText, 36)}`
-          : `${typeLabel} · ${modeLabel}`;
-      }
+      case "add_tags":
+        {
+          const modeLabel = action.tagsMode === "remove" ? ss.macros.describe.tagsRemove : ss.macros.describe.tagsAdd;
+          return action.tagsText ? `${typeLabel} · ${modeLabel} · ${truncateMacroText(action.tagsText, 36)}` : `${typeLabel} · ${modeLabel}`;
+        }
       case "call":
         return action.phoneNumber ? `${typeLabel} · ${action.phoneNumber}` : typeLabel;
       case "add_attachment":
@@ -2896,8 +2586,7 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
         return typeLabel;
     }
   };
-
-  const describeMacroActionBrief = (action) => {
+  const describeMacroActionBrief = action => {
     const full = describeMacroAction(action);
     const typeLabel = pickMacroOptionLabel(macroActionTypes, action.type);
     const prefix = `${typeLabel} · `;
@@ -2906,428 +2595,219 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
     }
     return full;
   };
-
-  const renderMacroActionFields = ({ action, onChange }) => {
+  const renderMacroActionFields = ({
+    action,
+    onChange
+  }) => {
     const proLocked = isMacroActionProLocked(action.type);
-    const defaultFieldMode = (field) =>
-      field === "assigned_user_id" ? "replace" : field === "followers" ? "add" : "";
-
-    return (
-    <>
+    const defaultFieldMode = field => field === "assigned_user_id" ? "replace" : field === "followers" ? "add" : "";
+    return <>
       <div className={macroModalStyles.actionTypeRow}>
-        <MacroActionTypePicker
-          value={action.type}
-          options={macroActionTypes}
-          isCommunity={isCommunity}
-          isTeamsIntegrationActive={isTeamsIntegrationActive}
-          macroWebhookOptionsCount={macroWebhookOptions.length}
-          triggerClassName={`${styles.input} ${styles.select}`}
-          onChange={(nextType) => onChange({ type: nextType })}
-        />
+        <MacroActionTypePicker value={action.type} options={macroActionTypes} isCommunity={isCommunity} isTeamsIntegrationActive={isTeamsIntegrationActive} macroWebhookOptionsCount={macroWebhookOptions.length} triggerClassName={`${styles.input} ${styles.select}`} onChange={nextType => onChange({
+          type: nextType
+        })} />
       </div>
 
-      {proLocked ? (
-        <p className={macroModalStyles.hintText}>{ss.macros.proLockedHint}</p>
-      ) : null}
+      {proLocked ? <p className={macroModalStyles.hintText}>{ss.macros.proLockedHint}</p> : null}
 
-      {action.type === "set_field" && (
-        <div className={macroModalStyles.fieldGrid2}>
-          <select
-            className={`${styles.input} ${styles.select}`}
-            value={action.field || ""}
-            onChange={(e) => {
-              const nextField = e.target.value;
-              const boundedValues = macroBoundedFieldValues[nextField];
-              onChange({
-                field: nextField,
-                fieldMode: defaultFieldMode(nextField),
-                value: Array.isArray(boundedValues)
-                  ? boundedValues[0]?.value || ""
-                  : nextField === "category"
-                    ? macroCategoryOptions[0]?.value || ""
-                    : "",
-              });
-            }}
-          >
-            {macroFieldOptions.map((opt) => (
-              <option key={opt.value} value={opt.value}>
+      {action.type === "set_field" && <div className={macroModalStyles.fieldGrid2}>
+          <select className={`${styles.input} ${styles.select}`} value={action.field || ""} onChange={e => {
+          const nextField = e.target.value;
+          const boundedValues = macroBoundedFieldValues[nextField];
+          onChange({
+            field: nextField,
+            fieldMode: defaultFieldMode(nextField),
+            value: Array.isArray(boundedValues) ? boundedValues[0]?.value || "" : nextField === "category" ? macroCategoryOptions[0]?.value || "" : ""
+          });
+        }}>
+            {macroFieldOptions.map(opt => <option key={opt.value} value={opt.value}>
                 {opt.label}
-              </option>
-            ))}
+              </option>)}
           </select>
-          {Array.isArray(macroFieldModeOptions[action.field]) ? (
-            <select
-              className={`${styles.input} ${styles.select}`}
-              value={action.fieldMode || defaultFieldMode(action.field)}
-              onChange={(e) => onChange({ fieldMode: e.target.value })}
-            >
-              {macroFieldModeOptions[action.field].map((opt) => (
-                <option key={opt.value} value={opt.value}>
+          {Array.isArray(macroFieldModeOptions[action.field]) ? <select className={`${styles.input} ${styles.select}`} value={action.fieldMode || defaultFieldMode(action.field)} onChange={e => onChange({
+          fieldMode: e.target.value
+        })}>
+              {macroFieldModeOptions[action.field].map(opt => <option key={opt.value} value={opt.value}>
                   {opt.label}
-                </option>
-              ))}
-            </select>
-          ) : null}
-          {action.field === "assigned_user_id" ? (
-            <div className={`${macroModalStyles.agentPickerWrap} ${macroModalStyles.fieldGridFull}`}>
-              <MultiSuggestPicker
-                inputId={`macro-assignee-${action.id}`}
-                placeholder={ss.macros.placeholders.assignee}
-                options={availableAgents}
-                selectedIds={parseCsvIds(action.value)}
-                emptyHint={ss.macros.placeholders.noAssignee}
-                onChange={(ids) => onChange({ value: stringifyAgentIds(ids) })}
-              />
-            </div>
-          ) : action.field === "followers" ? (
-            <div className={`${macroModalStyles.agentPickerWrap} ${macroModalStyles.fieldGridFull}`}>
-              <MultiSuggestPicker
-                inputId={`macro-follower-${action.id}`}
-                placeholder={ss.macros.placeholders.follower}
-                options={availableAgents}
-                selectedIds={parseCsvIds(action.value)}
-                emptyHint={ss.macros.placeholders.noFollower}
-                onChange={(ids) => onChange({ value: stringifyAgentIds(ids) })}
-              />
-            </div>
-          ) : action.field === "category" ? (
-            <div className={`${macroModalStyles.agentPickerWrap} ${macroModalStyles.fieldGridFull}`}>
-              <MultiSuggestPicker
-                singleSelect
-                inputId={`macro-category-${action.id}`}
-                placeholder={ss.macros.placeholders.category}
-                options={macroCategoryOptions.map((opt) => ({
-                  id: opt.value,
-                  label: opt.label,
-                }))}
-                selectedIds={action.value ? [action.value] : []}
-                emptyHint={ss.macros.placeholders.noCategory}
-                onChange={(ids) => onChange({ value: ids[0] || "" })}
-              />
-            </div>
-          ) : Array.isArray(macroBoundedFieldValues[action.field]) ? (
-            <select
-              className={`${styles.input} ${styles.select}`}
-              value={action.value || macroBoundedFieldValues[action.field][0]?.value || ""}
-              onChange={(e) => onChange({ value: e.target.value })}
-            >
-              {macroBoundedFieldValues[action.field].map((opt) => (
-                <option key={opt.value} value={opt.value}>
+                </option>)}
+            </select> : null}
+          {action.field === "assigned_user_id" ? <div className={`${macroModalStyles.agentPickerWrap} ${macroModalStyles.fieldGridFull}`}>
+              <MultiSuggestPicker inputId={`macro-assignee-${action.id}`} placeholder={ss.macros.placeholders.assignee} options={availableAgents} selectedIds={parseCsvIds(action.value)} emptyHint={ss.macros.placeholders.noAssignee} onChange={ids => onChange({
+            value: stringifyAgentIds(ids)
+          })} />
+            </div> : action.field === "followers" ? <div className={`${macroModalStyles.agentPickerWrap} ${macroModalStyles.fieldGridFull}`}>
+              <MultiSuggestPicker inputId={`macro-follower-${action.id}`} placeholder={ss.macros.placeholders.follower} options={availableAgents} selectedIds={parseCsvIds(action.value)} emptyHint={ss.macros.placeholders.noFollower} onChange={ids => onChange({
+            value: stringifyAgentIds(ids)
+          })} />
+            </div> : action.field === "category" ? <div className={`${macroModalStyles.agentPickerWrap} ${macroModalStyles.fieldGridFull}`}>
+              <MultiSuggestPicker singleSelect inputId={`macro-category-${action.id}`} placeholder={ss.macros.placeholders.category} options={macroCategoryOptions.map(opt => ({
+            id: opt.value,
+            label: opt.label
+          }))} selectedIds={action.value ? [action.value] : []} emptyHint={ss.macros.placeholders.noCategory} onChange={ids => onChange({
+            value: ids[0] || ""
+          })} />
+            </div> : Array.isArray(macroBoundedFieldValues[action.field]) ? <select className={`${styles.input} ${styles.select}`} value={action.value || macroBoundedFieldValues[action.field][0]?.value || ""} onChange={e => onChange({
+          value: e.target.value
+        })}>
+              {macroBoundedFieldValues[action.field].map(opt => <option key={opt.value} value={opt.value}>
                   {opt.label}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <input
-              className={styles.input}
-              value={action.value || ""}
-              onChange={(e) => onChange({ value: e.target.value })}
-              placeholder={ss.macros.placeholders.newValue}
-            />
-          )}
-        </div>
-      )}
+                </option>)}
+            </select> : <input className={styles.input} value={action.value || ""} onChange={e => onChange({
+          value: e.target.value
+        })} placeholder={ss.macros.placeholders.newValue} />}
+        </div>}
 
-      {action.type === "add_comment" && !proLocked && (
-        <MacroCommentActionEditor
-          actionId={action.id}
-          comment={action.comment || ""}
-          commentTemplateId={action.commentTemplateId || ""}
-          isInternal={Boolean(action.isInternal)}
-          templates={commentTemplates}
-          selectClassName={`${styles.input} ${styles.select}`}
-          onChange={onChange}
-        />
-      )}
+      {action.type === "add_comment" && !proLocked && <MacroCommentActionEditor actionId={action.id} comment={action.comment || ""} commentTemplateId={action.commentTemplateId || ""} isInternal={Boolean(action.isInternal)} templates={commentTemplates} selectClassName={`${styles.input} ${styles.select}`} onChange={onChange} />}
 
-      {action.type === "open_email" && !proLocked && (
-        <div className={macroModalStyles.actionFieldStack}>
-          <input
-            className={styles.input}
-            value={action.emailTo || ""}
-            onChange={(e) => onChange({ emailTo: e.target.value })}
-            placeholder={ss.macros.placeholders.emailTo}
-          />
-          <input
-            className={styles.input}
-            value={action.emailCc || ""}
-            onChange={(e) => onChange({ emailCc: e.target.value })}
-            placeholder={ss.macros.placeholders.emailCc}
-          />
-          <input
-            className={styles.input}
-            value={action.emailSubject || ""}
-            onChange={(e) => onChange({ emailSubject: e.target.value })}
-            placeholder={ss.macros.placeholders.emailSubject}
-          />
-          <textarea
-            className={styles.input}
-            rows={4}
-            value={action.emailBody || ""}
-            onChange={(e) => onChange({ emailBody: e.target.value })}
-            placeholder={ss.macros.placeholders.emailBody}
-          />
-        </div>
-      )}
+      {action.type === "open_email" && !proLocked && <div className={macroModalStyles.actionFieldStack}>
+          <input className={styles.input} value={action.emailTo || ""} onChange={e => onChange({
+          emailTo: e.target.value
+        })} placeholder={ss.macros.placeholders.emailTo} />
+          <input className={styles.input} value={action.emailCc || ""} onChange={e => onChange({
+          emailCc: e.target.value
+        })} placeholder={ss.macros.placeholders.emailCc} />
+          <input className={styles.input} value={action.emailSubject || ""} onChange={e => onChange({
+          emailSubject: e.target.value
+        })} placeholder={ss.macros.placeholders.emailSubject} />
+          <textarea className={styles.input} rows={4} value={action.emailBody || ""} onChange={e => onChange({
+          emailBody: e.target.value
+        })} placeholder={ss.macros.placeholders.emailBody} />
+        </div>}
 
-      {(action.type === "manage_tags" || action.type === "add_tags") && !proLocked && (
-        <div className={macroModalStyles.actionFieldStack}>
-          <select
-            className={`${styles.input} ${styles.select}`}
-            value={action.tagsMode || "add"}
-            onChange={(e) => onChange({ tagsMode: e.target.value })}
-          >
+      {(action.type === "manage_tags" || action.type === "add_tags") && !proLocked && <div className={macroModalStyles.actionFieldStack}>
+          <select className={`${styles.input} ${styles.select}`} value={action.tagsMode || "add"} onChange={e => onChange({
+          tagsMode: e.target.value
+        })}>
             <option value="add">{ss.macros.placeholders.tagsAddOption}</option>
             <option value="remove">{ss.macros.placeholders.tagsRemoveOption}</option>
           </select>
-          <input
-            className={styles.input}
-            value={action.tagsText || ""}
-            onChange={(e) => onChange({ tagsText: e.target.value })}
-            placeholder={ss.macros.placeholders.tagsList}
-          />
-        </div>
-      )}
+          <input className={styles.input} value={action.tagsText || ""} onChange={e => onChange({
+          tagsText: e.target.value
+        })} placeholder={ss.macros.placeholders.tagsList} />
+        </div>}
 
-      {action.type === "planning_alert" && !proLocked && (
-        <div className={macroModalStyles.actionFieldStack}>
-          <input
-            className={styles.input}
-            value={action.reminderTitle || ""}
-            onChange={(e) => onChange({ reminderTitle: e.target.value })}
-            placeholder={ss.macros.placeholders.reminderTitle}
-          />
+      {action.type === "planning_alert" && !proLocked && <div className={macroModalStyles.actionFieldStack}>
+          <input className={styles.input} value={action.reminderTitle || ""} onChange={e => onChange({
+          reminderTitle: e.target.value
+        })} placeholder={ss.macros.placeholders.reminderTitle} />
           <label className={macroModalStyles.inlineField}>
             <span>{ss.macros.placeholders.reminderOffsetLabel}</span>
-            <input
-              className={styles.input}
-              type="number"
-              min={5}
-              step={5}
-              value={action.reminderOffsetMinutes ?? "60"}
-              onChange={(e) => onChange({ reminderOffsetMinutes: e.target.value })}
-            />
+            <input className={styles.input} type="number" min={5} step={5} value={action.reminderOffsetMinutes ?? "60"} onChange={e => onChange({
+            reminderOffsetMinutes: e.target.value
+          })} />
           </label>
-          <textarea
-            className={styles.input}
-            rows={3}
-            value={action.reminderNote || ""}
-            onChange={(e) => onChange({ reminderNote: e.target.value })}
-            placeholder={ss.macros.placeholders.reminderNote}
-          />
-        </div>
-      )}
+          <textarea className={styles.input} rows={3} value={action.reminderNote || ""} onChange={e => onChange({
+          reminderNote: e.target.value
+        })} placeholder={ss.macros.placeholders.reminderNote} />
+        </div>}
 
-      {action.type === "teams_message" && !proLocked && (
-        <div className={macroModalStyles.actionFieldStack}>
-          <select
-            className={`${styles.input} ${styles.select}`}
-            value={action.teamsWebhookId || ""}
-            onChange={(e) => onChange({ teamsWebhookId: e.target.value })}
-          >
+      {action.type === "teams_message" && !proLocked && <div className={macroModalStyles.actionFieldStack}>
+          <select className={`${styles.input} ${styles.select}`} value={action.teamsWebhookId || ""} onChange={e => onChange({
+          teamsWebhookId: e.target.value
+        })}>
             <option value="">{ss.macros.placeholders.selectWebhook}</option>
-            {macroWebhookOptions.map((opt) => (
-              <option key={opt.value} value={opt.value}>
+            {macroWebhookOptions.map(opt => <option key={opt.value} value={opt.value}>
                 {opt.label}
-              </option>
-            ))}
+              </option>)}
           </select>
-          {macroWebhookOptions.length === 0 ? (
-            <p className={macroModalStyles.hintText}>{ss.macros.placeholders.noWebhookHint}</p>
-          ) : null}
-          <input
-            className={styles.input}
-            value={action.teamsTitle || ""}
-            onChange={(e) => onChange({ teamsTitle: e.target.value })}
-            placeholder={ss.macros.placeholders.teamsTitle}
-          />
-          <textarea
-            className={styles.input}
-            rows={4}
-            value={action.teamsMessage || ""}
-            onChange={(e) => onChange({ teamsMessage: e.target.value })}
-            placeholder={ss.macros.placeholders.teamsMessage}
-          />
-        </div>
-      )}
+          {macroWebhookOptions.length === 0 ? <p className={macroModalStyles.hintText}>{ss.macros.placeholders.noWebhookHint}</p> : null}
+          <input className={styles.input} value={action.teamsTitle || ""} onChange={e => onChange({
+          teamsTitle: e.target.value
+        })} placeholder={ss.macros.placeholders.teamsTitle} />
+          <textarea className={styles.input} rows={4} value={action.teamsMessage || ""} onChange={e => onChange({
+          teamsMessage: e.target.value
+        })} placeholder={ss.macros.placeholders.teamsMessage} />
+        </div>}
 
-      {action.type === "call" && !proLocked && (
-        <input
-          className={styles.input}
-          style={{ marginTop: "0.6rem" }}
-          value={action.phoneNumber || ""}
-          onChange={(e) => onChange({ phoneNumber: e.target.value })}
-          placeholder={ss.macros.placeholders.phoneNumber}
-        />
-      )}
+      {action.type === "call" && !proLocked && <input className={styles.input} style={{
+        marginTop: "0.6rem"
+      }} value={action.phoneNumber || ""} onChange={e => onChange({
+        phoneNumber: e.target.value
+      })} placeholder={ss.macros.placeholders.phoneNumber} />}
 
-      {action.type === "link_ticket" && !proLocked && (
-        <input
-          className={styles.input}
-          style={{ marginTop: "0.6rem" }}
-          value={action.ticketId || ""}
-          onChange={(e) => onChange({ ticketId: e.target.value })}
-          placeholder={ss.macros.placeholders.ticketId}
-        />
-      )}
+      {action.type === "link_ticket" && !proLocked && <input className={styles.input} style={{
+        marginTop: "0.6rem"
+      }} value={action.ticketId || ""} onChange={e => onChange({
+        ticketId: e.target.value
+      })} placeholder={ss.macros.placeholders.ticketId} />}
 
-      {action.type === "link_equipment" && !proLocked && (
-        <input
-          className={styles.input}
-          style={{ marginTop: "0.6rem" }}
-          value={action.equipmentId || ""}
-          onChange={(e) => onChange({ equipmentId: e.target.value })}
-          placeholder={ss.macros.placeholders.equipmentId}
-        />
-      )}
+      {action.type === "link_equipment" && !proLocked && <input className={styles.input} style={{
+        marginTop: "0.6rem"
+      }} value={action.equipmentId || ""} onChange={e => onChange({
+        equipmentId: e.target.value
+      })} placeholder={ss.macros.placeholders.equipmentId} />}
 
-      {action.type === "add_attachment" && !proLocked && (
-        <div className={macroModalStyles.hintText}>{ss.macros.placeholders.manualAttachmentHint}</div>
-      )}
-    </>
-    );
+      {action.type === "add_attachment" && !proLocked && <div className={macroModalStyles.hintText}>{ss.macros.placeholders.manualAttachmentHint}</div>}
+    </>;
   };
-
-  return (
-    <Page>
-      {!restrictedView ? (
-        <SubTabs
-          items={ticketAdminViews}
-          active={activeView}
-          onChange={setActiveView}
-          fullWidth
-        />
-      ) : null}
+  return <Page>
+      {!restrictedView ? <SubTabs items={ticketAdminViews} active={activeView} onChange={setActiveView} fullWidth /> : null}
 
       <div className={styles.content}>
-        {activeView === "templates" && (
-          <Card
-            title={supportViewMeta.templates.title}
-            description={supportViewMeta.templates.description}
-            fill
-            action={
-              <Btn
-                icon="mdi:plus"
-                onClick={openCreateTemplateModal}
-                disabled={templatesAtLimit}
-                title={
-                  templatesAtLimit
-                    ? interpolate(ss.templates.limitTitle, { max: maxTemplates })
-                    : undefined
-                }
-              >
+        {activeView === "templates" && <Card title={supportViewMeta.templates.title} description={supportViewMeta.templates.description} fill action={<Btn icon="mdi:plus" onClick={openCreateTemplateModal} disabled={templatesAtLimit} title={templatesAtLimit ? interpolate(ss.templates.limitTitle, {
+        max: maxTemplates
+      }) : undefined}>
                 {ss.templates.addBtn}
-              </Btn>
-            }
-          >
-            {maxTemplates != null && (
-              <p className={styles.limitHint}>
+              </Btn>}>
+            {maxTemplates != null && <p className={styles.limitHint}>
                 <CommunityFeatureBadge variant="inline" className={styles.proBadgeInline} />
-                {templatesAtLimit ? (
-                  <>
+                {templatesAtLimit ? <>
                     {interpolate(ss.templates.limitReached, {
-                      current: commentTemplates.length,
-                      max: maxTemplates,
-                    })}{" "}
+              current: commentTemplates.length,
+              max: maxTemplates
+            })}{" "}
                     <ProFeatureBadge variant="inline" className={styles.proBadgeInline} />
-                  </>
-                ) : (
-                  <>
+                  </> : <>
                     {interpolate(ss.templates.quota, {
-                      current: commentTemplates.length,
-                      max: maxTemplates,
-                    })}
-                  </>
-                )}
-              </p>
-            )}
+              current: commentTemplates.length,
+              max: maxTemplates
+            })}
+                  </>}
+              </p>}
             <div className={s.tableSection}>
               <div className={s.tableWrap}>
                 <table className={s.table}>
                   <thead>
                     <tr>
                       <th>{ss.common.columns.name}</th>
-                      <th style={{ width: 112 }} aria-label={ss.common.actions.actionsAria} />
+                      <th style={{
+                    width: 112
+                  }} aria-label={ss.common.actions.actionsAria} />
                     </tr>
                   </thead>
                   <tbody>
-                    {commentTemplates.length === 0 ? (
-                      <tr>
+                    {commentTemplates.length === 0 ? <tr>
                         <td colSpan={2} className={s.empty}>{ss.templates.empty}</td>
-                      </tr>
-                    ) : (
-                      templatesPagination.paginatedItems.map((tpl) => (
-                        <tr key={tpl.id}>
+                      </tr> : templatesPagination.paginatedItems.map(tpl => <tr key={tpl.id}>
                           <td>{tpl.name}</td>
                           <td>
                             <div className={s.actions}>
-                              <button
-                                type="button"
-                                className={s.actionBtn}
-                                title={ss.common.actions.preview}
-                                onClick={() => openTemplatePreviewModal(tpl)}
-                              >
+                              <button type="button" className={s.actionBtn} title={ss.common.actions.preview} onClick={() => openTemplatePreviewModal(tpl)}>
                                 <Icon icon="mdi:eye-outline" aria-hidden />
                               </button>
-                              <button
-                                type="button"
-                                className={s.actionBtn}
-                                title={ss.common.actions.edit}
-                                onClick={() => openEditTemplateModal(tpl)}
-                              >
+                              <button type="button" className={s.actionBtn} title={ss.common.actions.edit} onClick={() => openEditTemplateModal(tpl)}>
                                 <Icon icon="mdi:pencil-outline" aria-hidden />
                               </button>
-                              <button
-                                type="button"
-                                className={`${s.actionBtn} ${s.actionBtnDanger}`}
-                                title={ss.common.actions.delete}
-                                onClick={() => setTemplateDeleteTarget(tpl)}
-                              >
+                              <button type="button" className={`${s.actionBtn} ${s.actionBtnDanger}`} title={ss.common.actions.delete} onClick={() => setTemplateDeleteTarget(tpl)}>
                                 <Icon icon="mdi:delete-outline" aria-hidden />
                               </button>
                             </div>
                           </td>
-                        </tr>
-                      ))
-                    )}
+                        </tr>)}
                   </tbody>
                 </table>
               </div>
-              {commentTemplates.length > 0 && (
-                <Pagination
-                  page={templatesPagination.page}
-                  totalPages={templatesPagination.totalPages}
-                  onPageChange={templatesPagination.setPage}
-                  pageSize={templatesPagination.pageSize}
-                  onPageSizeChange={templatesPagination.setPageSize}
-                  rangeLabel={templatesPagination.rangeLabel}
-                />
-              )}
+              {commentTemplates.length > 0 && <Pagination page={templatesPagination.page} totalPages={templatesPagination.totalPages} onPageChange={templatesPagination.setPage} pageSize={templatesPagination.pageSize} onPageSizeChange={templatesPagination.setPageSize} rangeLabel={templatesPagination.rangeLabel} />}
             </div>
-          </Card>
-        )}
+          </Card>}
 
-        {activeView === "categories" && (
-          <Card
-            title={supportViewMeta.categories.title}
-            description={supportViewMeta.categories.description}
-            fill
-            action={
-              <Btn icon="mdi:plus" onClick={openCreateCategorySectionModal}>
+        {activeView === "categories" && <Card title={supportViewMeta.categories.title} description={supportViewMeta.categories.description} fill action={<Btn icon="mdi:plus" onClick={openCreateCategorySectionModal}>
                 {ss.categories.newSectionBtn}
-              </Btn>
-            }
-          >
+              </Btn>}>
             <div className={s.tableSplitLayout}>
             <div className={ui.toolRow}>
               <div className={ui.toolLeft}>
-                <input
-                  type="search"
-                  className={ui.fieldSearch}
-                  placeholder={ss.categories.searchSection}
-                  value={sectionSearch}
-                  onChange={(e) => setSectionSearch(e.target.value)}
-                />
+                <input type="search" className={ui.fieldSearch} placeholder={ss.categories.searchSection} value={sectionSearch} onChange={e => setSectionSearch(e.target.value)} />
                 <span className={ui.count}>
                   {formatSupportSettingsCount(locale, "section", filteredCategorySections.length)}
                 </span>
@@ -3342,24 +2822,20 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
                       <th>{ss.common.columns.name}</th>
                       <th>{ss.common.columns.description}</th>
                       <th>{ss.common.columns.status}</th>
-                      <th style={{ width: 88 }} aria-label={ss.common.actions.actionsAria} />
+                      <th style={{
+                      width: 88
+                    }} aria-label={ss.common.actions.actionsAria} />
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredCategorySections.length === 0 ? (
-                      <tr>
+                    {filteredCategorySections.length === 0 ? <tr>
                         <td colSpan={4} className={s.empty}>
-                          {ticketCategorySections.length === 0
-                            ? ss.categories.emptySections
-                            : ss.categories.emptySectionsSearch}
+                          {ticketCategorySections.length === 0 ? ss.categories.emptySections : ss.categories.emptySectionsSearch}
                         </td>
-                      </tr>
-                    ) : (
-                      categorySectionsPagination.paginatedItems.map((section) => {
-                        const linkedCategoryCount = countCategoriesForSection(section);
-                        const sectionDeleteBlocked = linkedCategoryCount > 0;
-                        return (
-                          <tr key={String(section.id)}>
+                      </tr> : categorySectionsPagination.paginatedItems.map(section => {
+                    const linkedCategoryCount = countCategoriesForSection(section);
+                    const sectionDeleteBlocked = linkedCategoryCount > 0;
+                    return <tr key={String(section.id)}>
                             <td>{section.name || ss.common.emptyDash}</td>
                             <td>{section.description || ss.common.emptyDash}</td>
                             <td>
@@ -3367,50 +2843,22 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
                             </td>
                             <td>
                               <div className={s.actions}>
-                                <button
-                                  type="button"
-                                  className={s.actionBtn}
-                                  title={ss.common.actions.edit}
-                                  onClick={() => openEditCategorySectionModal(section)}
-                                >
+                                <button type="button" className={s.actionBtn} title={ss.common.actions.edit} onClick={() => openEditCategorySectionModal(section)}>
                                   <Icon icon="mdi:pencil-outline" aria-hidden />
                                 </button>
-                                <button
-                                  type="button"
-                                  className={`${s.actionBtn} ${s.actionBtnDanger}`}
-                                  title={
-                                    sectionDeleteBlocked
-                                      ? linkedCategoryCount === 1
-                                        ? ss.categories.sectionDeleteBlockedOne
-                                        : interpolate(ss.categories.sectionDeleteBlockedMany, {
-                                            count: linkedCategoryCount,
-                                          })
-                                      : ss.common.actions.delete
-                                  }
-                                  disabled={sectionDeleteBlocked}
-                                  onClick={() => requestRemoveCategorySection(section)}
-                                >
+                                <button type="button" className={`${s.actionBtn} ${s.actionBtnDanger}`} title={sectionDeleteBlocked ? linkedCategoryCount === 1 ? ss.categories.sectionDeleteBlockedOne : interpolate(ss.categories.sectionDeleteBlockedMany, {
+                            count: linkedCategoryCount
+                          }) : ss.common.actions.delete} disabled={sectionDeleteBlocked} onClick={() => requestRemoveCategorySection(section)}>
                                   <Icon icon="mdi:delete-outline" aria-hidden />
                                 </button>
                               </div>
                             </td>
-                          </tr>
-                        );
-                      })
-                    )}
+                          </tr>;
+                  })}
                   </tbody>
                 </table>
               </div>
-              {filteredCategorySections.length > 0 && (
-                <Pagination
-                  page={categorySectionsPagination.page}
-                  totalPages={categorySectionsPagination.totalPages}
-                  onPageChange={categorySectionsPagination.setPage}
-                  pageSize={categorySectionsPagination.pageSize}
-                  onPageSizeChange={categorySectionsPagination.setPageSize}
-                  rangeLabel={categorySectionsPagination.rangeLabel}
-                />
-              )}
+              {filteredCategorySections.length > 0 && <Pagination page={categorySectionsPagination.page} totalPages={categorySectionsPagination.totalPages} onPageChange={categorySectionsPagination.setPage} pageSize={categorySectionsPagination.pageSize} onPageSizeChange={categorySectionsPagination.setPageSize} rangeLabel={categorySectionsPagination.rangeLabel} />}
             </div>
 
             <div className={styles.subSectionHead}>
@@ -3422,13 +2870,7 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
 
             <div className={ui.toolRow}>
               <div className={ui.toolLeft}>
-                <input
-                  type="search"
-                  className={ui.fieldSearch}
-                  placeholder={ss.categories.searchCategory}
-                  value={categorySearch}
-                  onChange={(e) => setCategorySearch(e.target.value)}
-                />
+                <input type="search" className={ui.fieldSearch} placeholder={ss.categories.searchCategory} value={categorySearch} onChange={e => setCategorySearch(e.target.value)} />
                 <span className={ui.count}>
                   {formatSupportSettingsCount(locale, "category", filteredTicketCategories.length)}
                 </span>
@@ -3444,21 +2886,17 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
                       <th>{ss.common.columns.name}</th>
                       <th>{ss.common.columns.description}</th>
                       <th>{ss.common.columns.status}</th>
-                      <th style={{ width: 88 }} aria-label={ss.common.actions.actionsAria} />
+                      <th style={{
+                      width: 88
+                    }} aria-label={ss.common.actions.actionsAria} />
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredTicketCategories.length === 0 ? (
-                      <tr>
+                    {filteredTicketCategories.length === 0 ? <tr>
                         <td colSpan={5} className={s.empty}>
-                          {ticketCategories.length === 0
-                            ? ss.categories.emptyCategories
-                            : ss.categories.emptyCategoriesSearch}
+                          {ticketCategories.length === 0 ? ss.categories.emptyCategories : ss.categories.emptyCategoriesSearch}
                         </td>
-                      </tr>
-                    ) : (
-                      categoriesPagination.paginatedItems.map((category) => (
-                        <tr key={String(category.id)}>
+                      </tr> : categoriesPagination.paginatedItems.map(category => <tr key={String(category.id)}>
                           <td>{category.section || ss.categories.uncategorized}</td>
                           <td>{category.name || ss.common.emptyDash}</td>
                           <td>{category.description || ss.common.emptyDash}</td>
@@ -3467,51 +2905,24 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
                           </td>
                           <td>
                             <div className={s.actions}>
-                              <button
-                                type="button"
-                                className={s.actionBtn}
-                                title={ss.common.actions.edit}
-                                onClick={() => openEditCategoryModal(category)}
-                              >
+                              <button type="button" className={s.actionBtn} title={ss.common.actions.edit} onClick={() => openEditCategoryModal(category)}>
                                 <Icon icon="mdi:pencil-outline" aria-hidden />
                               </button>
-                              <button
-                                type="button"
-                                className={`${s.actionBtn} ${s.actionBtnDanger}`}
-                                title={ss.common.actions.delete}
-                                onClick={() => setCategoryDeleteTarget(category)}
-                              >
+                              <button type="button" className={`${s.actionBtn} ${s.actionBtnDanger}`} title={ss.common.actions.delete} onClick={() => setCategoryDeleteTarget(category)}>
                                 <Icon icon="mdi:delete-outline" aria-hidden />
                               </button>
                             </div>
                           </td>
-                        </tr>
-                      ))
-                    )}
+                        </tr>)}
                   </tbody>
                 </table>
               </div>
-              {filteredTicketCategories.length > 0 && (
-                <Pagination
-                  page={categoriesPagination.page}
-                  totalPages={categoriesPagination.totalPages}
-                  onPageChange={categoriesPagination.setPage}
-                  pageSize={categoriesPagination.pageSize}
-                  onPageSizeChange={categoriesPagination.setPageSize}
-                  rangeLabel={categoriesPagination.rangeLabel}
-                />
-              )}
+              {filteredTicketCategories.length > 0 && <Pagination page={categoriesPagination.page} totalPages={categoriesPagination.totalPages} onPageChange={categoriesPagination.setPage} pageSize={categoriesPagination.pageSize} onPageSizeChange={categoriesPagination.setPageSize} rangeLabel={categoriesPagination.rangeLabel} />}
             </div>
             </div>
-          </Card>
-        )}
+          </Card>}
 
-        {activeView === "solution-catalog" && (
-          <Card
-            title={supportViewMeta["solution-catalog"].title}
-            description={supportViewMeta["solution-catalog"].description}
-            fill
-          >
+        {activeView === "solution-catalog" && <Card title={supportViewMeta["solution-catalog"].title} description={supportViewMeta["solution-catalog"].description} fill>
             <div className={s.tableSplitLayout}>
               <div className={styles.subSectionHead}>
                 <h4 className={styles.subSectionTitle}>{ss.solutions.interventionTitle}</h4>
@@ -3522,13 +2933,7 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
 
               <div className={ui.toolRow}>
                 <div className={ui.toolLeft}>
-                  <input
-                    type="search"
-                    className={ui.fieldSearch}
-                    placeholder={ss.solutions.searchIntervention}
-                    value={solutionInterventionSearch}
-                    onChange={(e) => setSolutionInterventionSearch(e.target.value)}
-                  />
+                  <input type="search" className={ui.fieldSearch} placeholder={ss.solutions.searchIntervention} value={solutionInterventionSearch} onChange={e => setSolutionInterventionSearch(e.target.value)} />
                   <span className={ui.count}>
                     {formatSupportSettingsCount(locale, "entry", filteredSolutionInterventions.length)}
                   </span>
@@ -3543,19 +2948,17 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
                         <th>{ss.common.columns.label}</th>
                         <th>{ss.common.columns.order}</th>
                         <th>{ss.common.columns.status}</th>
-                        <th style={{ width: 88 }} aria-label={ss.common.actions.actionsAria} />
+                        <th style={{
+                      width: 88
+                    }} aria-label={ss.common.actions.actionsAria} />
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredSolutionInterventions.length === 0 ? (
-                        <tr>
+                      {filteredSolutionInterventions.length === 0 ? <tr>
                           <td colSpan={4} className={s.empty}>
                             {ss.solutions.emptyInterventions}
                           </td>
-                        </tr>
-                      ) : (
-                        solutionInterventionsPagination.paginatedItems.map((entry) => (
-                          <tr key={String(entry.id)}>
+                        </tr> : solutionInterventionsPagination.paginatedItems.map(entry => <tr key={String(entry.id)}>
                             <td>{entry.label || ss.common.emptyDash}</td>
                             <td>{Number(entry.displayOrder) || 0}</td>
                             <td>
@@ -3563,40 +2966,19 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
                             </td>
                             <td>
                               <div className={s.actions}>
-                                <button
-                                  type="button"
-                                  className={s.actionBtn}
-                                  title={ss.common.actions.edit}
-                                  onClick={() => openEditSolutionCatalogModal(entry)}
-                                >
+                                <button type="button" className={s.actionBtn} title={ss.common.actions.edit} onClick={() => openEditSolutionCatalogModal(entry)}>
                                   <Icon icon="mdi:pencil-outline" aria-hidden />
                                 </button>
-                                <button
-                                  type="button"
-                                  className={`${s.actionBtn} ${s.actionBtnDanger}`}
-                                  title={ss.common.actions.delete}
-                                  onClick={() => setSolutionCatalogDeleteTarget(entry)}
-                                >
+                                <button type="button" className={`${s.actionBtn} ${s.actionBtnDanger}`} title={ss.common.actions.delete} onClick={() => setSolutionCatalogDeleteTarget(entry)}>
                                   <Icon icon="mdi:delete-outline" aria-hidden />
                                 </button>
                               </div>
                             </td>
-                          </tr>
-                        ))
-                      )}
+                          </tr>)}
                     </tbody>
                   </table>
                 </div>
-                {filteredSolutionInterventions.length > 0 && (
-                  <Pagination
-                    page={solutionInterventionsPagination.page}
-                    totalPages={solutionInterventionsPagination.totalPages}
-                    onPageChange={solutionInterventionsPagination.setPage}
-                    pageSize={solutionInterventionsPagination.pageSize}
-                    onPageSizeChange={solutionInterventionsPagination.setPageSize}
-                    rangeLabel={solutionInterventionsPagination.rangeLabel}
-                  />
-                )}
+                {filteredSolutionInterventions.length > 0 && <Pagination page={solutionInterventionsPagination.page} totalPages={solutionInterventionsPagination.totalPages} onPageChange={solutionInterventionsPagination.setPage} pageSize={solutionInterventionsPagination.pageSize} onPageSizeChange={solutionInterventionsPagination.setPageSize} rangeLabel={solutionInterventionsPagination.rangeLabel} />}
               </div>
 
               <div className={styles.subSectionHead}>
@@ -3608,13 +2990,7 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
 
               <div className={ui.toolRow}>
                 <div className={ui.toolLeft}>
-                  <input
-                    type="search"
-                    className={ui.fieldSearch}
-                    placeholder={ss.solutions.searchAction}
-                    value={solutionActionSearch}
-                    onChange={(e) => setSolutionActionSearch(e.target.value)}
-                  />
+                  <input type="search" className={ui.fieldSearch} placeholder={ss.solutions.searchAction} value={solutionActionSearch} onChange={e => setSolutionActionSearch(e.target.value)} />
                   <span className={ui.count}>
                     {formatSupportSettingsCount(locale, "entry", filteredSolutionActions.length)}
                   </span>
@@ -3629,19 +3005,17 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
                         <th>{ss.common.columns.label}</th>
                         <th>{ss.common.columns.order}</th>
                         <th>{ss.common.columns.status}</th>
-                        <th style={{ width: 88 }} aria-label={ss.common.actions.actionsAria} />
+                        <th style={{
+                      width: 88
+                    }} aria-label={ss.common.actions.actionsAria} />
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredSolutionActions.length === 0 ? (
-                        <tr>
+                      {filteredSolutionActions.length === 0 ? <tr>
                           <td colSpan={4} className={s.empty}>
                             {ss.solutions.emptyActions}
                           </td>
-                        </tr>
-                      ) : (
-                        solutionActionsPagination.paginatedItems.map((entry) => (
-                          <tr key={String(entry.id)}>
+                        </tr> : solutionActionsPagination.paginatedItems.map(entry => <tr key={String(entry.id)}>
                             <td>{entry.label || ss.common.emptyDash}</td>
                             <td>{Number(entry.displayOrder) || 0}</td>
                             <td>
@@ -3649,88 +3023,45 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
                             </td>
                             <td>
                               <div className={s.actions}>
-                                <button
-                                  type="button"
-                                  className={s.actionBtn}
-                                  title={ss.common.actions.edit}
-                                  onClick={() => openEditSolutionCatalogModal(entry)}
-                                >
+                                <button type="button" className={s.actionBtn} title={ss.common.actions.edit} onClick={() => openEditSolutionCatalogModal(entry)}>
                                   <Icon icon="mdi:pencil-outline" aria-hidden />
                                 </button>
-                                <button
-                                  type="button"
-                                  className={`${s.actionBtn} ${s.actionBtnDanger}`}
-                                  title={ss.common.actions.delete}
-                                  onClick={() => setSolutionCatalogDeleteTarget(entry)}
-                                >
+                                <button type="button" className={`${s.actionBtn} ${s.actionBtnDanger}`} title={ss.common.actions.delete} onClick={() => setSolutionCatalogDeleteTarget(entry)}>
                                   <Icon icon="mdi:delete-outline" aria-hidden />
                                 </button>
                               </div>
                             </td>
-                          </tr>
-                        ))
-                      )}
+                          </tr>)}
                     </tbody>
                   </table>
                 </div>
-                {filteredSolutionActions.length > 0 && (
-                  <Pagination
-                    page={solutionActionsPagination.page}
-                    totalPages={solutionActionsPagination.totalPages}
-                    onPageChange={solutionActionsPagination.setPage}
-                    pageSize={solutionActionsPagination.pageSize}
-                    onPageSizeChange={solutionActionsPagination.setPageSize}
-                    rangeLabel={solutionActionsPagination.rangeLabel}
-                  />
-                )}
+                {filteredSolutionActions.length > 0 && <Pagination page={solutionActionsPagination.page} totalPages={solutionActionsPagination.totalPages} onPageChange={solutionActionsPagination.setPage} pageSize={solutionActionsPagination.pageSize} onPageSizeChange={solutionActionsPagination.setPageSize} rangeLabel={solutionActionsPagination.rangeLabel} />}
               </div>
             </div>
-          </Card>
-        )}
+          </Card>}
 
-        {activeView === "ticket-views" && (
-          <AdminTicketViews
-            profiles={ticketViewProfiles}
-            users={ticketViewUsers}
-            teams={ticketViewTeams}
-          />
-        )}
+        {activeView === "ticket-views" && <AdminTicketViews profiles={ticketViewProfiles} users={ticketViewUsers} teams={ticketViewTeams} />}
 
-        {activeView === "macros" && (
-          <Card
-            title={supportViewMeta.macros.title}
-            description={supportViewMeta.macros.description}
-            fill
-            action={
-              <Btn
-                icon="mdi:plus"
-                onClick={openCreateMacroModal}
-                disabled={macrosAtLimit}
-                title={
-                  macrosAtLimit
-                    ? interpolate(ss.macros.limitTitle, { max: maxMacros })
-                    : undefined
-                }
-              >
+        {activeView === "macros" && <Card title={supportViewMeta.macros.title} description={supportViewMeta.macros.description} fill action={<Btn icon="mdi:plus" onClick={openCreateMacroModal} disabled={macrosAtLimit} title={macrosAtLimit ? interpolate(ss.macros.limitTitle, {
+        max: maxMacros
+      }) : undefined}>
                 {ss.macros.addBtn}
-              </Btn>
-            }
-          >
-            {maxMacros != null && (
-              <p className={styles.limitHint}>
+              </Btn>}>
+            {maxMacros != null && <p className={styles.limitHint}>
                 <CommunityFeatureBadge variant="inline" className={styles.proBadgeInline} />
-                {macrosAtLimit ? (
-                  <>
-                    {interpolate(ss.macros.limitReached, { current: macros.length, max: maxMacros })}{" "}
+                {macrosAtLimit ? <>
+                    {interpolate(ss.macros.limitReached, {
+              current: macros.length,
+              max: maxMacros
+            })}{" "}
                     <ProFeatureBadge variant="inline" className={styles.proBadgeInline} />
-                  </>
-                ) : (
-                  <>
-                    {interpolate(ss.macros.quota, { current: macros.length, max: maxMacros })}
-                  </>
-                )}
-              </p>
-            )}
+                  </> : <>
+                    {interpolate(ss.macros.quota, {
+              current: macros.length,
+              max: maxMacros
+            })}
+                  </>}
+              </p>}
             <div className={s.tableSection}>
               <div className={s.tableWrap}>
                 <table className={s.table}>
@@ -3738,70 +3069,38 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
                     <tr>
                       <th>{ss.common.columns.name}</th>
                       <th>{ss.common.columns.steps}</th>
-                      <th style={{ width: 88 }} aria-label={ss.common.actions.actionsAria} />
+                      <th style={{
+                    width: 88
+                  }} aria-label={ss.common.actions.actionsAria} />
                     </tr>
                   </thead>
                   <tbody>
-                    {macros.length === 0 ? (
-                      <tr>
+                    {macros.length === 0 ? <tr>
                         <td colSpan={3} className={s.empty}>{ss.macros.empty}</td>
-                      </tr>
-                    ) : (
-                      macrosPagination.paginatedItems.map((macro) => (
-                        <tr key={macro.id}>
+                      </tr> : macrosPagination.paginatedItems.map(macro => <tr key={macro.id}>
                           <td>{macro.name}</td>
                           <td>{Array.isArray(macro.actions) ? macro.actions.length : 0}</td>
                           <td>
                             <div className={s.actions}>
-                              <button
-                                type="button"
-                                className={s.actionBtn}
-                                title={ss.common.actions.edit}
-                                onClick={() => openEditMacroModal(macro)}
-                              >
+                              <button type="button" className={s.actionBtn} title={ss.common.actions.edit} onClick={() => openEditMacroModal(macro)}>
                                 <Icon icon="mdi:pencil-outline" aria-hidden />
                               </button>
-                              <button
-                                type="button"
-                                className={`${s.actionBtn} ${s.actionBtnDanger}`}
-                                title={ss.common.actions.delete}
-                                onClick={() => setMacroDeleteTarget(macro)}
-                              >
+                              <button type="button" className={`${s.actionBtn} ${s.actionBtnDanger}`} title={ss.common.actions.delete} onClick={() => setMacroDeleteTarget(macro)}>
                                 <Icon icon="mdi:delete-outline" aria-hidden />
                               </button>
                             </div>
                           </td>
-                        </tr>
-                      ))
-                    )}
+                        </tr>)}
                   </tbody>
                 </table>
               </div>
-              {macros.length > 0 && (
-                <Pagination
-                  page={macrosPagination.page}
-                  totalPages={macrosPagination.totalPages}
-                  onPageChange={macrosPagination.setPage}
-                  pageSize={macrosPagination.pageSize}
-                  onPageSizeChange={macrosPagination.setPageSize}
-                  rangeLabel={macrosPagination.rangeLabel}
-                />
-              )}
+              {macros.length > 0 && <Pagination page={macrosPagination.page} totalPages={macrosPagination.totalPages} onPageChange={macrosPagination.setPage} pageSize={macrosPagination.pageSize} onPageSizeChange={macrosPagination.setPageSize} rangeLabel={macrosPagination.rangeLabel} />}
             </div>
-          </Card>
-        )}
+          </Card>}
 
-        {activeView === "collectors" && (
-          <Card
-            title={mc.collectors.title}
-            description={mc.collectors.description}
-            fill
-            action={
-              <Btn icon="mdi:plus" onClick={openCreateCollectorModal}>
+        {activeView === "collectors" && <Card title={mc.collectors.title} description={mc.collectors.description} fill action={<Btn icon="mdi:plus" onClick={openCreateCollectorModal}>
                 {mc.collectors.addBtn}
-              </Btn>
-            }
-          >
+              </Btn>}>
             <div className={styles.userTableWrapper}>
               <table className={`${styles.userTable} ${styles.clientTable}`}>
                 <thead>
@@ -3811,7 +3110,9 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
                     <th>{mc.collectors.columns.protocol}</th>
                     <th>{mc.collectors.columns.folder}</th>
                     <th>{mc.collectors.columns.interval}</th>
-                    <th style={{ textAlign: "center" }}>{mc.collectors.columns.active}</th>
+                    <th style={{
+                  textAlign: "center"
+                }}>{mc.collectors.columns.active}</th>
                     <th>{mc.collectors.columns.collected}</th>
                     <th>{mc.collectors.columns.validated}</th>
                     <th>{mc.collectors.columns.ignored}</th>
@@ -3820,20 +3121,22 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
                   </tr>
                 </thead>
                 <tbody>
-                  {mailCollectors.length === 0 && (
-                    <tr>
-                      <td colSpan={11} style={{ textAlign: "center", padding: "1.25rem", color: "var(--msp-muted)" }}>
+                  {mailCollectors.length === 0 && <tr>
+                      <td colSpan={11} style={{
+                  textAlign: "center",
+                  padding: "1.25rem",
+                  color: "var(--msp-muted)"
+                }}>
                         {mc.collectors.empty}
                       </td>
-                    </tr>
-                  )}
-                  {mailCollectors.map((collector) => {
-                    const emailStats = resolveCollectorEmailStats(collector);
-                    const validatedPct = formatCollectorStatPercent(emailStats.validated, emailStats.collected);
-                    const ignoredPct = formatCollectorStatPercent(emailStats.ignored, emailStats.collected);
-
-                    return (
-                    <tr key={collector.id} className={styles.userRow} onClick={() => openEditCollectorModal(collector)} style={{ cursor: "pointer" }}>
+                    </tr>}
+                  {mailCollectors.map(collector => {
+                const emailStats = resolveCollectorEmailStats(collector);
+                const validatedPct = formatCollectorStatPercent(emailStats.validated, emailStats.collected);
+                const ignoredPct = formatCollectorStatPercent(emailStats.ignored, emailStats.collected);
+                return <tr key={collector.id} className={styles.userRow} onClick={() => openEditCollectorModal(collector)} style={{
+                  cursor: "pointer"
+                }}>
                       <td>
                         <span className={styles.collectorName}>{collector.name || "-"}</span>
                       </td>
@@ -3851,7 +3154,9 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
                       <td className={s.dateCell}>
                         {Number(collector.checkIntervalMinutes ?? 5)} {mc.common.minSuffix}
                       </td>
-                      <td style={{ textAlign: "center" }}>
+                      <td style={{
+                    textAlign: "center"
+                  }}>
                         <EntityStatus active={collector.enabled !== false} {...entityStatusLabels} />
                       </td>
                       <td>
@@ -3862,21 +3167,17 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
                       <td>
                         <span className={styles.collectorStatCell}>
                           <span className={styles.collectorStatValue}>{emailStats.validated}</span>
-                          {emailStats.collected > 0 && (
-                            <span className={`${styles.collectorStatPct} ${styles.collectorStatPct_success}`}>
+                          {emailStats.collected > 0 && <span className={`${styles.collectorStatPct} ${styles.collectorStatPct_success}`}>
                               ({validatedPct})
-                            </span>
-                          )}
+                            </span>}
                         </span>
                       </td>
                       <td>
                         <span className={styles.collectorStatCell}>
                           <span className={styles.collectorStatValue}>{emailStats.ignored}</span>
-                          {emailStats.collected > 0 && (
-                            <span className={`${styles.collectorStatPct} ${styles.collectorStatPct_warn}`}>
+                          {emailStats.collected > 0 && <span className={`${styles.collectorStatPct} ${styles.collectorStatPct_warn}`}>
                               ({ignoredPct})
-                            </span>
-                          )}
+                            </span>}
                         </span>
                       </td>
                       <td>
@@ -3886,136 +3187,99 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
                       </td>
                       <td>
                         <div className={styles.actionsCell}>
-                          <button
-                            type="button"
-                            className={styles.actionButton}
-                            title={mc.collectors.actions.forceFetch}
-                            disabled={forcingCollectorId === collector.id}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              forceCollectorFetch(collector);
-                            }}
-                          >
-                            <Icon
-                              icon={
-                                forcingCollectorId === collector.id
-                                  ? "mingcute:loading-3-fill"
-                                  : "mingcute:refresh-2-fill"
-                              }
-                            />
+                          <button type="button" className={styles.actionButton} title={mc.collectors.actions.forceFetch} disabled={forcingCollectorId === collector.id} onClick={e => {
+                        e.stopPropagation();
+                        forceCollectorFetch(collector);
+                      }}>
+                            <Icon icon={forcingCollectorId === collector.id ? "mingcute:loading-3-fill" : "mingcute:refresh-2-fill"} />
                           </button>
-                          <button
-                            type="button"
-                            className={styles.actionButton}
-                            title={mc.collectors.actions.viewLogs}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              openCollectorLogsModal(collector);
-                            }}
-                          >
+                          <button type="button" className={styles.actionButton} title={mc.collectors.actions.viewLogs} onClick={e => {
+                        e.stopPropagation();
+                        openCollectorLogsModal(collector);
+                      }}>
                             <Icon icon="mingcute:time-line" />
                           </button>
-                          <button
-                            type="button"
-                            className={styles.actionButton}
-                            title={mc.collectors.actions.edit}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              openEditCollectorModal(collector);
-                            }}
-                          >
+                          <button type="button" className={styles.actionButton} title={mc.collectors.actions.edit} onClick={e => {
+                        e.stopPropagation();
+                        openEditCollectorModal(collector);
+                      }}>
                             <Icon icon="mdi:pencil-outline" />
                           </button>
-                          <button
-                            type="button"
-                            className={`${styles.actionButton} ${styles.danger}`}
-                            title={mc.collectors.actions.delete}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              requestRemoveCollector(collector);
-                            }}
-                          >
+                          <button type="button" className={`${styles.actionButton} ${styles.danger}`} title={mc.collectors.actions.delete} onClick={e => {
+                        e.stopPropagation();
+                        requestRemoveCollector(collector);
+                      }}>
                             <Icon icon="mdi:delete-outline" />
                           </button>
                         </div>
                       </td>
-                    </tr>
-                    );
-                  })}
+                    </tr>;
+              })}
                 </tbody>
               </table>
             </div>
-          </Card>
-        )}
+          </Card>}
 
-        {activeView === "email-ingestion" && (
-          <Card
-            title={mc.rules.title}
-            description={mc.rules.description}
-            fill
-            action={
-              <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                <Btn
-                  variant="secondary"
-                  onClick={() => {
-                    setShowRulesTestModal(true);
-                    setRulesTestResult(null);
-                  }}
-                >
+        {activeView === "email-ingestion" && <Card title={mc.rules.title} description={mc.rules.description} fill action={<div style={{
+        display: "flex",
+        gap: "0.5rem",
+        alignItems: "center"
+      }}>
+                <Btn variant="secondary" onClick={() => {
+          setShowRulesTestModal(true);
+          setRulesTestResult(null);
+        }}>
                   {mc.rules.testBtn}
                 </Btn>
                 <Btn icon="mdi:plus" onClick={openCreateExclusionRuleModal}>
                   {mc.rules.addBtn}
                 </Btn>
-              </div>
-            }
-          >
+              </div>}>
             <div className={styles.settingRow}>
-              <div style={{ display: "grid", gap: "0.6rem" }}>
+              <div style={{
+            display: "grid",
+            gap: "0.6rem"
+          }}>
                 <div className={styles.userTableWrapper}>
                   <table className={`${styles.userTable} ${styles.clientTable}`}>
                     <thead>
                       <tr>
-                        <th style={{ textAlign: "center" }}>{mc.rules.columns.order}</th>
+                        <th style={{
+                      textAlign: "center"
+                    }}>{mc.rules.columns.order}</th>
                         <th>{mc.rules.columns.name}</th>
                         <th>{mc.rules.columns.collector}</th>
                         <th>{mc.rules.columns.criteria}</th>
                         <th>{mc.rules.columns.action}</th>
-                        <th style={{ textAlign: "center" }}>{mc.rules.columns.active}</th>
-                        <th style={{ textAlign: "center" }}>{mc.rules.columns.delete}</th>
+                        <th style={{
+                      textAlign: "center"
+                    }}>{mc.rules.columns.active}</th>
+                        <th style={{
+                      textAlign: "center"
+                    }}>{mc.rules.columns.delete}</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {exclusionRules.map((rule) => (
-                        <tr
-                          key={rule.id}
-                          className={styles.userRow}
-                          onClick={() => openEditExclusionRuleModal(rule)}
-                          style={{ cursor: "pointer" }}
-                          title={mc.rules.clickToEdit}
-                        >
-                          <td style={{ textAlign: "center", whiteSpace: "nowrap" }}>
-                            <div className={styles.actionsCell} style={{ justifyContent: "center" }}>
-                              <button
-                                type="button"
-                                className={styles.actionButton}
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  moveExclusionRule(rule.id, -1);
-                                }}
-                                title={mc.rules.moveUp}
-                              >
+                      {exclusionRules.map(rule => <tr key={rule.id} className={styles.userRow} onClick={() => openEditExclusionRuleModal(rule)} style={{
+                    cursor: "pointer"
+                  }} title={mc.rules.clickToEdit}>
+                          <td style={{
+                      textAlign: "center",
+                      whiteSpace: "nowrap"
+                    }}>
+                            <div className={styles.actionsCell} style={{
+                        justifyContent: "center"
+                      }}>
+                              <button type="button" className={styles.actionButton} onClick={event => {
+                          event.stopPropagation();
+                          moveExclusionRule(rule.id, -1);
+                        }} title={mc.rules.moveUp}>
                                 <Icon icon="mdi:chevron-up" />
                               </button>
-                              <button
-                                type="button"
-                                className={styles.actionButton}
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  moveExclusionRule(rule.id, 1);
-                                }}
-                                title={mc.rules.moveDown}
-                              >
+                              <button type="button" className={styles.actionButton} onClick={event => {
+                          event.stopPropagation();
+                          moveExclusionRule(rule.id, 1);
+                        }} title={mc.rules.moveDown}>
                                 <Icon icon="mdi:chevron-down" />
                               </button>
                             </div>
@@ -4024,932 +3288,610 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
                           <td>{describeLocalizedRuleCollector(rule, mailCollectors, mc)}</td>
                           <td>{describeLocalizedExclusionRuleFilters(rule, mc)}</td>
                           <td>{getRuleActionLabel(rule.action, mc)}</td>
-                          <td style={{ textAlign: "center" }}>
+                          <td style={{
+                      textAlign: "center"
+                    }}>
                             <EntityStatus active={rule.enabled !== false} {...entityStatusLabels} />
                           </td>
-                          <td style={{ textAlign: "center" }}>
-                            <div className={styles.actionsCell} style={{ justifyContent: "center" }}>
-                              <button
-                                type="button"
-                                className={`${styles.actionButton} ${styles.danger}`}
-                                title={mc.rules.delete}
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  requestRemoveExclusionRule(rule);
-                                }}
-                              >
+                          <td style={{
+                      textAlign: "center"
+                    }}>
+                            <div className={styles.actionsCell} style={{
+                        justifyContent: "center"
+                      }}>
+                              <button type="button" className={`${styles.actionButton} ${styles.danger}`} title={mc.rules.delete} onClick={event => {
+                          event.stopPropagation();
+                          requestRemoveExclusionRule(rule);
+                        }}>
                                 <Icon icon="mdi:delete-outline" />
                               </button>
                             </div>
                           </td>
-                        </tr>
-                      ))}
-                      {exclusionRules.length === 0 && (
-                        <tr>
-                          <td colSpan={7} style={{ textAlign: "center", padding: "1.25rem", color: "var(--msp-muted)" }}>
+                        </tr>)}
+                      {exclusionRules.length === 0 && <tr>
+                          <td colSpan={7} style={{
+                      textAlign: "center",
+                      padding: "1.25rem",
+                      color: "var(--msp-muted)"
+                    }}>
                             {mc.rules.empty}
                           </td>
-                        </tr>
-                      )}
+                        </tr>}
                     </tbody>
                   </table>
                 </div>
               </div>
             </div>
 
-          </Card>
-        )}
+          </Card>}
 
-        {activeView === "notifications" && (
-          <Card
-            title={TICKET_VIEW_META.notifications.title}
-            description={TICKET_VIEW_META.notifications.description}
-            fill
-            action={
-              <div style={{ display: "inline-flex", gap: "0.45rem" }}>
-                <Btn
-                  icon="streamline:annoncement-megaphone-solid"
-                  variant="secondary"
-                  title="Faire une annonce"
-                  onClick={() => setShowCustomNotificationModal(true)}
-                  disabled={(notificationSettings?.webhooks || []).length === 0}
-                >
-                  Annonce
+        {activeView === "notifications" && <Card title={TICKET_VIEW_META.notifications.title} description={TICKET_VIEW_META.notifications.description} fill action={<div style={{
+        display: "inline-flex",
+        gap: "0.45rem"
+      }}>
+                <Btn icon="streamline:annoncement-megaphone-solid" variant="secondary" title="Send an announcement" onClick={() => setShowCustomNotificationModal(true)} disabled={(notificationSettings?.webhooks || []).length === 0}>
+                  Announcement
                 </Btn>
                 <Btn icon="mdi:plus" onClick={addNotificationEvent}>
-                  Ajouter
+                  Add
                 </Btn>
-              </div>
-            }
-          >
+              </div>}>
             <div className={styles.settingRow}>
               <div className={styles.userTableWrapper}>
                 <table className={`${styles.userTable} ${styles.clientTable}`}>
                   <thead>
                     <tr>
                       <th>SOURCE</th>
-                      <th>ÉLÉMENT</th>
-                      <th>AVANT (J)</th>
-                      <th>CIBLE</th>
-                      <th>CANAL</th>
+                      <th>ITEM</th>
+                      <th>LEAD (D)</th>
+                      <th>TARGET</th>
+                      <th>CHANNEL</th>
                       <th>WEBHOOK</th>
                       <th>TEMPLATE</th>
-                      <th>ACTIF</th>
+                      <th>ACTIVE</th>
                       <th>ACTIONS</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {(notificationSettings?.notificationEvents || []).map((eventItem) => (
-                      <tr
-                        key={eventItem.id}
-                        className={styles.userRow}
-                        onClick={() => openEditNotificationEvent(eventItem)}
-                        style={{ cursor: "pointer" }}
-                        title="Cliquer pour modifier l'événement"
-                      >
+                    {(notificationSettings?.notificationEvents || []).map(eventItem => <tr key={eventItem.id} className={styles.userRow} onClick={() => openEditNotificationEvent(eventItem)} style={{
+                  cursor: "pointer"
+                }} title="Click to edit event">
                         <td>{getSourceOption(eventItem.source || "tickets").label}</td>
                         <td>{getElementOption(eventItem.source || "tickets", eventItem.element || "").label}</td>
                         <td>{isSoonElementKey(eventItem.element) ? Number(eventItem.daysBefore ?? 30) : "-"}</td>
                         <td>
-                          {eventItem.scopeType === "enterprise"
-                            ? availableClients.find((client) => String(client?.id) === String(eventItem.enterpriseId))?.name ||
-                              "Entreprise spécifique"
-                            : "Toutes les entreprises"}
+                          {eventItem.scopeType === "enterprise" ? availableClients.find(client => String(client?.id) === String(eventItem.enterpriseId))?.name || "Specific company" : "All companies"}
                         </td>
                         <td>
-                          {NOTIFICATION_CHANNEL_OPTIONS.find((item) => item.key === eventItem.channel)?.label ||
-                            eventItem.channel ||
-                            "-"}
+                          {NOTIFICATION_CHANNEL_OPTIONS.find(item => item.key === eventItem.channel)?.label || eventItem.channel || "-"}
                         </td>
                         <td>
-                          {(notificationSettings?.webhooks || []).find((w) => w.id === eventItem.webhookId)?.name || "-"}
+                          {(notificationSettings?.webhooks || []).find(w => w.id === eventItem.webhookId)?.name || "-"}
                         </td>
                         <td>
-                          {eventItem.useTemplate
-                            ? (commentTemplates.find((tpl) => tpl.id === eventItem.templateId)?.name || "-")
-                            : eventItem.customMessage
-                            ? "Message personnalisé"
-                            : "Non"}
+                          {eventItem.useTemplate ? commentTemplates.find(tpl => tpl.id === eventItem.templateId)?.name || "-" : eventItem.customMessage ? "Custom message" : "No"}
                         </td>
-                        <td>{eventItem.enabled ? "Oui" : "Non"}</td>
+                        <td>{eventItem.enabled ? "Yes" : "No"}</td>
                         <td>
                           <div className={styles.actionsCell}>
-                            <button
-                              type="button"
-                              className={styles.actionButton}
-                              title="Modifier l'événement"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                openEditNotificationEvent(eventItem);
-                              }}
-                            >
+                            <button type="button" className={styles.actionButton} title="Edit event" onClick={e => {
+                        e.stopPropagation();
+                        openEditNotificationEvent(eventItem);
+                      }}>
                               <Icon icon="mdi:pencil-outline" />
                             </button>
-                            <button
-                              type="button"
-                              className={`${styles.actionButton} ${styles.danger}`}
-                              title="Supprimer l'événement"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                removeNotificationEvent(eventItem.id);
-                              }}
-                            >
+                            <button type="button" className={`${styles.actionButton} ${styles.danger}`} title="Delete event" onClick={e => {
+                        e.stopPropagation();
+                        removeNotificationEvent(eventItem.id);
+                      }}>
                               <Icon icon="mdi:delete-outline" />
                             </button>
                           </div>
                         </td>
-                      </tr>
-                    ))}
-                    {(notificationSettings?.notificationEvents || []).length === 0 && (
-                      <tr>
-                        <td colSpan={9} style={{ textAlign: "center", padding: "1.25rem", color: "var(--msp-muted)" }}>
-                          Aucun événement configuré.
+                      </tr>)}
+                    {(notificationSettings?.notificationEvents || []).length === 0 && <tr>
+                        <td colSpan={9} style={{
+                    textAlign: "center",
+                    padding: "1.25rem",
+                    color: "var(--msp-muted)"
+                  }}>
+                          No events configured.
                         </td>
-                      </tr>
-                    )}
+                      </tr>}
                   </tbody>
                 </table>
               </div>
             </div>
 
-            <div className={styles.settingRow} style={{ marginTop: "1rem" }}>
-              <h4 className={styles.subSectionTitle}>Logs des notifications</h4>
+            <div className={styles.settingRow} style={{
+          marginTop: "1rem"
+        }}>
+              <h4 className={styles.subSectionTitle}>Notification logs</h4>
               <div className={styles.userTableWrapper}>
                 <table className={`${styles.userTable} ${styles.clientTable}`}>
                   <thead>
                     <tr>
                       <th>DATE</th>
                       <th>SOURCE</th>
-                      <th>ÉLÉMENT</th>
+                      <th>ITEM</th>
                       <th>ENTREPRISE</th>
-                      <th>CANAL</th>
+                      <th>CHANNEL</th>
                       <th>STATUT</th>
                       <th>MESSAGE</th>
                       <th>ACTIONS</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {paginatedNotificationLogs.map((logItem) => (
-                      <tr key={logItem.id} className={styles.userRow}>
+                    {paginatedNotificationLogs.map(logItem => <tr key={logItem.id} className={styles.userRow}>
                         <td>
                           {logItem.createdAt ? new Date(logItem.createdAt).toLocaleString("fr-FR") : "-"}
                         </td>
                         <td>{getSourceOption(logItem.source || "tickets").label || "-"}</td>
                         <td>{getElementOption(logItem.source || "tickets", logItem.element || "updated").label || "-"}</td>
                         <td>
-                          {logItem.enterpriseId
-                            ? availableClients.find((client) => String(client?.id) === String(logItem.enterpriseId))?.name ||
-                              logItem.enterpriseId
-                            : "Toutes les entreprises"}
+                          {logItem.enterpriseId ? availableClients.find(client => String(client?.id) === String(logItem.enterpriseId))?.name || logItem.enterpriseId : "Toutes les entreprises"}
                         </td>
                         <td>{logItem.channel || "-"}</td>
                         <td>{logItem.status || "-"}</td>
                         <td>{logItem.message || "-"}</td>
                         <td>
                           <div className={styles.actionsCell}>
-                            <button
-                              type="button"
-                              className={styles.actionButton}
-                              title="Renvoyer la notification"
-                              onClick={() => retryNotificationLog(logItem)}
-                              disabled={retryingNotificationLogId === String(logItem.id || "")}
-                            >
-                              <Icon
-                                icon={
-                                  retryingNotificationLogId === String(logItem.id || "")
-                                    ? "mingcute:loading-fill"
-                                    : "mingcute:send-plane-fill"
-                                }
-                              />
+                            <button type="button" className={styles.actionButton} title="Resend notification" onClick={() => retryNotificationLog(logItem)} disabled={retryingNotificationLogId === String(logItem.id || "")}>
+                              <Icon icon={retryingNotificationLogId === String(logItem.id || "") ? "mingcute:loading-fill" : "mingcute:send-plane-fill"} />
                             </button>
                           </div>
                         </td>
-                      </tr>
-                    ))}
-                    {totalNotificationLogs === 0 && (
-                      <tr>
-                        <td colSpan={8} style={{ textAlign: "center", padding: "1.25rem", color: "var(--msp-muted)" }}>
-                          Aucun log de notification pour le moment.
+                      </tr>)}
+                    {totalNotificationLogs === 0 && <tr>
+                        <td colSpan={8} style={{
+                    textAlign: "center",
+                    padding: "1.25rem",
+                    color: "var(--msp-muted)"
+                  }}>
+                          No notification logs yet.
                         </td>
-                      </tr>
-                    )}
+                      </tr>}
                   </tbody>
                 </table>
               </div>
-              {totalNotificationLogs > 0 && (
-                <div
-                  style={{
-                    marginTop: "0.65rem",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: "0.6rem",
-                  }}
-                >
+              {totalNotificationLogs > 0 && <div style={{
+            marginTop: "0.65rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "0.6rem"
+          }}>
                   <div className={styles.paginationMeta}>
                     Page {notificationLogsPage} / {notificationLogsTotalPages} - {totalNotificationLogs} log(s)
                   </div>
-                  <div style={{ display: "inline-flex", gap: "0.4rem", alignItems: "center" }}>
-                    <button
-                      type="button"
-                      className={styles.secondaryButton}
-                      onClick={() => setNotificationLogsPage((prev) => Math.max(1, prev - 1))}
-                      disabled={notificationLogsPage <= 1}
-                      style={{ padding: "0.3rem 0.55rem", minHeight: "auto" }}
-                    >
-                      Precedent
+                  <div style={{
+              display: "inline-flex",
+              gap: "0.4rem",
+              alignItems: "center"
+            }}>
+                    <button type="button" className={styles.secondaryButton} onClick={() => setNotificationLogsPage(prev => Math.max(1, prev - 1))} disabled={notificationLogsPage <= 1} style={{
+                padding: "0.3rem 0.55rem",
+                minHeight: "auto"
+              }}>
+                      Previous
                     </button>
-                    <button
-                      type="button"
-                      className={styles.secondaryButton}
-                      onClick={() => setNotificationLogsPage((prev) => Math.min(notificationLogsTotalPages, prev + 1))}
-                      disabled={notificationLogsPage >= notificationLogsTotalPages}
-                      style={{ padding: "0.3rem 0.55rem", minHeight: "auto" }}
-                    >
-                      Suivant
+                    <button type="button" className={styles.secondaryButton} onClick={() => setNotificationLogsPage(prev => Math.min(notificationLogsTotalPages, prev + 1))} disabled={notificationLogsPage >= notificationLogsTotalPages} style={{
+                padding: "0.3rem 0.55rem",
+                minHeight: "auto"
+              }}>
+                      Next
                     </button>
                   </div>
-                </div>
-              )}
+                </div>}
             </div>
 
-          </Card>
-        )}
+          </Card>}
 
-        {activeView === "webhooks" && (
-          <Card
-            title={TICKET_VIEW_META.webhooks.title}
-            description={TICKET_VIEW_META.webhooks.description}
-            fill
-            action={
-              <Btn icon="mdi:plus" onClick={addNotificationWebhook}>
-                Ajouter un webhook
-              </Btn>
-            }
-          >
+        {activeView === "webhooks" && <Card title={TICKET_VIEW_META.webhooks.title} description={TICKET_VIEW_META.webhooks.description} fill action={<Btn icon="mdi:plus" onClick={addNotificationWebhook}>
+                Add webhook
+              </Btn>}>
             <div className={styles.settingRow}>
               <div className={styles.userTableWrapper}>
                 <table className={`${styles.userTable} ${styles.clientTable}`}>
                   <thead>
                     <tr>
-                      <th>NOM</th>
-                      <th>CANAL</th>
-                      <th>ACTIF</th>
+                      <th>NAME</th>
+                      <th>CHANNEL</th>
+                      <th>ACTIVE</th>
                       <th>URL</th>
                       <th>ACTIONS</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {(notificationSettings?.webhooks || []).map((webhook) => (
-                      <tr
-                        key={webhook.id}
-                        className={styles.userRow}
-                        onClick={() => openEditNotificationWebhook(webhook)}
-                        style={{ cursor: "pointer" }}
-                        title="Cliquer pour modifier le webhook"
-                      >
+                    {(notificationSettings?.webhooks || []).map(webhook => <tr key={webhook.id} className={styles.userRow} onClick={() => openEditNotificationWebhook(webhook)} style={{
+                  cursor: "pointer"
+                }} title="Click to edit webhook">
                         <td>{webhook.name || "-"}</td>
-                        <td style={{ textAlign: "center" }}>
-                          <Icon
-                            icon={WEBHOOK_CHANNEL_ICON_BY_KEY[String(webhook.channel || "").toLowerCase()] || "mingcute:link-2-fill"}
-                            title={String(webhook.channel || "webhook").toUpperCase()}
-                            style={{ fontSize: "1.15rem" }}
-                          />
+                        <td style={{
+                    textAlign: "center"
+                  }}>
+                          <Icon icon={WEBHOOK_CHANNEL_ICON_BY_KEY[String(webhook.channel || "").toLowerCase()] || "mingcute:link-2-fill"} title={String(webhook.channel || "webhook").toUpperCase()} style={{
+                      fontSize: "1.15rem"
+                    }} />
                         </td>
-                        <td>{webhook.enabled ? "Oui" : "Non"}</td>
+                        <td>{webhook.enabled ? "Yes" : "No"}</td>
                         <td title={webhook.url || "-"}>
-                          <span
-                            style={{
-                              display: "inline-block",
-                              maxWidth: "320px",
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              verticalAlign: "bottom",
-                            }}
-                          >
+                          <span style={{
+                      display: "inline-block",
+                      maxWidth: "320px",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      verticalAlign: "bottom"
+                    }}>
                             {webhook.url || "-"}
                           </span>
                         </td>
                         <td>
                           <div className={styles.actionsCell}>
-                            <button
-                              type="button"
-                              className={styles.actionButton}
-                              title="Tester le webhook"
-                              disabled={testingWebhookId === String(webhook.id)}
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                testNotificationWebhook(webhook);
-                              }}
-                            >
-                              <Icon
-                                icon={
-                                  testingWebhookId === String(webhook.id)
-                                    ? "mingcute:loading-fill"
-                                    : "mingcute:send-plane-fill"
-                                }
-                              />
+                            <button type="button" className={styles.actionButton} title="Test webhook" disabled={testingWebhookId === String(webhook.id)} onClick={event => {
+                        event.stopPropagation();
+                        testNotificationWebhook(webhook);
+                      }}>
+                              <Icon icon={testingWebhookId === String(webhook.id) ? "mingcute:loading-fill" : "mingcute:send-plane-fill"} />
                             </button>
-                            <button
-                              type="button"
-                              className={styles.actionButton}
-                              title="Modifier le webhook"
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  openEditNotificationWebhook(webhook);
-                                }}
-                            >
+                            <button type="button" className={styles.actionButton} title="Edit webhook" onClick={event => {
+                        event.stopPropagation();
+                        openEditNotificationWebhook(webhook);
+                      }}>
                               <Icon icon="mdi:pencil-outline" />
                             </button>
-                            <button
-                              type="button"
-                              className={`${styles.actionButton} ${styles.danger}`}
-                              title="Supprimer le webhook"
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  removeNotificationWebhook(webhook.id);
-                                }}
-                            >
+                            <button type="button" className={`${styles.actionButton} ${styles.danger}`} title="Delete webhook" onClick={event => {
+                        event.stopPropagation();
+                        removeNotificationWebhook(webhook.id);
+                      }}>
                               <Icon icon="mdi:delete-outline" />
                             </button>
                           </div>
                         </td>
-                      </tr>
-                    ))}
-                    {(notificationSettings?.webhooks || []).length === 0 && (
-                      <tr>
-                        <td colSpan={5} style={{ textAlign: "center", padding: "1.25rem", color: "var(--msp-muted)" }}>
-                          Aucun webhook configuré.
+                      </tr>)}
+                    {(notificationSettings?.webhooks || []).length === 0 && <tr>
+                        <td colSpan={5} style={{
+                    textAlign: "center",
+                    padding: "1.25rem",
+                    color: "var(--msp-muted)"
+                  }}>
+                          No webhooks configured.
                         </td>
-                      </tr>
-                    )}
+                      </tr>}
                   </tbody>
                 </table>
               </div>
             </div>
-          </Card>
-        )}
+          </Card>}
 
-        {activeView === "scheduled-alerts" && (
-          <Card
-            title={TICKET_VIEW_META["scheduled-alerts"].title}
-            description={TICKET_VIEW_META["scheduled-alerts"].description}
-            fill
-            action={
-              <Btn icon="mdi:plus" onClick={openCreateScheduledAlertModal}>
-                Ajouter une règle CRON
-              </Btn>
-            }
-          >
+        {activeView === "scheduled-alerts" && <Card title={TICKET_VIEW_META["scheduled-alerts"].title} description={TICKET_VIEW_META["scheduled-alerts"].description} fill action={<Btn icon="mdi:plus" onClick={openCreateScheduledAlertModal}>
+                Add CRON rule
+              </Btn>}>
             <div className={styles.userTableWrapper}>
               <table className={`${styles.userTable} ${styles.clientTable}`}>
                 <thead>
                   <tr>
-                    <th>NOM</th>
+                    <th>NAME</th>
                     <th>CRON</th>
-                    <th>DÉCLENCHEUR</th>
-                    <th style={{ textAlign: "center" }}>ACTIF</th>
-                    <th style={{ textAlign: "right" }}>ACTIONS</th>
+                    <th>TRIGGER</th>
+                    <th style={{
+                  textAlign: "center"
+                }}>ACTIVE</th>
+                    <th style={{
+                  textAlign: "right"
+                }}>ACTIONS</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {scheduledAlertRules.length === 0 && (
-                    <tr>
-                      <td colSpan={5} style={{ textAlign: "center", padding: "1.25rem", color: "var(--msp-muted)" }}>
-                        Aucune règle CRON configurée
+                  {scheduledAlertRules.length === 0 && <tr>
+                      <td colSpan={5} style={{
+                  textAlign: "center",
+                  padding: "1.25rem",
+                  color: "var(--msp-muted)"
+                }}>
+                        No CRON rules configured
                       </td>
-                    </tr>
-                  )}
-                  {scheduledAlertRules.map((rule) => (
-                    <tr
-                      key={rule.id}
-                      className={styles.userRow}
-                      onClick={() => openEditScheduledAlertModal(rule)}
-                      style={{ cursor: "pointer" }}
-                      title="Cliquer pour modifier la règle"
-                    >
-                      <td>{rule.name || "Règle sans nom"}</td>
+                    </tr>}
+                  {scheduledAlertRules.map(rule => <tr key={rule.id} className={styles.userRow} onClick={() => openEditScheduledAlertModal(rule)} style={{
+                cursor: "pointer"
+              }} title="Click to edit rule">
+                      <td>{rule.name || "Unnamed rule"}</td>
                       <td>{rule.cron || "-"}</td>
                       <td>{describeScheduledAlertRule(rule)}</td>
-                      <td style={{ textAlign: "center" }}>{rule.enabled ? "Oui" : "Non"}</td>
-                      <td style={{ textAlign: "right" }}>
-                        <div className={styles.actionsCell} style={{ justifyContent: "flex-end", width: "100%" }}>
-                          <button
-                            type="button"
-                            className={styles.actionButton}
-                            title="Modifier la règle"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              openEditScheduledAlertModal(rule);
-                            }}
-                          >
+                      <td style={{
+                  textAlign: "center"
+                }}>{rule.enabled ? "Yes" : "No"}</td>
+                      <td style={{
+                  textAlign: "right"
+                }}>
+                        <div className={styles.actionsCell} style={{
+                    justifyContent: "flex-end",
+                    width: "100%"
+                  }}>
+                          <button type="button" className={styles.actionButton} title="Edit rule" onClick={e => {
+                      e.stopPropagation();
+                      openEditScheduledAlertModal(rule);
+                    }}>
                             <Icon icon="mdi:pencil-outline" />
                           </button>
-                          <button
-                            type="button"
-                            className={`${styles.actionButton} ${styles.danger}`}
-                            title="Supprimer la règle"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              requestRemoveScheduledAlertRule(rule);
-                            }}
-                          >
+                          <button type="button" className={`${styles.actionButton} ${styles.danger}`} title="Delete rule" onClick={e => {
+                      e.stopPropagation();
+                      requestRemoveScheduledAlertRule(rule);
+                    }}>
                             <Icon icon="mdi:delete-outline" />
                           </button>
                         </div>
                       </td>
-                    </tr>
-                  ))}
+                    </tr>)}
                 </tbody>
               </table>
             </div>
-          </Card>
-        )}
+          </Card>}
 
       </div>
 
-      <IngestionRuleFormModal
-        open={showExclusionRuleModal}
-        copy={mc}
-        mode={exclusionRuleModalMode}
-        draft={exclusionRuleDraft}
-        setDraft={setExclusionRuleDraft}
-        mailCollectors={mailCollectors}
-        saving={savingExclusionRule}
-        onClose={closeExclusionRuleModal}
-        onSave={saveExclusionRuleFromModal}
-      />
+      <IngestionRuleFormModal open={showExclusionRuleModal} copy={mc} mode={exclusionRuleModalMode} draft={exclusionRuleDraft} setDraft={setExclusionRuleDraft} mailCollectors={mailCollectors} saving={savingExclusionRule} onClose={closeExclusionRuleModal} onSave={saveExclusionRuleFromModal} />
 
-      <IngestionRuleTestModal
-        open={showRulesTestModal}
-        copy={mc}
-        sample={rulesTestDraft}
-        onSampleChange={setRulesTestDraft}
-        mailCollectors={mailCollectors}
-        result={rulesTestResult}
-        testing={testingRules}
-        onClose={() => !testingRules && setShowRulesTestModal(false)}
-        onRunTest={runExclusionRulesTest}
-      />
+      <IngestionRuleTestModal open={showRulesTestModal} copy={mc} sample={rulesTestDraft} onSampleChange={setRulesTestDraft} mailCollectors={mailCollectors} result={rulesTestResult} testing={testingRules} onClose={() => !testingRules && setShowRulesTestModal(false)} onRunTest={runExclusionRulesTest} />
 
-      <IngestionRuleDeleteModal
-        open={Boolean(exclusionRuleDeleteTarget)}
-        ruleName={exclusionRuleDeleteTarget?.name || mc.common.ruleFallback}
-        saving={deletingExclusionRule}
-        onClose={closeExclusionRuleDeleteModal}
-        onConfirm={confirmRemoveExclusionRule}
-      />
+      <IngestionRuleDeleteModal open={Boolean(exclusionRuleDeleteTarget)} ruleName={exclusionRuleDeleteTarget?.name || mc.common.ruleFallback} saving={deletingExclusionRule} onClose={closeExclusionRuleDeleteModal} onConfirm={confirmRemoveExclusionRule} />
 
-      <ScheduledAlertRuleFormModal
-        open={showScheduledAlertModal}
-        mode={scheduledAlertModalMode}
-        draft={scheduledAlertDraft}
-        setDraft={setScheduledAlertDraft}
-        saving={savingScheduledAlert}
-        isTeamsIntegrationActive={isTeamsIntegrationActive}
-        onClose={closeScheduledAlertModal}
-        onSave={saveScheduledAlertFromModal}
-      />
+      <ScheduledAlertRuleFormModal open={showScheduledAlertModal} mode={scheduledAlertModalMode} draft={scheduledAlertDraft} setDraft={setScheduledAlertDraft} saving={savingScheduledAlert} isTeamsIntegrationActive={isTeamsIntegrationActive} onClose={closeScheduledAlertModal} onSave={saveScheduledAlertFromModal} />
 
-      <ConfirmModal
-        open={Boolean(scheduledAlertDeleteTarget)}
-        title={deleteCopy.scheduledAlertTitle}
-        icon="mdi:clock-remove-outline"
-        message={interpolate(deleteCopy.scheduledAlertMessage, {
-          name: scheduledAlertDeleteTarget?.name || deleteCopy.untitled,
-        })}
-        confirmLabel={common.delete}
-        confirmVariant="dangerSolid"
-        confirmLoading={savingScheduledAlert}
-        onClose={() => !savingScheduledAlert && setScheduledAlertDeleteTarget(null)}
-        onConfirm={confirmRemoveScheduledAlertRule}
-      />
+      <ConfirmModal open={Boolean(scheduledAlertDeleteTarget)} title={deleteCopy.scheduledAlertTitle} icon="mdi:clock-remove-outline" message={interpolate(deleteCopy.scheduledAlertMessage, {
+      name: scheduledAlertDeleteTarget?.name || deleteCopy.untitled
+    })} confirmLabel={common.delete} confirmVariant="dangerSolid" confirmLoading={savingScheduledAlert} onClose={() => !savingScheduledAlert && setScheduledAlertDeleteTarget(null)} onConfirm={confirmRemoveScheduledAlertRule} />
 
-      <ConfirmModal
-        open={Boolean(templateDeleteTarget)}
-        title={deleteCopy.templateTitle}
-        icon="mdi:delete-alert-outline"
-        message={interpolate(deleteCopy.templateMessage, {
-          name: templateDeleteTarget?.name || deleteCopy.untitled,
-        })}
-        confirmLabel={common.delete}
-        confirmVariant="dangerSolid"
-        confirmLoading={deletingTemplate}
-        onClose={() => !deletingTemplate && setTemplateDeleteTarget(null)}
-        onConfirm={confirmRemoveTemplate}
-      />
+      <ConfirmModal open={Boolean(templateDeleteTarget)} title={deleteCopy.templateTitle} icon="mdi:delete-alert-outline" message={interpolate(deleteCopy.templateMessage, {
+      name: templateDeleteTarget?.name || deleteCopy.untitled
+    })} confirmLabel={common.delete} confirmVariant="dangerSolid" confirmLoading={deletingTemplate} onClose={() => !deletingTemplate && setTemplateDeleteTarget(null)} onConfirm={confirmRemoveTemplate} />
 
-      <ConfirmModal
-        open={Boolean(macroDeleteTarget)}
-        title={deleteCopy.macroTitle}
-        icon="mdi:delete-alert-outline"
-        message={interpolate(deleteCopy.macroMessage, {
-          name: macroDeleteTarget?.name || deleteCopy.untitled,
-        })}
-        confirmLabel={common.delete}
-        confirmVariant="dangerSolid"
-        confirmLoading={deletingMacro}
-        onClose={() => !deletingMacro && setMacroDeleteTarget(null)}
-        onConfirm={confirmRemoveMacro}
-      />
+      <ConfirmModal open={Boolean(macroDeleteTarget)} title={deleteCopy.macroTitle} icon="mdi:delete-alert-outline" message={interpolate(deleteCopy.macroMessage, {
+      name: macroDeleteTarget?.name || deleteCopy.untitled
+    })} confirmLabel={common.delete} confirmVariant="dangerSolid" confirmLoading={deletingMacro} onClose={() => !deletingMacro && setMacroDeleteTarget(null)} onConfirm={confirmRemoveMacro} />
 
-      <ConfirmModal
-        open={Boolean(categorySectionDeleteTarget)}
-        title={deleteCopy.itilSectionTitle}
-        icon="mdi:delete-alert-outline"
-        message={interpolate(deleteCopy.itilSectionMessage, {
-          name: categorySectionDeleteTarget?.name || deleteCopy.untitled,
-        })}
-        confirmLabel={common.delete}
-        confirmVariant="dangerSolid"
-        confirmLoading={deletingCategorySection}
-        onClose={() => !deletingCategorySection && setCategorySectionDeleteTarget(null)}
-        onConfirm={confirmRemoveCategorySection}
-      />
+      <ConfirmModal open={Boolean(categorySectionDeleteTarget)} title={deleteCopy.itilSectionTitle} icon="mdi:delete-alert-outline" message={interpolate(deleteCopy.itilSectionMessage, {
+      name: categorySectionDeleteTarget?.name || deleteCopy.untitled
+    })} confirmLabel={common.delete} confirmVariant="dangerSolid" confirmLoading={deletingCategorySection} onClose={() => !deletingCategorySection && setCategorySectionDeleteTarget(null)} onConfirm={confirmRemoveCategorySection} />
 
-      <ConfirmModal
-        open={Boolean(categoryDeleteTarget)}
-        title={deleteCopy.itilCategoryTitle}
-        icon="mdi:delete-alert-outline"
-        message={interpolate(deleteCopy.itilCategoryMessage, {
-          name: categoryDeleteTarget?.name || deleteCopy.untitled,
-        })}
-        confirmLabel={common.delete}
-        confirmVariant="dangerSolid"
-        confirmLoading={deletingCategory}
-        onClose={() => !deletingCategory && setCategoryDeleteTarget(null)}
-        onConfirm={confirmRemoveCategory}
-      />
+      <ConfirmModal open={Boolean(categoryDeleteTarget)} title={deleteCopy.itilCategoryTitle} icon="mdi:delete-alert-outline" message={interpolate(deleteCopy.itilCategoryMessage, {
+      name: categoryDeleteTarget?.name || deleteCopy.untitled
+    })} confirmLabel={common.delete} confirmVariant="dangerSolid" confirmLoading={deletingCategory} onClose={() => !deletingCategory && setCategoryDeleteTarget(null)} onConfirm={confirmRemoveCategory} />
 
-      <ConfirmModal
-        open={Boolean(solutionCatalogDeleteTarget)}
-        title={deleteCopy.solutionCatalogTitle}
-        icon="mdi:delete-alert-outline"
-        message={interpolate(deleteCopy.solutionCatalogMessage, {
-          name: solutionCatalogDeleteTarget?.label || deleteCopy.catalogEntryFallback,
-        })}
-        confirmLabel={common.delete}
-        confirmVariant="dangerSolid"
-        confirmLoading={deletingSolutionCatalogEntry}
-        onClose={() => !deletingSolutionCatalogEntry && setSolutionCatalogDeleteTarget(null)}
-        onConfirm={confirmRemoveSolutionCatalogEntry}
-      />
+      <ConfirmModal open={Boolean(solutionCatalogDeleteTarget)} title={deleteCopy.solutionCatalogTitle} icon="mdi:delete-alert-outline" message={interpolate(deleteCopy.solutionCatalogMessage, {
+      name: solutionCatalogDeleteTarget?.label || deleteCopy.catalogEntryFallback
+    })} confirmLabel={common.delete} confirmVariant="dangerSolid" confirmLoading={deletingSolutionCatalogEntry} onClose={() => !deletingSolutionCatalogEntry && setSolutionCatalogDeleteTarget(null)} onConfirm={confirmRemoveSolutionCatalogEntry} />
 
-      <NotificationEventFormModal
-        open={showNotificationEventModal}
-        mode={notificationEventModalMode}
-        draft={notificationEventDraft}
-        setDraft={setNotificationEventDraft}
-        saving={savingNotificationEvent}
-        availableClients={availableClients}
-        webhooks={notificationSettings?.webhooks || []}
-        commentTemplates={commentTemplates}
-        editorRef={notificationEventEditorRef}
-        onClose={closeNotificationEventModal}
-        onSave={saveNotificationEventFromModal}
-        onOpenVariables={() => openMessageVariablesModal("notification")}
-      />
+      <NotificationEventFormModal open={showNotificationEventModal} mode={notificationEventModalMode} draft={notificationEventDraft} setDraft={setNotificationEventDraft} saving={savingNotificationEvent} availableClients={availableClients} webhooks={notificationSettings?.webhooks || []} commentTemplates={commentTemplates} editorRef={notificationEventEditorRef} onClose={closeNotificationEventModal} onSave={saveNotificationEventFromModal} onOpenVariables={() => openMessageVariablesModal("notification")} />
 
-      {showCustomNotificationModal && (
-        <div className={styles.modalOverlay} onClick={() => setShowCustomNotificationModal(false)}>
-          <div className={styles.modalContent} onClick={(event) => event.stopPropagation()} style={{ maxWidth: "700px" }}>
+      {showCustomNotificationModal && <div className={styles.modalOverlay} onClick={() => setShowCustomNotificationModal(false)}>
+          <div className={styles.modalContent} onClick={event => event.stopPropagation()} style={{
+        maxWidth: "700px"
+      }}>
             <div className={styles.modalHeader}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+              <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem"
+          }}>
                 <Icon icon="streamline:annoncement-megaphone-solid" className={styles.modalIcon} />
-                <h3>Envoyer une annonce personnalisée</h3>
+                <h3>Send a custom announcement</h3>
               </div>
-              <button className={styles.closeButton} onClick={() => setShowCustomNotificationModal(false)} title="Fermer">
+              <button className={styles.closeButton} onClick={() => setShowCustomNotificationModal(false)} title="Close">
                 <Icon icon="mingcute:close-line" />
               </button>
             </div>
             <div className={styles.modalBody}>
               <div className={styles.settingRow}>
-                <label className={styles.label}>Webhook cible</label>
-                <select
-                  className={`${styles.input} ${styles.select}`}
-                  value={customNotificationDraft.webhookId}
-                  onChange={(e) =>
-                    setCustomNotificationDraft((prev) => ({
-                      ...prev,
-                      webhookId: String(e.target.value || ""),
-                    }))
-                  }
-                >
-                  <option value="">Sélectionner un webhook cible</option>
-                  {(notificationSettings?.webhooks || [])
-                    .filter((webhook) => webhook?.enabled !== false)
-                    .map((webhook) => (
-                      <option key={webhook.id} value={webhook.id}>
+                <label className={styles.label}>Target webhook</label>
+                <select className={`${styles.input} ${styles.select}`} value={customNotificationDraft.webhookId} onChange={e => setCustomNotificationDraft(prev => ({
+              ...prev,
+              webhookId: String(e.target.value || "")
+            }))}>
+                  <option value="">Select a target webhook</option>
+                  {(notificationSettings?.webhooks || []).filter(webhook => webhook?.enabled !== false).map(webhook => <option key={webhook.id} value={webhook.id}>
                         {webhook.name || webhook.id}
-                      </option>
-                    ))}
+                      </option>)}
                 </select>
               </div>
               <div className={styles.settingRow}>
-                <label className={styles.label}>Titre (optionnel)</label>
-                <input
-                  className={styles.input}
-                  placeholder="Titre de l'annonce"
-                  value={customNotificationDraft.title}
-                  onChange={(e) =>
-                    setCustomNotificationDraft((prev) => ({
-                      ...prev,
-                      title: e.target.value,
-                    }))
-                  }
-                />
+                <label className={styles.label}>Title (optional)</label>
+                <input className={styles.input} placeholder="Announcement title" value={customNotificationDraft.title} onChange={e => setCustomNotificationDraft(prev => ({
+              ...prev,
+              title: e.target.value
+            }))} />
               </div>
               <div className={styles.settingRow}>
                 <label className={styles.label}>Message</label>
-                <div style={{ display: "flex", gap: "0.4rem", marginBottom: "0.6rem", flexWrap: "wrap" }}>
-                  <button
-                    type="button"
-                    className={styles.secondaryButton}
-                    style={{ padding: "0.28rem 0.45rem", minWidth: "34px" }}
-                    onClick={() => execCustomNotificationMessageCommand("bold")}
-                  >
-                    <strong style={{ fontSize: "0.82rem" }}>B</strong>
+                <div style={{
+              display: "flex",
+              gap: "0.4rem",
+              marginBottom: "0.6rem",
+              flexWrap: "wrap"
+            }}>
+                  <button type="button" className={styles.secondaryButton} style={{
+                padding: "0.28rem 0.45rem",
+                minWidth: "34px"
+              }} onClick={() => execCustomNotificationMessageCommand("bold")}>
+                    <strong style={{
+                  fontSize: "0.82rem"
+                }}>B</strong>
                   </button>
-                  <button
-                    type="button"
-                    className={styles.secondaryButton}
-                    style={{ padding: "0.28rem 0.45rem", minWidth: "34px" }}
-                    onClick={() => execCustomNotificationMessageCommand("italic")}
-                  >
-                    <em style={{ fontSize: "0.82rem" }}>I</em>
+                  <button type="button" className={styles.secondaryButton} style={{
+                padding: "0.28rem 0.45rem",
+                minWidth: "34px"
+              }} onClick={() => execCustomNotificationMessageCommand("italic")}>
+                    <em style={{
+                  fontSize: "0.82rem"
+                }}>I</em>
                   </button>
-                  <button
-                    type="button"
-                    className={styles.secondaryButton}
-                    style={{ padding: "0.28rem 0.45rem", minWidth: "34px" }}
-                    onClick={() => execCustomNotificationMessageCommand("underline")}
-                  >
-                    <u style={{ fontSize: "0.82rem" }}>U</u>
+                  <button type="button" className={styles.secondaryButton} style={{
+                padding: "0.28rem 0.45rem",
+                minWidth: "34px"
+              }} onClick={() => execCustomNotificationMessageCommand("underline")}>
+                    <u style={{
+                  fontSize: "0.82rem"
+                }}>U</u>
                   </button>
-                  <button
-                    type="button"
-                    className={styles.secondaryButton}
-                    style={{ padding: "0.28rem 0.5rem", fontSize: "0.8rem" }}
-                    onClick={() => execCustomNotificationMessageCommand("insertUnorderedList")}
-                  >
+                  <button type="button" className={styles.secondaryButton} style={{
+                padding: "0.28rem 0.5rem",
+                fontSize: "0.8rem"
+              }} onClick={() => execCustomNotificationMessageCommand("insertUnorderedList")}>
                     • Liste
                   </button>
-                  <button
-                    type="button"
-                    className={styles.secondaryButton}
-                    style={{ padding: "0.28rem 0.5rem", fontSize: "0.8rem" }}
-                    onClick={() => {
-                      const url = window.prompt("URL du lien", "https://");
-                      if (!url) return;
-                      execCustomNotificationMessageCommand("createLink", url);
-                    }}
-                  >
-                    Lien
+                  <button type="button" className={styles.secondaryButton} style={{
+                padding: "0.28rem 0.5rem",
+                fontSize: "0.8rem"
+              }} onClick={() => {
+                const url = window.prompt("Link URL", "https://");
+                if (!url) return;
+                execCustomNotificationMessageCommand("createLink", url);
+              }}>
+                    Link
                   </button>
-                  <button
-                    type="button"
-                    className={styles.secondaryButton}
-                    style={{ padding: "0.28rem 0.5rem", fontSize: "0.8rem", display: "inline-flex", gap: "0.3rem", alignItems: "center" }}
-                    onClick={insertCustomNotificationImageUrl}
-                  >
-                    <Icon icon="mingcute:pic-fill" style={{ fontSize: "0.85rem" }} />
+                  <button type="button" className={styles.secondaryButton} style={{
+                padding: "0.28rem 0.5rem",
+                fontSize: "0.8rem",
+                display: "inline-flex",
+                gap: "0.3rem",
+                alignItems: "center"
+              }} onClick={insertCustomNotificationImageUrl}>
+                    <Icon icon="mingcute:pic-fill" style={{
+                  fontSize: "0.85rem"
+                }} />
                     Image URL
                   </button>
-                  <input
-                    type="color"
-                    onChange={(e) => execCustomNotificationMessageCommand("foreColor", e.target.value)}
-                    title="Couleur du texte"
-                    style={{ width: "36px", height: "32px", border: "none", background: "transparent", padding: 0 }}
-                  />
-                  <button
-                    type="button"
-                    className={styles.secondaryButton}
-                    style={{ padding: "0.28rem 0.5rem", fontSize: "0.8rem" }}
-                    onClick={() => setShowCustomNotificationPreview((prev) => !prev)}
-                    disabled={
-                      String(
-                        (notificationSettings?.webhooks || []).find(
-                          (webhook) => String(webhook?.id || "") === String(customNotificationDraft.webhookId || "")
-                        )?.channel || ""
-                      ).toLowerCase() !== "teams"
-                    }
-                  >
+                  <input type="color" onChange={e => execCustomNotificationMessageCommand("foreColor", e.target.value)} title="Text color" style={{
+                width: "36px",
+                height: "32px",
+                border: "none",
+                background: "transparent",
+                padding: 0
+              }} />
+                  <button type="button" className={styles.secondaryButton} style={{
+                padding: "0.28rem 0.5rem",
+                fontSize: "0.8rem"
+              }} onClick={() => setShowCustomNotificationPreview(prev => !prev)} disabled={String((notificationSettings?.webhooks || []).find(webhook => String(webhook?.id || "") === String(customNotificationDraft.webhookId || ""))?.channel || "").toLowerCase() !== "teams"}>
                     <Icon icon={showCustomNotificationPreview ? "mingcute:up-fill" : "mingcute:down-fill"} />
-                    Aperçu Teams
+                    Teams preview
                   </button>
                 </div>
-                {String(
-                  (notificationSettings?.webhooks || []).find(
-                    (webhook) => String(webhook?.id || "") === String(customNotificationDraft.webhookId || "")
-                  )?.channel || ""
-                ).toLowerCase() === "teams" && (
-                  <div style={{ marginBottom: "0.55rem" }}>
-                    <div className={styles.label} style={{ marginBottom: "0.35rem" }}>
-                      Couleur du liseret Teams
+                {String((notificationSettings?.webhooks || []).find(webhook => String(webhook?.id || "") === String(customNotificationDraft.webhookId || ""))?.channel || "").toLowerCase() === "teams" && <div style={{
+              marginBottom: "0.55rem"
+            }}>
+                    <div className={styles.label} style={{
+                marginBottom: "0.35rem"
+              }}>
+                      Teams accent color
                     </div>
-                    <div style={{ display: "flex", gap: "0.45rem", alignItems: "center", flexWrap: "wrap" }}>
-                      {TEAMS_THEME_COLOR_PRESETS.map((color) => {
-                        const selected =
-                          String(customNotificationDraft.teamsThemeColor || "").toLowerCase() ===
-                          String(color).toLowerCase();
-                        return (
-                          <button
-                            key={color}
-                            type="button"
-                            title={color}
-                            onClick={() => setCustomNotificationDraft((prev) => ({ ...prev, teamsThemeColor: color }))}
-                            className={`${styles.colorSwatch} ${selected ? styles.colorSwatchSelected : ""}`}
-                            style={{ background: color }}
-                          />
-                        );
-                      })}
-                      <div style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                    <div style={{
+                display: "flex",
+                gap: "0.45rem",
+                alignItems: "center",
+                flexWrap: "wrap"
+              }}>
+                      {TEAMS_THEME_COLOR_PRESETS.map(color => {
+                  const selected = String(customNotificationDraft.teamsThemeColor || "").toLowerCase() === String(color).toLowerCase();
+                  return <button key={color} type="button" title={color} onClick={() => setCustomNotificationDraft(prev => ({
+                    ...prev,
+                    teamsThemeColor: color
+                  }))} className={`${styles.colorSwatch} ${selected ? styles.colorSwatchSelected : ""}`} style={{
+                    background: color
+                  }} />;
+                })}
+                      <div style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.35rem"
+                }}>
                         <span className={styles.colorCustomLabel}>Custom</span>
-                        <input
-                          type="color"
-                          value={String(customNotificationDraft.teamsThemeColor || "#13BA8E")}
-                          onChange={(e) =>
-                            setCustomNotificationDraft((prev) => ({ ...prev, teamsThemeColor: e.target.value }))
-                          }
-                          style={{ width: "34px", height: "28px", border: "none", background: "transparent", padding: 0 }}
-                          title="Couleur personnalisée"
-                        />
+                        <input type="color" value={String(customNotificationDraft.teamsThemeColor || "#13BA8E")} onChange={e => setCustomNotificationDraft(prev => ({
+                    ...prev,
+                    teamsThemeColor: e.target.value
+                  }))} style={{
+                    width: "34px",
+                    height: "28px",
+                    border: "none",
+                    background: "transparent",
+                    padding: 0
+                  }} title="Custom color" />
                       </div>
                     </div>
-                  </div>
-                )}
-                <div
-                  ref={customNotificationEditorRef}
-                  className={styles.input}
-                  contentEditable
-                  suppressContentEditableWarning
-                  onInput={(e) =>
-                    setCustomNotificationDraft((prev) => ({
-                      ...prev,
-                      message: String(e.currentTarget?.innerHTML || "").replace(/\soutline:\s*[^;"']+;?/gi, ""),
-                    }))
-                  }
-                  style={{ minHeight: "160px", lineHeight: 1.45, overflowY: "auto" }}
-                />
-                {showCustomNotificationPreview &&
-                  String(
-                    (notificationSettings?.webhooks || []).find(
-                      (webhook) => String(webhook?.id || "") === String(customNotificationDraft.webhookId || "")
-                    )?.channel || ""
-                  ).toLowerCase() === "teams" && (
-                  <div className={styles.previewWrap}>
-                    <div className={styles.previewLabel}>Aperçu Teams</div>
-                    <div
-                      className={styles.previewCard}
-                      style={{
-                        borderTop: `4px solid ${String(customNotificationDraft.teamsThemeColor || "#13BA8E")}`,
-                      }}
-                    >
+                  </div>}
+                <div ref={customNotificationEditorRef} className={styles.input} contentEditable suppressContentEditableWarning onInput={e => setCustomNotificationDraft(prev => ({
+              ...prev,
+              message: String(e.currentTarget?.innerHTML || "").replace(/\soutline:\s*[^;"']+;?/gi, "")
+            }))} style={{
+              minHeight: "160px",
+              lineHeight: 1.45,
+              overflowY: "auto"
+            }} />
+                {showCustomNotificationPreview && String((notificationSettings?.webhooks || []).find(webhook => String(webhook?.id || "") === String(customNotificationDraft.webhookId || ""))?.channel || "").toLowerCase() === "teams" && <div className={styles.previewWrap}>
+                    <div className={styles.previewLabel}>Teams preview</div>
+                    <div className={styles.previewCard} style={{
+                borderTop: `4px solid ${String(customNotificationDraft.teamsThemeColor || "#13BA8E")}`
+              }}>
                       <div className={styles.previewTitle}>
-                        {String(customNotificationDraft.title || "").trim() || "Annonce Veritas"}
+                        {String(customNotificationDraft.title || "").trim() || "Announcement Veritas"}
                       </div>
-                      <div
-                        className={styles.previewBody}
-                        dangerouslySetInnerHTML={{
-                          __html: sanitizeHtml(
-                            String(customNotificationEditorRef.current?.innerHTML || customNotificationDraft.message || "")
-                              .trim() || "<em>Aucun message saisi</em>"
-                          ),
-                        }}
-                      />
+                      <div className={styles.previewBody} dangerouslySetInnerHTML={{
+                  __html: sanitizeHtml(String(customNotificationEditorRef.current?.innerHTML || customNotificationDraft.message || "").trim() || "<em>No message entered</em>")
+                }} />
                     </div>
-                  </div>
-                )}
+                  </div>}
               </div>
             </div>
             <div className={styles.modalActions}>
               <button type="button" className={styles.secondaryButton} onClick={() => setShowCustomNotificationModal(false)}>
-                Annuler
+                Cancel
               </button>
-              <button
-                type="button"
-                className={styles.primaryButton}
-                onClick={sendCustomWebhookNotification}
-                disabled={sendingCustomNotification || (notificationSettings?.webhooks || []).length === 0}
-              >
-                {sendingCustomNotification ? "Envoi..." : "Envoyer l'annonce"}
+              <button type="button" className={styles.primaryButton} onClick={sendCustomWebhookNotification} disabled={sendingCustomNotification || (notificationSettings?.webhooks || []).length === 0}>
+                {sendingCustomNotification ? "Sending..." : "Send announcement"}
               </button>
             </div>
           </div>
-        </div>
-      )}
+        </div>}
 
-      <ItilCategoryFormModal
-        open={showCategoryModal}
-        mode={categoryModalMode}
-        draft={categoryDraft}
-        setDraft={setCategoryDraft}
-        saving={savingCategory}
-        sectionOptions={[
-          ...new Set([
-            "Non classée",
-            ...ticketCategorySections.map((section) => String(section?.name || "").trim()),
-          ]),
-        ].filter(Boolean)}
-        onClose={() => !savingCategory && closeCategoryModal()}
-        onSave={saveCategoryFromModal}
-      />
+      <ItilCategoryFormModal open={showCategoryModal} mode={categoryModalMode} draft={categoryDraft} setDraft={setCategoryDraft} saving={savingCategory} sectionOptions={[...new Set(["Unclassified", ...ticketCategorySections.map(section => String(section?.name || "").trim())])].filter(Boolean)} onClose={() => !savingCategory && closeCategoryModal()} onSave={saveCategoryFromModal} />
 
-      <ItilCategorySectionFormModal
-        open={showCategorySectionModal}
-        mode={categorySectionModalMode}
-        draft={categorySectionDraft}
-        setDraft={setCategorySectionDraft}
-        saving={savingCategorySection}
-        onClose={() => !savingCategorySection && closeCategorySectionModal()}
-        onSave={saveCategorySectionFromModal}
-      />
+      <ItilCategorySectionFormModal open={showCategorySectionModal} mode={categorySectionModalMode} draft={categorySectionDraft} setDraft={setCategorySectionDraft} saving={savingCategorySection} onClose={() => !savingCategorySection && closeCategorySectionModal()} onSave={saveCategorySectionFromModal} />
 
-      <SolutionCatalogEntryModal
-        open={showSolutionCatalogModal}
-        mode={solutionCatalogModalMode}
-        draft={solutionCatalogDraft}
-        setDraft={setSolutionCatalogDraft}
-        saving={savingSolutionCatalogEntry}
-        onClose={() => !savingSolutionCatalogEntry && closeSolutionCatalogModal()}
-        onSave={saveSolutionCatalogFromModal}
-      />
+      <SolutionCatalogEntryModal open={showSolutionCatalogModal} mode={solutionCatalogModalMode} draft={solutionCatalogDraft} setDraft={setSolutionCatalogDraft} saving={savingSolutionCatalogEntry} onClose={() => !savingSolutionCatalogEntry && closeSolutionCatalogModal()} onSave={saveSolutionCatalogFromModal} />
 
-      <WebhookFormModal
-        open={showWebhookModal}
-        mode={webhookModalMode}
-        draft={webhookDraft}
-        setDraft={setWebhookDraft}
-        saving={savingWebhook}
-        testing={testingWebhookConnection}
-        testMessage={webhookTestMessage}
-        testStatus={webhookTestStatus}
-        onClose={closeWebhookModal}
-        onSave={saveWebhookFromModal}
-        onTest={testWebhookDraft}
-      />
+      <WebhookFormModal open={showWebhookModal} mode={webhookModalMode} draft={webhookDraft} setDraft={setWebhookDraft} saving={savingWebhook} testing={testingWebhookConnection} testMessage={webhookTestMessage} testStatus={webhookTestStatus} onClose={closeWebhookModal} onSave={saveWebhookFromModal} onTest={testWebhookDraft} />
 
-      <CollectorFormModal
-        open={showCollectorModal}
-        copy={mc}
-        mode={collectorModalMode}
-        draft={collectorDraft}
-        setDraft={setCollectorDraft}
-        providerKey={collectorProviderKey}
-        onProviderChange={applyCollectorProviderPreset}
-        saving={savingCollector}
-        testing={testingCollectorConnection}
-        onClose={closeCollectorModal}
-        onSave={saveCollectorFromModal}
-        onTestConnection={testCollectorConnection}
-        onBrowseFolders={openFoldersModal}
-        initialSection={collectorModalMode === "create" ? "provider" : "connection"}
-      />
+      <CollectorFormModal open={showCollectorModal} copy={mc} mode={collectorModalMode} draft={collectorDraft} setDraft={setCollectorDraft} providerKey={collectorProviderKey} onProviderChange={applyCollectorProviderPreset} saving={savingCollector} testing={testingCollectorConnection} onClose={closeCollectorModal} onSave={saveCollectorFromModal} onTestConnection={testCollectorConnection} onBrowseFolders={openFoldersModal} initialSection={collectorModalMode === "create" ? "provider" : "connection"} />
 
-      <CollectorFoldersModal
-        open={foldersModalOpen}
-        copy={mc}
-        loading={loadingCollectorFolders}
-        folders={collectorAvailableFolders}
-        onClose={() => setFoldersModalOpen(false)}
-        onSelect={applyFolderSelection}
-      />
+      <CollectorFoldersModal open={foldersModalOpen} copy={mc} loading={loadingCollectorFolders} folders={collectorAvailableFolders} onClose={() => setFoldersModalOpen(false)} onSelect={applyFolderSelection} />
 
-      <CollectorLogsModal
-        open={logsModalOpen}
-        copy={mc}
-        locale={locale}
-        collectorName={logsCollectorName}
-        logs={logsModalRows}
-        onClose={() => setLogsModalOpen(false)}
-      />
+      <CollectorLogsModal open={logsModalOpen} copy={mc} locale={locale} collectorName={logsCollectorName} logs={logsModalRows} onClose={() => setLogsModalOpen(false)} />
 
-      <CollectorDeleteModal
-        open={Boolean(collectorDeleteTarget)}
-        collectorName={collectorDeleteTarget?.name || mc.common.collectorFallback}
-        saving={deletingCollector}
-        onClose={closeCollectorDeleteModal}
-        onConfirm={confirmRemoveCollector}
-      />
+      <CollectorDeleteModal open={Boolean(collectorDeleteTarget)} collectorName={collectorDeleteTarget?.name || mc.common.collectorFallback} saving={deletingCollector} onClose={closeCollectorDeleteModal} onConfirm={confirmRemoveCollector} />
 
-      {showTemplatePreviewModal && (
-        <div className={styles.modalOverlay} onClick={closeTemplatePreviewModal}>
-          <div className={styles.modalContent} onClick={(event) => event.stopPropagation()} style={{ maxWidth: "820px" }}>
+      {showTemplatePreviewModal && <div className={styles.modalOverlay} onClick={closeTemplatePreviewModal}>
+          <div className={styles.modalContent} onClick={event => event.stopPropagation()} style={{
+        maxWidth: "820px"
+      }}>
             <div className={styles.modalHeader}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+              <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem"
+          }}>
                 <Icon icon="mingcute:eye-2-fill" className={styles.modalIcon} />
-                <h3>{interpolate(ss.templates.previewTitle, { name: templatePreviewTarget?.name || "" })}</h3>
+                <h3>{interpolate(ss.templates.previewTitle, {
+                name: templatePreviewTarget?.name || ""
+              })}</h3>
               </div>
               <button className={styles.closeButton} onClick={closeTemplatePreviewModal} title={ss.templates.previewClose}>
                 <Icon icon="mingcute:close-line" />
               </button>
             </div>
             <div className={styles.modalBody}>
-              <div
-                className={styles.htmlPreviewBox}
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(String(templatePreviewTarget?.content || "")) }}
-              />
+              <div className={styles.htmlPreviewBox} dangerouslySetInnerHTML={{
+            __html: sanitizeHtml(String(templatePreviewTarget?.content || ""))
+          }} />
             </div>
             <div className={styles.modalActions}>
               <button type="button" className={styles.secondaryButton} onClick={closeTemplatePreviewModal}>
@@ -4957,123 +3899,67 @@ export default function AdminTickets({ isCommunity = false, restrictedView = nul
               </button>
             </div>
           </div>
-        </div>
-      )}
+        </div>}
 
-      <TicketTemplateFormModal
-        open={showTemplateModal}
-        mode={templateModalMode}
-        draft={templateDraft}
-        setDraft={setTemplateDraft}
-        saving={savingTemplate}
-        onClose={closeTemplateModal}
-        onSave={saveTemplateFromModal}
-        onOpenVariables={() => openMessageVariablesModal("template")}
-        templateVariablesEnabled={!isCommunity}
-        templateEditorRef={templateEditorRef}
-        templateImageInputRef={templateImageInputRef}
-        selectedImageWidthPx={selectedImageWidthPx}
-        setSelectedImageWidthPx={setSelectedImageWidthPx}
-        onExecCommand={execTemplateCommand}
-        onInsertImage={insertTemplateImage}
-        onImageUpload={handleTemplateImageUpload}
-        onEditorClick={handleTemplateEditorClick}
-        onResizeImage={resizeSelectedTemplateImage}
-        onResizeImageCustom={resizeSelectedTemplateImageCustom}
-        onApplyImageWidth={applySelectedTemplateImageWidth}
-      />
+      <TicketTemplateFormModal open={showTemplateModal} mode={templateModalMode} draft={templateDraft} setDraft={setTemplateDraft} saving={savingTemplate} onClose={closeTemplateModal} onSave={saveTemplateFromModal} onOpenVariables={() => openMessageVariablesModal("template")} templateVariablesEnabled={!isCommunity} templateEditorRef={templateEditorRef} templateImageInputRef={templateImageInputRef} selectedImageWidthPx={selectedImageWidthPx} setSelectedImageWidthPx={setSelectedImageWidthPx} onExecCommand={execTemplateCommand} onInsertImage={insertTemplateImage} onImageUpload={handleTemplateImageUpload} onEditorClick={handleTemplateEditorClick} onResizeImage={resizeSelectedTemplateImage} onResizeImageCustom={resizeSelectedTemplateImageCustom} onApplyImageWidth={applySelectedTemplateImageWidth} />
 
-      {showMessageVariablesModal &&
-        createPortal(
-        <div
-          className={`${styles.modalOverlay} ${styles.modalOverlayStacked}`}
-          onClick={closeMessageVariablesModal}
-        >
-          <div className={styles.modalContent} onClick={(event) => event.stopPropagation()} style={{ maxWidth: "920px" }}>
+      {showMessageVariablesModal && createPortal(<div className={`${styles.modalOverlay} ${styles.modalOverlayStacked}`} onClick={closeMessageVariablesModal}>
+          <div className={styles.modalContent} onClick={event => event.stopPropagation()} style={{
+        maxWidth: "920px"
+      }}>
             <div className={styles.modalHeader}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+              <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem"
+          }}>
                 <Icon icon="mingcute:code-fill" className={styles.modalIcon} />
-                <h3>Variables disponibles</h3>
+                <h3>Available variables</h3>
               </div>
-              <button className={styles.closeButton} onClick={closeMessageVariablesModal} title="Fermer">
+              <button className={styles.closeButton} onClick={closeMessageVariablesModal} title="Close">
                 <Icon icon="mingcute:close-line" />
               </button>
             </div>
             <div className={styles.modalBody}>
               <div className={styles.varsIntro}>
-                Clique sur une variable pour l'insérer dans{" "}
-                {messageVariablesModalTarget === "notification" ? "le message personnalisé." : "le template."}
+                Click a variable to insert it into{" "}
+                {messageVariablesModalTarget === "notification" ? "the custom message." : "the template."}
               </div>
               <div className={styles.varsLayout}>
                 <div className={styles.varsNav}>
-                  {visibleMessageVariableGroups.map((group) => (
-                    <button
-                      key={`menu-${group.label}`}
-                      type="button"
-                      className={`${styles.secondaryButton} ${styles.varsNavBtn} ${
-                        activeVariableSection === group.label ? styles.varsNavBtnActive : ""
-                      }`}
-                      onClick={() => jumpToVariableSection(group.label)}
-                    >
+                  {visibleMessageVariableGroups.map(group => <button key={`menu-${group.label}`} type="button" className={`${styles.secondaryButton} ${styles.varsNavBtn} ${activeVariableSection === group.label ? styles.varsNavBtnActive : ""}`} onClick={() => jumpToVariableSection(group.label)}>
                       {group.label}
-                    </button>
-                  ))}
+                    </button>)}
                 </div>
                 <div className={styles.varsGroups}>
-                  {visibleMessageVariableGroups.map((group) => (
-                    <div
-                      key={group.label}
-                      className={styles.varsGroup}
-                      ref={(node) => {
-                        variableSectionRefs.current[group.label] = node;
-                      }}
-                    >
+                  {visibleMessageVariableGroups.map(group => <div key={group.label} className={styles.varsGroup} ref={node => {
+                variableSectionRefs.current[group.label] = node;
+              }}>
                       <div className={styles.varsGroupTitle}>{group.label}</div>
                       <div className={styles.varsGroupList}>
-                        {group.variables.map((variable) => (
-                          <button
-                            key={variable.key}
-                            type="button"
-                            className={`${styles.secondaryButton} ${styles.varRowBtn}`}
-                            title={variable.description}
-                            onClick={() => insertMessageVariableFromModal(variable.key)}
-                          >
+                        {group.variables.map(variable => <button key={variable.key} type="button" className={`${styles.secondaryButton} ${styles.varRowBtn}`} title={variable.description} onClick={() => insertMessageVariableFromModal(variable.key)}>
                             <span className={styles.varKey}>{variable.key}</span>
                             <span className={styles.varDesc}>{variable.description}</span>
-                          </button>
-                        ))}
+                          </button>)}
                       </div>
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
               </div>
             </div>
             <div className={styles.modalActions}>
               <button type="button" className={styles.secondaryButton} onClick={closeMessageVariablesModal}>
-                Fermer
+                Close
               </button>
             </div>
           </div>
-        </div>,
-        document.body
-      )}
+        </div>, document.body)}
 
-      <MacroFormModal
-        open={showMacroModal}
-        mode={macroModalMode}
-        draft={macroDraft}
-        setDraft={setMacroDraft}
-        saving={savingMacro}
-        actions={macroDraft.actions || []}
-        actionsCount={(macroDraft.actions || []).length}
-        onClose={() => !savingMacro && closeMacroModal()}
-        onSave={saveMacroFromModal}
-        onAddAction={addDraftMacroAction}
-        onDeleteAction={removeDraftMacroAction}
-        describeAction={describeMacroAction}
-        describeActionBrief={describeMacroActionBrief}
-        renderActionEditor={({ action, onChange }) => renderMacroActionFields({ action, onChange })}
-      />
-    </Page>
-  );
+      <MacroFormModal open={showMacroModal} mode={macroModalMode} draft={macroDraft} setDraft={setMacroDraft} saving={savingMacro} actions={macroDraft.actions || []} actionsCount={(macroDraft.actions || []).length} onClose={() => !savingMacro && closeMacroModal()} onSave={saveMacroFromModal} onAddAction={addDraftMacroAction} onDeleteAction={removeDraftMacroAction} describeAction={describeMacroAction} describeActionBrief={describeMacroActionBrief} renderActionEditor={({
+      action,
+      onChange
+    }) => renderMacroActionFields({
+      action,
+      onChange
+    })} />
+    </Page>;
 }

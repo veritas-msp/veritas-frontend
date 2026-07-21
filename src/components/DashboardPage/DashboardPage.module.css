@@ -1,7 +1,4 @@
-/* ─────────────────────────────────────────────
-   Tableau de bord KPI · thème light / dark MSP
-   (layout page : CybersecuritePage + EnterprisesPage)
-   ───────────────────────────────────────────── */
+
 
 .dashboardPage {
   --dash-accent: var(--msp-accent);
@@ -183,7 +180,7 @@
   }
 }
 
-/* ── KPI ── */
+
 .kpiRow {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
@@ -237,7 +234,7 @@
   margin-top: 0.1rem;
 }
 
-/* ── Grilles & panneaux ── */
+
 .grid2 {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -316,7 +313,7 @@
   margin-top: 0.08rem;
 }
 
-/* ── Tableaux ── */
+
 .tableWrap {
   overflow-x: auto;
   margin: 0 -0.1rem;
@@ -372,7 +369,7 @@
   margin-right: 0.3rem;
 }
 
-/* ── Tendances ── */
+
 .trendBars {
   display: flex;
   align-items: flex-end;
@@ -438,7 +435,7 @@
   padding: 0.5rem 0;
 }
 
-/* ── Graphiques (camembert & barres) ── */
+
 .pieBlock {
   display: flex;
   align-items: center;

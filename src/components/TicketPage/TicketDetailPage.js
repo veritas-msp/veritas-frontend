@@ -4,12 +4,7 @@ import { createPortal } from "react-dom";
 import { Icon } from "@iconify/react";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
-import {
-  isTicketPlayModeEnabled,
-  navigateToRandomTicket,
-  setTicketPlayModeEnabled,
-  advanceToNextRandomTicket,
-} from "./ticketPlayModeUtils";
+import { isTicketPlayModeEnabled, navigateToRandomTicket, setTicketPlayModeEnabled, advanceToNextRandomTicket } from "./ticketPlayModeUtils";
 import playModeStyles from "./ticketPlayMode.module.css";
 import layout from "../EnterprisesPage/EnterprisesPage.module.css";
 import heroStyles from "../EnterprisesPage/EnterpriseDetailPage.module.css";
@@ -24,98 +19,44 @@ import TicketResolveModal from "./TicketResolveModal";
 import TicketReopenModal from "./TicketReopenModal";
 import TicketConfirmModal from "./TicketConfirmModal";
 import ProFeaturePromoModal from "../Misc/ProFeature/ProFeaturePromoModal";
+import TicketAiRunbookPanel from "./TicketAiRunbookPanel";
 import { createEvent, updateEvent, deleteEvent, fetchEvents } from "../../api/events";
 import { buildReminderEventPayload } from "../../utils/ticketReminderEvent";
-import {
-  addTicketAssignee,
-  addTicketComment,
-  addTicketCommentWithAttachments,
-  addLinkedTicket,
-  addTicketTag,
-  addTicketWatcher,
-  deleteTicket,
-  fetchTicketCategories,
-  fetchTicket,
-  fetchTickets,
-  permanentlyDeleteTicket,
-  removeTicketTag,
-  removeTicketAssignee,
-  removeTicketWatcher,
-  restoreTicket,
-  updateTicket,
-  updateTicketComment,
-  deleteTicketComment,
-  updateTicketStatus,
-  resolveTicketWithValidation,
-} from "../../api/tickets";
+import { addTicketAssignee, addTicketComment, addTicketCommentWithAttachments, addLinkedTicket, addTicketTag, addTicketWatcher, deleteTicket, fetchTicketCategories, fetchTicket, fetchTickets, permanentlyDeleteTicket, removeTicketTag, removeTicketAssignee, removeTicketWatcher, restoreTicket, updateTicket, updateTicketComment, deleteTicketComment, updateTicketStatus, resolveTicketWithValidation } from "../../api/tickets";
+import { fetchAiStatus, suggestTicketReplyAi } from "../../api/ai";
 import API_BASE_URL from "../../config";
 import { sanitizeTicketCommentHtml } from "../../utils/sanitizeHtml";
 import { fetchUsers, fetchCurrentUser } from "../../api/users";
-import {
-  fetchClients,
-  fetchClientsList,
-  fetchContactsList,
-  fetchClientModules,
-  fetchClientSupportCredits,
-} from "../../api/clients";
+import { fetchClients, fetchClientsList, fetchContactsList, fetchClientModules, fetchClientSupportCredits } from "../../api/clients";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useNotifications, emitNotificationsUpdated } from "../../hooks/useNotifications";
 import { useVeritasEdition } from "../../hooks/useVeritasEdition";
 import { useContractModuleOptions } from "../../hooks/useContractModuleOptions";
-import {
-  fetchTicketAutomationConfig,
-  getTicketAutomationConfig,
-  saveTicketAutomationConfig,
-  subscribeTicketAutomationConfig,
-} from "../../utils/ticketAutomationStorage";
-import {
-  DEFAULT_TICKET_CHAT_UI_SETTINGS,
-  normalizeTicketChatUiSettings,
-} from "../../utils/ticketChatUiSettings";
-import {
-  formatClientSlaRows,
-  getTicketSlaDisplay,
-  parseClientSla,
-} from "../../utils/ticketSlaUtils";
+import { fetchTicketAutomationConfig, getTicketAutomationConfig, saveTicketAutomationConfig, subscribeTicketAutomationConfig } from "../../utils/ticketAutomationStorage";
+import { DEFAULT_TICKET_CHAT_UI_SETTINGS, normalizeTicketChatUiSettings } from "../../utils/ticketChatUiSettings";
+import { formatClientSlaRows, getTicketSlaDisplay, parseClientSla } from "../../utils/ticketSlaUtils";
 import { useAppGeneralSettings, useAppLocale } from "../../hooks/useAppGeneralSettings";
 import { getTicketDetailCopy } from "./ticketDetailPageI18n";
-import {
-  formatLinkedEquipmentEventLabel,
-  getEquipmentPickerLabel,
-  getEquipmentSearchText,
-  mapClientEquipmentsForTicketLink,
-} from "./ticketEquipmentUtils";
+import { formatLinkedEquipmentEventLabel, getEquipmentPickerLabel, getEquipmentSearchText, mapClientEquipmentsForTicketLink } from "./ticketEquipmentUtils";
 import { getLocalizedSolutionCatalogLabel } from "./solutionCatalogI18n";
 import { interpolate } from "../../i18n/translate";
-import {
-  buildClientContractSummary,
-  buildDefaultResolveCreditAmounts,
-  buildSupportCreditDebitsPayload,
-  computeSupportCreditTotals,
-} from "./ticketClientSummaryUtils";
-import {
-  computeSatisfactionAverage,
-  resolveDisplayRatings,
-} from "../../utils/ticketSatisfactionCriteria";
+import { buildClientContractSummary, buildDefaultResolveCreditAmounts, buildSupportCreditDebitsPayload, computeSupportCreditTotals } from "./ticketClientSummaryUtils";
+import { computeSatisfactionAverage, resolveDisplayRatings } from "../../utils/ticketSatisfactionCriteria";
 import { getTicketSatisfactionCriteria } from "../../i18n/ticketSatisfactionCriteriaI18n";
-
 const CONTRACT_FACT_STATUS_CLASS = {
   active: fs.contractFact_active,
   expiring: fs.contractFact_expiring,
   expired: fs.contractFact_expired,
   pending: fs.contractFact_pending,
-  unknown: fs.contractFact_unknown,
+  unknown: fs.contractFact_unknown
 };
-
 const CONTRACT_HEADER_STATUS_CLASS = {
   expired: styles.contractHeaderStatus_expired,
-  expiring: styles.contractHeaderStatus_expiring,
+  expiring: styles.contractHeaderStatus_expiring
 };
-
 const RIGHT_PANE_LINKED_PREVIEW = 2;
 const RIGHT_PANE_HISTORY_PREVIEW = 3;
 const REPLY_BOX_EXPANDED_KEY = "ticket_reply_box_expanded";
-
 function normalizeAttachmentPath(value) {
   const raw = String(value || "").trim();
   if (!raw) return "";
@@ -126,47 +67,35 @@ function normalizeAttachmentPath(value) {
     return raw.split("?")[0];
   }
 }
-
 function getAttachmentRemovalKey(attachment) {
   if (!attachment) return null;
   if (attachment.id) return `id:${attachment.id}`;
-  const path = normalizeAttachmentPath(
-    attachment.url || attachment.path || attachment.file_path || ""
-  );
+  const path = normalizeAttachmentPath(attachment.url || attachment.path || attachment.file_path || "");
   if (path) return `path:${path}`;
   const name = attachment.filename || attachment.name;
   return name ? `name:${name}` : null;
 }
-
 function isAttachmentMarkedForRemoval(attachment, removedKeys = []) {
   const key = getAttachmentRemovalKey(attachment);
   return Boolean(key && removedKeys.includes(key));
 }
-
 function splitRemovedAttachmentKeys(removedKeys = []) {
   const removeAttachmentIds = [];
   const removeAttachmentPaths = [];
-  removedKeys.forEach((key) => {
-    if (key.startsWith("id:")) removeAttachmentIds.push(key.slice(3));
-    else if (key.startsWith("path:")) removeAttachmentPaths.push(key.slice(5));
+  removedKeys.forEach(key => {
+    if (key.startsWith("id:")) removeAttachmentIds.push(key.slice(3));else if (key.startsWith("path:")) removeAttachmentPaths.push(key.slice(5));
   });
-  return { removeAttachmentIds, removeAttachmentPaths };
+  return {
+    removeAttachmentIds,
+    removeAttachmentPaths
+  };
 }
-
 function mergeCommentAttachments(commentAttachments = [], ticketLevelAttachments = []) {
   if (ticketLevelAttachments.length === 0) return commentAttachments;
   if (commentAttachments.length === 0) return ticketLevelAttachments;
-
-  const ticketById = new Map(
-    ticketLevelAttachments.filter((item) => item?.id).map((item) => [String(item.id), item])
-  );
-  const ticketByPath = new Map(
-    ticketLevelAttachments
-      .map((item) => [normalizeAttachmentPath(item.url || item.path), item])
-      .filter(([pathKey]) => pathKey)
-  );
-
-  const mergedCommentAttachments = commentAttachments.map((attachment) => {
+  const ticketById = new Map(ticketLevelAttachments.filter(item => item?.id).map(item => [String(item.id), item]));
+  const ticketByPath = new Map(ticketLevelAttachments.map(item => [normalizeAttachmentPath(item.url || item.path), item]).filter(([pathKey]) => pathKey));
+  const mergedCommentAttachments = commentAttachments.map(attachment => {
     if (attachment?.id && ticketById.has(String(attachment.id))) {
       return ticketById.get(String(attachment.id));
     }
@@ -174,99 +103,63 @@ function mergeCommentAttachments(commentAttachments = [], ticketLevelAttachments
     if (pathKey && ticketByPath.has(pathKey)) return ticketByPath.get(pathKey);
     return attachment;
   });
-
-  const seen = new Set(
-    mergedCommentAttachments
-      .map((attachment) => getAttachmentRemovalKey(attachment))
-      .filter(Boolean)
-  );
-  ticketLevelAttachments.forEach((attachment) => {
+  const seen = new Set(mergedCommentAttachments.map(attachment => getAttachmentRemovalKey(attachment)).filter(Boolean));
+  ticketLevelAttachments.forEach(attachment => {
     const key = getAttachmentRemovalKey(attachment);
     if (!key || seen.has(key)) return;
     seen.add(key);
     mergedCommentAttachments.push(attachment);
   });
-
   return mergedCommentAttachments;
 }
-
-function SidebarExpandToggle({ expanded, onClick, copy }) {
-  return (
-    <div className={heroStyles.sidebarShowMoreWrap}>
-      <button
-        type="button"
-        className={heroStyles.sidebarShowMoreBtn}
-        onClick={onClick}
-        aria-expanded={expanded}
-        aria-label={expanded ? copy.sidebarExpand.collapseAria : copy.sidebarExpand.expandAria}
-      >
-        <Icon
-          icon={expanded ? "mdi:chevron-up" : "mdi:chevron-down"}
-          className={heroStyles.sidebarShowMoreIcon}
-          aria-hidden
-        />
+function SidebarExpandToggle({
+  expanded,
+  onClick,
+  copy
+}) {
+  return <div className={heroStyles.sidebarShowMoreWrap}>
+      <button type="button" className={heroStyles.sidebarShowMoreBtn} onClick={onClick} aria-expanded={expanded} aria-label={expanded ? copy.sidebarExpand.collapseAria : copy.sidebarExpand.expandAria}>
+        <Icon icon={expanded ? "mdi:chevron-up" : "mdi:chevron-down"} className={heroStyles.sidebarShowMoreIcon} aria-hidden />
         <span>{expanded ? copy.sidebarExpand.showLess : copy.sidebarExpand.showMore}</span>
       </button>
-    </div>
-  );
+    </div>;
 }
-
 function normalizeTicketStatusKey(status) {
   const value = String(status || "").trim().toLowerCase();
   if (value === "open") return "new";
   return value;
 }
-
 function isNewTicketStatus(status) {
   const key = normalizeTicketStatusKey(status);
   return key === "new" || key === "";
 }
-
 function computeTicketTakeoverStat(ticket) {
   if (!ticket?.created_at) return null;
   const createdAtMs = new Date(ticket.created_at).getTime();
   if (Number.isNaN(createdAtMs)) return null;
-
   const history = Array.isArray(ticket.statusHistory) ? ticket.statusHistory : [];
-  const firstTakeover = history
-    .map((row) => ({
-      at: row.created_at,
-      atMs: new Date(row.created_at).getTime(),
-      oldStatus: row.old_status,
-      newStatus: row.new_status,
-    }))
-    .filter(
-      (row) =>
-        !Number.isNaN(row.atMs) &&
-        isNewTicketStatus(row.oldStatus) &&
-        row.newStatus &&
-        !isNewTicketStatus(row.newStatus)
-    )
-    .sort((a, b) => a.atMs - b.atMs)[0];
-
+  const firstTakeover = history.map(row => ({
+    at: row.created_at,
+    atMs: new Date(row.created_at).getTime(),
+    oldStatus: row.old_status,
+    newStatus: row.new_status
+  })).filter(row => !Number.isNaN(row.atMs) && isNewTicketStatus(row.oldStatus) && row.newStatus && !isNewTicketStatus(row.newStatus)).sort((a, b) => a.atMs - b.atMs)[0];
   if (!firstTakeover) return null;
-
   return {
     at: firstTakeover.at,
     durationMs: firstTakeover.atMs - createdAtMs,
-    newStatus: firstTakeover.newStatus,
+    newStatus: firstTakeover.newStatus
   };
 }
-
 function getContactSearchText(contact) {
-  return [contact?.prenom, contact?.nom, contact?.email, contact?.client_name, contact?.entreprise]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase();
+  return [contact?.prenom, contact?.nom, contact?.email, contact?.client_name, contact?.entreprise].filter(Boolean).join(" ").toLowerCase();
 }
-
 function getContactLabel(contact) {
   const fullName = `${contact?.prenom || ""} ${contact?.nom || ""}`.trim();
   const base = fullName || contact?.email || `Contact #${contact?.id}`;
   if (contact?.email && fullName) return `${fullName} · ${contact.email}`;
   return base;
 }
-
 function htmlToPlainText(rawHtml) {
   const source = String(rawHtml || "");
   if (!source) return "";
@@ -277,13 +170,12 @@ function htmlToPlainText(rawHtml) {
   const doc = parser.parseFromString(source, "text/html");
   return String(doc.body.textContent || "").replace(/\s+/g, " ").trim();
 }
-
 function parseSideConversationEvent(content) {
   const text = String(content || "");
   if (!text.startsWith("[Side conversation]")) return null;
   const payload = {};
   const matches = text.match(/\[([a-zA-Z_]+):([^\]]+)\]/g) || [];
-  matches.forEach((chunk) => {
+  matches.forEach(chunk => {
     const clean = chunk.replace(/^\[/, "").replace(/\]$/, "");
     const [key, ...rest] = clean.split(":");
     payload[key] = rest.join(":");
@@ -297,13 +189,12 @@ function parseSideConversationEvent(content) {
     to: payload.to || "",
     cc: payload.cc || "",
     message: payload.message ? decodeURIComponent(payload.message) : "",
-    createdAt: payload.created_at || null,
+    createdAt: payload.created_at || null
   };
 }
-
 function buildSideConversationsFromComments(comments = []) {
   const map = new Map();
-  comments.forEach((comment) => {
+  comments.forEach(comment => {
     const event = parseSideConversationEvent(comment?.content);
     if (!event) return;
     const existing = map.get(event.id) || {
@@ -315,7 +206,7 @@ function buildSideConversationsFromComments(comments = []) {
       status: "open",
       createdAt: event.createdAt || comment?.created_at || new Date().toISOString(),
       updatedAt: comment?.created_at || new Date().toISOString(),
-      messages: [],
+      messages: []
     };
     const next = {
       ...existing,
@@ -325,38 +216,24 @@ function buildSideConversationsFromComments(comments = []) {
       cc: event.cc || existing.cc || "",
       createdAt: existing.createdAt || event.createdAt || comment?.created_at || new Date().toISOString(),
       updatedAt: comment?.created_at || existing.updatedAt,
-      status:
-        event.event === "closed"
-          ? "done"
-          : event.event === "reopened"
-          ? "open"
-          : existing.status,
-      messages:
-        event.event === "message" && event.message
-          ? [
-              ...(existing.messages || []),
-              {
-                id: comment?.id || `${event.id}-${Date.now()}`,
-                author: comment?.author_name || "Agent",
-                createdAt: comment?.created_at || new Date().toISOString(),
-                content: event.message,
-              },
-            ]
-          : existing.messages || [],
+      status: event.event === "closed" ? "done" : event.event === "reopened" ? "open" : existing.status,
+      messages: event.event === "message" && event.message ? [...(existing.messages || []), {
+        id: comment?.id || `${event.id}-${Date.now()}`,
+        author: comment?.author_name || "Agent",
+        createdAt: comment?.created_at || new Date().toISOString(),
+        content: event.message
+      }] : existing.messages || []
     };
     map.set(event.id, next);
   });
-  return Array.from(map.values()).sort(
-    (a, b) => new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime()
-  );
+  return Array.from(map.values()).sort((a, b) => new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime());
 }
-
 function parseLinkedEquipmentEvent(content) {
   const text = String(content || "");
   if (!text.startsWith("[Linked equipment]")) return null;
   const payload = {};
   const matches = text.match(/\[([a-zA-Z_]+):([^\]]+)\]/g) || [];
-  matches.forEach((chunk) => {
+  matches.forEach(chunk => {
     const clean = chunk.replace(/^\[/, "").replace(/\]$/, "");
     const [key, ...rest] = clean.split(":");
     payload[key] = rest.join(":");
@@ -365,17 +242,16 @@ function parseLinkedEquipmentEvent(content) {
   return {
     event: payload.event || "added",
     equipmentId: payload.equipment_id,
-    name: payload.name || "Matériel",
+    name: payload.name || "Hardware",
     type: payload.type || "",
     clientId: payload.client_id || "",
     warranty: payload.warranty || "",
-    licenses: payload.licenses ? decodeURIComponent(payload.licenses) : "",
+    licenses: payload.licenses ? decodeURIComponent(payload.licenses) : ""
   };
 }
-
 function buildLinkedEquipmentsFromComments(comments = []) {
   const map = new Map();
-  comments.forEach((comment) => {
+  comments.forEach(comment => {
     const event = parseLinkedEquipmentEvent(comment?.content);
     if (!event) return;
     if (event.event === "removed") {
@@ -386,12 +262,11 @@ function buildLinkedEquipmentsFromComments(comments = []) {
       equipment_id: event.equipmentId,
       name: event.name,
       type: event.type,
-      client_id: event.clientId,
+      client_id: event.clientId
     });
   });
   return Array.from(map.values()).sort((a, b) => String(a.name || "").localeCompare(String(b.name || ""), "fr"));
 }
-
 function buildLinkedEquipmentsFromTicket(ticket) {
   const rows = buildLinkedEquipmentsFromComments(ticket?.comments || []);
   const info = ticket?.equipment_info || ticket?.equipmentInfo;
@@ -402,24 +277,23 @@ function buildLinkedEquipmentsFromTicket(ticket) {
   if (source !== "veritas") return rows;
   const equipmentId = String(info.equipmentId || info.equipment_id || "").trim();
   if (!equipmentId) return rows;
-  if (rows.some((row) => String(row.equipment_id) === equipmentId)) {
+  if (rows.some(row => String(row.equipment_id) === equipmentId)) {
     return rows;
   }
   rows.push({
     equipment_id: equipmentId,
-    name: String(info.name || "").trim() || `Matériel #${equipmentId}`,
+    name: String(info.name || "").trim() || `Hardware #${equipmentId}`,
     type: String(info.type || "").trim(),
-    client_id: String(info.clientId || info.client_id || "").trim(),
+    client_id: String(info.clientId || info.client_id || "").trim()
   });
   return rows.sort((a, b) => String(a.name || "").localeCompare(String(b.name || ""), "fr"));
 }
-
 function parseLinkedTicketEvent(content) {
   const text = String(content || "");
   if (!text.startsWith("[Linked ticket]")) return null;
   const payload = {};
   const matches = text.match(/\[([a-zA-Z_]+):([^\]]+)\]/g) || [];
-  matches.forEach((chunk) => {
+  matches.forEach(chunk => {
     const clean = chunk.replace(/^\[/, "").replace(/\]$/, "");
     const [key, ...rest] = clean.split(":");
     payload[key] = rest.join(":");
@@ -429,16 +303,15 @@ function parseLinkedTicketEvent(content) {
     event: payload.event || "added",
     linkedTicketId: payload.linked_ticket_id,
     ticketNumber: payload.ticket_number || "",
-    title: payload.title || "",
+    title: payload.title || ""
   };
 }
-
 function parseSplitTicketEvent(content) {
   const text = String(content || "");
   if (!text.startsWith("[Split ticket]")) return null;
   const payload = {};
   const matches = text.match(/\[([a-zA-Z_]+):([^\]]+)\]/g) || [];
-  matches.forEach((chunk) => {
+  matches.forEach(chunk => {
     const clean = chunk.replace(/^\[/, "").replace(/\]$/, "");
     const [key, ...rest] = clean.split(":");
     payload[key] = rest.join(":");
@@ -448,47 +321,35 @@ function parseSplitTicketEvent(content) {
     direction: payload.direction || "to",
     linkedTicketId: payload.linked_ticket_id,
     ticketNumber: payload.ticket_number || "",
-    title: payload.title || "",
+    title: payload.title || ""
   };
 }
-
 function titleSuffix(title) {
   return title ? ` · ${title}` : "";
 }
-
 function truncateLogText(value, max = 140) {
   const text = String(value || "").replace(/\s+/g, " ").trim();
   if (!text) return "";
   if (text.length <= max) return text;
   return `${text.slice(0, max)}…`;
 }
-
 function isLinkActivityComment(content) {
   const text = String(content || "").trim();
   return text.startsWith("[Linked ticket]") || text.startsWith("[Linked equipment]");
 }
-
 function isTimelineVisibleComment(content) {
   if (parseSideConversationEvent(content)?.event === "message") return false;
   if (isLinkActivityComment(content)) return false;
   return true;
 }
-
 const RESOLUTION_COMMENT_PREFIX = "[Resolution]";
-const RESOLUTION_AUTO_CLOSE_PREFIX = "[Resolution auto-clôture]";
+const RESOLUTION_AUTO_CLOSE_PREFIX = "[Resolution auto-closed]";
 const RESOLUTION_CLIENT_REJECTION_PREFIX = "[Resolution client]";
-const RESOLUTION_CLIENT_ACCEPT_PREFIX = "[Resolution client acceptée]";
-
+const RESOLUTION_CLIENT_ACCEPT_PREFIX = "[Resolution accepted by client]";
 function isResolutionProposalComment(content) {
   const text = String(content || "").trim();
-  return (
-    text.startsWith(RESOLUTION_COMMENT_PREFIX) &&
-    !text.startsWith(RESOLUTION_AUTO_CLOSE_PREFIX) &&
-    !text.startsWith(RESOLUTION_CLIENT_REJECTION_PREFIX) &&
-    !text.startsWith(RESOLUTION_CLIENT_ACCEPT_PREFIX)
-  );
+  return text.startsWith(RESOLUTION_COMMENT_PREFIX) && !text.startsWith(RESOLUTION_AUTO_CLOSE_PREFIX) && !text.startsWith(RESOLUTION_CLIENT_REJECTION_PREFIX) && !text.startsWith(RESOLUTION_CLIENT_ACCEPT_PREFIX);
 }
-
 function parseResolutionProposalComment(content) {
   const text = String(content || "").trim();
   if (!isResolutionProposalComment(text)) return null;
@@ -498,12 +359,15 @@ function parseResolutionProposalComment(content) {
     return {
       interventionType: match[1].trim(),
       actionType: match[2].trim(),
-      reason: match[3].trim(),
+      reason: match[3].trim()
     };
   }
-  return { interventionType: "", actionType: "", reason: rest };
+  return {
+    interventionType: "",
+    actionType: "",
+    reason: rest
+  };
 }
-
 function isResolutionProposalTimelineComment(comment, resolutionValidation) {
   if (!comment) return false;
   if (isResolutionProposalComment(comment.content)) return true;
@@ -511,7 +375,6 @@ function isResolutionProposalTimelineComment(comment, resolutionValidation) {
   const validationCommentId = resolutionValidation?.resolutionCommentId;
   return Boolean(commentId && validationCommentId && String(commentId) === String(validationCommentId));
 }
-
 function isUserEditableCommentContent(content, copy) {
   const text = String(content || "").trim();
   if (!text) return false;
@@ -522,7 +385,6 @@ function isUserEditableCommentContent(content, copy) {
   if (text.startsWith("[Macro ")) return false;
   return true;
 }
-
 function isClientResponseComment(comment) {
   if (!comment || comment.is_internal) return false;
   const content = String(comment.content || "").trim();
@@ -532,65 +394,240 @@ function isClientResponseComment(comment) {
   if (authorRole === "client") return true;
   return false;
 }
-
 function isCommentEdited(comment) {
   if (!comment?.updated_at) return false;
   const createdAt = new Date(comment.created_at || 0).getTime();
   const updatedAt = new Date(comment.updated_at).getTime();
   return Number.isFinite(updatedAt) && updatedAt > createdAt + 500;
 }
-
 function describeCommentActivity(content, copy, locale) {
   const splitEvent = parseSplitTicketEvent(content);
   if (splitEvent) {
     const number = splitEvent.ticketNumber ? `#${splitEvent.ticketNumber}` : `#${splitEvent.linkedTicketId}`;
     const suffix = titleSuffix(splitEvent.title);
-    return splitEvent.direction === "from"
-      ? interpolate(copy.activity.splitFrom, { number, titleSuffix: suffix })
-      : interpolate(copy.activity.splitTo, { number, titleSuffix: suffix });
+    return splitEvent.direction === "from" ? interpolate(copy.activity.splitFrom, {
+      number,
+      titleSuffix: suffix
+    }) : interpolate(copy.activity.splitTo, {
+      number,
+      titleSuffix: suffix
+    });
   }
   const linkedTicketEvent = parseLinkedTicketEvent(content);
   if (linkedTicketEvent) {
     const number = linkedTicketEvent.ticketNumber ? `#${linkedTicketEvent.ticketNumber}` : `#${linkedTicketEvent.linkedTicketId}`;
     const suffix = titleSuffix(linkedTicketEvent.title);
-    return linkedTicketEvent.event === "removed"
-      ? interpolate(copy.activity.linkedRemoved, { number })
-      : interpolate(copy.activity.linkedAdded, { number, titleSuffix: suffix });
+    return linkedTicketEvent.event === "removed" ? interpolate(copy.activity.linkedRemoved, {
+      number
+    }) : interpolate(copy.activity.linkedAdded, {
+      number,
+      titleSuffix: suffix
+    });
   }
   const linkedEquipmentEvent = parseLinkedEquipmentEvent(content);
   if (linkedEquipmentEvent) {
-    const label = formatLinkedEquipmentEventLabel(linkedEquipmentEvent, { locale, separator: " · " });
-    return linkedEquipmentEvent.event === "removed"
-      ? interpolate(copy.activity.equipmentRemoved, { label })
-      : interpolate(copy.activity.equipmentAdded, { label });
+    const label = formatLinkedEquipmentEventLabel(linkedEquipmentEvent, {
+      locale,
+      separator: " · "
+    });
+    return linkedEquipmentEvent.event === "removed" ? interpolate(copy.activity.equipmentRemoved, {
+      label
+    }) : interpolate(copy.activity.equipmentAdded, {
+      label
+    });
   }
   const sideConversationEvent = parseSideConversationEvent(content);
   if (sideConversationEvent) {
     const subject = sideConversationEvent.subject || copy.sideConversationSubjectFallback;
     if (sideConversationEvent.event === "closed") {
-      return interpolate(copy.activity.sideClosed, { subject });
+      return interpolate(copy.activity.sideClosed, {
+        subject
+      });
     }
     if (sideConversationEvent.event === "reopened") {
-      return interpolate(copy.activity.sideReopened, { subject });
+      return interpolate(copy.activity.sideReopened, {
+        subject
+      });
     }
     if (sideConversationEvent.event === "message") {
-      return interpolate(copy.activity.sideMessage, { subject });
+      return interpolate(copy.activity.sideMessage, {
+        subject
+      });
     }
-    return interpolate(copy.activity.sideOpened, { subject });
+    return interpolate(copy.activity.sideOpened, {
+      subject
+    });
   }
   return null;
 }
-
-function buildTicketActivityLog(ticket, resolveUserLabel, copy, locale) {
+function formatActivityHistoryValue(field, value, copy, resolveUserLabel, resolveContactLabel, resolveClientLabel) {
+  if (value == null || value === "") return copy.activity.emptyValue;
+  if (field === "is_major_incident") {
+    return value === "true" || value === true ? copy.activity.yes : copy.activity.no;
+  }
+  if (field === "priority") {
+    const opt = (copy.priorityOptions || []).find(item => item.key === value || item.value === value);
+    return opt?.label || value;
+  }
+  if (field === "type") {
+    const opt = (copy.ticketTypes || []).find(item => item.key === value);
+    return opt?.label || value;
+  }
+  if (field === "channel") {
+    const opt = (copy.channelOptions || []).find(item => item.key === value);
+    return opt?.label || copy.getChannelViaLabel?.(value) || value;
+  }
+  if (field === "status") return copy.getStatusLabel(value === "open" ? "new" : value);
+  if (field === "assigned_user_id" || field === "assignee" || field === "requester_user_id" || field === "watcher") {
+    return resolveUserLabel(value) || value;
+  }
+  if (field === "requester_contact_id") {
+    return resolveContactLabel?.(value) || interpolate(copy.activity.contactFallback, {
+      id: value
+    });
+  }
+  if (field === "client_id") {
+    return resolveClientLabel?.(value) || interpolate(copy.activity.clientFallback, {
+      id: value
+    });
+  }
+  if (field === "description") {
+    const text = String(value).replace(/\s+/g, " ").trim();
+    return text.length > 120 ? `${text.slice(0, 117)}…` : text;
+  }
+  return String(value);
+}
+function describeActivityHistoryRow(row, copy, resolveUserLabel, resolveContactLabel, resolveClientLabel) {
+  const action = String(row?.action || "");
+  const field = String(row?.field || "");
+  const fieldLabel = copy.activity.fields?.[field] || field || copy.activity.fields?.unknown || "Field";
+  const oldValue = formatActivityHistoryValue(field, row?.old_value, copy, resolveUserLabel, resolveContactLabel, resolveClientLabel);
+  const newValue = formatActivityHistoryValue(field, row?.new_value, copy, resolveUserLabel, resolveContactLabel, resolveClientLabel);
+  if (action === "field_changed") {
+    if (row?.old_value == null || row?.old_value === "") {
+      return {
+        kind: "field",
+        icon: "mdi:pencil-outline",
+        label: interpolate(copy.activity.fieldSet, {
+          field: fieldLabel,
+          newValue
+        }),
+        detail: ""
+      };
+    }
+    if (row?.new_value == null || row?.new_value === "") {
+      return {
+        kind: "field",
+        icon: "mdi:pencil-outline",
+        label: interpolate(copy.activity.fieldCleared, {
+          field: fieldLabel,
+          oldValue
+        }),
+        detail: ""
+      };
+    }
+    return {
+      kind: "field",
+      icon: "mdi:pencil-outline",
+      label: interpolate(copy.activity.fieldChanged, {
+        field: fieldLabel,
+        oldValue,
+        newValue
+      }),
+      detail: field === "description" ? newValue : ""
+    };
+  }
+  if (action === "assignee_added") {
+    return {
+      kind: "assignee",
+      icon: "mdi:account-plus-outline",
+      label: interpolate(copy.activity.assigneeAdded, {
+        name: newValue
+      }),
+      detail: ""
+    };
+  }
+  if (action === "assignee_removed") {
+    return {
+      kind: "assignee",
+      icon: "mdi:account-minus-outline",
+      label: interpolate(copy.activity.assigneeRemoved, {
+        name: oldValue
+      }),
+      detail: ""
+    };
+  }
+  if (action === "watcher_added") {
+    return {
+      kind: "watcher",
+      icon: "mdi:eye-plus-outline",
+      label: interpolate(copy.activity.watcherAdded, {
+        name: newValue
+      }),
+      detail: ""
+    };
+  }
+  if (action === "watcher_removed") {
+    return {
+      kind: "watcher",
+      icon: "mdi:eye-minus-outline",
+      label: interpolate(copy.activity.watcherRemoved, {
+        name: oldValue
+      }),
+      detail: ""
+    };
+  }
+  if (action === "tag_added") {
+    return {
+      kind: "tag",
+      icon: "mdi:tag-plus-outline",
+      label: interpolate(copy.activity.tagAdded, {
+        label: newValue
+      }),
+      detail: ""
+    };
+  }
+  if (action === "tag_removed") {
+    return {
+      kind: "tag",
+      icon: "mdi:tag-remove-outline",
+      label: interpolate(copy.activity.tagRemoved, {
+        label: oldValue
+      }),
+      detail: ""
+    };
+  }
+  if (action === "deleted") {
+    return {
+      kind: "deleted",
+      icon: "mdi:trash-can-outline",
+      label: copy.activity.deleted,
+      detail: ""
+    };
+  }
+  if (action === "restored") {
+    return {
+      kind: "restored",
+      icon: "mdi:restore",
+      label: copy.activity.restored,
+      detail: ""
+    };
+  }
+  return {
+    kind: "field",
+    icon: "mdi:history",
+    label: action,
+    detail: [fieldLabel, oldValue, newValue].filter(Boolean).join(" · ")
+  };
+}
+function buildTicketActivityLog(ticket, resolveUserLabel, copy, locale, resolveContactLabel, resolveClientLabel) {
   if (!ticket) return [];
-
   const entries = [];
   const resolveActor = (userId, fallback = copy.authorSystem) => {
     if (!userId) return fallback;
     const label = resolveUserLabel(userId);
     return label && label !== userId ? label : fallback;
   };
-
   if (ticket.created_at) {
     entries.push({
       id: `created-${ticket.id}`,
@@ -599,33 +636,47 @@ function buildTicketActivityLog(ticket, resolveUserLabel, copy, locale) {
       icon: "mdi:ticket-plus-outline",
       label: copy.activity.created,
       actor: resolveActor(ticket.created_by),
-      detail: ticket.title || "",
+      detail: ticket.title || ""
     });
   }
-
-  (Array.isArray(ticket.statusHistory) ? ticket.statusHistory : []).forEach((row) => {
-    const oldLabel = row.old_status
-      ? copy.getStatusLabel(row.old_status === "open" ? "new" : row.old_status)
-      : null;
+  (Array.isArray(ticket.statusHistory) ? ticket.statusHistory : []).forEach(row => {
+    const oldLabel = row.old_status ? copy.getStatusLabel(row.old_status === "open" ? "new" : row.old_status) : null;
     const newLabel = copy.getStatusLabel(row.new_status === "open" ? "new" : row.new_status);
+    const rawNote = String(row.note || "").trim();
+    const noteKey = rawNote.toLowerCase();
+    const isUselessNote = !rawNote || noteKey === "tickand update" || noteKey === "ticket update" || noteKey === "bulk update" || noteKey === "tickand creation" || noteKey.startsWith("tickand creation (");
     entries.push({
       id: `status-${row.id}`,
       at: row.created_at,
       kind: "status",
       icon: "mdi:swap-horizontal",
-      label: oldLabel
-        ? interpolate(copy.activity.statusTransition, { oldLabel, newLabel })
-        : interpolate(copy.activity.statusChange, { newLabel }),
+      label: oldLabel ? interpolate(copy.activity.statusTransition, {
+        oldLabel,
+        newLabel
+      }) : interpolate(copy.activity.statusChange, {
+        newLabel
+      }),
       actor: resolveActor(row.changed_by),
-      detail: row.note || "",
+      detail: isUselessNote ? "" : rawNote
     });
   });
-
-  (Array.isArray(ticket.comments) ? ticket.comments : []).forEach((comment) => {
+  const activityHistory = Array.isArray(ticket.activityHistory) ? ticket.activityHistory : [];
+  activityHistory.forEach(row => {
+    const described = describeActivityHistoryRow(row, copy, resolveUserLabel, resolveContactLabel, resolveClientLabel);
+    entries.push({
+      id: `activity-${row.id}`,
+      at: row.created_at,
+      kind: described.kind,
+      icon: described.icon,
+      label: described.label,
+      actor: resolveActor(row.actor_user_id),
+      detail: described.detail || ""
+    });
+  });
+  (Array.isArray(ticket.comments) ? ticket.comments : []).forEach(comment => {
     const content = String(comment?.content || "");
     const systemLabel = describeCommentActivity(content, copy, locale);
     const attachmentCount = Array.isArray(comment.attachments) ? comment.attachments.length : 0;
-
     if (systemLabel) {
       const linkedTicketEvent = parseLinkedTicketEvent(content);
       const linkedEquipmentEvent = parseLinkedEquipmentEvent(content);
@@ -642,15 +693,12 @@ function buildTicketActivityLog(ticket, resolveUserLabel, copy, locale) {
         icon,
         label: systemLabel,
         actor: resolveActor(comment.author_user_id, copy.authorSystem),
-        detail: "",
+        detail: ""
       });
       return;
     }
-
     const plainContent = htmlToPlainText(content);
-    const attachmentDetail =
-      attachmentCount > 0 ? copy.formatActivityAttachmentDetail(attachmentCount) : "";
-
+    const attachmentDetail = attachmentCount > 0 ? copy.formatActivityAttachmentDetail(attachmentCount) : "";
     if (comment.is_internal) {
       entries.push({
         id: `internal-${comment.id}`,
@@ -659,11 +707,10 @@ function buildTicketActivityLog(ticket, resolveUserLabel, copy, locale) {
         icon: "mdi:lock-outline",
         label: copy.activity.internalNote,
         actor: resolveActor(comment.author_user_id, comment.author_name || copy.authorAgent),
-        detail: attachmentDetail || plainContent,
+        detail: attachmentDetail || plainContent
       });
       return;
     }
-
     entries.push({
       id: `comment-${comment.id}`,
       at: comment.created_at,
@@ -671,11 +718,11 @@ function buildTicketActivityLog(ticket, resolveUserLabel, copy, locale) {
       icon: "mdi:message-reply-text-outline",
       label: copy.activity.publicReply,
       actor: resolveActor(comment.author_user_id, comment.author_name || copy.authorAgent),
-      detail: attachmentDetail || plainContent,
+      detail: attachmentDetail || plainContent
     });
   });
-
-  if (ticket.deleted_at) {
+  const hasDeletedActivity = activityHistory.some(row => row.action === "deleted");
+  if (ticket.deleted_at && !hasDeletedActivity) {
     entries.push({
       id: `deleted-${ticket.id}`,
       at: ticket.deleted_at,
@@ -683,18 +730,14 @@ function buildTicketActivityLog(ticket, resolveUserLabel, copy, locale) {
       icon: "mdi:trash-can-outline",
       label: copy.activity.deleted,
       actor: copy.authorSystem,
-      detail: "",
+      detail: ""
     });
   }
-
-  return entries
-    .filter((entry) => entry.at)
-    .sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
+  return entries.filter(entry => entry.at).sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
 }
-
 function buildLinkedTicketsFromComments(comments = []) {
   const map = new Map();
-  comments.forEach((comment) => {
+  comments.forEach(comment => {
     const event = parseLinkedTicketEvent(comment?.content);
     if (!event) return;
     if (event.event === "removed") {
@@ -704,54 +747,27 @@ function buildLinkedTicketsFromComments(comments = []) {
     map.set(String(event.linkedTicketId), {
       linked_ticket_id: event.linkedTicketId,
       ticket_number: event.ticketNumber || null,
-      title: event.title || "Ticket lié",
+      title: event.title || "Linked ticket"
     });
   });
   return Array.from(map.values());
 }
-
 const EMOJI_OPTIONS = ["😊", "👍", "🙏", "✅", "❗", "🔥", "🎉", "📌", "💡", "🚀", "😅", "😢"];
 const MAX_ATTACHMENT_SIZE_BYTES = 15 * 1024 * 1024;
-const ALLOWED_ATTACHMENT_EXTENSIONS = new Set([
-  ".pdf",
-  ".jpg",
-  ".jpeg",
-  ".png",
-  ".doc",
-  ".docx",
-  ".csv",
-  ".xls",
-  ".xlsx",
-  ".mp4",
-  ".3gp",
-  ".mp3",
-  ".mpeg",
-  ".ogg",
-  ".aac",
-  ".amr",
-  ".m4a",
-]);
-const ATTACHMENT_ACCEPT =
-  ".pdf,.jpg,.jpeg,.png,.doc,.docx,.csv,.xls,.xlsx,.mp4,.3gp,.mp3,.mpeg,.ogg,.aac,.amr,.m4a";
-const ATTACHMENT_FORMATS_LABEL =
-  "PDF, JPG, PNG, DOC, DOCX, CSV, XLS, XLSX, MP4, 3GP, MP3, OGG, AAC, AMR, M4A";
+const ALLOWED_ATTACHMENT_EXTENSIONS = new Set([".pdf", ".jpg", ".jpeg", ".png", ".doc", ".docx", ".csv", ".xls", ".xlsx", ".mp4", ".3gp", ".mp3", ".mpeg", ".ogg", ".aac", ".amr", ".m4a"]);
+const ATTACHMENT_ACCEPT = ".pdf,.jpg,.jpeg,.png,.doc,.docx,.csv,.xls,.xlsx,.mp4,.3gp,.mp3,.mpeg,.ogg,.aac,.amr,.m4a";
+const ATTACHMENT_FORMATS_LABEL = "PDF, JPG, PNG, DOC, DOCX, CSV, XLS, XLSX, MP4, 3GP, MP3, OGG, AAC, AMR, M4A";
 const BACKEND_BASE_URL = String(API_BASE_URL || "").replace(/\/api\/?$/, "");
-
 function notifyWhatsAppDelivery(whatsappDelivery, copy) {
   if (!whatsappDelivery?.attempted || whatsappDelivery.skipped) return;
   if (whatsappDelivery.success) return;
   toast.error(copy.formatWhatsappDeliveryError(whatsappDelivery.error));
 }
-
 function normalizeHttpUrl(rawValue) {
   const raw = String(rawValue || "").trim();
   if (!raw) return "";
   const candidate = raw.replace(/[<>]/g, "");
-  const withProtocol = /^https?:\/\//i.test(candidate)
-    ? candidate
-    : /^www\./i.test(candidate)
-      ? `https://${candidate}`
-      : "";
+  const withProtocol = /^https?:\/\//i.test(candidate) ? candidate : /^www\./i.test(candidate) ? `https://${candidate}` : "";
   if (!withProtocol) return "";
   try {
     return new URL(withProtocol).href;
@@ -759,7 +775,6 @@ function normalizeHttpUrl(rawValue) {
     return "";
   }
 }
-
 function toAbsoluteAttachmentUrl(rawPath) {
   const raw = String(rawPath || "").trim();
   if (!raw) return "";
@@ -769,102 +784,93 @@ function toAbsoluteAttachmentUrl(rawPath) {
   const uploadsIndex = normalizedSlashes.toLowerCase().indexOf("/uploads/");
   const relativePath = uploadsIndex >= 0 ? normalizedSlashes.slice(uploadsIndex) : normalizedSlashes;
   if (!relativePath.startsWith("/")) return "";
-  const encodedPath = relativePath
-    .split("/")
-    .map((part, index) => (index === 0 ? part : encodeURIComponent(part)))
-    .join("/");
+  const encodedPath = relativePath.split("/").map((part, index) => index === 0 ? part : encodeURIComponent(part)).join("/");
   return `${BACKEND_BASE_URL}${encodedPath}`;
 }
-
-function TicketSatisfactionStars({ rating, copy }) {
+function TicketSatisfactionStars({
+  rating,
+  copy
+}) {
   const safeRating = Math.max(0, Math.min(5, Number(rating) || 0));
-  return (
-    <div className={styles.satisfactionStars} aria-label={copy.formatSatisfactionStarsAria(safeRating)}>
-      {[1, 2, 3, 4, 5].map((star) => (
-        <Icon
-          key={star}
-          icon={star <= safeRating ? "mdi:star" : "mdi:star-outline"}
-          className={star <= safeRating ? styles.satisfactionStarActive : styles.satisfactionStar}
-          aria-hidden
-        />
-      ))}
-    </div>
-  );
+  return <div className={styles.satisfactionStars} aria-label={copy.formatSatisfactionStarsAria(safeRating)}>
+      {[1, 2, 3, 4, 5].map(star => <Icon key={star} icon={star <= safeRating ? "mdi:star" : "mdi:star-outline"} className={star <= safeRating ? styles.satisfactionStarActive : styles.satisfactionStar} aria-hidden />)}
+    </div>;
 }
-
-function TicketSatisfactionCriteriaPanel({ satisfaction, copy, criteria }) {
+function TicketSatisfactionCriteriaPanel({
+  satisfaction,
+  copy,
+  criteria
+}) {
   const ratings = resolveDisplayRatings(satisfaction);
   if (!ratings) return null;
   const average = satisfaction?.averageRating ?? computeSatisfactionAverage(ratings);
   const rows = criteria?.length ? criteria : [];
-  return (
-    <div className={styles.satisfactionCriteriaPanel}>
-      {rows.map(({ key, label }) => (
-        <div key={key} className={styles.satisfactionCriterionRow}>
+  return <div className={styles.satisfactionCriteriaPanel}>
+      {rows.map(({
+      key,
+      label
+    }) => <div key={key} className={styles.satisfactionCriterionRow}>
           <span className={styles.satisfactionCriterionLabel}>{label}</span>
           <div className={styles.satisfactionCriterionScore}>
             <TicketSatisfactionStars rating={ratings[key]} copy={copy} />
             <span className={styles.satisfactionCriterionValue}>{ratings[key]}/5</span>
           </div>
-        </div>
-      ))}
-      {average > 0 ? (
-        <div className={styles.satisfactionAverageRow}>
+        </div>)}
+      {average > 0 ? <div className={styles.satisfactionAverageRow}>
           <strong>{copy.satisfactionAverage}</strong>
           <span>{average}/5</span>
-        </div>
-      ) : null}
-    </div>
-  );
+        </div> : null}
+    </div>;
 }
-
 function hasTicketSatisfactionData(satisfaction) {
   if (!satisfaction) return false;
   if (Number(satisfaction.rating) > 0) return true;
   if (Number(satisfaction.averageRating) > 0) return true;
   const ratings = resolveDisplayRatings(satisfaction);
   if (!ratings) return false;
-  return Object.values(ratings).some((value) => Number(value) >= 1);
+  return Object.values(ratings).some(value => Number(value) >= 1);
 }
-
-function TicketSatisfactionHeaderBadge({ filled, copy }) {
-  return (
-    <span
-      className={`${styles.satisfactionHeaderBadge} ${
-        filled ? styles.satisfactionHeaderBadgeFilled : styles.satisfactionHeaderBadgeEmpty
-      }`.trim()}
-      aria-label={filled ? copy.rightPane.satisfactionFilledAria : copy.rightPane.satisfactionEmptyAria}
-    >
+function TicketSatisfactionHeaderBadge({
+  filled,
+  copy
+}) {
+  return <span className={`${styles.satisfactionHeaderBadge} ${filled ? styles.satisfactionHeaderBadgeFilled : styles.satisfactionHeaderBadgeEmpty}`.trim()} aria-label={filled ? copy.rightPane.satisfactionFilledAria : copy.rightPane.satisfactionEmptyAria}>
       <Icon icon={filled ? "mdi:star" : "mdi:star-outline"} aria-hidden />
-    </span>
-  );
+    </span>;
 }
-
 const DEFAULT_RIGHT_PANE_COLLAPSE = {
-  contact: false,
+  contact: true,
   satisfaction: false,
-  contract: false,
+  contract: true,
+  ticketDates: false,
   linkedTicket: false,
   linkedEquipment: false,
   requesterHistory: false,
-  ticketLog: false,
+  ticketLog: false
 };
-
-function RightPaneStaticSection({ title, titleId, sectionClassName = "", bodyClassName = "", children }) {
-  return (
-    <section className={`${heroStyles.sidebarSection} ${sectionClassName}`.trim()}>
+function RightPaneStaticSection({
+  title,
+  titleId,
+  count = 0,
+  headerExtra = null,
+  sectionClassName = "",
+  bodyClassName = "",
+  children
+}) {
+  const showCount = Number(count) > 0;
+  return <section className={`${heroStyles.sidebarSection} ${sectionClassName}`.trim()}>
       <div className={heroStyles.sidebarInfoHeader}>
         <span className={heroStyles.sidebarInfoTitle} id={titleId}>
           {title}
+          {showCount ? <span className={heroStyles.sidebarSectionCount}>{Number(count)}</span> : null}
         </span>
+        {headerExtra ? <span className={styles.rightPaneCollapseHeaderEnd}>{headerExtra}</span> : null}
       </div>
       <div className={`${heroStyles.sidebarBody} ${styles.rightPaneSectionBody} ${bodyClassName}`.trim()}>
         {children}
       </div>
-    </section>
-  );
+    </section>;
 }
-
 function RightPaneCollapsibleSection({
   sectionId,
   title,
@@ -875,55 +881,49 @@ function RightPaneCollapsibleSection({
   headerExtra = null,
   sectionClassName = "",
   bodyClassName = "",
-  children,
+  children
 }) {
   const showCount = Number(count) > 0;
-  return (
-    <section className={`${heroStyles.sidebarSection} ${sectionClassName}`.trim()}>
-      <button
-        type="button"
-        className={heroStyles.sidebarCollapseHeader}
-        onClick={onToggle}
-        aria-expanded={expanded}
-        aria-controls={sectionId}
-      >
+  return <section className={`${heroStyles.sidebarSection} ${sectionClassName}`.trim()}>
+      <button type="button" className={heroStyles.sidebarCollapseHeader} onClick={onToggle} aria-expanded={expanded} aria-controls={sectionId}>
         <span className={heroStyles.sidebarInfoTitle}>
           {title}
           {titleAdornment}
-          {showCount ? (
-            <span className={heroStyles.sidebarSectionCount}>{Number(count)}</span>
-          ) : null}
+          {showCount ? <span className={heroStyles.sidebarSectionCount}>{Number(count)}</span> : null}
         </span>
         <span className={styles.rightPaneCollapseHeaderEnd}>
           {headerExtra}
-          <Icon
-            icon={expanded ? "mdi:chevron-up" : "mdi:chevron-down"}
-            className={heroStyles.sidebarCollapseChevron}
-            aria-hidden
-          />
+          <Icon icon={expanded ? "mdi:chevron-up" : "mdi:chevron-down"} className={heroStyles.sidebarCollapseChevron} aria-hidden />
         </span>
       </button>
-      {expanded ? (
-        <div
-          className={`${heroStyles.sidebarBody} ${styles.rightPaneSectionBody} ${bodyClassName}`.trim()}
-          id={sectionId}
-        >
+      {expanded ? <div className={`${heroStyles.sidebarBody} ${styles.rightPaneSectionBody} ${bodyClassName}`.trim()} id={sectionId}>
           {children}
-        </div>
-      ) : null}
-    </section>
-  );
+        </div> : null}
+    </section>;
 }
-
-export default function TicketDetailPage({ onNavigate, ticketData }) {
-  const { ticketId: urlTicketId } = useParams();
+export default function TicketDetailPage({
+  onNavigate,
+  ticketData
+}) {
+  const {
+    ticketId: urlTicketId
+  } = useParams();
   const locale = useAppLocale();
-  const { settings: generalSettings } = useAppGeneralSettings();
+  const {
+    settings: generalSettings
+  } = useAppGeneralSettings();
   const copy = useMemo(() => getTicketDetailCopy(locale), [locale]);
   const satisfactionCriteria = useMemo(() => getTicketSatisfactionCriteria(locale), [locale]);
-  const { user, userRole } = useAuthContext();
-  const { isCommunity } = useVeritasEdition();
-  const { modules: contractModuleDefs } = useContractModuleOptions();
+  const {
+    user,
+    userRole
+  } = useAuthContext();
+  const {
+    isCommunity
+  } = useVeritasEdition();
+  const {
+    modules: contractModuleDefs
+  } = useContractModuleOptions();
   const isAdmin = userRole === "admin";
   const ticketId = ticketData?.ticketId || ticketData?.id || urlTicketId;
   const [ticket, setTicket] = useState(null);
@@ -946,6 +946,11 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
   const [descriptionDraft, setDescriptionDraft] = useState("");
   const [descriptionEditing, setDescriptionEditing] = useState(false);
   const [rightPaneView, setRightPaneView] = useState("context");
+  const [aiFeatures, setAiFeatures] = useState({
+    suggestReply: false,
+    ticketRunbook: false
+  });
+  const [aiSuggestLoading, setAiSuggestLoading] = useState(false);
   const titleInputRef = useRef(null);
   const descriptionTextareaRef = useRef(null);
   const [tagDraft, setTagDraft] = useState("");
@@ -971,8 +976,12 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
   const [chatUiSettings, setChatUiSettings] = useState(DEFAULT_TICKET_CHAT_UI_SETTINGS);
   const [ticketNativeChannel, setTicketNativeChannel] = useState("web");
   const [rightPaneCollapse, setRightPaneCollapse] = useState(DEFAULT_RIGHT_PANE_COLLAPSE);
-  const toggleRightPaneCollapse = useCallback((key) => {
-    setRightPaneCollapse((prev) => ({ ...prev, [key]: !prev[key] }));
+  const [refreshingHistory, setRefreshingHistory] = useState(false);
+  const toggleRightPaneCollapse = useCallback(key => {
+    setRightPaneCollapse(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
   }, []);
   const [linkedTicketsExpanded, setLinkedTicketsExpanded] = useState(false);
   const [linkedEquipmentsExpanded, setLinkedEquipmentsExpanded] = useState(false);
@@ -1012,7 +1021,7 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     subject: "",
     to: "",
     cc: "",
-    message: "",
+    message: ""
   });
   const [sideConversations, setSideConversations] = useState([]);
   const [activeSideConversationId, setActiveSideConversationId] = useState(null);
@@ -1038,9 +1047,7 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       const stored = localStorage.getItem(REPLY_BOX_EXPANDED_KEY);
       if (stored === "false") return false;
       if (stored === "true") return true;
-    } catch (_) {
-      // ignore storage errors
-    }
+    } catch (_) {}
     return false;
   });
   const [editForm, setEditForm] = useState({
@@ -1053,7 +1060,7 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     channel: "web",
     clientId: "",
     assignedUserId: "",
-    requesterContactId: "",
+    requesterContactId: ""
   });
   const [ticketCategories, setTicketCategories] = useState([]);
   const [categorySearch, setCategorySearch] = useState("");
@@ -1076,8 +1083,7 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
   const categoryDropdownRef = useRef(null);
   const linkedTicketDropdownRef = useRef(null);
   const linkedEquipmentDropdownRef = useRef(null);
-
-  const normalizeAttachment = (attachment) => {
+  const normalizeAttachment = attachment => {
     if (!attachment) return null;
     const filePath = attachment.file_path || attachment.path || attachment.url || "";
     const normalizedUrl = toAbsoluteAttachmentUrl(filePath);
@@ -1089,16 +1095,18 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       path: normalizedUrl,
       mime_type: attachment.mime_type || "",
       file_size: attachment.file_size || 0,
-      comment_id: attachment.comment_id || null,
+      comment_id: attachment.comment_id || null
     };
   };
-
-  const hydrateTicketCommentsWithAttachments = (ticketData) => {
+  const hydrateTicketCommentsWithAttachments = ticketData => {
     const comments = Array.isArray(ticketData?.comments) ? ticketData.comments : [];
     const attachments = Array.isArray(ticketData?.attachments) ? ticketData.attachments : [];
-    if (comments.length === 0) return { ...ticketData, comments };
+    if (comments.length === 0) return {
+      ...ticketData,
+      comments
+    };
     const byCommentId = new Map();
-    attachments.forEach((raw) => {
+    attachments.forEach(raw => {
       const normalized = normalizeAttachment(raw);
       if (!normalized) return;
       const commentId = String(normalized.comment_id || "");
@@ -1109,44 +1117,40 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     });
     return {
       ...ticketData,
-      comments: comments.map((comment) => {
-        const fromComment = Array.isArray(comment.attachments)
-          ? comment.attachments.map(normalizeAttachment).filter(Boolean)
-          : [];
+      comments: comments.map(comment => {
+        const fromComment = Array.isArray(comment.attachments) ? comment.attachments.map(normalizeAttachment).filter(Boolean) : [];
         const fromTopLevel = byCommentId.get(String(comment.id)) || [];
         return {
           ...comment,
-          attachments: mergeCommentAttachments(fromComment, fromTopLevel),
+          attachments: mergeCommentAttachments(fromComment, fromTopLevel)
         };
-      }),
+      })
     };
   };
-
-  const loadTicketReminder = useCallback(async (id) => {
+  const loadTicketReminder = useCallback(async id => {
     if (!id || isCommunity) {
       setTicketReminder(null);
       return;
     }
     try {
-      const rows = await fetchEvents({ ticketId: id });
+      const rows = await fetchEvents({
+        ticketId: id
+      });
       setTicketReminder(Array.isArray(rows) && rows.length > 0 ? rows[0] : null);
     } catch {
       setTicketReminder(null);
     }
   }, [isCommunity]);
-
-  const loadDetail = async ({ silent = false } = {}) => {
+  const loadDetail = async ({
+    silent = false
+  } = {}) => {
     if (!ticketId) return;
     if (!silent) setLoading(true);
     try {
-      const [ticketRes, usersRes, clientsRes, contactsRes, categoriesRes] = await Promise.all([
-        fetchTicket(ticketId),
-        fetchUsers().catch(() => []),
-        fetchClientsList().catch(() => []),
-        fetchContactsList().catch(() => []),
-        fetchTicketCategories().catch(() => []),
-      ]);
-      const ticketsRes = await fetchTickets({ limit: 200 }).catch(() => []);
+      const [ticketRes, usersRes, clientsRes, contactsRes, categoriesRes] = await Promise.all([fetchTicket(ticketId), fetchUsers().catch(() => []), fetchClientsList().catch(() => []), fetchContactsList().catch(() => []), fetchTicketCategories().catch(() => [])]);
+      const ticketsRes = await fetchTickets({
+        limit: 200
+      }).catch(() => []);
       setTicket(hydrateTicketCommentsWithAttachments(ticketRes));
       setTicketNativeChannel(ticketRes.channel || "web");
       setUsers(Array.isArray(usersRes) ? usersRes : []);
@@ -1160,15 +1164,12 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
         description: ticketRes.description || "",
         status: ticketRes.status === "open" ? "new" : ticketRes.status || "new",
         priority: ticketRes.priority || "normal",
-        type:
-          String(ticketRes.type || "").trim().toLowerCase() === "request"
-            ? "demande"
-            : String(ticketRes.type || "").trim() || "incident",
+        type: String(ticketRes.type || "").trim().toLowerCase() === "request" ? "demande" : String(ticketRes.type || "").trim() || "incident",
         category: ticketRes.category || "",
         channel: ticketRes.channel || "web",
         clientId: ticketRes.client_id || "",
         assignedUserId: ticketRes.assigned_user_id || "",
-        requesterContactId: ticketRes.requester_contact_id || "",
+        requesterContactId: ticketRes.requester_contact_id || ""
       });
       setTitleDraft(ticketRes.title || "");
     } catch (error) {
@@ -1178,7 +1179,6 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       if (!silent) setLoading(false);
     }
   };
-
   useEffect(() => {
     setTitleEditing(false);
     setRightPaneView("context");
@@ -1187,15 +1187,12 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     setLinkedEquipmentsExpanded(false);
     setHistoryExpanded(false);
     loadDetail();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ticketId]);
-
   useEffect(() => {
     if (tagAddOpen) {
       tagInputRef.current?.focus();
     }
   }, [tagAddOpen]);
-
   useEffect(() => {
     if (!titleEditing) return;
     const input = titleInputRef.current;
@@ -1203,15 +1200,13 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     input.focus();
     input.select();
   }, [titleEditing]);
-
   useEffect(() => {
-    if (!descriptionEditing) return;
+    if (!descriptionEditing || titleEditing) return;
     const textarea = descriptionTextareaRef.current;
     if (!textarea) return;
     textarea.focus();
     textarea.setSelectionRange(textarea.value.length, textarea.value.length);
-  }, [descriptionEditing]);
-
+  }, [descriptionEditing, titleEditing]);
   const prevReplyBoxExpandedRef = useRef(replyBoxExpanded);
   useLayoutEffect(() => {
     const wasExpanded = prevReplyBoxExpandedRef.current;
@@ -1222,9 +1217,8 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       editor.innerHTML = commentDraft;
     }
   }, [replyBoxExpanded, commentDraft]);
-
   useEffect(() => {
-    const handleClickOutside = (e) => {
+    const handleClickOutside = e => {
       if (requesterDropdownRef.current && !requesterDropdownRef.current.contains(e.target)) {
         setShowRequesterDropdown(false);
       }
@@ -1247,26 +1241,51 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
   useEffect(() => {
     setCategorySearch(editForm.category || "");
   }, [editForm.category]);
-
   useEffect(() => {
     const timer = window.setInterval(() => setSlaNow(Date.now()), 60000);
     return () => window.clearInterval(timer);
   }, []);
-
-  const updateTicketLive = async (patch, { successMessage = "" } = {}) => {
+  const refreshTicketHistory = useCallback(async ({
+    showSpinner = false
+  } = {}) => {
+    if (!ticketId) return;
+    if (showSpinner) setRefreshingHistory(true);
+    try {
+      const ticketRes = await fetchTicket(ticketId);
+      setTicket(prev => {
+        if (!prev) return hydrateTicketCommentsWithAttachments(ticketRes);
+        return {
+          ...prev,
+          activityHistory: Array.isArray(ticketRes.activityHistory) ? ticketRes.activityHistory : prev.activityHistory,
+          statusHistory: Array.isArray(ticketRes.statusHistory) ? ticketRes.statusHistory : prev.statusHistory,
+          comments: Array.isArray(ticketRes.comments) ? hydrateTicketCommentsWithAttachments(ticketRes).comments : prev.comments,
+          deleted_at: ticketRes.deleted_at ?? prev.deleted_at,
+          is_deleted: ticketRes.is_deleted ?? prev.is_deleted
+        };
+      });
+    } catch (_) {
+      // silent refresh — avoid toast spam on background sync
+    } finally {
+      if (showSpinner) setRefreshingHistory(false);
+    }
+  }, [ticketId]);
+  const updateTicketLive = async (patch, {
+    successMessage = ""
+  } = {}) => {
     if (!ticketId) return;
     const ticketClosed = String(ticket?.status || "").toLowerCase() === "closed";
     const ticketDeleted = Boolean(ticket?.deleted_at || ticket?.is_deleted);
     if (ticketDeleted || ticketClosed) return;
     try {
       await updateTicket(ticketId, patch);
-      setTicket((prev) => {
+      setTicket(prev => {
         if (!prev) return prev;
-        const next = { ...prev };
+        const next = {
+          ...prev
+        };
         if (Object.prototype.hasOwnProperty.call(patch, "assignedUserId")) {
           next.assigned_user_id = patch.assignedUserId;
         }
@@ -1306,45 +1325,61 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
         return next;
       });
       if (successMessage) toast.success(successMessage);
+      void refreshTicketHistory();
     } catch (error) {
       toast.error(error.message || copy.toasts.updateError);
     }
   };
-
-  const handleMajorIncidentChange = async (checked) => {
+  const handleMajorIncidentChange = async checked => {
     if (!ticketId || isReadOnly || majorIncidentUpdating) return;
     const previousMajor = Boolean(ticket?.is_major_incident);
     const previousPriority = editForm.priority;
-    setTicket((prev) => (prev ? { ...prev, is_major_incident: checked } : prev));
+    setTicket(prev => prev ? {
+      ...prev,
+      is_major_incident: checked
+    } : prev);
     if (checked) {
-      setEditForm((p) => ({ ...p, priority: "urgent" }));
+      setEditForm(p => ({
+        ...p,
+        priority: "urgent"
+      }));
     }
     setMajorIncidentUpdating(true);
     try {
       await updateTicket(ticketId, {
         isMajorIncident: checked,
-        ...(checked ? { priority: "urgent" } : {}),
+        ...(checked ? {
+          priority: "urgent"
+        } : {})
       });
-      setTicket((prev) => {
+      setTicket(prev => {
         if (!prev) return prev;
-        const next = { ...prev, is_major_incident: checked };
+        const next = {
+          ...prev,
+          is_major_incident: checked
+        };
         if (checked) next.priority = "urgent";
         return next;
       });
       toast.success(checked ? copy.toasts.majorIncidentEnabled : copy.toasts.majorIncidentDisabled);
     } catch (error) {
-      setTicket((prev) => (prev ? { ...prev, is_major_incident: previousMajor } : prev));
-      setEditForm((p) => ({ ...p, priority: previousPriority }));
+      setTicket(prev => prev ? {
+        ...prev,
+        is_major_incident: previousMajor
+      } : prev);
+      setEditForm(p => ({
+        ...p,
+        priority: previousPriority
+      }));
       toast.error(error.message || copy.toasts.updateError);
     } finally {
       setMajorIncidentUpdating(false);
     }
   };
-
   const submitComment = async () => {
     const draftContentRaw = String(commentDraft || "").trim();
     const draftContentText = htmlToPlainText(draftContentRaw);
-    if (!ticketId || (!draftContentText && attachmentFiles.length === 0)) return;
+    if (!ticketId || !draftContentText && attachmentFiles.length === 0) return;
     const draftContent = resolveTemplateVariables(draftContentRaw);
     const draftInternal = commentInternal;
     const draftFiles = attachmentFiles;
@@ -1355,39 +1390,32 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
         createdComment = await addTicketCommentWithAttachments(ticketId, {
           content: draftContent,
           isInternal: commentInternal,
-          files: attachmentFiles,
+          files: attachmentFiles
         });
       } else {
         createdComment = await addTicketComment(ticketId, draftContent, draftInternal);
       }
-
-      setTicket((prev) => {
+      setTicket(prev => {
         if (!prev) return prev;
         const nextComment = {
           id: createdComment?.id || `local-${Date.now()}`,
           author_name: createdComment?.author_name || currentUserDisplayName,
           author_user_id: createdComment?.author_user_id || currentUserId || null,
           content: createdComment?.content || draftContent,
-          is_internal:
-            typeof createdComment?.is_internal === "boolean"
-              ? createdComment.is_internal
-              : draftInternal,
+          is_internal: typeof createdComment?.is_internal === "boolean" ? createdComment.is_internal : draftInternal,
           created_at: createdComment?.created_at || new Date().toISOString(),
-          attachments:
-            Array.isArray(createdComment?.attachments) && createdComment.attachments.length > 0
-              ? createdComment.attachments.map(normalizeAttachment).filter(Boolean)
-              : draftFiles.map((f, idx) => ({
-                  id: `${Date.now()}-${idx}`,
-                  name: f.name,
-                  filename: f.name,
-                  url: "",
-                  path: "",
-                })),
+          attachments: Array.isArray(createdComment?.attachments) && createdComment.attachments.length > 0 ? createdComment.attachments.map(normalizeAttachment).filter(Boolean) : draftFiles.map((f, idx) => ({
+            id: `${Date.now()}-${idx}`,
+            name: f.name,
+            filename: f.name,
+            url: "",
+            path: ""
+          }))
         };
         return {
           ...prev,
           comments: [...(prev.comments || []), nextComment],
-          updated_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         };
       });
       setCommentDraft("");
@@ -1401,44 +1429,25 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       toast.error(error.message || copy.toasts.commentAddError);
     }
   };
-
   const supportCredit = ticket?.supportCredit || null;
   const normalizedTicketStatus = ticket?.status === "open" ? "new" : ticket?.status;
   const isDeleted = Boolean(ticket?.deleted_at || ticket?.is_deleted);
   const resolutionValidation = ticket?.resolutionValidation || null;
-  const canResolveWithValidation =
-    !isDeleted &&
-    !["closed", "resolved"].includes(String(normalizedTicketStatus || "")) &&
-    !resolutionValidation?.isPending;
-  const showConsumeCreditOption =
-    supportCredit?.eligible &&
-    !supportCredit?.consumed &&
-    selectedSubmitAction === "solved" &&
-    !canResolveWithValidation;
-  const showRefundCreditOption =
-    supportCredit?.eligible &&
-    supportCredit?.consumed &&
-    ["resolved", "closed"].includes(String(normalizedTicketStatus || "")) &&
-    selectedSubmitAction !== "solved";
-
+  const canResolveWithValidation = !isDeleted && !["closed", "resolved"].includes(String(normalizedTicketStatus || "")) && !resolutionValidation?.isPending;
+  const showConsumeCreditOption = supportCredit?.eligible && !supportCredit?.consumed && selectedSubmitAction === "solved" && !canResolveWithValidation;
+  const showRefundCreditOption = supportCredit?.eligible && supportCredit?.consumed && ["resolved", "closed"].includes(String(normalizedTicketStatus || "")) && selectedSubmitAction !== "solved";
   const applyStatusWithFallback = async (targetStatus, creditOptions = {}) => {
-    // Règle métier demandée:
-    // - open    => ne pas changer le statut
-    // - pending => en cours (in_progress)
-    // - on_hold => en attente (pending)
-    // - solved  => résolu (resolved)
     if (targetStatus === "open") return;
-
     const statusMap = {
       pending: "in_progress",
       on_hold: "pending",
-      solved: "resolved",
+      solved: "resolved"
     };
     const mappedStatus = statusMap[targetStatus] || targetStatus;
     await updateTicketStatus(ticketId, mappedStatus, "", creditOptions);
+    void refreshTicketHistory();
   };
-
-  const submitConversationUpdate = async (targetStatus) => {
+  const submitConversationUpdate = async targetStatus => {
     if (!ticketId) return;
     const draftContentRaw = String(commentDraft || "").trim();
     const draftContentText = htmlToPlainText(draftContentRaw);
@@ -1455,22 +1464,17 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
         commentResult = await addTicketCommentWithAttachments(ticketId, {
           content: resolveTemplateVariables(draftContentRaw),
           isInternal: commentInternal,
-          files: attachmentFiles,
+          files: attachmentFiles
         });
       } else {
-        commentResult = await addTicketComment(
-          ticketId,
-          resolveTemplateVariables(draftContentRaw),
-          commentInternal
-        );
+        commentResult = await addTicketComment(ticketId, resolveTemplateVariables(draftContentRaw), commentInternal);
       }
       notifyWhatsAppDelivery(commentResult?.whatsappDelivery, copy);
-
       const creditOptions = {};
       if (targetStatus === "solved" && supportCredit?.eligible && consumeSupportCredit) {
         const defaultAmounts = buildDefaultResolveCreditAmounts(supportCredit?.packs || [], {
           defaultAmount: 1,
-          legacyBalance: supportCredit?.balance ?? 0,
+          legacyBalance: supportCredit?.balance ?? 0
         });
         const debits = buildSupportCreditDebitsPayload(defaultAmounts, supportCredit?.packs);
         if (debits.length > 0) {
@@ -1478,13 +1482,9 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
           creditOptions.supportCreditDebits = debits;
         }
       }
-      if (
-        showRefundCreditOption &&
-        refundSupportCredit
-      ) {
+      if (showRefundCreditOption && refundSupportCredit) {
         creditOptions.refundSupportCredit = true;
       }
-
       await applyStatusWithFallback(targetStatus, creditOptions);
       setCommentDraft("");
       if (commentEditorRef.current) commentEditorRef.current.innerHTML = "";
@@ -1504,12 +1504,10 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       setSubmittingStatus("");
     }
   };
-
   const openResolveModalFlow = useCallback(() => {
     const draftContentRaw = String(commentDraft || "").trim();
     const draftContentText = htmlToPlainText(draftContentRaw);
     const hasDraft = Boolean(draftContentText) || attachmentFiles.length > 0;
-
     if (hasDraft) {
       try {
         copy.validateAttachmentFiles(attachmentFiles);
@@ -1520,7 +1518,7 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       pendingResolveReplyRef.current = {
         content: draftContentRaw,
         internal: commentInternal,
-        files: [...attachmentFiles],
+        files: [...attachmentFiles]
       };
       resolveAfterReplyRef.current = !commentInternal;
       setResolvePendingReply(true);
@@ -1529,18 +1527,8 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       resolveAfterReplyRef.current = false;
       setResolvePendingReply(false);
     }
-
     setResolveModalOpen(true);
-  }, [
-    attachmentFiles,
-    commentDraft,
-    commentInternal,
-    copy,
-    supportCredit?.balance,
-    supportCredit?.consumed,
-    supportCredit?.eligible,
-  ]);
-
+  }, [attachmentFiles, commentDraft, commentInternal, copy, supportCredit?.balance, supportCredit?.consumed, supportCredit?.eligible]);
   const handleFooterSubmit = async () => {
     if (submittingStatus) return;
     if (selectedSubmitAction === "solved" && canResolveWithValidation) {
@@ -1549,21 +1537,19 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     }
     await submitConversationUpdate(selectedSubmitAction);
   };
-
-  const handleRandomTicketClick = async (event) => {
+  const handleRandomTicketClick = async event => {
     if (event.shiftKey) {
       setTicketPlayModeEnabled(false);
       setPlayMode(false);
       toast.info(copy.toasts.playModeDisabled);
       return;
     }
-
     setLoadingRandom(true);
     try {
       setPlayMode(true);
       await navigateToRandomTicket(onNavigate, {
         enablePlayMode: true,
-        excludeTicketId: ticketId,
+        excludeTicketId: ticketId
       });
     } catch {
       setPlayMode(isTicketPlayModeEnabled());
@@ -1571,20 +1557,16 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       setLoadingRandom(false);
     }
   };
-
   const runEditorCommand = (command, value = null) => {
     if (!commentEditorRef.current) return;
     commentEditorRef.current.focus();
     document.execCommand(command, false, value);
     setCommentDraft(commentEditorRef.current.innerHTML || "");
   };
-
   const mergeAttachmentFiles = (currentFiles = [], nextFiles = []) => {
     const merged = [...currentFiles];
-    const existingKeys = new Set(
-      currentFiles.map((file) => `${file.name}-${file.size}-${file.lastModified || 0}`)
-    );
-    nextFiles.forEach((file) => {
+    const existingKeys = new Set(currentFiles.map(file => `${file.name}-${file.size}-${file.lastModified || 0}`));
+    nextFiles.forEach(file => {
       const key = `${file.name}-${file.size}-${file.lastModified || 0}`;
       if (!existingKeys.has(key)) {
         existingKeys.add(key);
@@ -1593,31 +1575,26 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     });
     return merged;
   };
-
   const applySelectedAttachments = (selectedFiles = []) => {
     copy.validateAttachmentFiles(selectedFiles);
-    setAttachmentFiles((prev) => mergeAttachmentFiles(prev, selectedFiles));
+    setAttachmentFiles(prev => mergeAttachmentFiles(prev, selectedFiles));
   };
-
   const applySelectedMacroAttachments = (selectedFiles = []) => {
     copy.validateAttachmentFiles(selectedFiles);
-    setMacroAttachmentFiles((prev) => mergeAttachmentFiles(prev, selectedFiles));
+    setMacroAttachmentFiles(prev => mergeAttachmentFiles(prev, selectedFiles));
   };
-
-  const handleReplyDragOver = (event) => {
+  const handleReplyDragOver = event => {
     event.preventDefault();
     if (isReadOnly) return;
     if (!isDragOverReplyBox) setIsDragOverReplyBox(true);
   };
-
-  const handleReplyDragLeave = (event) => {
+  const handleReplyDragLeave = event => {
     event.preventDefault();
     if (!event.currentTarget.contains(event.relatedTarget)) {
       setIsDragOverReplyBox(false);
     }
   };
-
-  const handleReplyDrop = (event) => {
+  const handleReplyDrop = event => {
     event.preventDefault();
     setIsDragOverReplyBox(false);
     if (isReadOnly) return;
@@ -1628,49 +1605,73 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
         setReplyBoxExpanded(true);
         try {
           localStorage.setItem(REPLY_BOX_EXPANDED_KEY, "true");
-        } catch (_) {
-          // ignore storage errors
-        }
+        } catch (_) {}
       }
       applySelectedAttachments(droppedFiles);
     } catch (error) {
       toast.error(error.message || copy.attachmentInvalid);
     }
   };
-
   const toggleReplyBoxExpanded = useCallback(() => {
-    setReplyBoxExpanded((prev) => {
+    setReplyBoxExpanded(prev => {
       const next = !prev;
       try {
         localStorage.setItem(REPLY_BOX_EXPANDED_KEY, String(next));
-      } catch (_) {
-        // ignore storage errors
-      }
+      } catch (_) {}
       if (next) {
         requestAnimationFrame(() => commentEditorRef.current?.focus());
       }
       return next;
     });
   }, []);
-
   const expandReplyBox = useCallback(() => {
     setReplyBoxExpanded(true);
     try {
       localStorage.setItem(REPLY_BOX_EXPANDED_KEY, "true");
-    } catch (_) {
-      // ignore storage errors
-    }
+    } catch (_) {}
     requestAnimationFrame(() => commentEditorRef.current?.focus());
   }, []);
-
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const status = await fetchAiStatus();
+        if (cancelled) return;
+        const configured = Boolean(status?.configured);
+        setAiFeatures({
+          suggestReply: configured && status?.features?.suggestReply !== false,
+          ticketRunbook: configured && status?.features?.ticketRunbook !== false
+        });
+      } catch {
+        if (!cancelled) {
+          setAiFeatures({
+            suggestReply: false,
+            ticketRunbook: false
+          });
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  useEffect(() => {
+    if (!aiFeatures.ticketRunbook && rightPaneView === "runbook") {
+      setRightPaneView("context");
+    }
+  }, [aiFeatures.ticketRunbook, rightPaneView]);
+  const handleAiRunbookChange = useCallback(nextRunbook => {
+    setTicket(prev => prev ? {
+      ...prev,
+      ai_runbook: nextRunbook
+    } : prev);
+  }, []);
   const insertBold = () => {
     runEditorCommand("bold");
   };
-
   const insertBulletList = () => {
     runEditorCommand("insertUnorderedList");
   };
-
   const insertLink = () => {
     const defaultUrl = copy.prompts.linkUrlDefault;
     const urlInput = window.prompt(copy.prompts.linkUrl, copy.prompts.linkUrlDefault);
@@ -1684,16 +1685,14 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     }
     runEditorCommand("createLink", normalizedUrl);
   };
-
   const insertEmoji = (emoji = "😊") => {
     runEditorCommand("insertText", `${emoji}`);
     setShowEmojiPicker(false);
   };
-
-  const applyCommentTemplate = (templateId) => {
+  const applyCommentTemplate = templateId => {
     setCommentTemplateSelection(templateId);
     if (!templateId) return;
-    const template = availableCommentTemplates.find((row) => String(row.id) === String(templateId));
+    const template = availableCommentTemplates.find(row => String(row.id) === String(templateId));
     if (!template) return;
     const resolvedContent = resolveTemplateVariables(String(template.content || ""));
     setCommentDraft(resolvedContent);
@@ -1704,61 +1703,53 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     });
     toast.success(copy.formatTemplateApplied(template.name));
   };
-
   const addTag = async () => {
     if (!ticketId || !tagDraft.trim()) return;
     try {
       const createdTag = await addTicketTag(ticketId, tagDraft.trim());
-      setTicket((prev) => {
+      setTicket(prev => {
         if (!prev) return prev;
         const existing = prev.tags || [];
-        const alreadyExists = existing.some(
-          (tag) =>
-            String(tag.id) === String(createdTag?.id) ||
-            String(tag.label || "").toLowerCase() === String(createdTag?.label || "").toLowerCase()
-        );
+        const alreadyExists = existing.some(tag => String(tag.id) === String(createdTag?.id) || String(tag.label || "").toLowerCase() === String(createdTag?.label || "").toLowerCase());
         if (alreadyExists) return prev;
         return {
           ...prev,
-          tags: [...existing, createdTag],
+          tags: [...existing, createdTag]
         };
       });
       setTagDraft("");
       setTagAddOpen(false);
       toast.success(copy.toasts.tagAdded);
+      void refreshTicketHistory();
     } catch (error) {
       toast.error(error.message || copy.toasts.tagAddError);
     }
   };
-
-  const handleAddTagSubmit = async (event) => {
+  const handleAddTagSubmit = async event => {
     event.preventDefault();
     await addTag();
   };
-
-  const removeTag = async (tagId) => {
+  const removeTag = async tagId => {
     if (!ticketId || !tagId) return;
     try {
       await removeTicketTag(ticketId, tagId);
-      setTicket((prev) => {
+      setTicket(prev => {
         if (!prev) return prev;
         return {
           ...prev,
-          tags: (prev.tags || []).filter((tag) => String(tag.id) !== String(tagId)),
+          tags: (prev.tags || []).filter(tag => String(tag.id) !== String(tagId))
         };
       });
       toast.success(copy.toasts.tagRemoved);
+      void refreshTicketHistory();
     } catch (error) {
       toast.error(error.message || copy.toasts.tagRemoveError);
     }
   };
-
   const addWatcher = async (userIdParam = watcherDraft) => {
     const targetUserId = userIdParam || watcherDraft;
     if (!ticketId || !targetUserId) return;
-    const alreadyFollower = (ticket?.watchers || []).some(
-      (w) => String(w.user_id) === String(targetUserId)
-    );
+    const alreadyFollower = (ticket?.watchers || []).some(w => String(w.user_id) === String(targetUserId));
     if (alreadyFollower) {
       setFollowerSearch("");
       setWatcherDraft("");
@@ -1766,116 +1757,105 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     }
     try {
       await addTicketWatcher(ticketId, targetUserId);
-      setTicket((prev) => {
+      setTicket(prev => {
         if (!prev) return prev;
         const existing = prev.watchers || [];
-        const alreadyExistsAfter = existing.some(
-          (w) => String(w.user_id) === String(targetUserId)
-        );
+        const alreadyExistsAfter = existing.some(w => String(w.user_id) === String(targetUserId));
         if (alreadyExistsAfter) return prev;
         return {
           ...prev,
-          watchers: [
-            ...existing,
-            {
-              ticket_id: ticketId,
-              user_id: targetUserId,
-              created_at: new Date().toISOString(),
-            },
-          ],
+          watchers: [...existing, {
+            ticket_id: ticketId,
+            user_id: targetUserId,
+            created_at: new Date().toISOString()
+          }]
         };
       });
       setWatcherDraft("");
       setFollowerSearch("");
       setShowFollowerDropdown(false);
       toast.success(copy.toasts.followerAdded);
+      void refreshTicketHistory();
     } catch (error) {
       toast.error(error.message || copy.toasts.followerAddError);
     }
   };
-
-  const removeWatcher = async (userId) => {
+  const removeWatcher = async userId => {
     if (!ticketId || !userId) return;
     try {
       await removeTicketWatcher(ticketId, userId);
-      setTicket((prev) => {
+      setTicket(prev => {
         if (!prev) return prev;
         return {
           ...prev,
-          watchers: (prev.watchers || []).filter(
-            (w) => String(w.user_id) !== String(userId)
-          ),
+          watchers: (prev.watchers || []).filter(w => String(w.user_id) !== String(userId))
         };
       });
       toast.success(copy.toasts.followerRemoved);
+      void refreshTicketHistory();
     } catch (error) {
       toast.error(error.message || copy.toasts.followerRemoveError);
     }
   };
-
-  const addAssignee = async (userId) => {
+  const addAssignee = async userId => {
     if (!ticketId || !userId) return;
-    const alreadyAssigned = assigneeUserIds.some((id) => String(id) === String(userId));
+    const alreadyAssigned = assigneeUserIds.some(id => String(id) === String(userId));
     if (alreadyAssigned) {
       setAssigneeSearch("");
       return;
     }
     try {
       await addTicketAssignee(ticketId, userId);
-      setTicket((prev) => {
+      setTicket(prev => {
         if (!prev) return prev;
         const currentAssignees = Array.isArray(prev.assignees) ? prev.assignees : [];
         return {
           ...prev,
           assigned_user_id: userId,
-          assignees: [
-            ...currentAssignees,
-            {
-              ticket_id: ticketId,
-              user_id: userId,
-              created_at: new Date().toISOString(),
-            },
-          ],
+          assignees: [...currentAssignees, {
+            ticket_id: ticketId,
+            user_id: userId,
+            created_at: new Date().toISOString()
+          }]
         };
       });
-      setEditForm((prev) => ({ ...prev, assignedUserId: userId }));
+      setEditForm(prev => ({
+        ...prev,
+        assignedUserId: userId
+      }));
       setAssigneeSearch("");
       setShowAssigneeDropdown(false);
       toast.success(copy.toasts.assigneeAdded);
+      void refreshTicketHistory();
     } catch (error) {
       toast.error(error.message || copy.toasts.assigneeAddError);
     }
   };
-
-  const removeAssignee = async (userId) => {
+  const removeAssignee = async userId => {
     if (!ticketId || !userId) return;
     try {
       await removeTicketAssignee(ticketId, userId);
-      setTicket((prev) => {
+      setTicket(prev => {
         if (!prev) return prev;
         const currentAssignees = Array.isArray(prev.assignees) ? prev.assignees : [];
-        const nextAssignees = currentAssignees.filter(
-          (a) => String(a.user_id) !== String(userId)
-        );
-        const fallbackAssignedUserId =
-          nextAssignees.length > 0 ? nextAssignees[nextAssignees.length - 1].user_id : null;
+        const nextAssignees = currentAssignees.filter(a => String(a.user_id) !== String(userId));
+        const fallbackAssignedUserId = nextAssignees.length > 0 ? nextAssignees[nextAssignees.length - 1].user_id : null;
         return {
           ...prev,
           assigned_user_id: fallbackAssignedUserId,
-          assignees: nextAssignees,
+          assignees: nextAssignees
         };
       });
-      setEditForm((prev) => ({
+      setEditForm(prev => ({
         ...prev,
-        assignedUserId:
-          String(prev.assignedUserId) === String(userId) ? "" : prev.assignedUserId,
+        assignedUserId: String(prev.assignedUserId) === String(userId) ? "" : prev.assignedUserId
       }));
       toast.success(copy.toasts.assigneeRemoved);
+      void refreshTicketHistory();
     } catch (error) {
       toast.error(error.message || copy.toasts.assigneeRemoveError);
     }
   };
-
   const commitTitleChange = async () => {
     const nextTitle = String(titleDraft || "").trim();
     if (!nextTitle) {
@@ -1884,73 +1864,74 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       return;
     }
     if (nextTitle === (editForm.title || "")) return;
-    setEditForm((prev) => ({ ...prev, title: nextTitle }));
-    await updateTicketLive({ title: nextTitle }, { successMessage: copy.toasts.titleUpdated });
+    setEditForm(prev => ({
+      ...prev,
+      title: nextTitle
+    }));
+    await updateTicketLive({
+      title: nextTitle
+    }, {
+      successMessage: copy.toasts.titleUpdated
+    });
   };
-
-  const startTitleEdit = () => {
-    if (isReadOnly) return;
-    setTitleDraft(editForm.title || ticket?.title || "");
-    setTitleEditing(true);
-  };
-
-  const cancelTitleEdit = () => {
-    setTitleDraft(editForm.title || ticket?.title || "");
-    setTitleEditing(false);
-  };
-
-  const handleTitleBlur = async () => {
-    await commitTitleChange();
-    setTitleEditing(false);
-  };
-
   const commitDescriptionChange = async () => {
     const nextDescription = String(descriptionDraft || "").trim();
     if (nextDescription === String(editForm.description || "").trim()) return;
-    setEditForm((prev) => ({ ...prev, description: nextDescription }));
-    await updateTicketLive(
-      { description: nextDescription },
-      { successMessage: copy.toasts.descriptionUpdated }
-    );
+    setEditForm(prev => ({
+      ...prev,
+      description: nextDescription
+    }));
+    await updateTicketLive({
+      description: nextDescription
+    }, {
+      successMessage: copy.toasts.descriptionUpdated
+    });
   };
-
-  const startDescriptionEdit = () => {
+  const initialRequestEditing = titleEditing || descriptionEditing;
+  const startInitialRequestEdit = () => {
     if (isReadOnly) return;
+    setTitleDraft(editForm.title || ticket?.title || "");
     setDescriptionDraft(editForm.description || ticket?.description || "");
+    setTitleEditing(true);
     setDescriptionEditing(true);
   };
-
-  const cancelDescriptionEdit = () => {
+  const cancelInitialRequestEdit = () => {
+    setTitleDraft(editForm.title || ticket?.title || "");
     setDescriptionDraft(editForm.description || ticket?.description || "");
+    setTitleEditing(false);
     setDescriptionEditing(false);
   };
-
-  const handleDescriptionBlur = async () => {
+  const saveInitialRequestEdit = async () => {
+    const nextTitle = String(titleDraft || "").trim();
+    if (!nextTitle) {
+      setTitleDraft(editForm.title || "");
+      toast.error(copy.toasts.titleRequired);
+      return;
+    }
+    await commitTitleChange();
     await commitDescriptionChange();
+    setTitleEditing(false);
     setDescriptionEditing(false);
   };
-
-  const addLinked = async (explicitTicketId) => {
+  const addLinked = async explicitTicketId => {
     const targetId = explicitTicketId != null ? String(explicitTicketId) : linkedTicketDraft;
     if (!ticketId || !targetId) return;
-    const selected = availableLinkTargets.find((row) => String(row.id) === String(targetId));
+    const selected = availableLinkTargets.find(row => String(row.id) === String(targetId));
     if (!selected) {
       toast.error(copy.toasts.selectValidTicket);
       return;
     }
-    const safeTitle = String(selected.title || "Ticket lié").replace(/[\\\]]/g, "");
+    const safeTitle = String(selected.title || "Linked ticket").replace(/[\\\]]/g, "");
     const safeNumber = String(selected.ticket_number || selected.id || "").replace(/[\\\]]/g, "");
-    const marker =
-      `[Linked ticket] [event:added] [linked_ticket_id:${selected.id}] ` +
-      `[ticket_number:${safeNumber}] [title:${safeTitle}]`;
+    const marker = `[Linked ticket] [event:added] [linked_ticket_id:${selected.id}] ` + `[ticket_number:${safeNumber}] [title:${safeTitle}]`;
     try {
       const createdComment = await addTicketComment(ticketId, marker, true);
-      setTicket((prev) => {
+      setTicket(prev => {
         if (!prev) return prev;
         return {
           ...prev,
           comments: [...(prev.comments || []), createdComment],
-          updated_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         };
       });
       setLinkedTicketDraft("");
@@ -1960,18 +1941,17 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       toast.error(error.message || copy.toasts.ticketLinkError);
     }
   };
-
-  const removeLinked = async (linkedTicketId) => {
+  const removeLinked = async linkedTicketId => {
     if (!ticketId || !linkedTicketId) return;
     const marker = `[Linked ticket] [event:removed] [linked_ticket_id:${linkedTicketId}]`;
     try {
       const createdComment = await addTicketComment(ticketId, marker, true);
-      setTicket((prev) => {
+      setTicket(prev => {
         if (!prev) return prev;
         return {
           ...prev,
           comments: [...(prev.comments || []), createdComment],
-          updated_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         };
       });
       toast.success(copy.toasts.ticketUnlinked);
@@ -1979,49 +1959,41 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       toast.error(error.message || copy.toasts.ticketUnlinkError);
     }
   };
-
-  const addLinkedEquipment = async (explicitEquipmentId) => {
+  const addLinkedEquipment = async explicitEquipmentId => {
     const targetId = explicitEquipmentId != null ? String(explicitEquipmentId) : linkedEquipmentDraft;
     if (!ticketId || !targetId) return;
-    const selected = clientEquipments.find((eq) => String(eq.id) === String(targetId));
+    const selected = clientEquipments.find(eq => String(eq.id) === String(targetId));
     if (!selected) {
       toast.error(copy.toasts.selectValidEquipment);
       return;
     }
-    const safeName = String(selected.name || selected.model || `Matériel ${selected.id}`).replace(/[\\\]]/g, "");
+    const safeName = String(selected.name || selected.model || `Hardware ${selected.id}`).replace(/[\\\]]/g, "");
     const safeType = String(selected.type || "").replace(/[\\\]]/g, "");
     const safeClientId = String(ticket?.client_id || "").replace(/[\\\]]/g, "");
     const safeWarranty = String(selected.warranty || "").replace(/[\\\]]/g, "");
-    const licensesText = Array.isArray(selected.licenses)
-      ? selected.licenses.join(", ")
-      : String(selected.licenses || "");
+    const licensesText = Array.isArray(selected.licenses) ? selected.licenses.join(", ") : String(selected.licenses || "");
     const safeLicenses = encodeURIComponent(String(licensesText || "").replace(/[\\\]]/g, ""));
-    const marker =
-      `[Linked equipment] [event:added] [equipment_id:${selected.id}] [name:${safeName}] [type:${safeType}] ` +
-      `[client_id:${safeClientId}] [warranty:${safeWarranty}] [licenses:${safeLicenses}]`;
+    const marker = `[Linked equipment] [event:added] [equipment_id:${selected.id}] [name:${safeName}] [type:${safeType}] ` + `[client_id:${safeClientId}] [warranty:${safeWarranty}] [licenses:${safeLicenses}]`;
     try {
       const createdComment = await addTicketComment(ticketId, marker, true);
-      setTicket((prev) => {
+      setTicket(prev => {
         if (!prev) return prev;
         return {
           ...prev,
           comments: [...(prev.comments || []), createdComment],
-          updated_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         };
       });
-      setLinkedEquipments((prev) => {
-        if (prev.some((row) => String(row.equipment_id) === String(selected.id))) return prev;
-        return [
-          ...prev,
-          {
-            equipment_id: selected.id,
-            name: selected.name || selected.model || `Matériel ${selected.id}`,
-            type: selected.type || "",
-            client_id: ticket?.client_id || "",
-            warranty: selected.warranty || "",
-            licenses: licensesText || "",
-          },
-        ].sort((a, b) => String(a.name || "").localeCompare(String(b.name || ""), "fr"));
+      setLinkedEquipments(prev => {
+        if (prev.some(row => String(row.equipment_id) === String(selected.id))) return prev;
+        return [...prev, {
+          equipment_id: selected.id,
+          name: selected.name || selected.model || `Hardware ${selected.id}`,
+          type: selected.type || "",
+          client_id: ticket?.client_id || "",
+          warranty: selected.warranty || "",
+          licenses: licensesText || ""
+        }].sort((a, b) => String(a.name || "").localeCompare(String(b.name || ""), "fr"));
       });
       setLinkedEquipmentDraft("");
       setLinkedEquipmentSearch("");
@@ -2031,35 +2003,32 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       toast.error(error.message || copy.toasts.equipmentLinkError);
     }
   };
-
-  const removeLinkedEquipment = async (equipmentId) => {
+  const removeLinkedEquipment = async equipmentId => {
     if (!ticketId || !equipmentId) return;
-    const row = linkedEquipments.find((item) => String(item.equipment_id) === String(equipmentId));
-    const safeName = String(row?.name || "Matériel").replace(/[\\\]]/g, "");
+    const row = linkedEquipments.find(item => String(item.equipment_id) === String(equipmentId));
+    const safeName = String(row?.name || "Hardware").replace(/[\\\]]/g, "");
     const safeType = String(row?.type || "").replace(/[\\\]]/g, "");
     const safeClientId = String(row?.client_id || ticket?.client_id || "").replace(/[\\\]]/g, "");
     const marker = `[Linked equipment] [event:removed] [equipment_id:${equipmentId}] [name:${safeName}] [type:${safeType}] [client_id:${safeClientId}]`;
     try {
       const createdComment = await addTicketComment(ticketId, marker, true);
-      setTicket((prev) => {
+      setTicket(prev => {
         if (!prev) return prev;
         return {
           ...prev,
           comments: [...(prev.comments || []), createdComment],
-          updated_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         };
       });
-      setLinkedEquipments((prev) => prev.filter((item) => String(item.equipment_id) !== String(equipmentId)));
+      setLinkedEquipments(prev => prev.filter(item => String(item.equipment_id) !== String(equipmentId)));
       toast.success(copy.toasts.equipmentUnlinked);
     } catch (error) {
       toast.error(error.message || copy.toasts.equipmentUnlinkError);
     }
   };
-
   const softDeleteCurrentTicket = () => {
     setTicketDeleteConfirm("soft");
   };
-
   const restoreCurrentTicket = async () => {
     if (!ticketId) return;
     try {
@@ -2070,7 +2039,6 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       toast.error(error.message || copy.toasts.restoreError);
     }
   };
-
   const permanentlyDeleteCurrentTicket = () => {
     if (!isAdmin) {
       toast.error(copy.toasts.adminOnlyPermanentDelete);
@@ -2078,12 +2046,10 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     }
     setTicketDeleteConfirm("permanent");
   };
-
   const closeDeleteConfirm = () => {
     if (deletingTicket) return;
     setTicketDeleteConfirm(null);
   };
-
   const confirmDeleteTicket = async () => {
     if (!ticketId || !ticketDeleteConfirm) return;
     setDeletingTicket(true);
@@ -2098,17 +2064,11 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       setTicketDeleteConfirm(null);
       onNavigate?.("Ticket");
     } catch (error) {
-      toast.error(
-        error.message ||
-          (ticketDeleteConfirm === "soft"
-            ? copy.toasts.deleteError
-            : copy.toasts.permanentDeleteError)
-      );
+      toast.error(error.message || (ticketDeleteConfirm === "soft" ? copy.toasts.deleteError : copy.toasts.permanentDeleteError));
     } finally {
       setDeletingTicket(false);
     }
   };
-
   const openEmailTemplate = (to, cc, subject, body) => {
     const params = new URLSearchParams();
     const ccValue = String(cc || "").trim();
@@ -2117,18 +2077,14 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     params.set("body", String(body || ""));
     const query = params.toString();
     const toValue = String(to || "").trim();
-    const link = toValue
-      ? `mailto:${toValue}?${query}`
-      : `mailto:?${query}`;
+    const link = toValue ? `mailto:${toValue}?${query}` : `mailto:?${query}`;
     window.open(link, "_blank", "noopener,noreferrer");
   };
-
   const closeMacroAttachmentModal = () => {
     setMacroAttachmentModalOpen(false);
     setPendingMacroExecution(null);
     setMacroAttachmentFiles([]);
   };
-
   const executeMacro = async (selectedMacro, attachmentFilesForMacro = []) => {
     if (!ticketId || !selectedMacro) return;
     if (!selectedMacro) {
@@ -2136,32 +2092,20 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       return;
     }
     try {
-      const replacer = (text) => resolveTemplateVariables(text);
-      const parseCsv = (raw) =>
-        String(raw || "")
-          .split(",")
-          .map((item) => item.trim())
-          .filter(Boolean);
-      const parseIdList = (raw) => parseCsv(raw).map((id) => String(id).trim()).filter(Boolean);
-
+      const replacer = text => resolveTemplateVariables(text);
+      const parseCsv = raw => String(raw || "").split(",").map(item => item.trim()).filter(Boolean);
+      const parseIdList = raw => parseCsv(raw).map(id => String(id).trim()).filter(Boolean);
       const actions = Array.isArray(selectedMacro.actions) ? selectedMacro.actions : [];
       const patch = {};
       let shouldUpdateTicket = false;
       let attachmentUploaded = false;
-
-      const currentAssigneeIds = (ticket?.assignees || [])
-        .map((row) => String(row.user_id || row.id || "").trim())
-        .filter(Boolean);
-      const currentWatcherIds = (ticket?.watchers || [])
-        .map((row) => String(row.user_id || row.id || "").trim())
-        .filter(Boolean);
-
+      const currentAssigneeIds = (ticket?.assignees || []).map(row => String(row.user_id || row.id || "").trim()).filter(Boolean);
+      const currentWatcherIds = (ticket?.watchers || []).map(row => String(row.user_id || row.id || "").trim()).filter(Boolean);
       for (const action of actions) {
         if (action?.type === "set_field") {
           const field = String(action.field || "").trim();
           const value = String(action.value || "");
           const fieldMode = String(action.fieldMode || "").trim().toLowerCase();
-
           if (field === "assigned_to_me") {
             patch.assignedUserId = user?.id || null;
             shouldUpdateTicket = true;
@@ -2170,7 +2114,6 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
             if (fieldMode === "add") {
               for (const assigneeId of targetIds) {
                 if (!currentAssigneeIds.includes(assigneeId)) {
-                  // eslint-disable-next-line no-await-in-loop
                   await addTicketAssignee(ticketId, assigneeId);
                   currentAssigneeIds.push(assigneeId);
                 }
@@ -2187,12 +2130,10 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
                 patch.assignedUserId = null;
                 shouldUpdateTicket = true;
               }
-              for (const assigneeId of currentAssigneeIds.filter((id) => !targetIds.includes(id))) {
-                // eslint-disable-next-line no-await-in-loop
+              for (const assigneeId of currentAssigneeIds.filter(id => !targetIds.includes(id))) {
                 await removeTicketAssignee(ticketId, assigneeId);
               }
-              for (const assigneeId of targetIds.filter((id) => !currentAssigneeIds.includes(id))) {
-                // eslint-disable-next-line no-await-in-loop
+              for (const assigneeId of targetIds.filter(id => !currentAssigneeIds.includes(id))) {
                 await addTicketAssignee(ticketId, assigneeId);
               }
               currentAssigneeIds.splice(0, currentAssigneeIds.length, ...targetIds);
@@ -2225,55 +2166,41 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
             const targetIds = parseIdList(value);
             const mode = fieldMode || "add";
             if (mode === "replace") {
-              for (const watcherId of currentWatcherIds.filter((id) => !targetIds.includes(id))) {
-                // eslint-disable-next-line no-await-in-loop
+              for (const watcherId of currentWatcherIds.filter(id => !targetIds.includes(id))) {
                 await removeTicketWatcher(ticketId, watcherId);
               }
-              for (const watcherId of targetIds.filter((id) => !currentWatcherIds.includes(id))) {
-                // eslint-disable-next-line no-await-in-loop
+              for (const watcherId of targetIds.filter(id => !currentWatcherIds.includes(id))) {
                 await addTicketWatcher(ticketId, watcherId);
               }
               currentWatcherIds.splice(0, currentWatcherIds.length, ...targetIds);
             } else if (mode === "remove") {
               for (const watcherId of targetIds) {
-                // eslint-disable-next-line no-await-in-loop
                 await removeTicketWatcher(ticketId, watcherId);
               }
             } else {
               for (const watcherId of targetIds) {
-                // eslint-disable-next-line no-await-in-loop
                 await addTicketWatcher(ticketId, watcherId);
               }
             }
           } else if (field === "linked_tickets") {
             const linkedIds = parseIdList(value);
             for (const linkedId of linkedIds) {
-              // eslint-disable-next-line no-await-in-loop
               await addLinkedTicket(ticketId, linkedId);
             }
           } else if (field === "linked_equipments") {
             const equipmentIds = parseIdList(value);
             for (const equipmentId of equipmentIds) {
-              // eslint-disable-next-line no-await-in-loop
-              await addTicketComment(
-                ticketId,
-                `[Linked equipment] [event:added] [equipment_id:${equipmentId}]`,
-                true
-              );
+              await addTicketComment(ticketId, `[Linked equipment] [event:added] [equipment_id:${equipmentId}]`, true);
             }
           } else if (field === "tags") {
             for (const tagLabel of parseCsv(value)) {
-              // eslint-disable-next-line no-await-in-loop
               await addTicketTag(ticketId, tagLabel, "#13BA8E");
             }
           }
         }
-
         if (action?.type === "add_comment" && action.comment) {
-          // eslint-disable-next-line no-await-in-loop
           await addTicketComment(ticketId, replacer(action.comment), Boolean(action.isInternal));
         }
-
         if (action?.type === "open_email") {
           const emailTo = replacer(action.emailTo || "");
           const emailCc = replacer(action.emailCc || "");
@@ -2283,7 +2210,6 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
             openEmailTemplate(emailTo, emailCc, emailSubject, emailBody);
           }
         }
-
         if (action?.type === "teams_message") {
           if (isCommunity) {
             toast.info(copy.toasts.macroTeamsPro);
@@ -2292,39 +2218,34 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
             if (!webhookId) {
               toast.error(copy.toasts.macroTeamsWebhookMissing);
             } else {
-              // eslint-disable-next-line no-await-in-loop
               const response = await fetch(`${API_BASE_URL}/tickets/notifications/webhooks/custom-send`, {
                 method: "POST",
                 credentials: "include",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                  "Content-Type": "application/json"
+                },
                 body: JSON.stringify({
                   webhookId,
                   title: replacer(action.teamsTitle || "Notification ticket"),
                   message: replacer(action.teamsMessage),
-                  teamsThemeColor: String(action.teamsThemeColor || "#13BA8E"),
-                }),
+                  teamsThemeColor: String(action.teamsThemeColor || "#13BA8E")
+                })
               });
               const payload = await response.json().catch(() => ({}));
               if (!response.ok || payload?.success === false) {
-                throw new Error(payload?.error || "Impossible d'envoyer le message Teams");
+                throw new Error(payload?.error || "Unable to send the Teams message");
               }
-              // eslint-disable-next-line no-await-in-loop
-              await addTicketComment(
-                ticketId,
-                `[Macro Teams] ${replacer(action.teamsMessage)}`,
-                true
-              );
+              await addTicketComment(ticketId, `[Macro Teams] ${replacer(action.teamsMessage)}`, true);
             }
           }
         }
-
         if (action?.type === "planning_alert") {
           if (isCommunity) {
             setProPromoFeature("ticketPlanningAlert");
           } else {
             const offsetMinutes = Math.max(5, Number(action.reminderOffsetMinutes || 60) || 60);
             const startDate = new Date(Date.now() + offsetMinutes * 60 * 1000);
-            const pad = (n) => String(n).padStart(2, "0");
+            const pad = n => String(n).padStart(2, "0");
             const payload = buildReminderEventPayload({
               ticket,
               title: replacer(action.reminderTitle || `Ticket #${ticket?.ticket_number || ticketId}`),
@@ -2332,70 +2253,55 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
               time: `${pad(startDate.getHours())}:${pad(startDate.getMinutes())}`,
               note: replacer(action.reminderNote || ""),
               assignedUserId: user?.id,
-              requesterName: requesterDisplayName !== "-" ? requesterDisplayName : "",
+              requesterName: requesterDisplayName !== "-" ? requesterDisplayName : ""
             });
             if (!payload) {
-              throw new Error("Alerte planning invalide (titre requis)");
+              throw new Error("Invalid schedule alert (title required)");
             }
-            // eslint-disable-next-line no-await-in-loop
             await createEvent(payload);
           }
         }
-
         if (action?.type === "call" && action.phoneNumber) {
           const sanitizedPhone = String(action.phoneNumber || "").trim();
           if (sanitizedPhone) {
             window.open(`tel:${sanitizedPhone}`, "_self");
           }
-          // eslint-disable-next-line no-await-in-loop
-          await addTicketComment(ticketId, `[Macro Appel] Numéro à contacter: ${action.phoneNumber}`, true);
+          await addTicketComment(ticketId, `[Call Macro] Phone number to contact: ${action.phoneNumber}`, true);
         }
-
         if (action?.type === "link_ticket" && action.ticketId) {
           const linkedId = String(action.ticketId || "").trim();
           if (linkedId) {
-            // eslint-disable-next-line no-await-in-loop
             await addLinkedTicket(ticketId, linkedId);
           }
         }
-
         if (action?.type === "link_equipment" && action.equipmentId) {
-          // eslint-disable-next-line no-await-in-loop
           await addTicketComment(ticketId, `[Linked equipment] [event:added] [equipment_id:${action.equipmentId}]`, true);
         }
-
         if ((action?.type === "manage_tags" || action?.type === "add_tags") && action.tagsText) {
           const tagLabels = parseCsv(action.tagsText);
           const removeMode = action.tagsMode === "remove";
           for (const tagLabel of tagLabels) {
             if (removeMode) {
-              const existingTag = (ticket?.tags || []).find(
-                (tag) => String(tag.label || "").trim().toLowerCase() === tagLabel.toLowerCase()
-              );
+              const existingTag = (ticket?.tags || []).find(tag => String(tag.label || "").trim().toLowerCase() === tagLabel.toLowerCase());
               if (existingTag?.id) {
-                // eslint-disable-next-line no-await-in-loop
                 await removeTicketTag(ticketId, existingTag.id);
               }
             } else {
-              // eslint-disable-next-line no-await-in-loop
               await addTicketTag(ticketId, tagLabel, "#13BA8E");
             }
           }
         }
-
         if (action?.type === "add_attachment") {
           if (!attachmentUploaded && attachmentFilesForMacro.length > 0) {
-            // eslint-disable-next-line no-await-in-loop
             await addTicketCommentWithAttachments(ticketId, {
               content: "",
               isInternal: true,
-              files: attachmentFilesForMacro,
+              files: attachmentFilesForMacro
             });
             attachmentUploaded = true;
           }
         }
       }
-
       if (shouldUpdateTicket) {
         await updateTicket(ticketId, patch);
       }
@@ -2406,16 +2312,15 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       toast.error(error.message || copy.toasts.macroError);
     }
   };
-
   const runMacro = async () => {
     if (!ticketId || !macroSelection) return;
-    const selectedMacro = availableMacros.find((macro) => String(macro.id) === String(macroSelection));
+    const selectedMacro = availableMacros.find(macro => String(macro.id) === String(macroSelection));
     if (!selectedMacro) {
       toast.error(copy.toasts.macroNotFound);
       return;
     }
     const actions = Array.isArray(selectedMacro.actions) ? selectedMacro.actions : [];
-    const requiresAttachmentUpload = actions.some((action) => action?.type === "add_attachment");
+    const requiresAttachmentUpload = actions.some(action => action?.type === "add_attachment");
     if (requiresAttachmentUpload) {
       setPendingMacroExecution(selectedMacro);
       setMacroAttachmentFiles([]);
@@ -2424,36 +2329,25 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     }
     await executeMacro(selectedMacro, []);
   };
-
   const confirmRunMacroWithAttachments = async () => {
     const macroToRun = pendingMacroExecution;
     const filesToUpload = [...macroAttachmentFiles];
     closeMacroAttachmentModal();
     await executeMacro(macroToRun, filesToUpload);
   };
-
   const submitSideConversation = async () => {
     if (!ticketId) return;
     if (!sideConversation.message.trim()) {
       toast.error(copy.toasts.sideConversationMessageRequired);
       return;
     }
-
-    const teamLabel =
-      copy.sideConversationTeamOptions.find((opt) => opt.key === sideConversation.team)?.label ||
-      sideConversation.team;
+    const teamLabel = copy.sideConversationTeamOptions.find(opt => opt.key === sideConversation.team)?.label || sideConversation.team;
     const sideConversationId = `sc-${Date.now()}`;
     const safeSubject = String(sideConversation.subject || `Demande ${teamLabel}`).replace(/[\\\]]/g, "");
     const safeTo = String(sideConversation.to || "").replace(/[\\\]]/g, "");
     const safeCc = String(sideConversation.cc || "").replace(/[\\\]]/g, "");
-    const sideEventNote =
-      `[Side conversation] [id:${sideConversationId}] [event:opened] [team:${sideConversation.team}] ` +
-      `[subject:${safeSubject}] [to:${safeTo}] [cc:${safeCc}] [created_at:${new Date().toISOString()}]`;
-    const initialMessageNote =
-      `[Side conversation] [id:${sideConversationId}] [event:message] [team:${sideConversation.team}] ` +
-      `[subject:${safeSubject}] [to:${safeTo}] [cc:${safeCc}] ` +
-      `[message:${encodeURIComponent(sideConversation.message.trim())}] [created_at:${new Date().toISOString()}]`;
-
+    const sideEventNote = `[Side conversation] [id:${sideConversationId}] [event:opened] [team:${sideConversation.team}] ` + `[subject:${safeSubject}] [to:${safeTo}] [cc:${safeCc}] [created_at:${new Date().toISOString()}]`;
+    const initialMessageNote = `[Side conversation] [id:${sideConversationId}] [event:message] [team:${sideConversation.team}] ` + `[subject:${safeSubject}] [to:${safeTo}] [cc:${safeCc}] ` + `[message:${encodeURIComponent(sideConversation.message.trim())}] [created_at:${new Date().toISOString()}]`;
     try {
       await addTicketComment(ticketId, sideEventNote, true);
       await addTicketComment(ticketId, initialMessageNote, true);
@@ -2465,137 +2359,99 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
         cc: safeCc,
         status: "open",
         updatedAt: new Date().toISOString(),
-        messages: [
-          {
-            id: `${Date.now()}-init`,
-            author: "Vous",
-            createdAt: new Date().toISOString(),
-            content: sideConversation.message.trim(),
-          },
-        ],
+        messages: [{
+          id: `${Date.now()}-init`,
+          author: "Vous",
+          createdAt: new Date().toISOString(),
+          content: sideConversation.message.trim()
+        }]
       };
-      setSideConversations((prev) => [createdConversation, ...prev]);
+      setSideConversations(prev => [createdConversation, ...prev]);
       setActiveSideConversationId(createdConversation.id);
       toast.success(copy.formatSideConversationSent(teamLabel));
       setShowSideConversationModal(false);
-      setSideConversation({ team: "commercial", subject: "", to: "", cc: "", message: "" });
+      setSideConversation({
+        team: "commercial",
+        subject: "",
+        to: "",
+        cc: "",
+        message: ""
+      });
       await loadDetail();
     } catch (error) {
       toast.error(error.message || copy.toasts.sideConversationSendError);
     }
   };
-
-  const activeSideConversation = useMemo(
-    () => sideConversations.find((conv) => String(conv.id) === String(activeSideConversationId)) || null,
-    [sideConversations, activeSideConversationId]
-  );
-
+  const activeSideConversation = useMemo(() => sideConversations.find(conv => String(conv.id) === String(activeSideConversationId)) || null, [sideConversations, activeSideConversationId]);
   const submitSideReply = () => {
     if (!activeSideConversation || !sideReplyDraft.trim()) return;
     const reply = sideReplyDraft.trim();
-    const messageNote =
-      `[Side conversation] [id:${activeSideConversation.id}] [event:message] [team:${activeSideConversation.team}] ` +
-      `[subject:${String(activeSideConversation.subject || "").replace(/[\\\]]/g, "")}] ` +
-      `[to:${String(activeSideConversation.to || "").replace(/[\\\]]/g, "")}] ` +
-      `[cc:${String(activeSideConversation.cc || "").replace(/[\\\]]/g, "")}] ` +
-      `[message:${encodeURIComponent(reply)}] [created_at:${new Date().toISOString()}]`;
-    addTicketComment(ticketId, messageNote, true)
-      .then((createdComment) => {
-        const message = {
-          id: createdComment?.id || `${Date.now()}-reply`,
-          author: createdComment?.author_name || "Vous",
-          createdAt: createdComment?.created_at || new Date().toISOString(),
-          content: reply,
+    const messageNote = `[Side conversation] [id:${activeSideConversation.id}] [event:message] [team:${activeSideConversation.team}] ` + `[subject:${String(activeSideConversation.subject || "").replace(/[\\\]]/g, "")}] ` + `[to:${String(activeSideConversation.to || "").replace(/[\\\]]/g, "")}] ` + `[cc:${String(activeSideConversation.cc || "").replace(/[\\\]]/g, "")}] ` + `[message:${encodeURIComponent(reply)}] [created_at:${new Date().toISOString()}]`;
+    addTicketComment(ticketId, messageNote, true).then(createdComment => {
+      const message = {
+        id: createdComment?.id || `${Date.now()}-reply`,
+        author: createdComment?.author_name || "Vous",
+        createdAt: createdComment?.created_at || new Date().toISOString(),
+        content: reply
+      };
+      setSideConversations(prev => prev.map(conv => String(conv.id) === String(activeSideConversation.id) ? {
+        ...conv,
+        updatedAt: new Date().toISOString(),
+        messages: [...(conv.messages || []), message]
+      } : conv));
+      setTicket(prev => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          comments: [...(prev.comments || []), createdComment],
+          updated_at: new Date().toISOString()
         };
-        setSideConversations((prev) =>
-          prev.map((conv) =>
-            String(conv.id) === String(activeSideConversation.id)
-              ? { ...conv, updatedAt: new Date().toISOString(), messages: [...(conv.messages || []), message] }
-              : conv
-          )
-        );
-        setTicket((prev) => {
-          if (!prev) return prev;
-          return {
-            ...prev,
-            comments: [...(prev.comments || []), createdComment],
-            updated_at: new Date().toISOString(),
-          };
-        });
-        setSideReplyDraft("");
-      })
-      .catch((error) => {
-        toast.error(error.message || copy.toasts.sideConversationReplyError);
       });
+      setSideReplyDraft("");
+    }).catch(error => {
+      toast.error(error.message || copy.toasts.sideConversationReplyError);
+    });
   };
-
   const markSideConversationDone = () => {
     if (!activeSideConversation) return;
-    const closeNote =
-      `[Side conversation] [id:${activeSideConversation.id}] [event:closed] [team:${activeSideConversation.team}] ` +
-      `[subject:${String(activeSideConversation.subject || "").replace(/[\\\]]/g, "")}] ` +
-      `[to:${String(activeSideConversation.to || "").replace(/[\\\]]/g, "")}] ` +
-      `[cc:${String(activeSideConversation.cc || "").replace(/[\\\]]/g, "")}] ` +
-      `[created_at:${new Date().toISOString()}]`;
-    addTicketComment(ticketId, closeNote, true)
-      .then(() => {
-        setSideConversations((prev) =>
-          prev.map((conv) =>
-            String(conv.id) === String(activeSideConversation.id)
-              ? { ...conv, status: "done", updatedAt: new Date().toISOString() }
-              : conv
-          )
-        );
-        toast.success(copy.toasts.sideConversationClosed);
-      })
-      .catch((error) => {
-        toast.error(error.message || copy.toasts.sideConversationCloseError);
-      });
+    const closeNote = `[Side conversation] [id:${activeSideConversation.id}] [event:closed] [team:${activeSideConversation.team}] ` + `[subject:${String(activeSideConversation.subject || "").replace(/[\\\]]/g, "")}] ` + `[to:${String(activeSideConversation.to || "").replace(/[\\\]]/g, "")}] ` + `[cc:${String(activeSideConversation.cc || "").replace(/[\\\]]/g, "")}] ` + `[created_at:${new Date().toISOString()}]`;
+    addTicketComment(ticketId, closeNote, true).then(() => {
+      setSideConversations(prev => prev.map(conv => String(conv.id) === String(activeSideConversation.id) ? {
+        ...conv,
+        status: "done",
+        updatedAt: new Date().toISOString()
+      } : conv));
+      toast.success(copy.toasts.sideConversationClosed);
+    }).catch(error => {
+      toast.error(error.message || copy.toasts.sideConversationCloseError);
+    });
   };
-
   const reopenSideConversation = () => {
     if (!activeSideConversation) return;
-    const reopenNote =
-      `[Side conversation] [id:${activeSideConversation.id}] [event:reopened] [team:${activeSideConversation.team}] ` +
-      `[subject:${String(activeSideConversation.subject || "").replace(/[\\\]]/g, "")}] ` +
-      `[to:${String(activeSideConversation.to || "").replace(/[\\\]]/g, "")}] ` +
-      `[cc:${String(activeSideConversation.cc || "").replace(/[\\\]]/g, "")}] ` +
-      `[created_at:${new Date().toISOString()}]`;
-    addTicketComment(ticketId, reopenNote, true)
-      .then(() => {
-        setSideConversations((prev) =>
-          prev.map((conv) =>
-            String(conv.id) === String(activeSideConversation.id)
-              ? { ...conv, status: "open", updatedAt: new Date().toISOString() }
-              : conv
-          )
-        );
-        toast.success(copy.toasts.sideConversationReopened);
-      })
-      .catch((error) => {
-        toast.error(error.message || copy.toasts.sideConversationReopenError);
-      });
+    const reopenNote = `[Side conversation] [id:${activeSideConversation.id}] [event:reopened] [team:${activeSideConversation.team}] ` + `[subject:${String(activeSideConversation.subject || "").replace(/[\\\]]/g, "")}] ` + `[to:${String(activeSideConversation.to || "").replace(/[\\\]]/g, "")}] ` + `[cc:${String(activeSideConversation.cc || "").replace(/[\\\]]/g, "")}] ` + `[created_at:${new Date().toISOString()}]`;
+    addTicketComment(ticketId, reopenNote, true).then(() => {
+      setSideConversations(prev => prev.map(conv => String(conv.id) === String(activeSideConversation.id) ? {
+        ...conv,
+        status: "open",
+        updatedAt: new Date().toISOString()
+      } : conv));
+      toast.success(copy.toasts.sideConversationReopened);
+    }).catch(error => {
+      toast.error(error.message || copy.toasts.sideConversationReopenError);
+    });
   };
-
   const clientLabel = useMemo(() => {
     if (!ticket) return "-";
-    return (
-      ticket.client_name ||
-      ticket.client_nom ||
-      clients.find((c) => String(c.id) === String(ticket.client_id))?.name ||
-      "-"
-    );
+    return ticket.client_name || ticket.client_nom || clients.find(c => String(c.id) === String(ticket.client_id))?.name || "-";
   }, [ticket, clients]);
   const requesterContact = useMemo(() => {
     const targetContactId = editForm.requesterContactId || ticket?.requester_contact_id;
     if (!targetContactId) return null;
-    return (
-      contacts.find((c) => String(c.id) === String(targetContactId)) || null
-    );
+    return contacts.find(c => String(c.id) === String(targetContactId)) || null;
   }, [editForm.requesterContactId, ticket, contacts]);
   const requesterUser = useMemo(() => {
     if (!ticket?.requester_user_id) return null;
-    return users.find((u) => String(u.id) === String(ticket.requester_user_id)) || null;
+    return users.find(u => String(u.id) === String(ticket.requester_user_id)) || null;
   }, [ticket, users]);
   const requesterDisplayName = useMemo(() => {
     if (requesterContact) {
@@ -2607,62 +2463,31 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     }
     return ticket?.requester_name || ticket?.requester_email || "-";
   }, [requesterContact, requesterUser, ticket]);
-  const requesterPhone = useMemo(
-    () =>
-      requesterContact?.telephone ||
-      requesterContact?.phone ||
-      requesterContact?.mobile ||
-      "-",
-    [requesterContact]
-  );
-  const requesterEmail = useMemo(
-    () => requesterContact?.email || requesterUser?.email || ticket?.requester_email || "-",
-    [requesterContact, requesterUser, ticket]
-  );
-  const requesterRole = useMemo(
-    () =>
-      requesterContact?.role ||
-      requesterContact?.fonction ||
-      requesterContact?.poste ||
-      "-",
-    [requesterContact]
-  );
-  const currentUserId = useMemo(
-    () => user?.id || user?.uuid || user?.user_id || null,
-    [user]
-  );
+  const requesterPhone = useMemo(() => requesterContact?.telephone || requesterContact?.phone || requesterContact?.mobile || "-", [requesterContact]);
+  const requesterEmail = useMemo(() => requesterContact?.email || requesterUser?.email || ticket?.requester_email || "-", [requesterContact, requesterUser, ticket]);
+  const requesterRole = useMemo(() => requesterContact?.role || requesterContact?.fonction || requesterContact?.poste || "-", [requesterContact]);
+  const currentUserId = useMemo(() => user?.id || user?.uuid || user?.user_id || null, [user]);
   const isCurrentUserAssigned = useMemo(() => {
     if (!currentUserId || !ticket) return false;
     const assigneeIds = new Set();
     if (ticket.assigned_user_id) assigneeIds.add(String(ticket.assigned_user_id));
-    (Array.isArray(ticket.assignees) ? ticket.assignees : []).forEach((assignee) => {
+    (Array.isArray(ticket.assignees) ? ticket.assignees : []).forEach(assignee => {
       const id = assignee?.user_id || assignee?.userId || assignee?.id;
       if (id) assigneeIds.add(String(id));
     });
     return assigneeIds.has(String(currentUserId));
   }, [currentUserId, ticket]);
-  const { unreadByCommentId, markRead: markCommentNotificationRead } = useNotifications({
+  const {
+    unreadByCommentId,
+    markRead: markCommentNotificationRead
+  } = useNotifications({
     ticketId: isCurrentUserAssigned ? ticketId : null,
-    enabled: Boolean(ticketId && isCurrentUserAssigned),
+    enabled: Boolean(ticketId && isCurrentUserAssigned)
   });
-  const currentAgentUser = useMemo(
-    () =>
-      users.find(
-        (u) =>
-          String(u.id) === String(currentUserId) ||
-          String(u.uuid) === String(currentUserId) ||
-          String(u.user_id) === String(currentUserId)
-      ) || null,
-    [users, currentUserId]
-  );
-  const resolveAgentDisplayName = (agentUser) => {
+  const currentAgentUser = useMemo(() => users.find(u => String(u.id) === String(currentUserId) || String(u.uuid) === String(currentUserId) || String(u.user_id) === String(currentUserId)) || null, [users, currentUserId]);
+  const resolveAgentDisplayName = agentUser => {
     if (!agentUser) return "";
-    return (
-      agentUser.ticket_helpdesk_display_name ||
-      agentUser.username ||
-      agentUser.email ||
-      ""
-    ).trim();
+    return (agentUser.ticket_helpdesk_display_name || agentUser.username || agentUser.email || "").trim();
   };
   const currentUserDisplayName = useMemo(() => {
     const helpdesk = resolveAgentDisplayName(currentAgentUser || user);
@@ -2670,96 +2495,50 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     const fullName = `${user?.prenom || ""} ${user?.nom || ""}`.trim();
     return fullName || user?.name || user?.username || user?.email || copy.agentFallback;
   }, [user, currentAgentUser, copy]);
-
   const requesterFirstName = useMemo(() => {
     if (requesterContact?.prenom) return String(requesterContact.prenom).trim();
     const fallbackName = String(requesterDisplayName || "").trim();
     if (!fallbackName || fallbackName === "-") return "";
     return fallbackName.split(/\s+/)[0] || "";
   }, [requesterContact, requesterDisplayName]);
-  const resolveTemplateVariables = (text) => {
+  const resolveTemplateVariables = text => {
     const raw = String(text || "");
     if (isCommunity) return raw;
-    return raw
-      .replaceAll("{{ticketNumber}}", String(ticket?.ticket_number || ticketId || ""))
-      .replaceAll("{{ticket.numero}}", String(ticket?.ticket_number || ticketId || ""))
-      .replaceAll("{{title}}", String(editForm.title || ticket?.title || ""))
-      .replaceAll("{{ticket.titre}}", String(editForm.title || ticket?.title || ""))
-      .replaceAll(
-        "{{status}}",
-        String(copy.getStatusLabel(ticket?.status === "open" ? "new" : ticket?.status))
-      )
-      .replaceAll(
-        "{{ticket.statut}}",
-        String(copy.getStatusLabel(ticket?.status === "open" ? "new" : ticket?.status))
-      )
-      .replaceAll("{{requester}}", String(requesterDisplayName || ""))
-      .replaceAll("{{demandeur.nom_complet}}", String(requesterDisplayName || ""))
-      .replaceAll("{{prenom}}", String(requesterFirstName || ""))
-      .replaceAll("{{demandeur.prenom}}", String(requesterFirstName || ""))
-      .replaceAll("{{agent}}", String(resolveAgentDisplayName(currentAgentUser) || resolveAgentDisplayName(user) || ""))
-      .replaceAll("{{agent.username}}", String(resolveAgentDisplayName(currentAgentUser) || resolveAgentDisplayName(user) || ""))
-      .replaceAll("{{agent.email}}", String(currentAgentUser?.email || user?.email || ""))
-      // Compatibilité ancienne variable
-      .replaceAll("{{agent.nom_complet}}", String(currentAgentUser?.email || user?.email || ""))
-      .replaceAll("{{client}}", String(breadcrumbClientLabel && breadcrumbClientLabel !== "-" ? breadcrumbClientLabel : ""))
-      .replaceAll("{{entreprise.nom}}", String(breadcrumbClientLabel && breadcrumbClientLabel !== "-" ? breadcrumbClientLabel : ""));
+    return raw.replaceAll("{{ticketNumber}}", String(ticket?.ticket_number || ticketId || "")).replaceAll("{{ticket.numero}}", String(ticket?.ticket_number || ticketId || "")).replaceAll("{{title}}", String(editForm.title || ticket?.title || "")).replaceAll("{{ticket.titre}}", String(editForm.title || ticket?.title || "")).replaceAll("{{status}}", String(copy.getStatusLabel(ticket?.status === "open" ? "new" : ticket?.status))).replaceAll("{{ticket.statut}}", String(copy.getStatusLabel(ticket?.status === "open" ? "new" : ticket?.status))).replaceAll("{{requester}}", String(requesterDisplayName || "")).replaceAll("{{demandeur.nom_complet}}", String(requesterDisplayName || "")).replaceAll("{{prenom}}", String(requesterFirstName || "")).replaceAll("{{demandeur.prenom}}", String(requesterFirstName || "")).replaceAll("{{agent}}", String(resolveAgentDisplayName(currentAgentUser) || resolveAgentDisplayName(user) || "")).replaceAll("{{agent.username}}", String(resolveAgentDisplayName(currentAgentUser) || resolveAgentDisplayName(user) || "")).replaceAll("{{agent.email}}", String(currentAgentUser?.email || user?.email || "")).replaceAll("{{agent.nom_complet}}", String(currentAgentUser?.email || user?.email || "")).replaceAll("{{client}}", String(breadcrumbClientLabel && breadcrumbClientLabel !== "-" ? breadcrumbClientLabel : "")).replaceAll("{{entreprise.nom}}", String(breadcrumbClientLabel && breadcrumbClientLabel !== "-" ? breadcrumbClientLabel : ""));
   };
-  const resolveUserLabel = (userId) => {
-    const found = users.find(
-      (u) =>
-        String(u.id) === String(userId) ||
-        String(u.uuid) === String(userId) ||
-        String(u.user_id) === String(userId)
-    );
-    return (
-      found?.ticket_helpdesk_display_name ||
-      found?.name ||
-      found?.nom ||
-      found?.username ||
-      found?.email ||
-      String(userId)
-    );
+  const resolveUserLabel = userId => {
+    const found = users.find(u => String(u.id) === String(userId) || String(u.uuid) === String(userId) || String(u.user_id) === String(userId));
+    return found?.ticket_helpdesk_display_name || found?.name || found?.nom || found?.username || found?.email || String(userId);
   };
-  const ticketActivityLog = useMemo(
-    () => buildTicketActivityLog(ticket, resolveUserLabel, copy, locale),
-    [ticket, users, copy, locale]
-  );
+  const resolveContactLabel = contactId => {
+    const found = contacts.find(c => String(c.id) === String(contactId));
+    if (!found) return null;
+    const fullName = `${found.prenom || ""} ${found.nom || ""}`.trim();
+    return fullName || found.email || null;
+  };
+  const resolveClientLabel = clientId => {
+    const found = clients.find(c => String(c.id) === String(clientId));
+    return found?.name || found?.nom || null;
+  };
+  const ticketActivityLog = useMemo(() => buildTicketActivityLog(ticket, resolveUserLabel, copy, locale, resolveContactLabel, resolveClientLabel), [ticket, users, contacts, clients, copy, locale]);
   const breadcrumbClientId = useMemo(() => {
     if (requesterContact?.client_id) return requesterContact.client_id;
     return ticket?.client_id || null;
   }, [requesterContact, ticket]);
-  const effectiveTicketClientId = useMemo(
-    () => breadcrumbClientId || ticket?.client_id || requesterContact?.client_id || null,
-    [breadcrumbClientId, ticket, requesterContact]
-  );
+  const effectiveTicketClientId = useMemo(() => breadcrumbClientId || ticket?.client_id || requesterContact?.client_id || null, [breadcrumbClientId, ticket, requesterContact]);
   const breadcrumbClientLabel = useMemo(() => {
     if (requesterContact?.client_name) return requesterContact.client_name;
     if (requesterContact?.client_id) {
-      const requesterClient = clients.find(
-        (c) => String(c.id) === String(requesterContact.client_id)
-      );
+      const requesterClient = clients.find(c => String(c.id) === String(requesterContact.client_id));
       if (requesterClient) return requesterClient.name || requesterClient.nom || "-";
     }
     return clientLabel;
   }, [requesterContact, clients, clientLabel]);
-  const ticketClient = useMemo(
-    () =>
-      clients.find((client) => String(client.id) === String(effectiveTicketClientId)) || null,
-    [clients, effectiveTicketClientId]
-  );
-  const clientContractSummary = useMemo(
-    () => buildClientContractSummary(ticketClient),
-    [ticketClient]
-  );
+  const ticketClient = useMemo(() => clients.find(client => String(client.id) === String(effectiveTicketClientId)) || null, [clients, effectiveTicketClientId]);
+  const clientContractSummary = useMemo(() => buildClientContractSummary(ticketClient), [ticketClient]);
   const activeContractOptionLabels = useMemo(() => {
     if (!clientContractSummary) return [];
-    return contractModuleDefs
-      .filter(
-        (mod) =>
-          mod.enabled !== false && clientContractSummary.activeOptionKeys.includes(mod.moduleKey)
-      )
-      .map((mod) => copy.getContractModuleLabel(mod.moduleKey, mod.label));
+    return contractModuleDefs.filter(mod => mod.enabled !== false && clientContractSummary.activeOptionKeys.includes(mod.moduleKey)).map(mod => copy.getContractModuleLabel(mod.moduleKey, mod.label));
   }, [clientContractSummary, contractModuleDefs, copy]);
   const clientSlaRows = useMemo(() => {
     if (!ticketClient?.contrat) return [];
@@ -2767,24 +2546,15 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     if (!sla.enabled) return [];
     return formatClientSlaRows(ticketClient.contrat);
   }, [ticketClient]);
-  const clientSupportCreditTotals = useMemo(
-    () => computeSupportCreditTotals(clientSupportCreditBalance, clientSupportCreditPacks),
-    [clientSupportCreditBalance, clientSupportCreditPacks]
-  );
+  const clientSupportCreditTotals = useMemo(() => computeSupportCreditTotals(clientSupportCreditBalance, clientSupportCreditPacks), [clientSupportCreditBalance, clientSupportCreditPacks]);
   const contractFactLabel = useMemo(() => {
     if (!effectiveTicketClientId || !clientContractSummary) return copy.noContract;
     return copy.getContractFactLabel(clientContractSummary.validity, {
       startDate: clientContractSummary.startDate,
-      expirationDate: clientContractSummary.expirationDate,
+      expirationDate: clientContractSummary.expirationDate
     });
   }, [effectiveTicketClientId, clientContractSummary, copy]);
-  const contractValidityAlert = useMemo(
-    () =>
-      clientContractSummary
-        ? copy.getContractValidityAlert(clientContractSummary.validity, contractFactLabel)
-        : null,
-    [clientContractSummary, contractFactLabel, copy]
-  );
+  const contractValidityAlert = useMemo(() => clientContractSummary ? copy.getContractValidityAlert(clientContractSummary.validity, contractFactLabel) : null, [clientContractSummary, contractFactLabel, copy]);
   const contractOptionsLabel = useMemo(() => {
     if (!effectiveTicketClientId) return copy.noOption;
     if (activeContractOptionLabels.length === 0) return copy.noOption;
@@ -2794,51 +2564,34 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     if (!effectiveTicketClientId) return copy.noCredit;
     if (loadingClientCredits) return copy.fallbackEmDash;
     if (clientSupportCreditBalance === null) return copy.noCredit;
-    const { remaining, total } = clientSupportCreditTotals;
+    const {
+      remaining,
+      total
+    } = clientSupportCreditTotals;
     if (total <= 0 && remaining <= 0) return copy.noCredit;
     return `${remaining} / ${total}`;
-  }, [
-    effectiveTicketClientId,
-    loadingClientCredits,
-    clientSupportCreditBalance,
-    clientSupportCreditTotals, copy,
-  ]);
+  }, [effectiveTicketClientId, loadingClientCredits, clientSupportCreditBalance, clientSupportCreditTotals, copy]);
   const contractCreditsEmpty = useMemo(() => {
     if (!effectiveTicketClientId || loadingClientCredits) return false;
     if (clientSupportCreditBalance === null) return true;
     return clientSupportCreditTotals.total <= 0 && clientSupportCreditTotals.remaining <= 0;
-  }, [
-    effectiveTicketClientId,
-    loadingClientCredits,
-    clientSupportCreditBalance,
-    clientSupportCreditTotals,
-  ]);
-  const contractCreditsBlocked =
-    !contractCreditsEmpty && Number(clientSupportCreditTotals.remaining || 0) <= 0;
-  const contractFactEmpty =
-    !effectiveTicketClientId ||
-    !clientContractSummary ||
-    clientContractSummary.validity?.status === "unknown";
-  const contractStatusClass =
-    contractFactEmpty
-      ? fs.contractFactEmpty
-      : CONTRACT_FACT_STATUS_CLASS[clientContractSummary.validity?.status] || "";
-  const contractOptionsEmpty =
-    !effectiveTicketClientId || activeContractOptionLabels.length === 0;
+  }, [effectiveTicketClientId, loadingClientCredits, clientSupportCreditBalance, clientSupportCreditTotals]);
+  const contractCreditsBlocked = !contractCreditsEmpty && Number(clientSupportCreditTotals.remaining || 0) <= 0;
+  const contractFactEmpty = !effectiveTicketClientId || !clientContractSummary || clientContractSummary.validity?.status === "unknown";
+  const contractStatusClass = contractFactEmpty ? fs.contractFactEmpty : CONTRACT_FACT_STATUS_CLASS[clientContractSummary.validity?.status] || "";
+  const contractOptionsEmpty = !effectiveTicketClientId || activeContractOptionLabels.length === 0;
   const contractSlaLabel = useMemo(() => {
     if (!effectiveTicketClientId || clientSlaRows.length === 0) return copy.noSla;
     const ticketPriority = editForm.priority || ticket?.priority || "normal";
-    const slaRow =
-      clientSlaRows.find((row) => row.key === ticketPriority) ||
-      clientSlaRows.find((row) => row.key === "normal");
+    const slaRow = clientSlaRows.find(row => row.key === ticketPriority) || clientSlaRows.find(row => row.key === "normal");
     if (!slaRow) return copy.noSla;
     return copy.formatSlaLabel(slaRow.firstResponseHours, slaRow.resolutionHours);
   }, [effectiveTicketClientId, clientSlaRows, editForm.priority, ticket?.priority, copy]);
   const contractSlaEmpty = !effectiveTicketClientId || clientSlaRows.length === 0;
-  const ticketSlaView = useMemo(
-    () => getTicketSlaDisplay(ticket, { clients, now: slaNow }),
-    [ticket, clients, slaNow]
-  );
+  const ticketSlaView = useMemo(() => getTicketSlaDisplay(ticket, {
+    clients,
+    now: slaNow
+  }), [ticket, clients, slaNow]);
   const ticketSlaTitle = useMemo(() => {
     if (ticketSlaView.phase === "first_response") return copy.slaTitle.firstResponse;
     if (ticketSlaView.phase === "resolution") return copy.slaTitle.resolution;
@@ -2850,201 +2603,177 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     if (!ticketTakeoverStat) return copy.fallbackEmDash;
     return `${copy.formatDateTime(ticketTakeoverStat.at)} · ${copy.formatDurationMs(ticketTakeoverStat.durationMs)}`;
   }, [ticketTakeoverStat, copy]);
-  const userSearchOptions = useMemo(
-    () =>
-      users.map((u) => ({
-        id: u.id,
-        label: u.name || u.nom || u.email || String(u.id),
-      })),
-    [users]
-  );
+  const userSearchOptions = useMemo(() => users.map(u => ({
+    id: u.id,
+    label: u.name || u.nom || u.email || String(u.id)
+  })), [users]);
   const assigneeUserIds = useMemo(() => {
     if (Array.isArray(ticket?.assignees) && ticket.assignees.length > 0) {
-      return ticket.assignees.map((a) => String(a.user_id));
+      return ticket.assignees.map(a => String(a.user_id));
     }
     if (ticket?.assigned_user_id) return [String(ticket.assigned_user_id)];
     return [];
   }, [ticket]);
-
   useEffect(() => {
     setRequesterSearch(requesterDisplayName && requesterDisplayName !== "-" ? requesterDisplayName : "");
   }, [requesterDisplayName]);
-
   useEffect(() => {
     setAssigneeSearch("");
   }, [assigneeUserIds.join(",")]);
-
-  const watcherUserIds = useMemo(
-    () => (ticket?.watchers || []).map((w) => String(w.user_id)),
-    [ticket?.watchers]
-  );
-
+  const watcherUserIds = useMemo(() => (ticket?.watchers || []).map(w => String(w.user_id)), [ticket?.watchers]);
   const isMajorIncident = Boolean(ticket?.is_major_incident);
-
-  const enabledCategories = useMemo(
-    () => (Array.isArray(ticketCategories) ? ticketCategories : []).filter((item) => item?.enabled !== false),
-    [ticketCategories]
-  );
-
+  const enabledCategories = useMemo(() => (Array.isArray(ticketCategories) ? ticketCategories : []).filter(item => item?.enabled !== false), [ticketCategories]);
   const filteredRequesterContacts = useMemo(() => {
     const q = requesterSearch.trim().toLowerCase();
     if (!q) return contacts.slice(0, 50);
-    return contacts.filter((c) => getContactSearchText(c).includes(q)).slice(0, 50);
+    return contacts.filter(c => getContactSearchText(c).includes(q)).slice(0, 50);
   }, [contacts, requesterSearch]);
-
   const filteredAssigneeOptions = useMemo(() => {
     const q = assigneeSearch.trim().toLowerCase();
-    const available = userSearchOptions.filter((opt) => !assigneeUserIds.includes(String(opt.id)));
+    const available = userSearchOptions.filter(opt => !assigneeUserIds.includes(String(opt.id)));
     if (!q) return available.slice(0, 50);
-    return available.filter((opt) => opt.label.toLowerCase().includes(q)).slice(0, 50);
+    return available.filter(opt => opt.label.toLowerCase().includes(q)).slice(0, 50);
   }, [userSearchOptions, assigneeSearch, assigneeUserIds]);
-
   const filteredFollowerOptions = useMemo(() => {
     const q = followerSearch.trim().toLowerCase();
-    const available = userSearchOptions.filter((opt) => !watcherUserIds.includes(String(opt.id)));
+    const available = userSearchOptions.filter(opt => !watcherUserIds.includes(String(opt.id)));
     if (!q) return available.slice(0, 50);
-    return available.filter((opt) => opt.label.toLowerCase().includes(q)).slice(0, 50);
+    return available.filter(opt => opt.label.toLowerCase().includes(q)).slice(0, 50);
   }, [userSearchOptions, followerSearch, watcherUserIds]);
-
   const filteredCategoryOptions = useMemo(() => {
     const q = categorySearch.trim().toLowerCase();
-    const rows = !q
-      ? enabledCategories
-      : enabledCategories.filter((item) => {
-          const name = String(item?.name || "").toLowerCase();
-          const section = String(item?.section || "").toLowerCase();
-          return name.includes(q) || section.includes(q);
-        });
+    const rows = !q ? enabledCategories : enabledCategories.filter(item => {
+      const name = String(item?.name || "").toLowerCase();
+      const section = String(item?.section || "").toLowerCase();
+      return name.includes(q) || section.includes(q);
+    });
     return rows.slice(0, 80);
   }, [enabledCategories, categorySearch]);
-
-  const filteredCategoryGroups = useMemo(
-    () =>
-      Object.entries(
-        filteredCategoryOptions.reduce((acc, item) => {
-          const section = String(item?.section || copy.uncategorized).trim() || copy.uncategorized;
-          if (!acc[section]) acc[section] = [];
-          acc[section].push(item);
-          return acc;
-        }, {})
-      ),
-    [filteredCategoryOptions, copy]
-  );
-
-  const selectRequester = async (contact) => {
-    setRequesterSearch(getContactLabel(contact));
+  const filteredCategoryGroups = useMemo(() => Object.entries(filteredCategoryOptions.reduce((acc, item) => {
+    const section = String(item?.section || copy.uncategorized).trim() || copy.uncategorized;
+    if (!acc[section]) acc[section] = [];
+    acc[section].push(item);
+    return acc;
+  }, {})), [filteredCategoryOptions, copy]);
+  const selectRequester = async contact => {
+    const fullName = `${contact?.prenom || ""} ${contact?.nom || ""}`.trim();
+    setRequesterSearch(fullName || contact?.email || "");
     setShowRequesterDropdown(false);
     const nextValue = String(contact.id);
-    setEditForm((p) => ({ ...p, requesterContactId: nextValue }));
+    setEditForm(p => ({
+      ...p,
+      requesterContactId: nextValue
+    }));
     const patch = {
       requesterUserId: null,
-      requesterContactId: nextValue || null,
+      requesterContactId: nextValue || null
     };
     if (contact?.client_id) {
       patch.clientId = contact.client_id;
     }
-    await updateTicketLive(patch, { successMessage: copy.toasts.requesterUpdated });
+    await updateTicketLive(patch, {
+      successMessage: copy.toasts.requesterUpdated
+    });
     if (contact?.client_id && ticketReminder?.id) {
       try {
-        await updateEvent(ticketReminder.id, { clientId: contact.client_id });
-        setTicketReminder((prev) =>
-          prev
-            ? {
-                ...prev,
-                client_id: contact.client_id,
-                clientId: contact.client_id,
-              }
-            : prev
-        );
-      } catch {
-        /* le backend synchronise aussi les rappels liés au ticket */
-      }
+        await updateEvent(ticketReminder.id, {
+          clientId: contact.client_id
+        });
+        setTicketReminder(prev => prev ? {
+          ...prev,
+          client_id: contact.client_id,
+          clientId: contact.client_id
+        } : prev);
+      } catch {}
     }
   };
-
-  const selectCategory = async (item) => {
+  const selectCategory = async item => {
     const name = String(item?.name || "");
     setCategorySearch(name);
-    setEditForm((p) => ({ ...p, category: name }));
+    setEditForm(p => ({
+      ...p,
+      category: name
+    }));
     setShowCategoryDropdown(false);
-    await updateTicketLive({ category: name }, { successMessage: copy.toasts.categoryUpdated });
+    await updateTicketLive({
+      category: name
+    }, {
+      successMessage: copy.toasts.categoryUpdated
+    });
   };
-
   const linkedTickets = useMemo(() => {
-    const fromBackend = Array.isArray(ticket?.linked_tickets)
-      ? ticket.linked_tickets
-      : Array.isArray(ticket?.links)
-      ? ticket.links
-      : [];
+    const fromBackend = Array.isArray(ticket?.linked_tickets) ? ticket.linked_tickets : Array.isArray(ticket?.links) ? ticket.links : [];
     const fromComments = buildLinkedTicketsFromComments(ticket?.comments || []);
     const byId = new Map();
-    [...fromBackend, ...fromComments].forEach((item) => {
-      const key = String(
-        item?.linked_ticket_id || item?.ticket_id || item?.id || item?.linkedTicketId || ""
-      );
+    [...fromBackend, ...fromComments].forEach(item => {
+      const key = String(item?.linked_ticket_id || item?.ticket_id || item?.id || item?.linkedTicketId || "");
       if (!key) return;
       byId.set(key, item);
     });
     return Array.from(byId.values());
   }, [ticket]);
-  const availableLinkTargets = useMemo(
-    () => allTickets.filter((row) => String(row.id) !== String(ticketId)),
-    [allTickets, ticketId]
-  );
-  const linkedTicketSearchOptions = useMemo(
-    () =>
-      availableLinkTargets.map((row) => ({
-        id: row.id,
-        label: `#${row.ticket_number || row.id} - ${row.title || "Sans titre"}`,
-      })),
-    [availableLinkTargets]
-  );
-  const getTicketLinkLabel = (row) =>
-    `#${row?.ticket_number || row?.id || "-"} - ${row?.title || "Sans titre"}`;
-  const getEquipmentLinkLabel = useCallback(
-    (equipment) =>
-      getEquipmentPickerLabel(
-        equipment ? { ...equipment, id: equipment.id || equipment.equipment_id } : equipment,
-        { locale, separator: " - " }
-      ),
-    [locale]
-  );
-  const linkedTicketIds = useMemo(
-    () =>
-      new Set(
-        linkedTickets.map((item) =>
-          String(item?.linked_ticket_id || item?.ticket_id || item?.id || item?.linkedTicketId || "")
-        )
-      ),
-    [linkedTickets]
-  );
-  const linkedEquipmentIds = useMemo(
-    () => new Set(linkedEquipments.map((item) => String(item.equipment_id))),
-    [linkedEquipments]
-  );
+  const availableLinkTargets = useMemo(() => allTickets.filter(row => String(row.id) !== String(ticketId)), [allTickets, ticketId]);
+  const linkedTicketSearchOptions = useMemo(() => availableLinkTargets.map(row => ({
+    id: row.id,
+    label: `#${row.ticket_number || row.id} - ${row.title || "Sans titre"}`
+  })), [availableLinkTargets]);
+  const getTicketLinkLabel = row => `#${row?.ticket_number || row?.id || "-"} - ${row?.title || "Sans titre"}`;
+  const getEquipmentLinkLabel = useCallback(equipment => getEquipmentPickerLabel(equipment ? {
+    ...equipment,
+    id: equipment.id || equipment.equipment_id
+  } : equipment, {
+    locale,
+    separator: " - "
+  }), [locale]);
+  const linkedTicketIds = useMemo(() => new Set(linkedTickets.map(item => String(item?.linked_ticket_id || item?.ticket_id || item?.id || item?.linkedTicketId || ""))), [linkedTickets]);
+  const linkedEquipmentIds = useMemo(() => new Set(linkedEquipments.map(item => String(item.equipment_id))), [linkedEquipments]);
   const filteredLinkedTicketOptions = useMemo(() => {
     const query = linkedTicketSearch.trim().toLowerCase();
-    return availableLinkTargets
-      .filter((row) => !linkedTicketIds.has(String(row.id)))
-      .filter((row) => {
-        if (!query) return true;
-        const label = getTicketLinkLabel(row).toLowerCase();
-        return label.includes(query);
-      })
-      .slice(0, 40);
+    return availableLinkTargets.filter(row => !linkedTicketIds.has(String(row.id))).filter(row => {
+      if (!query) return true;
+      const label = getTicketLinkLabel(row).toLowerCase();
+      return label.includes(query);
+    }).slice(0, 40);
   }, [availableLinkTargets, linkedTicketIds, linkedTicketSearch]);
   const filteredLinkedEquipmentOptions = useMemo(() => {
     const query = linkedEquipmentSearch.trim().toLowerCase();
-    return clientEquipments
-      .filter((equipment) => !linkedEquipmentIds.has(String(equipment.id)))
-      .filter((equipment) => {
-        if (!query) return true;
-        return getEquipmentSearchText(equipment, locale).includes(query);
-      })
-      .slice(0, 40);
+    return clientEquipments.filter(equipment => !linkedEquipmentIds.has(String(equipment.id))).filter(equipment => {
+      if (!query) return true;
+      return getEquipmentSearchText(equipment, locale).includes(query);
+    }).slice(0, 40);
   }, [clientEquipments, linkedEquipmentIds, linkedEquipmentSearch, locale]);
   const isTicketClosed = String(ticket?.status || "").toLowerCase() === "closed";
   const isReadOnly = isDeleted || isTicketClosed;
+  const handleSuggestReplyAi = useCallback(async () => {
+    if (!ticketId || aiSuggestLoading || isReadOnly || !aiFeatures.suggestReply) return;
+    setAiSuggestLoading(true);
+    try {
+      expandReplyBox();
+      const data = await suggestTicketReplyAi({
+        ticketId,
+        internal: commentInternal,
+        locale
+      });
+      const reply = String(data?.reply || "").trim();
+      if (!reply) {
+        toast.error(copy.toasts.aiSuggestError);
+        return;
+      }
+      const asHtml = /<[a-z][\s\S]*>/i.test(reply) ? reply : reply.replace(/\n/g, "<br>");
+      const safeHtml = sanitizeTicketCommentHtml(asHtml) || asHtml;
+      setCommentDraft(safeHtml);
+      requestAnimationFrame(() => {
+        if (!commentEditorRef.current) return;
+        commentEditorRef.current.innerHTML = safeHtml;
+        commentEditorRef.current.focus();
+      });
+      toast.success(copy.toasts.aiSuggestOk);
+    } catch (err) {
+      toast.error(err.message || copy.toasts.aiSuggestError);
+    } finally {
+      setAiSuggestLoading(false);
+    }
+  }, [ticketId, aiSuggestLoading, isReadOnly, aiFeatures.suggestReply, expandReplyBox, commentInternal, locale, copy.toasts.aiSuggestError, copy.toasts.aiSuggestOk]);
   const knowledgeBaseUrl = String(generalSettings?.app_knowledge_base_url || "").trim();
   const hasKnowledgeBase = /^https?:\/\//i.test(knowledgeBaseUrl);
   const deleteConfirmConfig = useMemo(() => {
@@ -3053,7 +2782,7 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
         title: copy.sidebar.deleteTitle,
         message: copy.confirms.softDelete,
         confirmLabel: copy.sidebar.deleteTitle,
-        icon: "mdi:trash-can-outline",
+        icon: "mdi:trash-can-outline"
       };
     }
     if (ticketDeleteConfirm === "permanent") {
@@ -3061,65 +2790,44 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
         title: copy.footer.permanentDelete,
         message: copy.confirms.permanentDelete,
         confirmLabel: copy.footer.permanentDelete,
-        icon: "mdi:delete-forever-outline",
+        icon: "mdi:delete-forever-outline"
       };
     }
     return null;
   }, [ticketDeleteConfirm, copy]);
   const hasReplyDraft = useMemo(() => {
-    const text = String(commentDraft || "")
-      .replace(/<[^>]*>/g, "")
-      .replace(/&nbsp;/gi, " ")
-      .trim();
+    const text = String(commentDraft || "").replace(/<[^>]*>/g, "").replace(/&nbsp;/gi, " ").trim();
     return text.length > 0 || attachmentFiles.length > 0;
   }, [commentDraft, attachmentFiles]);
   const isWhatsAppNativeTicket = ticketNativeChannel === "whatsapp";
-  const isTicketChannelDisabled = useCallback(
-    (channelKey) => {
-      if (isReadOnly) return true;
-      if (channelKey === "whatsapp" && !isWhatsAppNativeTicket) return true;
-      return false;
-    },
-    [isReadOnly, isWhatsAppNativeTicket]
-  );
-
-  const canEditComment = useCallback(
-    (comment) => {
-      if (!comment || isReadOnly || !currentUserId) return false;
-      const authorId =
-        comment?.author_user_id || comment?.authorUserId || comment?.user_id || comment?.userId;
-      if (!authorId || String(authorId) !== String(currentUserId)) return false;
-      return isUserEditableCommentContent(comment?.content, copy);
-    },
-    [currentUserId, isReadOnly, copy]
-  );
-
-  const canDeleteComment = useCallback(
-    (comment) => {
-      if (!isAdmin || !comment || isReadOnly) return false;
-      if (isClientResponseComment(comment)) return false;
-      return isUserEditableCommentContent(comment?.content, copy);
-    },
-    [isAdmin, isReadOnly, copy]
-  );
-
-  const canDeleteSideConversationMessage = useCallback(
-    (commentId) => {
-      if (!isAdmin || !commentId || isReadOnly) return false;
-      const comment = (ticket?.comments || []).find((row) => String(row.id) === String(commentId));
-      if (!comment) return false;
-      return parseSideConversationEvent(comment.content)?.event === "message";
-    },
-    [isAdmin, isReadOnly, ticket?.comments]
-  );
-
-  const startEditComment = (comment) => {
+  const isTicketChannelDisabled = useCallback(channelKey => {
+    if (isReadOnly) return true;
+    if (channelKey === "whatsapp" && !isWhatsAppNativeTicket) return true;
+    return false;
+  }, [isReadOnly, isWhatsAppNativeTicket]);
+  const canEditComment = useCallback(comment => {
+    if (!comment || isReadOnly || !currentUserId) return false;
+    const authorId = comment?.author_user_id || comment?.authorUserId || comment?.user_id || comment?.userId;
+    if (!authorId || String(authorId) !== String(currentUserId)) return false;
+    return isUserEditableCommentContent(comment?.content, copy);
+  }, [currentUserId, isReadOnly, copy]);
+  const canDeleteComment = useCallback(comment => {
+    if (!isAdmin || !comment || isReadOnly) return false;
+    if (isClientResponseComment(comment)) return false;
+    return isUserEditableCommentContent(comment?.content, copy);
+  }, [isAdmin, isReadOnly, copy]);
+  const canDeleteSideConversationMessage = useCallback(commentId => {
+    if (!isAdmin || !commentId || isReadOnly) return false;
+    const comment = (ticket?.comments || []).find(row => String(row.id) === String(commentId));
+    if (!comment) return false;
+    return parseSideConversationEvent(comment.content)?.event === "message";
+  }, [isAdmin, isReadOnly, ticket?.comments]);
+  const startEditComment = comment => {
     if (!canEditComment(comment)) return;
     setEditingCommentId(comment.id);
     setEditingCommentDraft(String(comment.content || ""));
     setEditingCommentRemovedAttachmentKeys([]);
   };
-
   const cancelEditComment = (force = false) => {
     if (!force && savingCommentEdit) return;
     setEditingCommentId(null);
@@ -3127,56 +2835,43 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     setEditingCommentRemovedAttachmentKeys([]);
     if (commentEditEditorRef.current) commentEditEditorRef.current.innerHTML = "";
   };
-
-  const toggleEditingCommentAttachmentRemoval = (attachment) => {
+  const toggleEditingCommentAttachmentRemoval = attachment => {
     const key = getAttachmentRemovalKey(attachment);
     if (!key) return;
-    setEditingCommentRemovedAttachmentKeys((prev) =>
-      prev.includes(key) ? prev.filter((item) => item !== key) : [...prev, key]
-    );
+    setEditingCommentRemovedAttachmentKeys(prev => prev.includes(key) ? prev.filter(item => item !== key) : [...prev, key]);
   };
-
   const saveEditComment = async () => {
     if (!ticketId || !editingCommentId || savingCommentEdit) return;
     const draftRaw = String(commentEditEditorRef.current?.innerHTML || editingCommentDraft || "").trim();
     const draftText = htmlToPlainText(draftRaw).trim();
-    const editingComment = (ticket?.comments || []).find(
-      (comment) => String(comment.id) === String(editingCommentId)
-    );
-    const remainingAttachments = (editingComment?.attachments || []).filter(
-      (attachment) => !isAttachmentMarkedForRemoval(attachment, editingCommentRemovedAttachmentKeys)
-    );
+    const editingComment = (ticket?.comments || []).find(comment => String(comment.id) === String(editingCommentId));
+    const remainingAttachments = (editingComment?.attachments || []).filter(attachment => !isAttachmentMarkedForRemoval(attachment, editingCommentRemovedAttachmentKeys));
     if (!draftText && remainingAttachments.length === 0) {
       toast.error(copy.toasts.messageEmpty);
       return;
     }
-    const { removeAttachmentIds, removeAttachmentPaths } = splitRemovedAttachmentKeys(
-      editingCommentRemovedAttachmentKeys
-    );
+    const {
+      removeAttachmentIds,
+      removeAttachmentPaths
+    } = splitRemovedAttachmentKeys(editingCommentRemovedAttachmentKeys);
     setSavingCommentEdit(true);
     try {
       const updatedComment = await updateTicketComment(ticketId, editingCommentId, draftRaw, {
         removeAttachmentIds,
-        removeAttachmentPaths,
+        removeAttachmentPaths
       });
-      const normalizedAttachments = Array.isArray(updatedComment?.attachments)
-        ? updatedComment.attachments.map(normalizeAttachment).filter(Boolean)
-        : remainingAttachments;
-      setTicket((prev) => {
+      const normalizedAttachments = Array.isArray(updatedComment?.attachments) ? updatedComment.attachments.map(normalizeAttachment).filter(Boolean) : remainingAttachments;
+      setTicket(prev => {
         if (!prev) return prev;
         return {
           ...prev,
-          comments: (prev.comments || []).map((comment) =>
-            String(comment.id) === String(editingCommentId)
-              ? {
-                  ...comment,
-                  content: updatedComment?.content ?? draftRaw,
-                  updated_at: updatedComment?.updated_at || new Date().toISOString(),
-                  attachments: normalizedAttachments,
-                }
-              : comment
-          ),
-          updated_at: new Date().toISOString(),
+          comments: (prev.comments || []).map(comment => String(comment.id) === String(editingCommentId) ? {
+            ...comment,
+            content: updatedComment?.content ?? draftRaw,
+            updated_at: updatedComment?.updated_at || new Date().toISOString(),
+            attachments: normalizedAttachments
+          } : comment),
+          updated_at: new Date().toISOString()
         };
       });
       cancelEditComment(true);
@@ -3187,22 +2882,19 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       setSavingCommentEdit(false);
     }
   };
-
-  const deleteComment = async (commentId) => {
+  const deleteComment = async commentId => {
     if (!ticketId || !commentId || deletingCommentId) return;
     if (!window.confirm(copy.confirms.deleteComment)) return;
     setDeletingCommentId(commentId);
     try {
       await deleteTicketComment(ticketId, commentId);
-      const nextComments = (ticket?.comments || []).filter(
-        (comment) => String(comment.id) !== String(commentId)
-      );
-      setTicket((prev) => {
+      const nextComments = (ticket?.comments || []).filter(comment => String(comment.id) !== String(commentId));
+      setTicket(prev => {
         if (!prev) return prev;
         return {
           ...prev,
           comments: nextComments,
-          updated_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         };
       });
       setSideConversations(buildSideConversationsFromComments(nextComments));
@@ -3216,58 +2908,28 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       setDeletingCommentId(null);
     }
   };
-
   useLayoutEffect(() => {
     if (!editingCommentId || !commentEditEditorRef.current) return;
     commentEditEditorRef.current.innerHTML = editingCommentDraft;
     commentEditEditorRef.current.focus();
   }, [editingCommentId]);
-
   const requesterInteractions = useMemo(() => {
     if (!ticket) return [];
     const requesterContactId = ticket.requester_contact_id || null;
     const requesterUserId = ticket.requester_user_id || null;
-
-    return allTickets
-      .filter((row) => String(row.id) !== String(ticket.id))
-      .filter((row) => {
-        if (requesterContactId) return String(row.requester_contact_id) === String(requesterContactId);
-        if (requesterUserId) return String(row.requester_user_id) === String(requesterUserId);
-        return false;
-      })
-      .sort((a, b) => new Date(b.updated_at || b.created_at || 0).getTime() - new Date(a.updated_at || a.created_at || 0).getTime())
-      .slice(0, 8);
+    return allTickets.filter(row => String(row.id) !== String(ticket.id)).filter(row => {
+      if (requesterContactId) return String(row.requester_contact_id) === String(requesterContactId);
+      if (requesterUserId) return String(row.requester_user_id) === String(requesterUserId);
+      return false;
+    }).sort((a, b) => new Date(b.updated_at || b.created_at || 0).getTime() - new Date(a.updated_at || a.created_at || 0).getTime()).slice(0, 8);
   }, [allTickets, ticket]);
-  const visibleLinkedTickets = useMemo(
-    () =>
-      linkedTicketsExpanded
-        ? linkedTickets
-        : linkedTickets.slice(0, RIGHT_PANE_LINKED_PREVIEW),
-    [linkedTickets, linkedTicketsExpanded]
-  );
+  const visibleLinkedTickets = useMemo(() => linkedTicketsExpanded ? linkedTickets : linkedTickets.slice(0, RIGHT_PANE_LINKED_PREVIEW), [linkedTickets, linkedTicketsExpanded]);
   const hasMoreLinkedTickets = linkedTickets.length > RIGHT_PANE_LINKED_PREVIEW;
-  const visibleLinkedEquipments = useMemo(
-    () =>
-      linkedEquipmentsExpanded
-        ? linkedEquipments
-        : linkedEquipments.slice(0, RIGHT_PANE_LINKED_PREVIEW),
-    [linkedEquipments, linkedEquipmentsExpanded]
-  );
+  const visibleLinkedEquipments = useMemo(() => linkedEquipmentsExpanded ? linkedEquipments : linkedEquipments.slice(0, RIGHT_PANE_LINKED_PREVIEW), [linkedEquipments, linkedEquipmentsExpanded]);
   const hasMoreLinkedEquipments = linkedEquipments.length > RIGHT_PANE_LINKED_PREVIEW;
-  const visibleRequesterInteractions = useMemo(
-    () =>
-      historyExpanded
-        ? requesterInteractions
-        : requesterInteractions.slice(0, RIGHT_PANE_HISTORY_PREVIEW),
-    [requesterInteractions, historyExpanded]
-  );
-  const hasMoreRequesterInteractions =
-    requesterInteractions.length > RIGHT_PANE_HISTORY_PREVIEW;
-  const currentStatusLabel = useMemo(
-    () => copy.getStatusLabel(ticket?.status === "open" ? "new" : ticket?.status),
-    [ticket, copy]
-  );
-
+  const visibleRequesterInteractions = useMemo(() => historyExpanded ? requesterInteractions : requesterInteractions.slice(0, RIGHT_PANE_HISTORY_PREVIEW), [requesterInteractions, historyExpanded]);
+  const hasMoreRequesterInteractions = requesterInteractions.length > RIGHT_PANE_HISTORY_PREVIEW;
+  const currentStatusLabel = useMemo(() => copy.getStatusLabel(ticket?.status === "open" ? "new" : ticket?.status), [ticket, copy]);
   useEffect(() => {
     if (!supportCredit?.eligible) {
       setConsumeSupportCredit(false);
@@ -3277,26 +2939,23 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     setConsumeSupportCredit(!supportCredit.consumed && Number(supportCredit.balance || 0) > 0);
     setRefundSupportCredit(false);
   }, [ticket?.id, supportCredit?.eligible, supportCredit?.consumed, supportCredit?.balance]);
-
   useEffect(() => {
     if (!resolveModalOpen) return;
     const packs = supportCredit?.packs || [];
     const amounts = buildDefaultResolveCreditAmounts(packs, {
       defaultAmount: 1,
-      legacyBalance: supportCredit?.balance ?? 0,
+      legacyBalance: supportCredit?.balance ?? 0
     });
-    const hasCredits =
-      supportCredit?.eligible && !supportCredit?.consumed && Object.keys(amounts).length > 0;
+    const hasCredits = supportCredit?.eligible && !supportCredit?.consumed && Object.keys(amounts).length > 0;
     setResolveCreditAmounts(amounts);
     setResolveCreditEnabled(Boolean(hasCredits));
   }, [resolveModalOpen, supportCredit?.eligible, supportCredit?.consumed, supportCredit?.balance, supportCredit?.packs]);
-
   const handleConfirmResolve = async ({
     reason,
     interventionType,
     actionType,
     consumeSupportCredit: useCredit,
-    supportCreditDebits = null,
+    supportCreditDebits = null
   }) => {
     if (!ticketId || savingResolve) return;
     setSavingResolve(true);
@@ -3309,14 +2968,10 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
           commentResult = await addTicketCommentWithAttachments(ticketId, {
             content: resolveTemplateVariables(pendingReply.content),
             isInternal: pendingReply.internal,
-            files: pendingReply.files,
+            files: pendingReply.files
           });
         } else {
-          commentResult = await addTicketComment(
-            ticketId,
-            resolveTemplateVariables(pendingReply.content),
-            pendingReply.internal
-          );
+          commentResult = await addTicketComment(ticketId, resolveTemplateVariables(pendingReply.content), pendingReply.internal);
         }
         notifyWhatsAppDelivery(commentResult?.whatsappDelivery, copy);
         setCommentDraft("");
@@ -3326,20 +2981,13 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
         pendingResolveReplyRef.current = null;
         setResolvePendingReply(false);
       }
-
-      const debits =
-        Array.isArray(supportCreditDebits) && supportCreditDebits.length > 0
-          ? supportCreditDebits
-          : useCredit
-            ? buildSupportCreditDebitsPayload(resolveCreditAmounts, supportCredit?.packs)
-            : [];
-
+      const debits = Array.isArray(supportCreditDebits) && supportCreditDebits.length > 0 ? supportCreditDebits : useCredit ? buildSupportCreditDebitsPayload(resolveCreditAmounts, supportCredit?.packs) : [];
       const updated = await resolveTicketWithValidation(ticketId, {
         reason,
         interventionType,
         actionType,
         consumeSupportCredit: debits.length > 0,
-        supportCreditDebits: debits,
+        supportCreditDebits: debits
       });
       setTicket(updated);
       setResolveModalOpen(false);
@@ -3357,47 +3005,48 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       setSavingResolve(false);
     }
   };
-
-  const confirmReopenTicket = async (reason) => {
+  const confirmReopenTicket = async reason => {
     if (!ticketId || reopeningTicket || isDeleted || !isTicketClosed || !reason?.trim()) return;
     const trimmedReason = reason.trim();
     setReopeningTicket(true);
-    setTicket((prev) =>
-      prev
-        ? {
-            ...prev,
-            status: "in_progress",
-            closed_at: null,
-            resolved_at: null,
-          }
-        : prev
-    );
-    setEditForm((prev) => ({ ...prev, status: "in_progress" }));
+    setTicket(prev => prev ? {
+      ...prev,
+      status: "in_progress",
+      closed_at: null,
+      resolved_at: null
+    } : prev);
+    setEditForm(prev => ({
+      ...prev,
+      status: "in_progress"
+    }));
     try {
       await updateTicketStatus(ticketId, "in_progress", trimmedReason);
       setReopenModalOpen(false);
       toast.success(copy.toasts.ticketReopened);
       emitNotificationsUpdated();
-      await loadDetail({ silent: true });
+      await loadDetail({
+        silent: true
+      });
     } catch (error) {
       toast.error(error.message || copy.toasts.reopenError);
-      await loadDetail({ silent: true });
+      await loadDetail({
+        silent: true
+      });
     } finally {
       setReopeningTicket(false);
     }
   };
-
   useEffect(() => {
-    setSideConversations((prev) => {
+    setSideConversations(prev => {
       const rebuilt = buildSideConversationsFromComments(ticket?.comments || []);
       if (!Array.isArray(prev) || prev.length === 0) return rebuilt;
-      const prevById = new Map(prev.map((conv) => [String(conv.id), conv]));
-      return rebuilt.map((conv) => {
+      const prevById = new Map(prev.map(conv => [String(conv.id), conv]));
+      return rebuilt.map(conv => {
         const existing = prevById.get(String(conv.id));
         if (!existing) return conv;
         return {
           ...conv,
-          messages: Array.isArray(existing.messages) ? existing.messages : [],
+          messages: Array.isArray(existing.messages) ? existing.messages : []
         };
       });
     });
@@ -3412,33 +3061,24 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       return;
     }
     let cancelled = false;
-    fetchClientModules(clientId)
-      .then((modulesData) => {
+    fetchClientModules(clientId).then(modulesData => {
+      if (cancelled) return;
+      const normalized = mapClientEquipmentsForTicketLink(clientId, modulesData?.equipements || {});
+      if (normalized.length > 0) {
+        setClientEquipments(normalized);
+        return;
+      }
+      return fetchClients().then(clientsRows => {
         if (cancelled) return;
-        const normalized = mapClientEquipmentsForTicketLink(clientId, modulesData?.equipements || {});
-        if (normalized.length > 0) {
-          setClientEquipments(normalized);
-          return;
-        }
-        return fetchClients()
-          .then((clientsRows) => {
-            if (cancelled) return;
-            const targetClient = (Array.isArray(clientsRows) ? clientsRows : []).find(
-              (row) => String(row.id) === String(clientId)
-            );
-            const fallbackList = mapClientEquipmentsForTicketLink(
-              clientId,
-              targetClient?.equipements || {}
-            );
-            setClientEquipments(fallbackList);
-          })
-          .catch(() => {
-            if (!cancelled) setClientEquipments([]);
-          });
-      })
-      .catch(() => {
+        const targetClient = (Array.isArray(clientsRows) ? clientsRows : []).find(row => String(row.id) === String(clientId));
+        const fallbackList = mapClientEquipmentsForTicketLink(clientId, targetClient?.equipements || {});
+        setClientEquipments(fallbackList);
+      }).catch(() => {
         if (!cancelled) setClientEquipments([]);
       });
+    }).catch(() => {
+      if (!cancelled) setClientEquipments([]);
+    });
     return () => {
       cancelled = true;
     };
@@ -3473,29 +3113,21 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     };
   }, [effectiveTicketClientId]);
   useEffect(() => {
-    const applyConfig = (config) => {
+    const applyConfig = config => {
       setAvailableCommentTemplates(Array.isArray(config?.commentTemplates) ? config.commentTemplates : []);
       setAvailableMacros(Array.isArray(config?.macros) ? config.macros : []);
     };
     applyConfig(getTicketAutomationConfig());
-    fetchTicketAutomationConfig()
-      .then((config) => applyConfig(config))
-      .catch(() => {
-        // keep fallback cache/defaults
-      });
+    fetchTicketAutomationConfig().then(config => applyConfig(config)).catch(() => {});
     const unsubscribe = subscribeTicketAutomationConfig(applyConfig);
     return unsubscribe;
   }, []);
   useEffect(() => {
     let cancelled = false;
-    fetchCurrentUser()
-      .then((currentUser) => {
-        if (cancelled) return;
-        setChatUiSettings(normalizeTicketChatUiSettings(currentUser?.ticket_chat_ui_settings));
-      })
-      .catch(() => {
-        // keep defaults
-      });
+    fetchCurrentUser().then(currentUser => {
+      if (cancelled) return;
+      setChatUiSettings(normalizeTicketChatUiSettings(currentUser?.ticket_chat_ui_settings));
+    }).catch(() => {});
     return () => {
       cancelled = true;
     };
@@ -3503,7 +3135,6 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
   useEffect(() => {
     setShowTimelineScrollTop(false);
   }, [ticketId]);
-
   const updateTimelineScrollTopVisibility = useCallback(() => {
     const timelineEl = timelineRef.current;
     if (!timelineEl) {
@@ -3513,36 +3144,33 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     const scrollable = timelineEl.scrollHeight - timelineEl.clientHeight > 80;
     setShowTimelineScrollTop(scrollable && timelineEl.scrollTop > 80);
   }, []);
-
   const scrollTimelineToBottom = useCallback(() => {
     const timelineEl = timelineRef.current;
     if (!timelineEl) return;
     timelineEl.scrollTop = timelineEl.scrollHeight;
     updateTimelineScrollTopVisibility();
   }, [updateTimelineScrollTopVisibility]);
-
   const scrollTimelineToTop = useCallback(() => {
-    timelineRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+    timelineRef.current?.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   }, []);
-
   const handleTimelineScroll = useCallback(() => {
     updateTimelineScrollTopVisibility();
   }, [updateTimelineScrollTopVisibility]);
-
   useLayoutEffect(() => {
     if (loading || !ticket) return undefined;
     scrollTimelineToBottom();
     const rafId = window.requestAnimationFrame(scrollTimelineToBottom);
-    const timeoutIds = [50, 200, 500].map((delay) =>
-      window.setTimeout(scrollTimelineToBottom, delay)
-    );
+    const timeoutIds = [50, 200, 500].map(delay => window.setTimeout(scrollTimelineToBottom, delay));
     return () => {
       window.cancelAnimationFrame(rafId);
-      timeoutIds.forEach((id) => window.clearTimeout(id));
+      timeoutIds.forEach(id => window.clearTimeout(id));
     };
   }, [ticketId, loading, ticket?.comments?.length, scrollTimelineToBottom]);
   useEffect(() => {
-    const handleClickOutsideSideConversation = (event) => {
+    const handleClickOutsideSideConversation = event => {
       const target = event.target;
       if (showSideConversationModal) {
         const insideNewPopup = newSideConversationPopupRef.current?.contains(target);
@@ -3562,12 +3190,9 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
   }, [showSideConversationModal, activeSideConversationId]);
   useEffect(() => {
     if (!ticketOptionsMenuOpen) return undefined;
-    const handleClickOutsideTicketOptions = (event) => {
+    const handleClickOutsideTicketOptions = event => {
       const target = event.target;
-      if (
-        ticketOptionsWrapRef.current?.contains(target) ||
-        ticketOptionsMenuRef.current?.contains(target)
-      ) {
+      if (ticketOptionsWrapRef.current?.contains(target) || ticketOptionsMenuRef.current?.contains(target)) {
         return;
       }
       setTicketOptionsMenuOpen(false);
@@ -3575,23 +3200,20 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     document.addEventListener("mousedown", handleClickOutsideTicketOptions);
     return () => document.removeEventListener("mousedown", handleClickOutsideTicketOptions);
   }, [ticketOptionsMenuOpen]);
-
   useLayoutEffect(() => {
     if (!ticketOptionsMenuOpen) {
       setTicketOptionsMenuStyle(null);
       return undefined;
     }
-
     const updateMenuPosition = () => {
       const anchor = ticketOptionsWrapRef.current;
       if (!anchor) return;
       const rect = anchor.getBoundingClientRect();
       setTicketOptionsMenuStyle({
         top: `${Math.round(rect.bottom + 6)}px`,
-        left: `${Math.round(rect.right)}px`,
+        left: `${Math.round(rect.right)}px`
       });
     };
-
     updateMenuPosition();
     window.addEventListener("resize", updateMenuPosition);
     window.addEventListener("scroll", updateMenuPosition, true);
@@ -3609,7 +3231,7 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       setNewSideConversationPopupStyle({
         left: `${Math.round(rect.right + 8)}px`,
         top: `${Math.round(rect.bottom + 8)}px`,
-        transform: "none",
+        transform: "none"
       });
     };
     updatePopupPosition();
@@ -3635,7 +3257,7 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       setActiveSideConversationPopupStyle({
         left: `${Math.round(rect.right + 8)}px`,
         top: `${Math.round(rect.bottom + 8)}px`,
-        transform: "none",
+        transform: "none"
       });
     };
     updatePopupPosition();
@@ -3646,16 +3268,15 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       window.removeEventListener("scroll", updatePopupPosition, true);
     };
   }, [activeSideConversationId]);
-  const getInitials = (name) => {
+  const getInitials = name => {
     const cleaned = String(name || "").trim();
     if (!cleaned) return "A";
     const parts = cleaned.split(/\s+/).filter(Boolean);
     if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
     return `${parts[0][0] || ""}${parts[1][0] || ""}`.toUpperCase();
   };
-  const resolveCommentAuthorName = (comment) => {
-    const commentAuthorId =
-      comment?.author_user_id || comment?.authorUserId || comment?.user_id || comment?.userId;
+  const resolveCommentAuthorName = comment => {
+    const commentAuthorId = comment?.author_user_id || comment?.authorUserId || comment?.user_id || comment?.userId;
     if (currentUserId && String(commentAuthorId) === String(currentUserId)) {
       return currentUserDisplayName;
     }
@@ -3663,30 +3284,22 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     if (commentAuthorId) return resolveUserLabel(commentAuthorId);
     return copy.agentFallback;
   };
-  const resolveCommentAuthorAvatar = (comment) => {
+  const resolveCommentAuthorAvatar = comment => {
     if (comment?.author_avatar) return comment.author_avatar;
-    const commentAuthorId =
-      comment?.author_user_id || comment?.authorUserId || comment?.user_id || comment?.userId;
+    const commentAuthorId = comment?.author_user_id || comment?.authorUserId || comment?.user_id || comment?.userId;
     if (currentUserId && String(commentAuthorId) === String(currentUserId)) {
       return user?.avatar || currentAgentUser?.avatar || null;
     }
     if (commentAuthorId) {
-      const agentUser = users.find(
-        (u) =>
-          String(u.id) === String(commentAuthorId) ||
-          String(u.uuid) === String(commentAuthorId) ||
-          String(u.user_id) === String(commentAuthorId)
-      );
+      const agentUser = users.find(u => String(u.id) === String(commentAuthorId) || String(u.uuid) === String(commentAuthorId) || String(u.user_id) === String(commentAuthorId));
       if (agentUser?.avatar) return agentUser.avatar;
     }
     return null;
   };
-  const resolveCommentDisplayContent = (comment) => {
+  const resolveCommentDisplayContent = comment => {
     const splitEvent = parseSplitTicketEvent(comment?.content);
     if (splitEvent) {
-      const displayNumber = splitEvent.ticketNumber
-        ? `#${splitEvent.ticketNumber}`
-        : `#${splitEvent.linkedTicketId}`;
+      const displayNumber = splitEvent.ticketNumber ? `#${splitEvent.ticketNumber}` : `#${splitEvent.linkedTicketId}`;
       if (splitEvent.direction === "from") {
         return `${copy.commentDisplay.splitFrom}${displayNumber}${splitEvent.title ? ` - ${splitEvent.title}` : ""}`;
       }
@@ -3694,53 +3307,54 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     }
     const linkedTicketEvent = parseLinkedTicketEvent(comment?.content);
     if (linkedTicketEvent) {
-      const displayNumber = linkedTicketEvent.ticketNumber
-        ? `#${linkedTicketEvent.ticketNumber}`
-        : `#${linkedTicketEvent.linkedTicketId}`;
-      return linkedTicketEvent.event === "removed"
-        ? `${copy.commentDisplay.linkedRemoved}${displayNumber}`
-        : `${copy.commentDisplay.linkedAdded}${displayNumber} - ${linkedTicketEvent.title || copy.linkedTicketFallback}`;
+      const displayNumber = linkedTicketEvent.ticketNumber ? `#${linkedTicketEvent.ticketNumber}` : `#${linkedTicketEvent.linkedTicketId}`;
+      return linkedTicketEvent.event === "removed" ? `${copy.commentDisplay.linkedRemoved}${displayNumber}` : `${copy.commentDisplay.linkedAdded}${displayNumber} - ${linkedTicketEvent.title || copy.linkedTicketFallback}`;
     }
     const linkedEquipmentEvent = parseLinkedEquipmentEvent(comment?.content);
     if (linkedEquipmentEvent) {
-      const label = formatLinkedEquipmentEventLabel(linkedEquipmentEvent, { locale, separator: " - " });
-      return linkedEquipmentEvent.event === "removed"
-        ? `${copy.commentDisplay.equipmentRemoved}${label}`
-        : `${copy.commentDisplay.equipmentAdded}${label}`;
+      const label = formatLinkedEquipmentEventLabel(linkedEquipmentEvent, {
+        locale,
+        separator: " - "
+      });
+      return linkedEquipmentEvent.event === "removed" ? `${copy.commentDisplay.equipmentRemoved}${label}` : `${copy.commentDisplay.equipmentAdded}${label}`;
     }
     const event = parseSideConversationEvent(comment?.content);
     if (!event) return comment?.content;
     const subject = event.subject || copy.commentDisplay.sideSubjectFallback;
     if (event.event === "closed") {
-      return interpolate(copy.commentDisplay.sideClosed, { subject });
+      return interpolate(copy.commentDisplay.sideClosed, {
+        subject
+      });
     }
     if (event.event === "reopened") {
-      return interpolate(copy.commentDisplay.sideReopened, { subject });
+      return interpolate(copy.commentDisplay.sideReopened, {
+        subject
+      });
     }
-    return interpolate(copy.commentDisplay.sideOpened, { subject });
+    return interpolate(copy.commentDisplay.sideOpened, {
+      subject
+    });
   };
   const openLinkedTicketDetail = (linkedTicketId, linkedTicketNumber, linkedTicketTitle) => {
     if (!linkedTicketId) return;
     onNavigate?.("TicketDetail", {
       ticketId: linkedTicketId,
       ticketNumber: linkedTicketNumber || undefined,
-      title: linkedTicketTitle || undefined,
+      title: linkedTicketTitle || undefined
     });
   };
   const openExclusionModal = () => {
     setExclusionModalOpen(true);
     setTicketOptionsMenuOpen(false);
   };
-
   const closeExclusionModal = () => {
     if (savingExclusion) return;
     setExclusionModalOpen(false);
   };
-
-  const addCurrentTicketToExclusions = async (rule) => {
+  const addCurrentTicketToExclusions = async rule => {
     if (!ticket || !rule) return;
     const criteria = Array.isArray(rule.criteria) ? rule.criteria : [];
-    const hasValue = criteria.some((criterion) => String(criterion?.value || "").trim());
+    const hasValue = criteria.some(criterion => String(criterion?.value || "").trim());
     if (!hasValue) {
       toast.error(copy.toasts.exclusionValueRequired);
       return;
@@ -3752,7 +3366,7 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       nextRules.push(rule);
       await saveTicketAutomationConfig({
         ...currentConfig,
-        exclusionRules: nextRules,
+        exclusionRules: nextRules
       });
       toast.success(copy.toasts.exclusionAdded);
       setExclusionModalOpen(false);
@@ -3762,7 +3376,6 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       setSavingExclusion(false);
     }
   };
-
   const openSplitModal = () => {
     if (!Array.isArray(availableLinkTargets) || availableLinkTargets.length === 0) {
       toast.error(copy.toasts.splitNoTarget);
@@ -3771,34 +3384,24 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     setSplitModalOpen(true);
     setTicketOptionsMenuOpen(false);
   };
-
   const closeSplitModal = () => {
     if (savingSplit) return;
     setSplitModalOpen(false);
   };
-
-  const splitCurrentTicket = async (selectedTarget) => {
+  const splitCurrentTicket = async selectedTarget => {
     if (!ticket || !ticketId || !selectedTarget) return;
     setSavingSplit(true);
     try {
       const closedTicketNumber = ticket.ticket_number || ticket.id;
-      const safeClosedTitle = String(ticket.title || "Ticket scindé").replace(/[\\\]]/g, "");
+      const safeClosedTitle = String(ticket.title || "Split ticket").replace(/[\\\]]/g, "");
       const safeClosedNumber = String(closedTicketNumber || ticketId).replace(/[\\\]]/g, "");
       const safeTargetTitle = String(selectedTarget.title || "Ticket destinataire").replace(/[\\\]]/g, "");
       const safeTargetNumber = String(selectedTarget.ticket_number || selectedTarget.id || "").replace(/[\\\]]/g, "");
-
-      await updateTicketStatus(ticketId, "closed", `Ticket scindé vers #${selectedTarget.ticket_number || selectedTarget.id}`);
-
-      const splitSourceComment =
-        `[Split ticket] [direction:to] [linked_ticket_id:${selectedTarget.id}] ` +
-        `[ticket_number:${safeTargetNumber}] [title:${safeTargetTitle}]`;
+      await updateTicketStatus(ticketId, "closed", `Ticket split to #${selectedTarget.ticket_number || selectedTarget.id}`);
+      const splitSourceComment = `[Split ticket] [direction:to] [linked_ticket_id:${selectedTarget.id}] ` + `[ticket_number:${safeTargetNumber}] [title:${safeTargetTitle}]`;
       await addTicketComment(ticketId, splitSourceComment, true);
-
-      const splitInfoComment =
-        `[Split ticket] [direction:from] [linked_ticket_id:${ticketId}] ` +
-        `[ticket_number:${safeClosedNumber}] [title:${safeClosedTitle}]`;
+      const splitInfoComment = `[Split ticket] [direction:from] [linked_ticket_id:${ticketId}] ` + `[ticket_number:${safeClosedNumber}] [title:${safeClosedTitle}]`;
       await addTicketComment(selectedTarget.id, splitInfoComment, true);
-
       await loadDetail();
       toast.success(copy.formatSplitSuccess(safeClosedNumber, safeTargetNumber));
       setSplitModalOpen(false);
@@ -3808,7 +3411,6 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       setSavingSplit(false);
     }
   };
-
   const openReminderModal = () => {
     if (isReadOnly || !ticket) return;
     if (isCommunity) {
@@ -3817,13 +3419,16 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
     }
     setReminderModalOpen(true);
   };
-
   const closeReminderModal = () => {
     if (savingReminder || deletingReminder) return;
     setReminderModalOpen(false);
   };
-
-  const saveTicketReminder = async ({ title, date, time, note }) => {
+  const saveTicketReminder = async ({
+    title,
+    date,
+    time,
+    note
+  }) => {
     if (!ticket || !ticketId) return;
     const payload = buildReminderEventPayload({
       ticket,
@@ -3832,7 +3437,7 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       time,
       note,
       assignedUserId: user?.id,
-      requesterName: requesterDisplayName !== "-" ? requesterDisplayName : "",
+      requesterName: requesterDisplayName !== "-" ? requesterDisplayName : ""
     });
     if (!payload) {
       toast.error(copy.toasts.reminderInvalidFields);
@@ -3855,7 +3460,6 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       setSavingReminder(false);
     }
   };
-
   const deleteTicketReminder = async () => {
     if (!ticketReminder?.id) return;
     if (!window.confirm(copy.confirms.deleteReminder)) return;
@@ -3871,138 +3475,94 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       setDeletingReminder(false);
     }
   };
-
   const openLinkedEquipmentDetail = (equipmentId, equipmentName, equipmentType) => {
     if (!equipmentId) return;
-    const matched = clientEquipments.find((eq) => String(eq.id) === String(equipmentId));
+    const matched = clientEquipments.find(eq => String(eq.id) === String(equipmentId));
     const payload = matched || {
       id: equipmentId,
-      name: equipmentName || `Matériel #${equipmentId}`,
+      name: equipmentName || `Hardware #${equipmentId}`,
       type: equipmentType || "",
       clientId: effectiveTicketClientId || ticket?.client_id || null,
-      clientName: breadcrumbClientLabel || clientLabel || undefined,
+      clientName: breadcrumbClientLabel || clientLabel || undefined
     };
     onNavigate?.("EquipmentDetail", payload);
   };
   const renderResolutionCommentCard = (comment, validation) => {
     const parsed = parseResolutionProposalComment(comment?.content);
-    const interventionType = getLocalizedSolutionCatalogLabel(
-      validation?.interventionType || parsed?.interventionType || "",
-      locale
-    );
-    const actionType = getLocalizedSolutionCatalogLabel(
-      validation?.actionType || parsed?.actionType || "",
-      locale
-    );
+    const interventionType = getLocalizedSolutionCatalogLabel(validation?.interventionType || parsed?.interventionType || "", locale);
+    const actionType = getLocalizedSolutionCatalogLabel(validation?.actionType || parsed?.actionType || "", locale);
     const reason = validation?.resolutionReason || parsed?.reason || "";
     const status = copy.getResolutionStatusPresentation(validation);
-    return (
-      <div className={styles.resolutionCommentCompact}>
+    return <div className={styles.resolutionCommentCompact}>
         <span className={`${styles.resolutionCommentStatus} ${styles[`resolutionCommentStatus_${status.variant}`] || ""}`.trim()}>
           <Icon icon={status.icon} aria-hidden />
           {status.title}
         </span>
         {interventionType ? <span className={styles.validationTag}>{interventionType}</span> : null}
         {actionType ? <span className={styles.validationTag}>{actionType}</span> : null}
-        {validation?.isPending && validation?.autoCloseAt ? (
-          <span className={styles.resolutionCommentMeta}>
+        {validation?.isPending && validation?.autoCloseAt ? <span className={styles.resolutionCommentMeta}>
             {copy.formatResolutionDeadline(copy.formatDateTime(validation.autoCloseAt))}
-          </span>
-        ) : null}
+          </span> : null}
         {reason ? <span className={styles.resolutionCommentReason}>{reason}</span> : null}
-      </div>
-    );
+      </div>;
   };
-  const renderCommentBody = (comment) => {
+  const renderCommentBody = comment => {
     const splitEvent = parseSplitTicketEvent(comment?.content);
     if (splitEvent) {
       const linkedTicketNumber = splitEvent.ticketNumber || splitEvent.linkedTicketId;
-      return (
-        <>
+      return <>
           {splitEvent.direction === "from" ? copy.commentDisplay.splitFrom : copy.commentDisplay.splitTo}
-          <button
-            type="button"
-            className={styles.linkLikeBtn}
-            onClick={() =>
-              openLinkedTicketDetail(
-                splitEvent.linkedTicketId,
-                splitEvent.ticketNumber,
-                splitEvent.title
-              )
-            }
-          >
+          <button type="button" className={styles.linkLikeBtn} onClick={() => openLinkedTicketDetail(splitEvent.linkedTicketId, splitEvent.ticketNumber, splitEvent.title)}>
             {`#${linkedTicketNumber} ${splitEvent.title ? `- ${splitEvent.title}` : ""}`}
           </button>
-        </>
-      );
+        </>;
     }
     const linkedTicketEvent = parseLinkedTicketEvent(comment?.content);
     if (linkedTicketEvent) {
       const linkedTicketNumber = linkedTicketEvent.ticketNumber || linkedTicketEvent.linkedTicketId;
-      return (
-        <>
+      return <>
           {linkedTicketEvent.event === "removed" ? copy.commentDisplay.linkedRemoved : copy.commentDisplay.linkedAdded}
-          <button
-            type="button"
-            className={styles.linkLikeBtn}
-            onClick={() =>
-              openLinkedTicketDetail(
-                linkedTicketEvent.linkedTicketId,
-                linkedTicketEvent.ticketNumber,
-                linkedTicketEvent.title
-              )
-            }
-          >
+          <button type="button" className={styles.linkLikeBtn} onClick={() => openLinkedTicketDetail(linkedTicketEvent.linkedTicketId, linkedTicketEvent.ticketNumber, linkedTicketEvent.title)}>
             {`#${linkedTicketNumber} ${linkedTicketEvent.title ? `- ${linkedTicketEvent.title}` : ""}`}
           </button>
-        </>
-      );
+        </>;
     }
     const linkedEquipmentEvent = parseLinkedEquipmentEvent(comment?.content);
     if (linkedEquipmentEvent) {
-      return (
-        <>
+      return <>
           {linkedEquipmentEvent.event === "removed" ? copy.commentDisplay.equipmentRemoved : copy.commentDisplay.equipmentAdded}
-          <button
-            type="button"
-            className={styles.linkLikeBtn}
-            onClick={() =>
-              openLinkedEquipmentDetail(
-                linkedEquipmentEvent.equipmentId,
-                linkedEquipmentEvent.name,
-                linkedEquipmentEvent.type
-              )
-            }
-          >
-            {formatLinkedEquipmentEventLabel(linkedEquipmentEvent, { locale, separator: " - " })}
+          <button type="button" className={styles.linkLikeBtn} onClick={() => openLinkedEquipmentDetail(linkedEquipmentEvent.equipmentId, linkedEquipmentEvent.name, linkedEquipmentEvent.type)}>
+            {formatLinkedEquipmentEventLabel(linkedEquipmentEvent, {
+            locale,
+            separator: " - "
+          })}
           </button>
-          {(linkedEquipmentEvent.warranty || linkedEquipmentEvent.licenses) && (
-            <>
+          {(linkedEquipmentEvent.warranty || linkedEquipmentEvent.licenses) && <>
               {" "}
               (
-              {linkedEquipmentEvent.warranty ? interpolate(copy.commentDisplay.warranty, { value: linkedEquipmentEvent.warranty }) : ""}
+              {linkedEquipmentEvent.warranty ? interpolate(copy.commentDisplay.warranty, {
+            value: linkedEquipmentEvent.warranty
+          }) : ""}
               {linkedEquipmentEvent.warranty && linkedEquipmentEvent.licenses ? " | " : ""}
-              {linkedEquipmentEvent.licenses ? interpolate(copy.commentDisplay.licenses, { value: linkedEquipmentEvent.licenses }) : ""}
+              {linkedEquipmentEvent.licenses ? interpolate(copy.commentDisplay.licenses, {
+            value: linkedEquipmentEvent.licenses
+          }) : ""}
               )
-            </>
-          )}
-        </>
-      );
+            </>}
+        </>;
     }
     return renderCommentContent(resolveCommentDisplayContent(comment));
   };
-  const renderCommentContent = (content) => {
+  const renderCommentContent = content => {
     const raw = String(content || "");
     const looksLikeHtml = /<\/?[a-z][\s\S]*>/i.test(raw);
     if (looksLikeHtml) {
       const safeHtml = sanitizeTicketCommentHtml(raw);
-      return <div dangerouslySetInnerHTML={{ __html: safeHtml }} />;
+      return <div dangerouslySetInnerHTML={{
+        __html: safeHtml
+      }} />;
     }
-    // Nettoie les anciens liens HTML insérés précédemment pour éviter l'affichage de balises.
-    const withoutLegacyAnchors = raw.replace(
-      /<a[^>]*href=["']([^"']+)["'][^>]*>(.*?)<\/a>/gi,
-      (_match, href, label) => `${label || copy.linkFallback} (${href})`
-    );
+    const withoutLegacyAnchors = raw.replace(/<a[^>]*href=["']([^"']+)["'][^>]*>(.*?)<\/a>/gi, (_match, href, label) => `${label || copy.linkFallback} (${href})`);
     const urlRegex = /(https?:\/\/[^\s)]+)(\)?)/g;
     const lines = withoutLegacyAnchors.split("\n");
     return lines.map((line, lineIndex) => {
@@ -4018,17 +3578,9 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
           parts.push(line.slice(lastIndex, index));
         }
         if (normalizedUrl) {
-          parts.push(
-            <a
-              key={`url-${lineIndex}-${index}`}
-              href={normalizedUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.attachmentLink}
-            >
+          parts.push(<a key={`url-${lineIndex}-${index}`} href={normalizedUrl} target="_blank" rel="noopener noreferrer" className={styles.attachmentLink}>
               {url}
-            </a>
-          );
+            </a>);
         } else {
           parts.push(url);
         }
@@ -4037,577 +3589,254 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
       if (lastIndex < line.length) {
         parts.push(line.slice(lastIndex));
       }
-      return (
-        <React.Fragment key={`line-${lineIndex}`}>
+      return <React.Fragment key={`line-${lineIndex}`}>
           {parts.length > 0 ? parts : line}
           {lineIndex < lines.length - 1 ? <br /> : null}
-        </React.Fragment>
-      );
+        </React.Fragment>;
     });
   };
-  const isImageAttachment = (attachment) => {
+  const isImageAttachment = attachment => {
     const mime = String(attachment?.mime_type || "").toLowerCase();
     if (mime.startsWith("image/")) return true;
     const filename = String(attachment?.filename || attachment?.name || "");
     return /\.(png|jpe?g|gif|webp|bmp|svg)$/i.test(filename);
   };
-
-  const sortedSideConversations = useMemo(
-    () =>
-      [...sideConversations].sort(
-        (a, b) =>
-          new Date(a.createdAt || a.updatedAt || 0).getTime() -
-          new Date(b.createdAt || b.updatedAt || 0).getTime()
-      ),
-    [sideConversations]
-  );
-
-  const ticketTopBar = (
-    <header className={`${styles.ticketChromeBar} ${styles.ticketHeaderBar}`}>
-      <button
-        type="button"
-        className={styles.ticketHeaderIconBtn}
-        onClick={() => onNavigate?.("Ticket")}
-        aria-label={copy.header.backAria}
-        title={copy.header.backTitle}
-      >
+  const sortedSideConversations = useMemo(() => [...sideConversations].sort((a, b) => new Date(a.createdAt || a.updatedAt || 0).getTime() - new Date(b.createdAt || b.updatedAt || 0).getTime()), [sideConversations]);
+  const ticketTopBar = <header className={`${styles.ticketChromeBar} ${styles.ticketHeaderBar}`}>
+      <button type="button" className={styles.ticketHeaderIconBtn} onClick={() => onNavigate?.("Ticket")} aria-label={copy.header.backAria} title={copy.header.backTitle}>
         <Icon icon="mdi:arrow-left" aria-hidden />
       </button>
 
       <div className={styles.ticketHeroTrack} aria-label={copy.header.ticketContextAria}>
-        <button
-          type="button"
-          className={styles.ticketHeroEyebrow}
-          onClick={() => onNavigate?.("Ticket")}
-        >
-          <Icon icon="mdi:lifebuoy" aria-hidden />
-          {copy.eyebrow}
-        </button>
-        <span className={styles.ticketHeroMetaDot} aria-hidden>
-          ·
-        </span>
         <h1 className={styles.ticketHeroTitle}>
-          {ticket
-            ? copy.formatTicketNumber(ticket.ticket_number || ticket.id)
-            : copy.pageTitle}
+          {ticket ? copy.formatTicketNumber(ticket.ticket_number || ticket.id) : copy.pageTitle}
         </h1>
         <span className={styles.ticketHeroMetaDot} aria-hidden>
           ·
         </span>
-        {titleEditing ? (
-          <input
-            ref={titleInputRef}
-            className={styles.ticketHeroSubjectInput}
-            type="text"
-            value={titleDraft}
-            onChange={(e) => setTitleDraft(e.target.value)}
-            onBlur={handleTitleBlur}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                e.currentTarget.blur();
-              } else if (e.key === "Escape") {
-                e.preventDefault();
-                cancelTitleEdit();
-              }
-            }}
-            placeholder={copy.header.titlePlaceholder}
-            disabled={isReadOnly}
-            aria-label={copy.header.titleAria}
-          />
-        ) : (
-          <button
-            type="button"
-            className={styles.ticketHeroSubjectBtn}
-            onClick={startTitleEdit}
-            disabled={isReadOnly || !ticket}
-            title={copy.header.editTitleTitle}
-            aria-label={copy.header.editTitleAria}
-          >
-            <span
-              className={`${styles.ticketHeroSubject} ${
-                !(editForm.title || ticket?.title) ? styles.ticketHeroSubjectPlaceholder : ""
-              }`.trim()}
-            >
-              {editForm.title || ticket?.title || copy.header.titlePlaceholder}
-            </span>
-          </button>
-        )}
-        {!isCommunity && ticket && ticketSlaView.label && ticketSlaView.label !== "-" ? (
-          <>
+        {ticket?.requester_contact_id ? <button type="button" className={styles.ticketHeroMetaLink} onClick={() => onNavigate?.("ContactDetail", {
+        contactId: ticket.requester_contact_id
+      })}>
+            <Icon icon="mdi:account-outline" aria-hidden />
+            {requesterDisplayName}
+          </button> : <span className={styles.ticketHeroMetaItem}>
+            <Icon icon="mdi:account-outline" aria-hidden />
+            {requesterDisplayName}
+          </span>}
+        <span className={styles.ticketHeroMetaDot} aria-hidden>
+          ·
+        </span>
+        {breadcrumbClientId ? <button type="button" className={styles.ticketHeroMetaLink} onClick={() => onNavigate?.("ContratDetail", {
+        clientId: breadcrumbClientId,
+        name: breadcrumbClientLabel
+      })}>
+            <Icon icon="mdi:office-building-outline" aria-hidden />
+            {breadcrumbClientLabel}
+          </button> : <span className={styles.ticketHeroMetaItem}>
+            <Icon icon="mdi:office-building-outline" aria-hidden />
+            {breadcrumbClientLabel}
+          </span>}
+        {!isCommunity && ticket && ticketSlaView.label && ticketSlaView.label !== "-" ? <>
             <span className={styles.ticketHeroMetaDot} aria-hidden>
               ·
             </span>
-            <span
-              className={`${styles.ticketBadge} ${styles[`ticketBadge_${ticketSlaView.tone}`] || styles.ticketBadge_ok}`}
-              title={ticketSlaTitle}
-            >
+            <span className={`${styles.ticketBadge} ${styles[`ticketBadge_${ticketSlaView.tone}`] || styles.ticketBadge_ok}`} title={ticketSlaTitle}>
               <Icon icon="mdi:timer-outline" aria-hidden />
               {ticketSlaView.label}
             </span>
-          </>
-        ) : null}
-        {ticket ? (
-          <div className={styles.ticketHeaderTools} aria-label={copy.header.sideConversationsAria}>
-            <span className={styles.sideConversationsLabel}>{copy.header.sideConversationsLabel}</span>
-            <button
-              ref={newSideConversationBtnRef}
-              type="button"
-              className={styles.ticketHeaderIconBtn}
-              onClick={() => {
-                setActiveSideConversationId(null);
-                setShowSideConversationModal(true);
-              }}
-              title={copy.header.newSideConversationTitle}
-              aria-label={copy.header.newSideConversationAria}
-              disabled={isReadOnly}
-            >
+          </> : null}
+        {ticket ? <div className={styles.ticketHeaderTools} aria-label={copy.header.sideConversationsAria}>
+            <button ref={newSideConversationBtnRef} type="button" className={styles.ticketHeaderIconBtn} onClick={() => {
+          setActiveSideConversationId(null);
+          setShowSideConversationModal(true);
+        }} title={copy.header.newSideConversationTitle} aria-label={copy.header.newSideConversationAria} disabled={isReadOnly}>
               <Icon icon="mdi:plus" aria-hidden />
             </button>
-            {sortedSideConversations.slice(0, 3).map((conv) => (
-              <button
-                key={conv.id}
-                ref={(el) => {
-                  if (el) {
-                    sideConversationChipRefs.current[String(conv.id)] = el;
-                  } else {
-                    delete sideConversationChipRefs.current[String(conv.id)];
-                  }
-                }}
-                type="button"
-                className={`${styles.ticketHeaderIconBtn} ${
-                  String(activeSideConversationId) === String(conv.id)
-                    ? playModeStyles.diceBtnActive
-                    : ""
-                }`}
-                onClick={() => setActiveSideConversationId(conv.id)}
-                title={conv.subject}
-                aria-label={copy.formatSideConversationChipAria(conv.subject)}
-                aria-pressed={String(activeSideConversationId) === String(conv.id)}
-              >
-                <Icon
-                  icon={
-                    conv.status === "done"
-                      ? "mdi:check-circle-outline"
-                      : "mdi:message-processing-outline"
-                  }
-                  aria-hidden
-                />
-              </button>
-            ))}
-          </div>
-        ) : null}
-        <span className={styles.ticketHeroMetaDot} aria-hidden>
-          ·
-        </span>
-        {ticket?.requester_contact_id ? (
-          <button
-            type="button"
-            className={styles.ticketHeroMetaLink}
-            onClick={() =>
-              onNavigate?.("ContactDetail", { contactId: ticket.requester_contact_id })
-            }
-          >
-            <Icon icon="mdi:account-outline" aria-hidden />
-            {requesterDisplayName}
-          </button>
-        ) : (
-          <span className={styles.ticketHeroMetaItem}>
-            <Icon icon="mdi:account-outline" aria-hidden />
-            {requesterDisplayName}
-          </span>
-        )}
-        <span className={styles.ticketHeroMetaDot} aria-hidden>
-          ·
-        </span>
-        {breadcrumbClientId ? (
-          <button
-            type="button"
-            className={styles.ticketHeroMetaLink}
-            onClick={() =>
-              onNavigate?.("ContratDetail", {
-                clientId: breadcrumbClientId,
-                name: breadcrumbClientLabel,
-              })
-            }
-          >
-            <Icon icon="mdi:office-building-outline" aria-hidden />
-            {breadcrumbClientLabel}
-          </button>
-        ) : (
-          <span className={styles.ticketHeroMetaItem}>
-            <Icon icon="mdi:office-building-outline" aria-hidden />
-            {breadcrumbClientLabel}
-          </span>
-        )}
+            {sortedSideConversations.slice(0, 3).map(conv => <button key={conv.id} ref={el => {
+          if (el) {
+            sideConversationChipRefs.current[String(conv.id)] = el;
+          } else {
+            delete sideConversationChipRefs.current[String(conv.id)];
+          }
+        }} type="button" className={`${styles.ticketHeaderIconBtn} ${String(activeSideConversationId) === String(conv.id) ? playModeStyles.diceBtnActive : ""}`} onClick={() => setActiveSideConversationId(conv.id)} title={conv.subject} aria-label={copy.formatSideConversationChipAria(conv.subject)} aria-pressed={String(activeSideConversationId) === String(conv.id)}>
+                <Icon icon={conv.status === "done" ? "mdi:check-circle-outline" : "mdi:message-processing-outline"} aria-hidden />
+              </button>)}
+          </div> : null}
       </div>
 
       <div className={styles.ticketHeaderRight}>
-        {!isDeleted && ticket ? (
-          <div className={styles.ticketOptionsWrap} ref={ticketOptionsWrapRef}>
-            <button
-              type="button"
-              className={styles.ticketHeaderIconBtn}
-              onClick={() => setTicketOptionsMenuOpen((prev) => !prev)}
-              title={copy.header.ticketOptionsTitle}
-              aria-label={copy.header.ticketOptionsAria}
-              aria-expanded={ticketOptionsMenuOpen}
-              aria-haspopup="menu"
-            >
+        {!isDeleted && ticket ? <div className={styles.ticketOptionsWrap} ref={ticketOptionsWrapRef}>
+            <button type="button" className={styles.ticketHeaderIconBtn} onClick={() => setTicketOptionsMenuOpen(prev => !prev)} title={copy.header.ticketOptionsTitle} aria-label={copy.header.ticketOptionsAria} aria-expanded={ticketOptionsMenuOpen} aria-haspopup="menu">
               <Icon icon="mdi:call-split" aria-hidden />
             </button>
-            {ticketOptionsMenuOpen && ticketOptionsMenuStyle
-              ? createPortal(
-                  <div
-                    ref={ticketOptionsMenuRef}
-                    className={`${styles.ticketOptionsMenu} ${styles.ticketOptionsMenuFixed}`}
-                    style={ticketOptionsMenuStyle}
-                    role="menu"
-                  >
-                    <button
-                      type="button"
-                      className={styles.ticketOptionsMenuItem}
-                      role="menuitem"
-                      onClick={openExclusionModal}
-                    >
+            {ticketOptionsMenuOpen && ticketOptionsMenuStyle ? createPortal(<div ref={ticketOptionsMenuRef} className={`${styles.ticketOptionsMenu} ${styles.ticketOptionsMenuFixed}`} style={ticketOptionsMenuStyle} role="menu">
+                    <button type="button" className={styles.ticketOptionsMenuItem} role="menuitem" onClick={openExclusionModal}>
                       {copy.header.menuAddExclusion}
                     </button>
-                    <button
-                      type="button"
-                      className={styles.ticketOptionsMenuItem}
-                      role="menuitem"
-                      onClick={openSplitModal}
-                    >
+                    <button type="button" className={styles.ticketOptionsMenuItem} role="menuitem" onClick={openSplitModal}>
                       {copy.header.menuSplit}
                     </button>
-                  </div>,
-                  document.body
-                )
-              : null}
-          </div>
-        ) : null}
-        {playMode ? (
-          <span className={playModeStyles.playModeBanner}>
+                  </div>, document.body) : null}
+          </div> : null}
+        {playMode ? <span className={playModeStyles.playModeBanner}>
             <Icon icon="mdi:dice-5" aria-hidden />
             {copy.playMode.banner}
-          </span>
-        ) : null}
-        <SmartTooltip
-          content={
-            isCommunity
-              ? copy.header.reminderProTooltip
-              : copy.reminderModal.formatReminderButtonTitle(ticketReminder)
-          }
-        >
+          </span> : null}
+        <SmartTooltip content={isCommunity ? copy.header.reminderProTooltip : copy.reminderModal.formatReminderButtonTitle(ticketReminder)}>
           <div className={isCommunity ? styles.reminderProWrap : undefined}>
-            <button
-              type="button"
-              className={`${styles.ticketHeaderIconBtn} ${
-                !isCommunity && ticketReminder ? styles.reminderBtnActive : ""
-              }`}
-              onClick={openReminderModal}
-              disabled={isReadOnly || !ticket}
-              aria-label={
-                isCommunity
-                  ? copy.header.reminderProAria
-                  : ticketReminder
-                    ? copy.header.reminderEditAria
-                    : copy.header.reminderScheduleAria
-              }
-            >
-              <Icon
-                icon={!isCommunity && ticketReminder ? "mdi:bell-ring" : "mdi:bell-outline"}
-                aria-hidden
-              />
+            <button type="button" className={`${styles.ticketHeaderIconBtn} ${!isCommunity && ticketReminder ? styles.reminderBtnActive : ""}`} onClick={openReminderModal} disabled={isReadOnly || !ticket} aria-label={isCommunity ? copy.header.reminderProAria : ticketReminder ? copy.header.reminderEditAria : copy.header.reminderScheduleAria}>
+              <Icon icon={!isCommunity && ticketReminder ? "mdi:bell-ring" : "mdi:bell-outline"} aria-hidden />
             </button>
             {isCommunity ? <span className={styles.reminderProBadge}>{copy.header.proBadge}</span> : null}
           </div>
         </SmartTooltip>
-        <button
-          type="button"
-          className={`${styles.ticketHeaderIconBtn} ${playMode ? playModeStyles.diceBtnActive : ""}`}
-          onClick={handleRandomTicketClick}
-          disabled={loadingRandom || isReadOnly || !ticket}
-          title={copy.playMode.tooltip}
-          aria-label={copy.playMode.aria}
-          aria-pressed={playMode}
-        >
-          <Icon
-            icon={loadingRandom ? "mdi:loading" : "mdi:dice-5"}
-            className={loadingRandom ? playModeStyles.spinning : undefined}
-          />
+        <button type="button" className={`${styles.ticketHeaderIconBtn} ${playMode ? playModeStyles.diceBtnActive : ""}`} onClick={handleRandomTicketClick} disabled={loadingRandom || isReadOnly || !ticket} title={copy.playMode.tooltip} aria-label={copy.playMode.aria} aria-pressed={playMode}>
+          <Icon icon={loadingRandom ? "mdi:loading" : "mdi:dice-5"} className={loadingRandom ? playModeStyles.spinning : undefined} />
         </button>
       </div>
-    </header>
-  );
-
+    </header>;
   if (!ticketId) {
-    return (
-      <div className={`${layout.page} ${styles.ticketDetailPage} msp-page-grid`}>
+    return <div className={`${layout.page} ${styles.ticketDetailPage} msp-page-grid`}>
         <div className={`${layout.shell} ${layout.shellWide} ${layout.shellFull} ${styles.shell}`}>
           {ticketTopBar}
           <div className={styles.emptyState}>{copy.empty.noTicketSelected}</div>
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className={`${layout.page} ${styles.ticketDetailPage} msp-page-grid`}>
-      <div
-        className={`${layout.shell} ${layout.shellWide} ${layout.shellFull} ${styles.shell}`}
-        style={{
-          "--ticket-chat-text-size": `${Number(chatUiSettings?.textSizePx ?? 16)}px`,
-          "--ticket-chat-message-spacing": `${Number(chatUiSettings?.messageSpacingPx ?? 10)}px`,
-        }}
-      >
+  return <div className={`${layout.page} ${styles.ticketDetailPage} msp-page-grid`}>
+      <div className={`${layout.shell} ${layout.shellWide} ${layout.shellFull} ${styles.shell}`} style={{
+      "--ticket-chat-text-size": `${Number(chatUiSettings?.textSizePx ?? 16)}px`,
+      "--ticket-chat-message-spacing": `${Number(chatUiSettings?.messageSpacingPx ?? 10)}px`
+    }}>
         {ticketTopBar}
 
-      {loading ? (
-        <div className={styles.emptyState}>{copy.empty.loading}</div>
-      ) : !ticket ? (
-        <div className={styles.emptyState}>{copy.empty.notFound}</div>
-      ) : (
-        <div className={styles.workspace}>
+      {loading ? <div className={styles.emptyState}>{copy.empty.loading}</div> : !ticket ? <div className={styles.emptyState}>{copy.empty.notFound}</div> : <div className={styles.workspace}>
         <div className={styles.layout}>
           <aside className={`${styles.leftPane} ${heroStyles.rightSidebarContent}`}>
-            <RightPaneStaticSection
-              title={copy.leftPane.properties}
-              titleId="ticket-detail-properties-label"
-              sectionClassName={styles.paneSectionOverflow}
-              bodyClassName={`${styles.leftPanePropertiesBody} ${fs.settingsPanel}`}
-            >
+            <RightPaneStaticSection title={copy.leftPane.properties} titleId="ticket-detail-properties-label" sectionClassName={styles.paneSectionOverflow} bodyClassName={`${styles.leftPanePropertiesBody} ${fs.settingsPanel}`}>
                 <div className={fs.equipmentField}>
                   <label className={fs.equipmentFieldLabel}>{copy.leftPane.requester}</label>
                   <div className={fs.contactPicker} ref={requesterDropdownRef}>
-                    <div
-                      className={`${fs.contactInputWrap} ${showRequesterDropdown ? fs.contactInputWrapOpen : ""}`}
-                    >
+                    <div className={`${fs.contactInputWrap} ${showRequesterDropdown ? fs.contactInputWrapOpen : ""}`}>
                       <Icon icon="mdi:magnify" className={fs.contactInputIcon} aria-hidden />
-                      <input
-                        type="text"
-                        className={fs.contactInput}
-                        value={requesterSearch}
-                        placeholder={copy.searchContact}
-                        disabled={isReadOnly}
-                        aria-expanded={showRequesterDropdown}
-                        aria-haspopup="listbox"
-                        onChange={(e) => {
-                          setRequesterSearch(e.target.value);
-                          setShowRequesterDropdown(true);
-                          setRequesterHighlight(0);
-                        }}
-                        onFocus={() => setShowRequesterDropdown(true)}
-                        onKeyDown={(e) => {
-                          if (!showRequesterDropdown || filteredRequesterContacts.length === 0) return;
-                          if (e.key === "ArrowDown") {
-                            e.preventDefault();
-                            setRequesterHighlight((h) => Math.min(h + 1, filteredRequesterContacts.length - 1));
-                          } else if (e.key === "ArrowUp") {
-                            e.preventDefault();
-                            setRequesterHighlight((h) => Math.max(h - 1, 0));
-                          } else if (e.key === "Enter") {
-                            e.preventDefault();
-                            const picked = filteredRequesterContacts[requesterHighlight];
-                            if (picked) selectRequester(picked);
-                          } else if (e.key === "Escape") {
-                            setShowRequesterDropdown(false);
-                          }
-                        }}
-                      />
+                      <input type="text" className={fs.contactInput} value={requesterSearch} placeholder={copy.searchContact} disabled={isReadOnly} aria-expanded={showRequesterDropdown} aria-haspopup="listbox" onChange={e => {
+                      setRequesterSearch(e.target.value);
+                      setShowRequesterDropdown(true);
+                      setRequesterHighlight(0);
+                    }} onFocus={() => setShowRequesterDropdown(true)} onKeyDown={e => {
+                      if (!showRequesterDropdown || filteredRequesterContacts.length === 0) return;
+                      if (e.key === "ArrowDown") {
+                        e.preventDefault();
+                        setRequesterHighlight(h => Math.min(h + 1, filteredRequesterContacts.length - 1));
+                      } else if (e.key === "ArrowUp") {
+                        e.preventDefault();
+                        setRequesterHighlight(h => Math.max(h - 1, 0));
+                      } else if (e.key === "Enter") {
+                        e.preventDefault();
+                        const picked = filteredRequesterContacts[requesterHighlight];
+                        if (picked) selectRequester(picked);
+                      } else if (e.key === "Escape") {
+                        setShowRequesterDropdown(false);
+                      }
+                    }} />
                     </div>
-                    {showRequesterDropdown && (
-                      <div className={fs.contactDropdown} role="listbox">
-                        {filteredRequesterContacts.length === 0 ? (
-                          <div className={fs.contactEmpty}>{copy.noContactFound}</div>
-                        ) : (
-                          filteredRequesterContacts.map((contact, idx) => (
-                            <button
-                              key={contact.id}
-                              type="button"
-                              role="option"
-                              className={`${fs.contactOption} ${requesterHighlight === idx ? fs.contactOptionActive : ""}`}
-                              onMouseEnter={() => setRequesterHighlight(idx)}
-                              onClick={() => selectRequester(contact)}
-                            >
+                    {showRequesterDropdown && <div className={fs.contactDropdown} role="listbox">
+                        {filteredRequesterContacts.length === 0 ? <div className={fs.contactEmpty}>{copy.noContactFound}</div> : filteredRequesterContacts.map((contact, idx) => <button key={contact.id} type="button" role="option" className={`${fs.contactOption} ${requesterHighlight === idx ? fs.contactOptionActive : ""}`} onMouseEnter={() => setRequesterHighlight(idx)} onClick={() => selectRequester(contact)}>
                               <span className={fs.contactOptionName}>{getContactLabel(contact)}</span>
-                            </button>
-                          ))
-                        )}
-                      </div>
-                    )}
+                            </button>)}
+                      </div>}
                   </div>
                 </div>
 
                 <div className={fs.equipmentField}>
                   <label className={fs.equipmentFieldLabel}>{copy.leftPane.assignee}</label>
                   <div className={fs.contactPicker} ref={assigneeDropdownRef}>
-                    <div
-                      className={`${fs.contactInputWrap} ${showAssigneeDropdown ? fs.contactInputWrapOpen : ""}`}
-                    >
+                    <div className={`${fs.contactInputWrap} ${showAssigneeDropdown ? fs.contactInputWrapOpen : ""}`}>
                       <Icon icon="mdi:magnify" className={fs.contactInputIcon} aria-hidden />
-                      <input
-                        className={fs.contactInput}
-                        type="text"
-                        value={assigneeSearch}
-                        autoComplete="off"
-                        placeholder={copy.searchAgent}
-                        disabled={isReadOnly}
-                        aria-expanded={showAssigneeDropdown}
-                        aria-haspopup="listbox"
-                        onChange={(e) => {
-                          setAssigneeSearch(e.target.value);
-                          setShowAssigneeDropdown(true);
-                          setAssigneeHighlight(0);
-                        }}
-                        onFocus={() => setShowAssigneeDropdown(true)}
-                        onKeyDown={(e) => {
-                          if (!showAssigneeDropdown || filteredAssigneeOptions.length === 0) return;
-                          if (e.key === "ArrowDown") {
-                            e.preventDefault();
-                            setAssigneeHighlight((h) => Math.min(h + 1, filteredAssigneeOptions.length - 1));
-                          } else if (e.key === "ArrowUp") {
-                            e.preventDefault();
-                            setAssigneeHighlight((h) => Math.max(h - 1, 0));
-                          } else if (e.key === "Enter") {
-                            e.preventDefault();
-                            const picked = filteredAssigneeOptions[assigneeHighlight];
-                            if (picked) addAssignee(String(picked.id));
-                          } else if (e.key === "Escape") {
-                            setShowAssigneeDropdown(false);
-                          }
-                        }}
-                      />
+                      <input className={fs.contactInput} type="text" value={assigneeSearch} autoComplete="off" placeholder={copy.searchAgent} disabled={isReadOnly} aria-expanded={showAssigneeDropdown} aria-haspopup="listbox" onChange={e => {
+                      setAssigneeSearch(e.target.value);
+                      setShowAssigneeDropdown(true);
+                      setAssigneeHighlight(0);
+                    }} onFocus={() => setShowAssigneeDropdown(true)} onKeyDown={e => {
+                      if (!showAssigneeDropdown || filteredAssigneeOptions.length === 0) return;
+                      if (e.key === "ArrowDown") {
+                        e.preventDefault();
+                        setAssigneeHighlight(h => Math.min(h + 1, filteredAssigneeOptions.length - 1));
+                      } else if (e.key === "ArrowUp") {
+                        e.preventDefault();
+                        setAssigneeHighlight(h => Math.max(h - 1, 0));
+                      } else if (e.key === "Enter") {
+                        e.preventDefault();
+                        const picked = filteredAssigneeOptions[assigneeHighlight];
+                        if (picked) addAssignee(String(picked.id));
+                      } else if (e.key === "Escape") {
+                        setShowAssigneeDropdown(false);
+                      }
+                    }} />
                     </div>
-                    {showAssigneeDropdown && (
-                      <div className={fs.contactDropdown} role="listbox">
-                        {filteredAssigneeOptions.length === 0 ? (
-                          <div className={fs.contactEmpty}>{copy.noAgentFound}</div>
-                        ) : (
-                          filteredAssigneeOptions.map((opt, idx) => (
-                            <button
-                              key={opt.id}
-                              type="button"
-                              role="option"
-                              className={`${fs.contactOption} ${assigneeHighlight === idx ? fs.contactOptionActive : ""}`}
-                              onMouseEnter={() => setAssigneeHighlight(idx)}
-                              onClick={() => addAssignee(String(opt.id))}
-                            >
+                    {showAssigneeDropdown && <div className={fs.contactDropdown} role="listbox">
+                        {filteredAssigneeOptions.length === 0 ? <div className={fs.contactEmpty}>{copy.noAgentFound}</div> : filteredAssigneeOptions.map((opt, idx) => <button key={opt.id} type="button" role="option" className={`${fs.contactOption} ${assigneeHighlight === idx ? fs.contactOptionActive : ""}`} onMouseEnter={() => setAssigneeHighlight(idx)} onClick={() => addAssignee(String(opt.id))}>
                               <span className={fs.contactOptionName}>{opt.label}</span>
-                            </button>
-                          ))
-                        )}
-                      </div>
-                    )}
+                            </button>)}
+                      </div>}
                   </div>
                   <div className={fs.chipsWrap}>
-                    {assigneeUserIds.length === 0 ? (
-                      <span className={fs.emptyChipHint}>{copy.noAssignee}</span>
-                    ) : (
-                      assigneeUserIds.map((userId) => (
-                        <span key={userId} className={fs.chip}>
+                    {assigneeUserIds.length === 0 ? <span className={fs.emptyChipHint}>{copy.noAssignee}</span> : assigneeUserIds.map(userId => <span key={userId} className={fs.chip}>
                           {resolveUserLabel(userId)}
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              removeAssignee(userId);
-                            }}
-                            disabled={isReadOnly}
-                            aria-label={`Retirer ${resolveUserLabel(userId)}`}
-                          >
+                          <button type="button" onClick={e => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      removeAssignee(userId);
+                    }} disabled={isReadOnly} aria-label={`Retirer ${resolveUserLabel(userId)}`}>
                             ×
                           </button>
-                        </span>
-                      ))
-                    )}
+                        </span>)}
                   </div>
                 </div>
 
                 <div className={fs.equipmentField}>
                   <label className={fs.equipmentFieldLabel}>{copy.leftPane.follower}</label>
                   <div className={fs.contactPicker} ref={followerDropdownRef}>
-                    <div
-                      className={`${fs.contactInputWrap} ${showFollowerDropdown ? fs.contactInputWrapOpen : ""}`}
-                    >
+                    <div className={`${fs.contactInputWrap} ${showFollowerDropdown ? fs.contactInputWrapOpen : ""}`}>
                       <Icon icon="mdi:magnify" className={fs.contactInputIcon} aria-hidden />
-                      <input
-                        className={fs.contactInput}
-                        type="text"
-                        value={followerSearch}
-                        autoComplete="off"
-                        placeholder={copy.searchAgent}
-                        disabled={isReadOnly}
-                        aria-expanded={showFollowerDropdown}
-                        aria-haspopup="listbox"
-                        onChange={(e) => {
-                          setFollowerSearch(e.target.value);
-                          setShowFollowerDropdown(true);
-                          setFollowerHighlight(0);
-                        }}
-                        onFocus={() => setShowFollowerDropdown(true)}
-                        onKeyDown={(e) => {
-                          if (!showFollowerDropdown || filteredFollowerOptions.length === 0) return;
-                          if (e.key === "ArrowDown") {
-                            e.preventDefault();
-                            setFollowerHighlight((h) => Math.min(h + 1, filteredFollowerOptions.length - 1));
-                          } else if (e.key === "ArrowUp") {
-                            e.preventDefault();
-                            setFollowerHighlight((h) => Math.max(h - 1, 0));
-                          } else if (e.key === "Enter") {
-                            e.preventDefault();
-                            const picked = filteredFollowerOptions[followerHighlight];
-                            if (picked) addWatcher(String(picked.id));
-                          } else if (e.key === "Escape") {
-                            setShowFollowerDropdown(false);
-                          }
-                        }}
-                      />
+                      <input className={fs.contactInput} type="text" value={followerSearch} autoComplete="off" placeholder={copy.searchAgent} disabled={isReadOnly} aria-expanded={showFollowerDropdown} aria-haspopup="listbox" onChange={e => {
+                      setFollowerSearch(e.target.value);
+                      setShowFollowerDropdown(true);
+                      setFollowerHighlight(0);
+                    }} onFocus={() => setShowFollowerDropdown(true)} onKeyDown={e => {
+                      if (!showFollowerDropdown || filteredFollowerOptions.length === 0) return;
+                      if (e.key === "ArrowDown") {
+                        e.preventDefault();
+                        setFollowerHighlight(h => Math.min(h + 1, filteredFollowerOptions.length - 1));
+                      } else if (e.key === "ArrowUp") {
+                        e.preventDefault();
+                        setFollowerHighlight(h => Math.max(h - 1, 0));
+                      } else if (e.key === "Enter") {
+                        e.preventDefault();
+                        const picked = filteredFollowerOptions[followerHighlight];
+                        if (picked) addWatcher(String(picked.id));
+                      } else if (e.key === "Escape") {
+                        setShowFollowerDropdown(false);
+                      }
+                    }} />
                     </div>
-                    {showFollowerDropdown && (
-                      <div className={fs.contactDropdown} role="listbox">
-                        {filteredFollowerOptions.length === 0 ? (
-                          <div className={fs.contactEmpty}>{copy.noAgentFound}</div>
-                        ) : (
-                          filteredFollowerOptions.map((opt, idx) => (
-                            <button
-                              key={opt.id}
-                              type="button"
-                              role="option"
-                              className={`${fs.contactOption} ${followerHighlight === idx ? fs.contactOptionActive : ""}`}
-                              onMouseEnter={() => setFollowerHighlight(idx)}
-                              onClick={() => addWatcher(String(opt.id))}
-                            >
+                    {showFollowerDropdown && <div className={fs.contactDropdown} role="listbox">
+                        {filteredFollowerOptions.length === 0 ? <div className={fs.contactEmpty}>{copy.noAgentFound}</div> : filteredFollowerOptions.map((opt, idx) => <button key={opt.id} type="button" role="option" className={`${fs.contactOption} ${followerHighlight === idx ? fs.contactOptionActive : ""}`} onMouseEnter={() => setFollowerHighlight(idx)} onClick={() => addWatcher(String(opt.id))}>
                               <span className={fs.contactOptionName}>{opt.label}</span>
-                            </button>
-                          ))
-                        )}
-                      </div>
-                    )}
+                            </button>)}
+                      </div>}
                   </div>
                   <div className={fs.chipsWrap}>
-                    {watcherUserIds.length === 0 ? (
-                      <span className={fs.emptyChipHint}>{copy.noFollower}</span>
-                    ) : (
-                      (ticket.watchers || []).map((w) => (
-                        <span key={w.user_id} className={fs.chip}>
+                    {watcherUserIds.length === 0 ? <span className={fs.emptyChipHint}>{copy.noFollower}</span> : (ticket.watchers || []).map(w => <span key={w.user_id} className={fs.chip}>
                           {resolveUserLabel(w.user_id)}
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              removeWatcher(w.user_id);
-                            }}
-                            disabled={isReadOnly}
-                            aria-label={copy.formatRemoveAgentAria(resolveUserLabel(w.user_id))}
-                          >
+                          <button type="button" onClick={e => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      removeWatcher(w.user_id);
+                    }} disabled={isReadOnly} aria-label={copy.formatRemoveAgentAria(resolveUserLabel(w.user_id))}>
                             ×
                           </button>
-                        </span>
-                      ))
-                    )}
+                        </span>)}
                   </div>
                 </div>
 
@@ -4617,24 +3846,17 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
                   <label className={fs.equipmentFieldLabel} htmlFor="ticket-detail-status">
                     {copy.leftPane.status}
                   </label>
-                  <select
-                    id="ticket-detail-status"
-                    className={fs.select}
-                    value={normalizedTicketStatus || "new"}
-                    disabled={isReadOnly}
-                    onChange={async (e) => {
-                      const nextValue = e.target.value;
-                      await updateTicketLive(
-                        { status: nextValue },
-                        { successMessage: copy.toasts.statusUpdated }
-                      );
-                    }}
-                  >
-                    {copy.statusOptions.map((item) => (
-                      <option key={item.value} value={item.value}>
+                  <select id="ticket-detail-status" className={fs.select} value={normalizedTicketStatus || "new"} disabled={isReadOnly} onChange={async e => {
+                  const nextValue = e.target.value;
+                  await updateTicketLive({
+                    status: nextValue
+                  }, {
+                    successMessage: copy.toasts.statusUpdated
+                  });
+                }}>
+                    {copy.statusOptions.map(item => <option key={item.value} value={item.value}>
                         {item.label}
-                      </option>
-                    ))}
+                      </option>)}
                   </select>
                 </div>
 
@@ -4642,33 +3864,22 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
                   <label className={fs.equipmentFieldLabel} id="ticket-detail-type-label">
                     {copy.leftPane.type}
                   </label>
-                  <div
-                    className={fs.channelIconBar}
-                    role="radiogroup"
-                    aria-labelledby="ticket-detail-type-label"
-                  >
-                    {copy.ticketTypes.map((item) => (
-                      <SmartTooltip
-                        key={item.key}
-                        content={`${item.label} · ${item.hint}`}
-                        className={fs.channelIconBarItem}
-                      >
-                        <button
-                          type="button"
-                          role="radio"
-                          aria-checked={editForm.type === item.key}
-                          aria-label={item.label}
-                          className={`${fs.channelIconBtn} ${editForm.type === item.key ? fs.channelIconBtnActive : ""}`}
-                          disabled={isReadOnly}
-                          onClick={async () => {
-                            setEditForm((p) => ({ ...p, type: item.key }));
-                            await updateTicketLive({ type: item.key }, { successMessage: copy.toasts.typeUpdated });
-                          }}
-                        >
+                  <div className={fs.channelIconBar} role="radiogroup" aria-labelledby="ticket-detail-type-label">
+                    {copy.ticketTypes.map(item => <SmartTooltip key={item.key} content={`${item.label} · ${item.hint}`} className={fs.channelIconBarItem}>
+                        <button type="button" role="radio" aria-checked={editForm.type === item.key} aria-label={item.label} className={`${fs.channelIconBtn} ${editForm.type === item.key ? fs.channelIconBtnActive : ""}`} disabled={isReadOnly} onClick={async () => {
+                      setEditForm(p => ({
+                        ...p,
+                        type: item.key
+                      }));
+                      await updateTicketLive({
+                        type: item.key
+                      }, {
+                        successMessage: copy.toasts.typeUpdated
+                      });
+                    }}>
                           <Icon icon={item.icon} aria-hidden />
                         </button>
-                      </SmartTooltip>
-                    ))}
+                      </SmartTooltip>)}
                   </div>
                 </div>
 
@@ -4677,80 +3888,51 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
                     {copy.leftPane.category}
                   </label>
                   <div className={fs.contactPicker} ref={categoryDropdownRef}>
-                    <div
-                      className={`${fs.contactInputWrap} ${showCategoryDropdown ? fs.contactInputWrapOpen : ""}`}
-                    >
+                    <div className={`${fs.contactInputWrap} ${showCategoryDropdown ? fs.contactInputWrapOpen : ""}`}>
                       <Icon icon="mdi:magnify" className={fs.contactInputIcon} aria-hidden />
-                      <input
-                        type="text"
-                        className={fs.contactInput}
-                        value={categorySearch}
-                        placeholder={copy.searchCategory}
-                        disabled={isReadOnly}
-                        aria-labelledby="ticket-detail-category-label"
-                        aria-expanded={showCategoryDropdown}
-                        aria-haspopup="listbox"
-                        onChange={(e) => {
-                          const typed = e.target.value;
-                          setCategorySearch(typed);
-                          if (typed.trim() !== editForm.category) {
-                            setEditForm((p) => ({ ...p, category: "" }));
-                          }
-                          setShowCategoryDropdown(true);
-                          setCategoryHighlight(0);
-                        }}
-                        onFocus={() => setShowCategoryDropdown(true)}
-                        onKeyDown={(e) => {
-                          if (!showCategoryDropdown || filteredCategoryOptions.length === 0) return;
-                          if (e.key === "ArrowDown") {
-                            e.preventDefault();
-                            setCategoryHighlight((h) => Math.min(h + 1, filteredCategoryOptions.length - 1));
-                          } else if (e.key === "ArrowUp") {
-                            e.preventDefault();
-                            setCategoryHighlight((h) => Math.max(h - 1, 0));
-                          } else if (e.key === "Enter") {
-                            e.preventDefault();
-                            const picked = filteredCategoryOptions[categoryHighlight];
-                            if (picked) selectCategory(picked);
-                          } else if (e.key === "Escape") {
-                            setShowCategoryDropdown(false);
-                          }
-                        }}
-                      />
+                      <input type="text" className={fs.contactInput} value={categorySearch} placeholder={copy.searchCategory} disabled={isReadOnly} aria-labelledby="ticket-detail-category-label" aria-expanded={showCategoryDropdown} aria-haspopup="listbox" onChange={e => {
+                      const typed = e.target.value;
+                      setCategorySearch(typed);
+                      if (typed.trim() !== editForm.category) {
+                        setEditForm(p => ({
+                          ...p,
+                          category: ""
+                        }));
+                      }
+                      setShowCategoryDropdown(true);
+                      setCategoryHighlight(0);
+                    }} onFocus={() => setShowCategoryDropdown(true)} onKeyDown={e => {
+                      if (!showCategoryDropdown || filteredCategoryOptions.length === 0) return;
+                      if (e.key === "ArrowDown") {
+                        e.preventDefault();
+                        setCategoryHighlight(h => Math.min(h + 1, filteredCategoryOptions.length - 1));
+                      } else if (e.key === "ArrowUp") {
+                        e.preventDefault();
+                        setCategoryHighlight(h => Math.max(h - 1, 0));
+                      } else if (e.key === "Enter") {
+                        e.preventDefault();
+                        const picked = filteredCategoryOptions[categoryHighlight];
+                        if (picked) selectCategory(picked);
+                      } else if (e.key === "Escape") {
+                        setShowCategoryDropdown(false);
+                      }
+                    }} />
                     </div>
-                    {showCategoryDropdown && (
-                      <div className={fs.contactDropdown} role="listbox" aria-labelledby="ticket-detail-category-label">
-                        {filteredCategoryOptions.length === 0 ? (
-                          <div className={fs.contactEmpty}>{copy.noCategoryFound}</div>
-                        ) : (
-                          (() => {
-                            let optionIndex = -1;
-                            return filteredCategoryGroups.map(([section, items]) => (
-                              <div key={section}>
+                    {showCategoryDropdown && <div className={fs.contactDropdown} role="listbox" aria-labelledby="ticket-detail-category-label">
+                        {filteredCategoryOptions.length === 0 ? <div className={fs.contactEmpty}>{copy.noCategoryFound}</div> : (() => {
+                      let optionIndex = -1;
+                      return filteredCategoryGroups.map(([section, items]) => <div key={section}>
                                 <div className={fs.categoryDropdownSection}>{section}</div>
-                                {items.map((item) => {
-                                  optionIndex += 1;
-                                  const idx = optionIndex;
-                                  return (
-                                    <button
-                                      key={String(item.id)}
-                                      type="button"
-                                      role="option"
-                                      aria-selected={editForm.category === String(item.name || "")}
-                                      className={`${fs.contactOption} ${categoryHighlight === idx ? fs.contactOptionActive : ""}`}
-                                      onMouseEnter={() => setCategoryHighlight(idx)}
-                                      onClick={() => selectCategory(item)}
-                                    >
+                                {items.map(item => {
+                          optionIndex += 1;
+                          const idx = optionIndex;
+                          return <button key={String(item.id)} type="button" role="option" aria-selected={editForm.category === String(item.name || "")} className={`${fs.contactOption} ${categoryHighlight === idx ? fs.contactOptionActive : ""}`} onMouseEnter={() => setCategoryHighlight(idx)} onClick={() => selectCategory(item)}>
                                       <span className={fs.contactOptionName}>{String(item.name || "")}</span>
-                                    </button>
-                                  );
-                                })}
-                              </div>
-                            ));
-                          })()
-                        )}
-                      </div>
-                    )}
+                                    </button>;
+                        })}
+                              </div>);
+                    })()}
+                      </div>}
                   </div>
                 </div>
 
@@ -4758,30 +3940,25 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
                   <label className={fs.equipmentFieldLabel} htmlFor="ticket-detail-priority">
                     {copy.priorityLabel}
                   </label>
-                  <select
-                    id="ticket-detail-priority"
-                    className={fs.select}
-                    value={editForm.priority}
-                    disabled={isReadOnly || isMajorIncident}
-                    onChange={async (e) => {
-                      const nextValue = e.target.value;
-                      setEditForm((p) => ({ ...p, priority: nextValue }));
-                      await updateTicketLive(
-                        { priority: nextValue },
-                        { successMessage: copy.toasts.priorityUpdated }
-                      );
-                    }}
-                  >
-                    {copy.priorityOptions.map((item) => (
-                      <option key={item.key} value={item.key}>
+                  <select id="ticket-detail-priority" className={fs.select} value={editForm.priority} disabled={isReadOnly || isMajorIncident} onChange={async e => {
+                  const nextValue = e.target.value;
+                  setEditForm(p => ({
+                    ...p,
+                    priority: nextValue
+                  }));
+                  await updateTicketLive({
+                    priority: nextValue
+                  }, {
+                    successMessage: copy.toasts.priorityUpdated
+                  });
+                }}>
+                    {copy.priorityOptions.map(item => <option key={item.key} value={item.key}>
                         {item.label}
-                      </option>
-                    ))}
+                      </option>)}
                   </select>
                 </div>
 
-                {editForm.type === "incident" ? (
-                  <>
+                {editForm.type === "incident" ? <>
                     <hr className={styles.paneSectionDivider} aria-hidden />
                     <div className={fs.settingsMajorTop}>
                       <div className={fs.majorSwitchRow}>
@@ -4791,189 +3968,117 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
                             {copy.majorIncident}
                           </span>
                         </div>
-                        <button
-                          type="button"
-                          role="switch"
-                          aria-checked={isMajorIncident}
-                          aria-label={copy.majorIncident}
-                          className={fs.switch}
-                          disabled={isReadOnly || majorIncidentUpdating}
-                          onClick={() => {
-                            void handleMajorIncidentChange(!isMajorIncident);
-                          }}
-                        >
-                          <input
-                            type="checkbox"
-                            className={fs.switchInput}
-                            checked={isMajorIncident}
-                            readOnly
-                            tabIndex={-1}
-                            aria-hidden
-                          />
+                        <button type="button" role="switch" aria-checked={isMajorIncident} aria-label={copy.majorIncident} className={fs.switch} disabled={isReadOnly || majorIncidentUpdating} onClick={() => {
+                      void handleMajorIncidentChange(!isMajorIncident);
+                    }}>
+                          <input type="checkbox" className={fs.switchInput} checked={isMajorIncident} readOnly tabIndex={-1} aria-hidden />
                           <span className={fs.switchTrack} aria-hidden />
                         </button>
                       </div>
                     </div>
-                  </>
-                ) : null}
+                  </> : null}
 
                 <hr className={styles.paneSectionDivider} aria-hidden />
                 <div className={fs.equipmentField}>
                   <label className={fs.equipmentFieldLabel}>{copy.leftPane.tags}</label>
                   <div className={`${heroStyles.heroTags} ${styles.leftPaneTags}`} aria-label={copy.leftPane.tagsAria}>
-                    {(ticket.tags || []).map((tag) => {
-                      const tagColor = tag.color || "#2b5fab";
-                      return (
-                        <span
-                          key={tag.id}
-                          className={heroStyles.heroTagChip}
-                          style={{
-                            backgroundColor: `${tagColor}18`,
-                            borderColor: `${tagColor}55`,
-                            color: tagColor,
-                          }}
-                        >
+                    {(ticket.tags || []).map(tag => {
+                    const tagColor = tag.color || "#2b5fab";
+                    return <span key={tag.id} className={heroStyles.heroTagChip} style={{
+                      backgroundColor: `${tagColor}18`,
+                      borderColor: `${tagColor}55`,
+                      color: tagColor
+                    }}>
                           {tag.label}
-                          <button
-                            type="button"
-                            className={heroStyles.heroTagRemove}
-                            onClick={() => removeTag(tag.id)}
-                            disabled={isReadOnly}
-                            aria-label={copy.formatRemoveTagAria(tag.label)}
-                          >
+                          <button type="button" className={heroStyles.heroTagRemove} onClick={() => removeTag(tag.id)} disabled={isReadOnly} aria-label={copy.formatRemoveTagAria(tag.label)}>
                             <FaTimes />
                           </button>
-                        </span>
-                      );
-                    })}
-                    {!isReadOnly ? (
-                      <div className={heroStyles.heroTagAddWrap}>
-                        {tagAddOpen ? (
-                          <form className={heroStyles.heroTagFormCompact} onSubmit={handleAddTagSubmit}>
-                            <input
-                              ref={tagInputRef}
-                              type="text"
-                              className={heroStyles.heroTagInputCompact}
-                              placeholder={copy.leftPane.tagPlaceholder}
-                              value={tagDraft}
-                              onChange={(e) => setTagDraft(e.target.value)}
-                              maxLength={64}
-                              aria-label={copy.leftPane.tagAddAria}
-                            />
-                            <button
-                              type="submit"
-                              className={heroStyles.heroTagConfirmBtn}
-                              disabled={!tagDraft.trim()}
-                              aria-label={copy.leftPane.tagConfirmAria}
-                            >
+                        </span>;
+                  })}
+                    {!isReadOnly ? <div className={heroStyles.heroTagAddWrap}>
+                        {tagAddOpen ? <form className={heroStyles.heroTagFormCompact} onSubmit={handleAddTagSubmit}>
+                            <input ref={tagInputRef} type="text" className={heroStyles.heroTagInputCompact} placeholder={copy.leftPane.tagPlaceholder} value={tagDraft} onChange={e => setTagDraft(e.target.value)} maxLength={64} aria-label={copy.leftPane.tagAddAria} />
+                            <button type="submit" className={heroStyles.heroTagConfirmBtn} disabled={!tagDraft.trim()} aria-label={copy.leftPane.tagConfirmAria}>
                               <FaPlus />
                             </button>
-                          </form>
-                        ) : (
-                          <SmartTooltip content={copy.leftPane.tagAddTooltip}>
-                            <button
-                              type="button"
-                              className={heroStyles.heroTagAddTrigger}
-                              onClick={() => setTagAddOpen(true)}
-                              aria-label={copy.leftPane.tagAddAria}
-                            >
+                          </form> : <SmartTooltip content={copy.leftPane.tagAddTooltip}>
+                            <button type="button" className={heroStyles.heroTagAddTrigger} onClick={() => setTagAddOpen(true)} aria-label={copy.leftPane.tagAddAria}>
                               <FaPlus />
                             </button>
-                          </SmartTooltip>
-                        )}
-                      </div>
-                    ) : null}
+                          </SmartTooltip>}
+                      </div> : null}
                   </div>
                 </div>
             </RightPaneStaticSection>
           </aside>
 
           <section className={styles.centerPane}>
-            <article className={`${styles.descriptionSticky} ${styles.commentItem} ${styles.descriptionItem}`}>
-              <div className={styles.commentMeta}>
-                <span>{copy.description.initial}</span>
-              </div>
-              {descriptionEditing ? (
-                <textarea
-                  ref={descriptionTextareaRef}
-                  className={styles.descriptionEditTextarea}
-                  value={descriptionDraft}
-                  onChange={(e) => setDescriptionDraft(e.target.value)}
-                  onBlur={handleDescriptionBlur}
-                  onKeyDown={(e) => {
-                    if (e.key === "Escape") {
-                      e.preventDefault();
-                      cancelDescriptionEdit();
-                    }
-                  }}
-                  placeholder={copy.description.placeholder}
-                  disabled={isReadOnly}
-                  rows={3}
-                  aria-label={copy.description.editAria}
-                />
-              ) : (
-                <button
-                  type="button"
-                  className={styles.descriptionBodyBtn}
-                  onClick={startDescriptionEdit}
-                  disabled={isReadOnly}
-                  title={copy.description.editTitle}
-                  aria-label={copy.description.editButtonAria}
-                >
-                  <p
-                    className={
-                      editForm.description || ticket?.description
-                        ? styles.descriptionBodyText
-                        : styles.descriptionBodyPlaceholder
-                    }
-                  >
-                    {editForm.description || ticket?.description || copy.description.empty}
-                  </p>
-                </button>
-              )}
-            </article>
             <div className={styles.timelineWrap}>
-              <div
-                className={styles.timeline}
-                ref={timelineRef}
-                onScroll={handleTimelineScroll}
-              >
-              {(ticket.comments || [])
-                .filter((comment) => isTimelineVisibleComment(comment?.content))
-                .map((comment) => {
-                const isEditingComment = String(editingCommentId) === String(comment.id);
-                const isResolutionProposal = isResolutionProposalTimelineComment(
-                  comment,
-                  resolutionValidation
-                );
-                const resolutionStatus = isResolutionProposal
-                  ? copy.getResolutionStatusPresentation(resolutionValidation)
-                  : null;
-                const showEditAction = canEditComment(comment);
-                const showDeleteAction = canDeleteComment(comment);
-                const isDeletingComment = String(deletingCommentId) === String(comment.id);
-                const commentNotification = unreadByCommentId.get(String(comment.id));
-                return (
-                <article
-                  key={comment.id}
-                  className={`${styles.commentItem} ${comment.is_internal ? styles.commentItemInternal : ""} ${
-                    resolutionStatus?.variant === "pending"
-                      ? styles.commentItemResolutionPending
-                      : resolutionStatus?.variant === "rejected"
-                        ? styles.commentItemResolutionRejected
-                        : resolutionStatus?.variant === "done"
-                          ? styles.commentItemResolutionDone
-                          : ""
-                  }`.trim()}
-                >
+              <div className={styles.timeline} ref={timelineRef} onScroll={handleTimelineScroll}>
+              <article className={`${styles.commentItem} ${styles.commentItemInitial}`}>
+                <div className={styles.commentHeader}>
+                  <div className={styles.commentHeaderMain}>
+                    <UserAvatar name={requesterDisplayName !== "-" ? requesterDisplayName : copy.description.requesterFallback} size={26} variant="client" />
+                    <div className={styles.commentMeta}>
+                      <span className={styles.commentAuthor}>{requesterDisplayName !== "-" ? requesterDisplayName : copy.description.requesterFallback}</span>
+                      <span className={styles.initialRequestBadge}>{copy.description.initial}</span>
+                    </div>
+                  </div>
+                  <div className={styles.commentHeaderRight}>
+                    <span className={styles.commentTimestamp}>
+                      {copy.formatDateTime(ticket.created_at)}
+                    </span>
+                    {!isReadOnly && !initialRequestEditing ? <SmartTooltip content={copy.description.editTitle}>
+                        <button type="button" className={styles.commentEditBtn} onClick={startInitialRequestEdit} aria-label={copy.description.editButtonAria}>
+                          <Icon icon="mdi:pencil-outline" />
+                        </button>
+                      </SmartTooltip> : null}
+                  </div>
+                </div>
+                {initialRequestEditing ? <div className={styles.initialRequestEditBox}>
+                    <input ref={titleInputRef} className={styles.descriptionTitleInput} type="text" value={titleDraft} onChange={e => setTitleDraft(e.target.value)} onKeyDown={e => {
+                if (e.key === "Escape") {
+                  e.preventDefault();
+                  cancelInitialRequestEdit();
+                }
+              }} placeholder={copy.header.titlePlaceholder} disabled={isReadOnly} aria-label={copy.header.titleAria} />
+                    <textarea ref={descriptionTextareaRef} className={styles.descriptionEditTextarea} value={descriptionDraft} onChange={e => setDescriptionDraft(e.target.value)} onKeyDown={e => {
+                if (e.key === "Escape") {
+                  e.preventDefault();
+                  cancelInitialRequestEdit();
+                }
+              }} placeholder={copy.description.placeholder} disabled={isReadOnly} rows={4} aria-label={copy.description.editAria} />
+                    <div className={styles.commentEditActions}>
+                      <button type="button" className={styles.commentEditSaveBtn} onClick={saveInitialRequestEdit} disabled={isReadOnly}>
+                        {copy.comment.editSave}
+                      </button>
+                      <button type="button" className={styles.commentEditCancelBtn} onClick={cancelInitialRequestEdit}>
+                        {copy.comment.editCancel}
+                      </button>
+                    </div>
+                  </div> : <>
+                    <div className={styles.initialRequestTitleWrap}>
+                      <h2 className={`${styles.descriptionTitle} ${!(editForm.title || ticket?.title) ? styles.descriptionTitlePlaceholder : ""}`.trim()}>
+                        {editForm.title || ticket?.title || copy.header.titlePlaceholder}
+                      </h2>
+                    </div>
+                    {editForm.description || ticket?.description ? <div className={styles.commentBody}>
+                        {renderCommentContent(editForm.description || ticket?.description)}
+                      </div> : <p className={styles.descriptionBodyPlaceholder}>{copy.description.empty}</p>}
+                  </>}
+              </article>
+              {(ticket.comments || []).filter(comment => isTimelineVisibleComment(comment?.content)).map(comment => {
+                  const isEditingComment = String(editingCommentId) === String(comment.id);
+                  const isResolutionProposal = isResolutionProposalTimelineComment(comment, resolutionValidation);
+                  const resolutionStatus = isResolutionProposal ? copy.getResolutionStatusPresentation(resolutionValidation) : null;
+                  const showEditAction = canEditComment(comment);
+                  const showDeleteAction = canDeleteComment(comment);
+                  const isDeletingComment = String(deletingCommentId) === String(comment.id);
+                  const commentNotification = unreadByCommentId.get(String(comment.id));
+                  return <article key={comment.id} className={`${styles.commentItem} ${comment.is_internal ? styles.commentItemInternal : ""} ${resolutionStatus?.variant === "pending" ? styles.commentItemResolutionPending : resolutionStatus?.variant === "rejected" ? styles.commentItemResolutionRejected : resolutionStatus?.variant === "done" ? styles.commentItemResolutionDone : ""}`.trim()}>
                   <div className={styles.commentHeader}>
                     <div className={styles.commentHeaderMain}>
-                      <UserAvatar
-                        name={resolveCommentAuthorName(comment)}
-                        avatar={resolveCommentAuthorAvatar(comment)}
-                        size={26}
-                        variant={comment.is_internal ? "neutral" : "agent"}
-                      />
+                      <UserAvatar name={resolveCommentAuthorName(comment)} avatar={resolveCommentAuthorAvatar(comment)} size={26} variant={comment.is_internal ? "neutral" : "agent"} />
                       <div className={styles.commentMeta}>
                         <span className={styles.commentAuthor}>{resolveCommentAuthorName(comment)}</span>
                       </div>
@@ -4981,227 +4086,104 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
                     <div className={styles.commentHeaderRight}>
                       <span className={styles.commentTimestamp}>
                         {copy.formatDateTime(comment.created_at)}
-                        {isCommentEdited(comment) ? (
-                          <span className={styles.commentEditedMark}>{copy.comment.editedMark}</span>
-                        ) : null}
+                        {isCommentEdited(comment) ? <span className={styles.commentEditedMark}>{copy.comment.editedMark}</span> : null}
                       </span>
-                      {comment.is_internal && (
-                        <span className={styles.commentInternal} title={copy.comment.privateTitle}>
+                      {comment.is_internal && <span className={styles.commentInternal} title={copy.comment.privateTitle}>
                           <Icon icon="mdi:lock-outline" />
-                        </span>
-                      )}
-                      {showEditAction && !isEditingComment && (
-                        <SmartTooltip content={copy.comment.editTooltip}>
-                          <button
-                            type="button"
-                            className={styles.commentEditBtn}
-                            onClick={() => startEditComment(comment)}
-                            disabled={isReadOnly}
-                            aria-label={copy.comment.editAria}
-                          >
+                        </span>}
+                      {showEditAction && !isEditingComment && <SmartTooltip content={copy.comment.editTooltip}>
+                          <button type="button" className={styles.commentEditBtn} onClick={() => startEditComment(comment)} disabled={isReadOnly} aria-label={copy.comment.editAria}>
                             <Icon icon="mdi:pencil-outline" />
                           </button>
-                        </SmartTooltip>
-                      )}
-                      {showDeleteAction && !isEditingComment && (
-                        <SmartTooltip content={copy.comment.deleteTooltip}>
-                          <button
-                            type="button"
-                            className={styles.commentDeleteBtn}
-                            onClick={() => deleteComment(comment.id)}
-                            disabled={isReadOnly || isDeletingComment}
-                            aria-label={copy.comment.deleteAria}
-                          >
+                        </SmartTooltip>}
+                      {showDeleteAction && !isEditingComment && <SmartTooltip content={copy.comment.deleteTooltip}>
+                          <button type="button" className={styles.commentDeleteBtn} onClick={() => deleteComment(comment.id)} disabled={isReadOnly || isDeletingComment} aria-label={copy.comment.deleteAria}>
                             <Icon icon="mdi:trash-can-outline" />
                           </button>
-                        </SmartTooltip>
-                      )}
-                      {commentNotification ? (
-                        <SmartTooltip content={copy.comment.unreadTooltip}>
-                          <button
-                            type="button"
-                            className={styles.commentNotificationBadge}
-                            onClick={() => markCommentNotificationRead(commentNotification.id)}
-                            aria-label={copy.comment.markReadAria}
-                          >
+                        </SmartTooltip>}
+                      {commentNotification ? <SmartTooltip content={copy.comment.unreadTooltip}>
+                          <button type="button" className={styles.commentNotificationBadge} onClick={() => markCommentNotificationRead(commentNotification.id)} aria-label={copy.comment.markReadAria}>
                             <Icon icon="mdi:bell-badge-outline" />
                           </button>
-                        </SmartTooltip>
-                      ) : null}
+                        </SmartTooltip> : null}
                     </div>
                   </div>
-                  {isEditingComment ? (
-                    <div className={styles.commentEditBox}>
-                      <div
-                        ref={commentEditEditorRef}
-                        className={styles.commentEditEditor}
-                        contentEditable={!isReadOnly && !savingCommentEdit}
-                        suppressContentEditableWarning
-                        onInput={(e) => setEditingCommentDraft(e.currentTarget?.innerHTML || "")}
-                        style={{ minHeight: "96px", whiteSpace: "pre-wrap", overflowY: "auto" }}
-                      />
-                      {Array.isArray(comment.attachments) && comment.attachments.length > 0 ? (
-                        <div className={styles.commentEditAttachments}>
+                  {isEditingComment ? <div className={styles.commentEditBox}>
+                      <div ref={commentEditEditorRef} className={styles.commentEditEditor} contentEditable={!isReadOnly && !savingCommentEdit} suppressContentEditableWarning onInput={e => setEditingCommentDraft(e.currentTarget?.innerHTML || "")} style={{
+                        minHeight: "96px",
+                        whiteSpace: "pre-wrap",
+                        overflowY: "auto"
+                      }} />
+                      {Array.isArray(comment.attachments) && comment.attachments.length > 0 ? <div className={styles.commentEditAttachments}>
                           {comment.attachments.map((attachment, attachmentIndex) => {
-                            const removalKey =
-                              getAttachmentRemovalKey(attachment) || `index:${attachmentIndex}`;
-                            const isMarkedForRemoval = getAttachmentRemovalKey(attachment)
-                              ? editingCommentRemovedAttachmentKeys.includes(
-                                  getAttachmentRemovalKey(attachment)
-                                )
-                              : false;
-                            const attachmentLabel =
-                              attachment.filename || attachment.name || copy.attachmentDefault;
-                            return (
-                              <div
-                                key={removalKey}
-                                className={`${styles.commentEditAttachmentItem} ${
-                                  isMarkedForRemoval ? styles.commentEditAttachmentItemRemoved : ""
-                                }`.trim()}
-                              >
+                          const removalKey = getAttachmentRemovalKey(attachment) || `index:${attachmentIndex}`;
+                          const isMarkedForRemoval = getAttachmentRemovalKey(attachment) ? editingCommentRemovedAttachmentKeys.includes(getAttachmentRemovalKey(attachment)) : false;
+                          const attachmentLabel = attachment.filename || attachment.name || copy.attachmentDefault;
+                          return <div key={removalKey} className={`${styles.commentEditAttachmentItem} ${isMarkedForRemoval ? styles.commentEditAttachmentItemRemoved : ""}`.trim()}>
                                 <Icon icon="mdi:paperclip" className={styles.commentEditAttachmentIcon} />
                                 <span className={styles.commentEditAttachmentName}>{attachmentLabel}</span>
-                                <button
-                                  type="button"
-                                  className={styles.commentEditAttachmentRemoveBtn}
-                                  onClick={() => toggleEditingCommentAttachmentRemoval(attachment)}
-                                  disabled={savingCommentEdit || isReadOnly}
-                                  aria-label={
-                                    isMarkedForRemoval
-                                      ? interpolate(copy.comment.editKeepAttachmentAria, { name: attachmentLabel })
-                                      : interpolate(copy.comment.editRemoveAttachmentAria, { name: attachmentLabel })
-                                  }
-                                  title={isMarkedForRemoval ? copy.comment.editUndoRemoveTitle : copy.comment.editRemoveTitle}
-                                >
+                                <button type="button" className={styles.commentEditAttachmentRemoveBtn} onClick={() => toggleEditingCommentAttachmentRemoval(attachment)} disabled={savingCommentEdit || isReadOnly} aria-label={isMarkedForRemoval ? interpolate(copy.comment.editKeepAttachmentAria, {
+                              name: attachmentLabel
+                            }) : interpolate(copy.comment.editRemoveAttachmentAria, {
+                              name: attachmentLabel
+                            })} title={isMarkedForRemoval ? copy.comment.editUndoRemoveTitle : copy.comment.editRemoveTitle}>
                                   <Icon icon={isMarkedForRemoval ? "mdi:undo" : "mdi:close"} />
                                 </button>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      ) : null}
+                              </div>;
+                        })}
+                        </div> : null}
                       <div className={styles.commentEditActions}>
-                        <button
-                          type="button"
-                          className={styles.commentEditSaveBtn}
-                          onClick={saveEditComment}
-                          disabled={savingCommentEdit || isReadOnly}
-                        >
+                        <button type="button" className={styles.commentEditSaveBtn} onClick={saveEditComment} disabled={savingCommentEdit || isReadOnly}>
                           {savingCommentEdit ? copy.comment.editSaving : copy.comment.editSave}
                         </button>
-                        <button
-                          type="button"
-                          className={styles.commentEditCancelBtn}
-                          onClick={cancelEditComment}
-                          disabled={savingCommentEdit}
-                        >
+                        <button type="button" className={styles.commentEditCancelBtn} onClick={cancelEditComment} disabled={savingCommentEdit}>
                           {copy.comment.editCancel}
                         </button>
                       </div>
-                    </div>
-                  ) : isResolutionProposal ? (
-                    <div className={`${styles.commentBody} ${styles.commentBodyResolution}`}>
+                    </div> : isResolutionProposal ? <div className={`${styles.commentBody} ${styles.commentBodyResolution}`}>
                       {renderResolutionCommentCard(comment, resolutionValidation)}
-                    </div>
-                  ) : (
-                    <div className={styles.commentBody}>{renderCommentBody(comment)}</div>
-                  )}
-                  {!isEditingComment &&
-                  Array.isArray(comment.attachments) &&
-                  comment.attachments.length > 0 && (
-                    <div className={styles.attachmentsList}>
-                      {comment.attachments.map((attachment) => {
+                    </div> : <div className={styles.commentBody}>{renderCommentBody(comment)}</div>}
+                  {!isEditingComment && Array.isArray(comment.attachments) && comment.attachments.length > 0 && <div className={styles.attachmentsList}>
+                      {comment.attachments.map(attachment => {
                         const attachmentUrl = attachment.url || attachment.path;
                         if (!attachmentUrl) return null;
                         const attachmentLabel = attachment.filename || attachment.name || copy.attachmentDefault;
                         if (isImageAttachment(attachment)) {
-                          return (
-                            <a
-                              key={attachment.id || attachmentUrl}
-                              href={attachmentUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className={styles.attachmentPreviewLink}
-                              title={interpolate(copy.comment.attachmentOpenTitle, { name: attachmentLabel })}
-                            >
-                              <img
-                                src={attachmentUrl}
-                                alt={attachmentLabel}
-                                className={styles.attachmentPreviewImage}
-                                loading="lazy"
-                              />
-                            </a>
-                          );
+                          return <a key={attachment.id || attachmentUrl} href={attachmentUrl} target="_blank" rel="noopener noreferrer" className={styles.attachmentPreviewLink} title={interpolate(copy.comment.attachmentOpenTitle, {
+                            name: attachmentLabel
+                          })}>
+                              <img src={attachmentUrl} alt={attachmentLabel} className={styles.attachmentPreviewImage} loading="lazy" />
+                            </a>;
                         }
-                        return (
-                          <a
-                            key={attachment.id || attachmentUrl}
-                            href={attachmentUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.attachmentLink}
-                            title={`${attachmentLabel} (ouvrir dans un nouvel onglet)`}
-                          >
+                        return <a key={attachment.id || attachmentUrl} href={attachmentUrl} target="_blank" rel="noopener noreferrer" className={styles.attachmentLink} title={`${attachmentLabel} (open in new tab)`}>
                             <Icon icon="mdi:paperclip" />
                             {attachmentLabel}
-                          </a>
-                        );
+                          </a>;
                       })}
-                    </div>
-                  )}
-                </article>
-                );
-              })}
-              {!(ticket.comments || []).some((comment) => isTimelineVisibleComment(comment?.content)) && (
-                <p className={styles.emptyText}>{copy.empty.noComments}</p>
-              )}
+                    </div>}
+                </article>;
+                })}
               </div>
-              {showTimelineScrollTop ? (
-                <button
-                  type="button"
-                  className={styles.timelineScrollTopBtn}
-                  onClick={scrollTimelineToTop}
-                  aria-label={copy.timeline.scrollTopAria}
-                  title={copy.timeline.scrollTopTitle}
-                >
+              {showTimelineScrollTop ? <button type="button" className={styles.timelineScrollTopBtn} onClick={scrollTimelineToTop} aria-label={copy.timeline.scrollTopAria} title={copy.timeline.scrollTopTitle}>
                   <Icon icon="mdi:chevron-up" aria-hidden />
-                </button>
-              ) : null}
+                </button> : null}
             </div>
-            {!isReadOnly ? (
-            <div
-              className={`${styles.replyBox} ${isDragOverReplyBox ? styles.replyBoxDragActive : ""} ${!replyBoxExpanded ? styles.replyBoxCollapsed : ""}`.trim()}
-              onDragOver={handleReplyDragOver}
-              onDragEnter={handleReplyDragOver}
-              onDragLeave={handleReplyDragLeave}
-              onDrop={handleReplyDrop}
-            >
-              {isDragOverReplyBox && replyBoxExpanded && (
-                <div className={styles.dropOverlay}>
+            {!isReadOnly ? <div className={`${styles.replyBox} ${isDragOverReplyBox ? styles.replyBoxDragActive : ""} ${!replyBoxExpanded ? styles.replyBoxCollapsed : ""}`.trim()} onDragOver={handleReplyDragOver} onDragEnter={handleReplyDragOver} onDragLeave={handleReplyDragLeave} onDrop={handleReplyDrop}>
+              {isDragOverReplyBox && replyBoxExpanded && <div className={styles.dropOverlay}>
                   <div className={styles.dropOverlayTitle}>{copy.reply.dropTitle}</div>
                   <div className={styles.dropOverlayHint}>
                     {copy.reply.dropHint}
                   </div>
-                </div>
-              )}
+                </div>}
               <div className={styles.replyTopBar}>
-                {replyBoxExpanded ? (
-                  <>
+                {replyBoxExpanded ? <>
                     <div className={styles.replyTopLeft}>
                       <div className={styles.replyTopControls}>
-                        <select
-                          className={`${styles.footerSelect} ${styles.replyTemplateSelect}`}
-                          value={commentTemplateSelection}
-                          onChange={(e) => applyCommentTemplate(e.target.value)}
-                          disabled={isReadOnly || availableCommentTemplates.length === 0}
-                          title={copy.reply.templateTitle}
-                        >
+                        <select className={`${styles.footerSelect} ${styles.replyTemplateSelect}`} value={commentTemplateSelection} onChange={e => applyCommentTemplate(e.target.value)} disabled={isReadOnly || availableCommentTemplates.length === 0} title={copy.reply.templateTitle}>
                         <option value="">{copy.reply.templateSelect}</option>
-                          {availableCommentTemplates.map((template) => (
-                            <option key={template.id} value={template.id}>
+                          {availableCommentTemplates.map(template => <option key={template.id} value={template.id}>
                               {template.name}
-                            </option>
-                          ))}
+                            </option>)}
                         </select>
                         <div className={styles.replyTools}>
                           <button type="button" className={styles.toolBtn} onClick={insertBold} title={copy.reply.toolBold}>
@@ -5213,163 +4195,88 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
                           <button type="button" className={styles.toolBtn} onClick={insertLink} title={copy.reply.toolLink}>
                             <Icon icon="mdi:link-variant" />
                           </button>
-                          <button
-                            type="button"
-                            className={styles.toolBtn}
-                            onClick={() => setShowEmojiPicker((prev) => !prev)}
-                            title={copy.reply.toolEmoji}
-                          >
+                          <button type="button" className={styles.toolBtn} onClick={() => setShowEmojiPicker(prev => !prev)} title={copy.reply.toolEmoji}>
                             <Icon icon="mdi:emoticon-outline" />
                           </button>
-                          {showEmojiPicker && (
-                            <div className={styles.emojiMenu}>
-                              {EMOJI_OPTIONS.map((emoji) => (
-                                <button
-                                  key={emoji}
-                                  type="button"
-                                  className={styles.emojiBtn}
-                                  onClick={() => insertEmoji(emoji)}
-                                  title={emoji}
-                                >
+                          {aiFeatures.suggestReply ? <SmartTooltip content={copy.reply.suggestAiTitle}>
+                              <button type="button" className={styles.toolBtn} onClick={handleSuggestReplyAi} disabled={aiSuggestLoading} title={copy.reply.suggestAiTitle} aria-label={copy.reply.suggestAiTitle}>
+                                <Icon icon={aiSuggestLoading ? "mdi:loading" : "mdi:creation"} className={aiSuggestLoading ? styles.aiToolSpin : undefined} aria-hidden />
+                              </button>
+                            </SmartTooltip> : null}
+                          {showEmojiPicker && <div className={styles.emojiMenu}>
+                              {EMOJI_OPTIONS.map(emoji => <button key={emoji} type="button" className={styles.emojiBtn} onClick={() => insertEmoji(emoji)} title={emoji}>
                                   {emoji}
-                                </button>
-                              ))}
-                            </div>
-                          )}
+                                </button>)}
+                            </div>}
                         </div>
                         <label className={styles.uploadBtn}>
                           <Icon icon="mdi:paperclip" />
                           {copy.reply.addFiles}
-                          <input
-                            type="file"
-                            multiple
-                            accept={ATTACHMENT_ACCEPT}
-                            onChange={(e) => {
-                              const selectedFiles = Array.from(e.target.files || []);
-                              try {
-                                applySelectedAttachments(selectedFiles);
-                              } catch (error) {
-                                toast.error(error.message || copy.attachmentInvalid);
-                                e.target.value = "";
-                              }
-                            }}
-                            disabled={isReadOnly}
-                          />
+                          <input type="file" multiple accept={ATTACHMENT_ACCEPT} onChange={e => {
+                          const selectedFiles = Array.from(e.target.files || []);
+                          try {
+                            applySelectedAttachments(selectedFiles);
+                          } catch (error) {
+                            toast.error(error.message || copy.attachmentInvalid);
+                            e.target.value = "";
+                          }
+                        }} disabled={isReadOnly} />
                         </label>
                       </div>
                     </div>
                     <div className={styles.replyTopRight}>
-                      <button
-                        type="button"
-                        className={`${styles.replyModeBtn} ${commentInternal ? styles.replyModeBtnPrivate : ""}`}
-                        onClick={() => setCommentInternal((prev) => !prev)}
-                        disabled={isReadOnly}
-                        title={
-                          commentInternal
-                            ? copy.reply.modePrivateTitle
-                            : copy.reply.modePublicTitle
-                        }
-                      >
+                      <button type="button" className={`${styles.replyModeBtn} ${commentInternal ? styles.replyModeBtnPrivate : ""}`} onClick={() => setCommentInternal(prev => !prev)} disabled={isReadOnly} title={commentInternal ? copy.reply.modePrivateTitle : copy.reply.modePublicTitle}>
                         <Icon icon={commentInternal ? "mdi:lock-outline" : "mdi:lock-open-variant-outline"} />
                         {commentInternal ? copy.reply.modePrivate : copy.reply.modePublic}
                       </button>
                       <SmartTooltip content={copy.reply.collapseTooltip}>
-                        <button
-                          type="button"
-                          className={styles.replyCollapseBtn}
-                          onClick={toggleReplyBoxExpanded}
-                          aria-expanded={replyBoxExpanded}
-                          aria-label={copy.reply.collapseAria}
-                        >
+                        <button type="button" className={styles.replyCollapseBtn} onClick={toggleReplyBoxExpanded} aria-expanded={replyBoxExpanded} aria-label={copy.reply.collapseAria}>
                           <Icon icon="mdi:chevron-down" aria-hidden />
                         </button>
                       </SmartTooltip>
                     </div>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      type="button"
-                      className={styles.replyCollapsedSummary}
-                      onClick={expandReplyBox}
-                      disabled={isReadOnly}
-                      aria-label={copy.reply.expandAria}
-                    >
+                  </> : <>
+                    <button type="button" className={styles.replyCollapsedSummary} onClick={expandReplyBox} disabled={isReadOnly} aria-label={copy.reply.expandAria}>
                       <Icon icon="mdi:message-reply-text-outline" className={styles.replyCollapsedIcon} aria-hidden />
                       <span className={styles.replyCollapsedLabel}>{copy.reply.expandSummary}</span>
-                      {hasReplyDraft ? (
-                        <span className={styles.replyCollapsedDraftHint}>{copy.reply.draftHint}</span>
-                      ) : null}
+                      {hasReplyDraft ? <span className={styles.replyCollapsedDraftHint}>{copy.reply.draftHint}</span> : null}
                     </button>
                     <div className={styles.replyTopRight}>
-                      <button
-                        type="button"
-                        className={`${styles.replyModeBtn} ${commentInternal ? styles.replyModeBtnPrivate : ""}`}
-                        onClick={() => setCommentInternal((prev) => !prev)}
-                        disabled={isReadOnly}
-                        title={
-                          commentInternal
-                            ? copy.reply.modePrivateTitle
-                            : copy.reply.modePublicTitle
-                        }
-                      >
+                      <button type="button" className={`${styles.replyModeBtn} ${commentInternal ? styles.replyModeBtnPrivate : ""}`} onClick={() => setCommentInternal(prev => !prev)} disabled={isReadOnly} title={commentInternal ? copy.reply.modePrivateTitle : copy.reply.modePublicTitle}>
                         <Icon icon={commentInternal ? "mdi:lock-outline" : "mdi:lock-open-variant-outline"} />
                         {commentInternal ? copy.reply.modePrivate : copy.reply.modePublic}
                       </button>
                       <SmartTooltip content={copy.reply.expandTooltip}>
-                        <button
-                          type="button"
-                          className={styles.replyCollapseBtn}
-                          onClick={expandReplyBox}
-                          aria-expanded={replyBoxExpanded}
-                          aria-label={copy.reply.expandAria}
-                        >
+                        <button type="button" className={styles.replyCollapseBtn} onClick={expandReplyBox} aria-expanded={replyBoxExpanded} aria-label={copy.reply.expandAria}>
                           <Icon icon="mdi:chevron-up" aria-hidden />
                         </button>
                       </SmartTooltip>
                     </div>
-                  </>
-                )}
+                  </>}
               </div>
-              {replyBoxExpanded ? (
-                <>
-                  <div
-                    ref={commentEditorRef}
-                    className={styles.editor}
-                    contentEditable={!isReadOnly}
-                    suppressContentEditableWarning
-                    onInput={(e) => setCommentDraft(e.currentTarget?.innerHTML || "")}
-                    style={{ minHeight: "140px", whiteSpace: "pre-wrap", overflowY: "auto" }}
-                  />
-                  {attachmentFiles.length > 0 && (
-                    <div className={styles.attachmentsDraft}>
-                      {attachmentFiles.map((file) => <span key={file.name}>{file.name}</span>)}
-                    </div>
-                  )}
-                </>
-              ) : null}
-            </div>
-            ) : null}
+              {replyBoxExpanded ? <>
+                  <div ref={commentEditorRef} className={styles.editor} contentEditable={!isReadOnly} suppressContentEditableWarning onInput={e => setCommentDraft(e.currentTarget?.innerHTML || "")} style={{
+                  minHeight: "140px",
+                  whiteSpace: "pre-wrap",
+                  overflowY: "auto"
+                }} />
+                  {attachmentFiles.length > 0 && <div className={styles.attachmentsDraft}>
+                      {attachmentFiles.map(file => <span key={file.name}>{file.name}</span>)}
+                    </div>}
+                </> : null}
+            </div> : null}
           </section>
 
           <aside className={`${styles.rightPane} ${heroStyles.rightSidebarContent}`}>
-            {rightPaneView === "history" ? (
-              <RightPaneCollapsibleSection
-                sectionId="ticket-detail-log-body"
-                title={copy.rightPane.historyToggleTitle}
-                count={ticketActivityLog.length}
-                expanded={rightPaneCollapse.ticketLog}
-                onToggle={() => toggleRightPaneCollapse("ticketLog")}
-              >
-                {ticketActivityLog.length === 0 ? (
-                  <p className={styles.emptyText}>{copy.empty.noActivity}</p>
-                ) : (
-                  <div className={styles.ticketLogList}>
-                    {ticketActivityLog.map((entry) => (
-                      <article
-                        key={entry.id}
-                        className={`${styles.ticketLogItem} ${styles[`ticketLogItem_${entry.kind}`] || ""}`.trim()}
-                      >
+            {rightPaneView === "runbook" && aiFeatures.ticketRunbook ? <TicketAiRunbookPanel ticketId={ticketId} initialRunbook={ticket?.ai_runbook} onRunbookChange={handleAiRunbookChange} /> : rightPaneView === "history" ? <RightPaneStaticSection title={copy.rightPane.historyToggleTitle} titleId="ticket-detail-log-title" count={ticketActivityLog.length} headerExtra={<SmartTooltip content={copy.rightPane.historyRefreshTitle}>
+                    <button type="button" className={styles.historyRefreshBtn} onClick={() => void refreshTicketHistory({
+                showSpinner: true
+              })} disabled={refreshingHistory} aria-label={copy.rightPane.historyRefreshAria}>
+                      <Icon icon={refreshingHistory ? "mdi:loading" : "mdi:refresh"} className={refreshingHistory ? styles.historyRefreshSpin : undefined} aria-hidden />
+                    </button>
+                  </SmartTooltip>}>
+                {ticketActivityLog.length === 0 ? <p className={styles.emptyText}>{copy.empty.noActivity}</p> : <div className={styles.ticketLogList}>
+                    {ticketActivityLog.map(entry => <article key={entry.id} className={`${styles.ticketLogItem} ${styles[`ticketLogItem_${entry.kind}`] || ""}`.trim()}>
                         <div className={styles.ticketLogIcon} aria-hidden>
                           <Icon icon={entry.icon} />
                         </div>
@@ -5384,155 +4291,31 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
                               {copy.formatDateTime(entry.at)}
                             </time>
                           </div>
-                          {entry.detail ? (
-                            <p className={styles.ticketLogDetail}>{truncateLogText(entry.detail)}</p>
-                          ) : null}
+                          {entry.detail ? <p className={styles.ticketLogDetail}>{truncateLogText(entry.detail)}</p> : null}
                         </div>
-                      </article>
-                    ))}
-                  </div>
-                )}
-              </RightPaneCollapsibleSection>
-            ) : (
-              <>
-            <RightPaneStaticSection title={copy.rightPane.channel} titleId="ticket-detail-channel-label">
-              <div
-                className={fs.channelIconBar}
-                role="radiogroup"
-                aria-labelledby="ticket-detail-channel-label"
-              >
-                {copy.channelOptions.map((item) => {
-                  const channelDisabled = isTicketChannelDisabled(item.key);
-                  return (
-                    <button
-                      key={item.key}
-                      type="button"
-                      role="radio"
-                      aria-checked={editForm.channel === item.key}
-                      aria-label={item.label}
-                      aria-disabled={channelDisabled}
-                      title={
-                        item.key === "whatsapp" && !isWhatsAppNativeTicket
-                          ? copy.channelWhatsappDisabled
-                          : item.label
-                      }
-                      className={`${fs.channelIconBtn} ${editForm.channel === item.key ? fs.channelIconBtnActive : ""} ${channelDisabled ? fs.channelIconBtnDisabled : ""}`}
-                      disabled={channelDisabled}
-                      onClick={async () => {
-                        if (channelDisabled) return;
-                        setEditForm((p) => ({ ...p, channel: item.key }));
-                        await updateTicketLive({ channel: item.key }, { successMessage: copy.toasts.channelUpdated });
-                      }}
-                    >
-                      <Icon icon={item.icon} aria-hidden />
-                    </button>
-                  );
-                })}
-              </div>
-            </RightPaneStaticSection>
-
-            <RightPaneStaticSection title={copy.rightPane.ticketSection}>
-              <div className={styles.contextLine}><strong>{copy.rightPane.created}</strong> {copy.formatDateTime(ticket.created_at)}</div>
-              <div
-                className={styles.contextLine}
-                title={
-                  ticketTakeoverStat
-                    ? copy.formatTakeoverTooltip(copy.getStatusLabel(ticketTakeoverStat.newStatus === "open" ? "new" : ticketTakeoverStat.newStatus))
-                    : copy.takeoverTooltipNone
-                }
-              >
-                <strong>{copy.rightPane.takeover}</strong> {ticketTakeoverLabel}
-              </div>
-              <div className={styles.contextLine}><strong>{copy.rightPane.updated}</strong> {copy.formatDateTime(ticket.updated_at)}</div>
-              <div className={styles.contextLine}><strong>{copy.rightPane.closed}</strong> {copy.formatDateTime(ticket.closed_at)}</div>
-            </RightPaneStaticSection>
-
-            <RightPaneCollapsibleSection
-              sectionId="ticket-detail-contact-body"
-              title={copy.rightPane.contact}
-              expanded={rightPaneCollapse.contact}
-              onToggle={() => toggleRightPaneCollapse("contact")}
-            >
+                      </article>)}
+                  </div>}
+              </RightPaneStaticSection> : <>
+            <RightPaneCollapsibleSection sectionId="ticket-detail-contact-body" title={copy.rightPane.contact} expanded={rightPaneCollapse.contact} onToggle={() => toggleRightPaneCollapse("contact")}>
               <div className={styles.contextLine}><strong>{copy.rightPane.name}</strong> {requesterDisplayName}</div>
               <div className={styles.contextLine}>
                 <strong>{copy.rightPane.phone}</strong>{" "}
-                {requesterPhone && requesterPhone !== "-" ? (
-                  <a href={`tel:${String(requesterPhone).replace(/\s+/g, "")}`} className={styles.contextLink}>
+                {requesterPhone && requesterPhone !== "-" ? <a href={`tel:${String(requesterPhone).replace(/\s+/g, "")}`} className={styles.contextLink}>
                     {requesterPhone}
-                  </a>
-                ) : (
-                  "-"
-                )}
+                  </a> : "-"}
               </div>
               <div className={styles.contextLine}>
                 <strong>{copy.rightPane.email}</strong>{" "}
-                {requesterEmail && requesterEmail !== "-" ? (
-                  <a href={`mailto:${requesterEmail}`} className={styles.contextLink}>
+                {requesterEmail && requesterEmail !== "-" ? <a href={`mailto:${requesterEmail}`} className={styles.contextLink}>
                     {requesterEmail}
-                  </a>
-                ) : (
-                  "-"
-                )}
+                  </a> : "-"}
               </div>
               <div className={styles.contextLine}><strong>{copy.rightPane.role}</strong> {requesterRole}</div>
             </RightPaneCollapsibleSection>
 
-            <RightPaneCollapsibleSection
-              sectionId="ticket-detail-satisfaction-body"
-              title={copy.rightPane.satisfaction}
-              expanded={rightPaneCollapse.satisfaction}
-              onToggle={() => toggleRightPaneCollapse("satisfaction")}
-              titleAdornment={
-                <TicketSatisfactionHeaderBadge
-                  filled={hasTicketSatisfactionData(ticket?.satisfaction)}
-                  copy={copy}
-                />
-              }
-            >
-              {hasTicketSatisfactionData(ticket?.satisfaction) ? (
-                <>
-                  <TicketSatisfactionCriteriaPanel
-                    satisfaction={ticket.satisfaction}
-                    copy={copy}
-                    criteria={satisfactionCriteria}
-                  />
-                  {ticket.satisfaction.authorName ? (
-                    <div className={styles.contextLine}>
-                      <strong>{copy.rightPane.satisfactionBy}</strong> {ticket.satisfaction.authorName}
-                    </div>
-                  ) : null}
-                  {ticket.satisfaction.createdAt ? (
-                    <div className={styles.contextLine}>
-                      <strong>{copy.rightPane.satisfactionDate}</strong>{" "}
-                      {copy.formatDateTime(ticket.satisfaction.createdAt)}
-                    </div>
-                  ) : null}
-                  {ticket.satisfaction.message ? (
-                    <p className={styles.satisfactionMessage}>{ticket.satisfaction.message}</p>
-                  ) : null}
-                </>
-              ) : (
-                <p className={styles.emptyText}>{copy.empty.noSatisfaction}</p>
-              )}
-            </RightPaneCollapsibleSection>
-
-            <RightPaneCollapsibleSection
-              sectionId="ticket-detail-contract-body"
-              title={copy.contract}
-              expanded={rightPaneCollapse.contract}
-              onToggle={() => toggleRightPaneCollapse("contract")}
-              headerExtra={
-                contractValidityAlert ? (
-                  <span
-                    className={`${styles.contractHeaderStatus} ${
-                      CONTRACT_HEADER_STATUS_CLASS[contractValidityAlert.status] || ""
-                    }`.trim()}
-                  >
+            <RightPaneCollapsibleSection sectionId="ticket-detail-contract-body" title={copy.contract} expanded={rightPaneCollapse.contract} onToggle={() => toggleRightPaneCollapse("contract")} headerExtra={contractValidityAlert ? <span className={`${styles.contractHeaderStatus} ${CONTRACT_HEADER_STATUS_CLASS[contractValidityAlert.status] || ""}`.trim()}>
                     {contractValidityAlert.shortLabel}
-                  </span>
-                ) : null
-              }
-            >
+                  </span> : null}>
               <dl className={fs.contractFacts}>
                   <div className={fs.contractFactRow}>
                     <dt className={fs.contractFactLabel}>
@@ -5540,22 +4323,12 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
                       {copy.enterprise}
                     </dt>
                     <dd className={effectiveTicketClientId ? fs.contractFactCompany : fs.contractFactEmpty}>
-                      {effectiveTicketClientId ? (
-                        <button
-                          type="button"
-                          className={styles.contextLinkBtn}
-                          onClick={() =>
-                            onNavigate?.("ContratDetail", {
-                              clientId: effectiveTicketClientId,
-                              name: breadcrumbClientLabel,
-                            })
-                          }
-                        >
+                      {effectiveTicketClientId ? <button type="button" className={styles.contextLinkBtn} onClick={() => onNavigate?.("ContratDetail", {
+                        clientId: effectiveTicketClientId,
+                        name: breadcrumbClientLabel
+                      })}>
                           {breadcrumbClientLabel || "-"}
-                        </button>
-                      ) : (
-                        "-"
-                      )}
+                        </button> : "-"}
                     </dd>
                   </div>
                   <div className={fs.contractFactRow}>
@@ -5565,10 +4338,7 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
                     </dt>
                     <dd className={contractFactEmpty ? fs.contractFactEmpty : contractStatusClass}>
                       <span>{contractFactLabel}</span>
-                      {contractValidityAlert?.detail &&
-                      contractValidityAlert.detail !== contractFactLabel ? (
-                        <span className={styles.contractFactDetail}>{contractValidityAlert.detail}</span>
-                      ) : null}
+                      {contractValidityAlert?.detail && contractValidityAlert.detail !== contractFactLabel ? <span className={styles.contractFactDetail}>{contractValidityAlert.detail}</span> : null}
                     </dd>
                   </div>
                   <div className={fs.contractFactRow}>
@@ -5576,302 +4346,187 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
                       <Icon icon="mdi:puzzle-outline" className={fs.contractFactIcon} aria-hidden />
                       {copy.options}
                     </dt>
-                    <dd
-                      className={contractOptionsEmpty ? fs.contractFactEmpty : ""}
-                      title={contractOptionsEmpty ? undefined : contractOptionsLabel}
-                    >
+                    <dd className={contractOptionsEmpty ? fs.contractFactEmpty : ""} title={contractOptionsEmpty ? undefined : contractOptionsLabel}>
                       {contractOptionsLabel}
                     </dd>
                   </div>
-                  {!isCommunity && (
-                  <div className={fs.contractFactRow}>
+                  {!isCommunity && <div className={fs.contractFactRow}>
                     <dt className={fs.contractFactLabel}>
                       <Icon icon="mdi:ticket-percent-outline" className={fs.contractFactIcon} aria-hidden />
                       {copy.credits}
                     </dt>
-                    <dd
-                      className={
-                        contractCreditsEmpty
-                          ? fs.contractFactEmpty
-                          : contractCreditsBlocked
-                            ? fs.contractFactWarn
-                            : ""
-                      }
-                    >
+                    <dd className={contractCreditsEmpty ? fs.contractFactEmpty : contractCreditsBlocked ? fs.contractFactWarn : ""}>
                       {contractCreditsLabel}
                     </dd>
-                  </div>
-                  )}
-                  {!isCommunity && (
-                  <div className={fs.contractFactRow}>
+                  </div>}
+                  {!isCommunity && <div className={fs.contractFactRow}>
                     <dt className={fs.contractFactLabel}>
                       <Icon icon="mdi:clock-check-outline" className={fs.contractFactIcon} aria-hidden />
                       {copy.sla}
                     </dt>
                     <dd className={contractSlaEmpty ? fs.contractFactEmpty : ""}>{contractSlaLabel}</dd>
-                  </div>
-                  )}
+                  </div>}
                 </dl>
             </RightPaneCollapsibleSection>
 
-            <RightPaneCollapsibleSection
-              sectionId="ticket-detail-linked-ticket-body"
-              title={copy.rightPane.linkedTicket}
-              count={linkedTickets.length}
-              expanded={rightPaneCollapse.linkedTicket}
-              onToggle={() => toggleRightPaneCollapse("linkedTicket")}
-              sectionClassName={styles.rightPaneSectionPicker}
-              bodyClassName={fs.settingsPanel}
-            >
+            <RightPaneStaticSection title={copy.rightPane.channel} titleId="ticket-detail-channel-label">
+              <div className={fs.channelIconBar} role="radiogroup" aria-labelledby="ticket-detail-channel-label">
+                {copy.channelOptions.map(item => {
+                    const channelDisabled = isTicketChannelDisabled(item.key);
+                    return <button key={item.key} type="button" role="radio" aria-checked={editForm.channel === item.key} aria-label={item.label} aria-disabled={channelDisabled} title={item.key === "whatsapp" && !isWhatsAppNativeTicket ? copy.channelWhatsappDisabled : item.label} className={`${fs.channelIconBtn} ${editForm.channel === item.key ? fs.channelIconBtnActive : ""} ${channelDisabled ? fs.channelIconBtnDisabled : ""}`} disabled={channelDisabled} onClick={async () => {
+                      if (channelDisabled) return;
+                      setEditForm(p => ({
+                        ...p,
+                        channel: item.key
+                      }));
+                      await updateTicketLive({
+                        channel: item.key
+                      }, {
+                        successMessage: copy.toasts.channelUpdated
+                      });
+                    }}>
+                      <Icon icon={item.icon} aria-hidden />
+                    </button>;
+                  })}
+              </div>
+            </RightPaneStaticSection>
+
+            <RightPaneCollapsibleSection sectionId="ticket-detail-dates-body" title={copy.rightPane.ticketSection} expanded={rightPaneCollapse.ticketDates} onToggle={() => toggleRightPaneCollapse("ticketDates")}>
+              <div className={styles.contextLine}><strong>{copy.rightPane.created}</strong> {copy.formatDateTime(ticket.created_at)}</div>
+              <div className={styles.contextLine} title={ticketTakeoverStat ? copy.formatTakeoverTooltip(copy.getStatusLabel(ticketTakeoverStat.newStatus === "open" ? "new" : ticketTakeoverStat.newStatus)) : copy.takeoverTooltipNone}>
+                <strong>{copy.rightPane.takeover}</strong> {ticketTakeoverLabel}
+              </div>
+              <div className={styles.contextLine}><strong>{copy.rightPane.updated}</strong> {copy.formatDateTime(ticket.updated_at)}</div>
+              <div className={styles.contextLine}><strong>{copy.rightPane.closed}</strong> {copy.formatDateTime(ticket.closed_at)}</div>
+            </RightPaneCollapsibleSection>
+
+            <RightPaneCollapsibleSection sectionId="ticket-detail-linked-ticket-body" title={copy.rightPane.linkedTicket} count={linkedTickets.length} expanded={rightPaneCollapse.linkedTicket} onToggle={() => toggleRightPaneCollapse("linkedTicket")} sectionClassName={styles.rightPaneSectionPicker} bodyClassName={fs.settingsPanel}>
               <div className={fs.contactPicker} ref={linkedTicketDropdownRef}>
-                  <div
-                    className={`${fs.contactInputWrap} ${showLinkedTicketDropdown ? fs.contactInputWrapOpen : ""}`}
-                  >
+                  <div className={`${fs.contactInputWrap} ${showLinkedTicketDropdown ? fs.contactInputWrapOpen : ""}`}>
                     <Icon icon="mdi:magnify" className={fs.contactInputIcon} aria-hidden />
-                    <input
-                      className={fs.contactInput}
-                      type="text"
-                      value={linkedTicketSearch}
-                      autoComplete="off"
-                      placeholder={copy.rightPane.searchTicket}
-                      disabled={isReadOnly}
-                      aria-expanded={showLinkedTicketDropdown}
-                      aria-haspopup="listbox"
-                      onChange={(e) => {
-                        setLinkedTicketSearch(e.target.value);
-                        setShowLinkedTicketDropdown(true);
-                        setLinkedTicketHighlight(0);
-                        setLinkedTicketDraft("");
-                      }}
-                      onFocus={() => setShowLinkedTicketDropdown(true)}
-                      onKeyDown={(e) => {
-                        if (!showLinkedTicketDropdown || filteredLinkedTicketOptions.length === 0) return;
-                        if (e.key === "ArrowDown") {
-                          e.preventDefault();
-                          setLinkedTicketHighlight((h) =>
-                            Math.min(h + 1, filteredLinkedTicketOptions.length - 1)
-                          );
-                        } else if (e.key === "ArrowUp") {
-                          e.preventDefault();
-                          setLinkedTicketHighlight((h) => Math.max(h - 1, 0));
-                        } else if (e.key === "Enter") {
-                          e.preventDefault();
-                          const picked = filteredLinkedTicketOptions[linkedTicketHighlight];
-                          if (picked) addLinked(picked.id);
-                        } else if (e.key === "Escape") {
-                          setShowLinkedTicketDropdown(false);
-                        }
-                      }}
-                    />
+                    <input className={fs.contactInput} type="text" value={linkedTicketSearch} autoComplete="off" placeholder={copy.rightPane.searchTicket} disabled={isReadOnly} aria-expanded={showLinkedTicketDropdown} aria-haspopup="listbox" onChange={e => {
+                      setLinkedTicketSearch(e.target.value);
+                      setShowLinkedTicketDropdown(true);
+                      setLinkedTicketHighlight(0);
+                      setLinkedTicketDraft("");
+                    }} onFocus={() => setShowLinkedTicketDropdown(true)} onKeyDown={e => {
+                      if (!showLinkedTicketDropdown || filteredLinkedTicketOptions.length === 0) return;
+                      if (e.key === "ArrowDown") {
+                        e.preventDefault();
+                        setLinkedTicketHighlight(h => Math.min(h + 1, filteredLinkedTicketOptions.length - 1));
+                      } else if (e.key === "ArrowUp") {
+                        e.preventDefault();
+                        setLinkedTicketHighlight(h => Math.max(h - 1, 0));
+                      } else if (e.key === "Enter") {
+                        e.preventDefault();
+                        const picked = filteredLinkedTicketOptions[linkedTicketHighlight];
+                        if (picked) addLinked(picked.id);
+                      } else if (e.key === "Escape") {
+                        setShowLinkedTicketDropdown(false);
+                      }
+                    }} />
                   </div>
-                  {showLinkedTicketDropdown && (
-                    <div className={fs.contactDropdown} role="listbox">
-                      {filteredLinkedTicketOptions.length === 0 ? (
-                        <div className={fs.contactEmpty}>{copy.rightPane.noTicket}</div>
-                      ) : (
-                        filteredLinkedTicketOptions.map((row, idx) => (
-                          <button
-                            key={row.id}
-                            type="button"
-                            role="option"
-                            className={`${fs.contactOption} ${linkedTicketHighlight === idx ? fs.contactOptionActive : ""}`}
-                            onMouseEnter={() => setLinkedTicketHighlight(idx)}
-                            onClick={() => addLinked(row.id)}
-                          >
+                  {showLinkedTicketDropdown && <div className={fs.contactDropdown} role="listbox">
+                      {filteredLinkedTicketOptions.length === 0 ? <div className={fs.contactEmpty}>{copy.rightPane.noTicket}</div> : filteredLinkedTicketOptions.map((row, idx) => <button key={row.id} type="button" role="option" className={`${fs.contactOption} ${linkedTicketHighlight === idx ? fs.contactOptionActive : ""}`} onMouseEnter={() => setLinkedTicketHighlight(idx)} onClick={() => addLinked(row.id)}>
                             <span className={fs.contactOptionName}>{getTicketLinkLabel(row)}</span>
-                          </button>
-                        ))
-                      )}
-                    </div>
-                  )}
+                          </button>)}
+                    </div>}
                 </div>
                 <div className={fs.chipsWrap}>
-                  {linkedTickets.length === 0 ? (
-                    <span className={fs.emptyChipHint}>{copy.rightPane.noLinkedTicket}</span>
-                  ) : (
-                    visibleLinkedTickets.map((link) => {
-                      const linkId =
-                        link.linked_ticket_id || link.ticket_id || link.link_id || link.id;
-                      const linkNumber =
-                        link.ticket_number || link.linked_ticket_number || link.ticket_id;
-                      const linkTitle = link.title || copy.linkedTicketFallback;
-                      return (
-                        <span key={link.id || link.link_id || link.ticket_id || linkId} className={fs.chip}>
-                          <button
-                            type="button"
-                            onClick={() => openLinkedTicketDetail(linkId, linkNumber, linkTitle)}
-                          >
+                  {linkedTickets.length === 0 ? <span className={fs.emptyChipHint}>{copy.rightPane.noLinkedTicket}</span> : visibleLinkedTickets.map(link => {
+                    const linkId = link.linked_ticket_id || link.ticket_id || link.link_id || link.id;
+                    const linkNumber = link.ticket_number || link.linked_ticket_number || link.ticket_id;
+                    const linkTitle = link.title || copy.linkedTicketFallback;
+                    return <span key={link.id || link.link_id || link.ticket_id || linkId} className={fs.chip}>
+                          <button type="button" onClick={() => openLinkedTicketDetail(linkId, linkNumber, linkTitle)}>
                             #{linkNumber} - {linkTitle}
                           </button>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              removeLinked(linkId);
-                            }}
-                            disabled={isReadOnly}
-                            aria-label={copy.formatRemoveLinkedTicketAria(linkNumber)}
-                          >
+                          <button type="button" onClick={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        removeLinked(linkId);
+                      }} disabled={isReadOnly} aria-label={copy.formatRemoveLinkedTicketAria(linkNumber)}>
                             ×
                           </button>
-                        </span>
-                      );
-                    })
-                  )}
+                        </span>;
+                  })}
                 </div>
-                {hasMoreLinkedTickets ? (
-                  <SidebarExpandToggle
-                    copy={copy}
-                    expanded={linkedTicketsExpanded}
-                    onClick={() => setLinkedTicketsExpanded((prev) => !prev)}
-                  />
-                ) : null}
+                {hasMoreLinkedTickets ? <SidebarExpandToggle copy={copy} expanded={linkedTicketsExpanded} onClick={() => setLinkedTicketsExpanded(prev => !prev)} /> : null}
             </RightPaneCollapsibleSection>
 
-            <RightPaneCollapsibleSection
-              sectionId="ticket-detail-linked-equipment-body"
-              title={copy.rightPane.linkedEquipment}
-              count={linkedEquipments.length}
-              expanded={rightPaneCollapse.linkedEquipment}
-              onToggle={() => toggleRightPaneCollapse("linkedEquipment")}
-              sectionClassName={styles.rightPaneSectionPicker}
-              bodyClassName={fs.settingsPanel}
-            >
+            <RightPaneCollapsibleSection sectionId="ticket-detail-linked-equipment-body" title={copy.rightPane.linkedEquipment} count={linkedEquipments.length} expanded={rightPaneCollapse.linkedEquipment} onToggle={() => toggleRightPaneCollapse("linkedEquipment")} sectionClassName={styles.rightPaneSectionPicker} bodyClassName={fs.settingsPanel}>
               <div className={fs.contactPicker} ref={linkedEquipmentDropdownRef}>
-                  <div
-                    className={`${fs.contactInputWrap} ${showLinkedEquipmentDropdown ? fs.contactInputWrapOpen : ""}`}
-                  >
+                  <div className={`${fs.contactInputWrap} ${showLinkedEquipmentDropdown ? fs.contactInputWrapOpen : ""}`}>
                     <Icon icon="mdi:magnify" className={fs.contactInputIcon} aria-hidden />
-                    <input
-                      className={fs.contactInput}
-                      type="text"
-                      value={linkedEquipmentSearch}
-                      autoComplete="off"
-                      placeholder={
-                        effectiveTicketClientId
-                          ? copy.rightPane.searchEquipment
-                          : copy.rightPane.companyRequired
+                    <input className={fs.contactInput} type="text" value={linkedEquipmentSearch} autoComplete="off" placeholder={effectiveTicketClientId ? copy.rightPane.searchEquipment : copy.rightPane.companyRequired} disabled={isReadOnly || !effectiveTicketClientId} aria-expanded={showLinkedEquipmentDropdown} aria-haspopup="listbox" onChange={e => {
+                      setLinkedEquipmentSearch(e.target.value);
+                      setShowLinkedEquipmentDropdown(true);
+                      setLinkedEquipmentHighlight(0);
+                      setLinkedEquipmentDraft("");
+                    }} onFocus={() => {
+                      if (effectiveTicketClientId) setShowLinkedEquipmentDropdown(true);
+                    }} onKeyDown={e => {
+                      if (!showLinkedEquipmentDropdown || filteredLinkedEquipmentOptions.length === 0) return;
+                      if (e.key === "ArrowDown") {
+                        e.preventDefault();
+                        setLinkedEquipmentHighlight(h => Math.min(h + 1, filteredLinkedEquipmentOptions.length - 1));
+                      } else if (e.key === "ArrowUp") {
+                        e.preventDefault();
+                        setLinkedEquipmentHighlight(h => Math.max(h - 1, 0));
+                      } else if (e.key === "Enter") {
+                        e.preventDefault();
+                        const picked = filteredLinkedEquipmentOptions[linkedEquipmentHighlight];
+                        if (picked) addLinkedEquipment(picked.id);
+                      } else if (e.key === "Escape") {
+                        setShowLinkedEquipmentDropdown(false);
                       }
-                      disabled={isReadOnly || !effectiveTicketClientId}
-                      aria-expanded={showLinkedEquipmentDropdown}
-                      aria-haspopup="listbox"
-                      onChange={(e) => {
-                        setLinkedEquipmentSearch(e.target.value);
-                        setShowLinkedEquipmentDropdown(true);
-                        setLinkedEquipmentHighlight(0);
-                        setLinkedEquipmentDraft("");
-                      }}
-                      onFocus={() => {
-                        if (effectiveTicketClientId) setShowLinkedEquipmentDropdown(true);
-                      }}
-                      onKeyDown={(e) => {
-                        if (!showLinkedEquipmentDropdown || filteredLinkedEquipmentOptions.length === 0) return;
-                        if (e.key === "ArrowDown") {
-                          e.preventDefault();
-                          setLinkedEquipmentHighlight((h) =>
-                            Math.min(h + 1, filteredLinkedEquipmentOptions.length - 1)
-                          );
-                        } else if (e.key === "ArrowUp") {
-                          e.preventDefault();
-                          setLinkedEquipmentHighlight((h) => Math.max(h - 1, 0));
-                        } else if (e.key === "Enter") {
-                          e.preventDefault();
-                          const picked = filteredLinkedEquipmentOptions[linkedEquipmentHighlight];
-                          if (picked) addLinkedEquipment(picked.id);
-                        } else if (e.key === "Escape") {
-                          setShowLinkedEquipmentDropdown(false);
-                        }
-                      }}
-                    />
+                    }} />
                   </div>
-                  {showLinkedEquipmentDropdown && (
-                    <div className={fs.contactDropdown} role="listbox">
-                      {!effectiveTicketClientId ? (
-                        <div className={fs.contactEmpty}>{copy.rightPane.linkCompanyFirst}</div>
-                      ) : filteredLinkedEquipmentOptions.length === 0 ? (
-                        <div className={fs.contactEmpty}>{copy.rightPane.noEquipment}</div>
-                      ) : (
-                        filteredLinkedEquipmentOptions.map((equipment, idx) => (
-                          <button
-                            key={equipment.id}
-                            type="button"
-                            role="option"
-                            className={`${fs.contactOption} ${linkedEquipmentHighlight === idx ? fs.contactOptionActive : ""}`}
-                            onMouseEnter={() => setLinkedEquipmentHighlight(idx)}
-                            onClick={() => addLinkedEquipment(equipment.id)}
-                          >
+                  {showLinkedEquipmentDropdown && <div className={fs.contactDropdown} role="listbox">
+                      {!effectiveTicketClientId ? <div className={fs.contactEmpty}>{copy.rightPane.linkCompanyFirst}</div> : filteredLinkedEquipmentOptions.length === 0 ? <div className={fs.contactEmpty}>{copy.rightPane.noEquipment}</div> : filteredLinkedEquipmentOptions.map((equipment, idx) => <button key={equipment.id} type="button" role="option" className={`${fs.contactOption} ${linkedEquipmentHighlight === idx ? fs.contactOptionActive : ""}`} onMouseEnter={() => setLinkedEquipmentHighlight(idx)} onClick={() => addLinkedEquipment(equipment.id)}>
                             <span className={fs.contactOptionName}>{getEquipmentLinkLabel(equipment)}</span>
-                          </button>
-                        ))
-                      )}
-                    </div>
-                  )}
+                          </button>)}
+                    </div>}
                 </div>
                 <div className={fs.chipsWrap}>
-                  {linkedEquipments.length === 0 ? (
-                    <span className={fs.emptyChipHint}>{copy.rightPane.noLinkedEquipment}</span>
-                  ) : (
-                    visibleLinkedEquipments.map((equipment) => (
-                      <span key={equipment.equipment_id} className={fs.chip}>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            openLinkedEquipmentDetail(
-                              equipment.equipment_id,
-                              equipment.name,
-                              equipment.type
-                            )
-                          }
-                        >
+                  {linkedEquipments.length === 0 ? <span className={fs.emptyChipHint}>{copy.rightPane.noLinkedEquipment}</span> : visibleLinkedEquipments.map(equipment => <span key={equipment.equipment_id} className={fs.chip}>
+                        <button type="button" onClick={() => openLinkedEquipmentDetail(equipment.equipment_id, equipment.name, equipment.type)}>
                           {getEquipmentLinkLabel(equipment)}
                         </button>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            removeLinkedEquipment(equipment.equipment_id);
-                          }}
-                          disabled={isReadOnly}
-                          aria-label={copy.formatRemoveEquipmentAria(getEquipmentLinkLabel(equipment))}
-                        >
+                        <button type="button" onClick={e => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      removeLinkedEquipment(equipment.equipment_id);
+                    }} disabled={isReadOnly} aria-label={copy.formatRemoveEquipmentAria(getEquipmentLinkLabel(equipment))}>
                           ×
                         </button>
-                      </span>
-                    ))
-                  )}
+                      </span>)}
                 </div>
-                {hasMoreLinkedEquipments ? (
-                  <SidebarExpandToggle
-                    copy={copy}
-                    expanded={linkedEquipmentsExpanded}
-                    onClick={() => setLinkedEquipmentsExpanded((prev) => !prev)}
-                  />
-                ) : null}
+                {hasMoreLinkedEquipments ? <SidebarExpandToggle copy={copy} expanded={linkedEquipmentsExpanded} onClick={() => setLinkedEquipmentsExpanded(prev => !prev)} /> : null}
             </RightPaneCollapsibleSection>
 
-            <RightPaneCollapsibleSection
-              sectionId="ticket-detail-requester-history-body"
-              title={copy.rightPane.history}
-              count={requesterInteractions.length}
-              expanded={rightPaneCollapse.requesterHistory}
-              onToggle={() => toggleRightPaneCollapse("requesterHistory")}
-            >
+            {hasTicketSatisfactionData(ticket?.satisfaction) ? <RightPaneCollapsibleSection sectionId="ticket-detail-satisfaction-body" title={copy.rightPane.satisfaction} expanded={rightPaneCollapse.satisfaction} onToggle={() => toggleRightPaneCollapse("satisfaction")} titleAdornment={<TicketSatisfactionHeaderBadge filled copy={copy} />}>
+                  <TicketSatisfactionCriteriaPanel satisfaction={ticket.satisfaction} copy={copy} criteria={satisfactionCriteria} />
+                  {ticket.satisfaction.authorName ? <div className={styles.contextLine}>
+                      <strong>{copy.rightPane.satisfactionBy}</strong> {ticket.satisfaction.authorName}
+                    </div> : null}
+                  {ticket.satisfaction.createdAt ? <div className={styles.contextLine}>
+                      <strong>{copy.rightPane.satisfactionDate}</strong>{" "}
+                      {copy.formatDateTime(ticket.satisfaction.createdAt)}
+                    </div> : null}
+                  {ticket.satisfaction.message ? <p className={styles.satisfactionMessage}>{ticket.satisfaction.message}</p> : null}
+            </RightPaneCollapsibleSection> : null}
+
+            {requesterInteractions.length > 0 ? <RightPaneCollapsibleSection sectionId="ticket-detail-requester-history-body" title={copy.rightPane.history} count={requesterInteractions.length} expanded={rightPaneCollapse.requesterHistory} onToggle={() => toggleRightPaneCollapse("requesterHistory")}>
               <div className={styles.interactionsList}>
-                  {requesterInteractions.length === 0 ? (
-                    <p className={styles.emptyText}>{copy.empty.noPreviousInteractions}</p>
-                  ) : (
-                    visibleRequesterInteractions.map((item) => {
-                      const short = copy.getStatusShort(item.status) || "?";
-                      const statusKey = item.status === "open" ? "new" : item.status;
-                      return (
-                        <button
-                          key={item.id}
-                          type="button"
-                          className={styles.interactionItem}
-                          onClick={() => onNavigate?.("TicketDetail", { ticketId: item.id, ticketNumber: item.ticket_number, title: item.title })}
-                        >
+                  {visibleRequesterInteractions.map(item => {
+                    const short = copy.getStatusShort(item.status) || "?";
+                    const statusKey = item.status === "open" ? "new" : item.status;
+                    return <button key={item.id} type="button" className={styles.interactionItem} onClick={() => onNavigate?.("TicketDetail", {
+                      ticketId: item.id,
+                      ticketNumber: item.ticket_number,
+                      title: item.title
+                    })}>
                           <span className={`${styles.interactionStatus} ${styles[`interactionStatus_${statusKey}`]}`}>{short}</span>
                           <span className={styles.interactionBody}>
                             <span className={styles.interactionTitle}>
@@ -5880,216 +4535,123 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
                             </span>
                             <span className={styles.interactionDate}>{copy.formatDateTime(item.updated_at || item.created_at)}</span>
                           </span>
-                        </button>
-                      );
-                    })
-                  )}
+                        </button>;
+                  })}
                 </div>
-                {hasMoreRequesterInteractions ? (
-                  <SidebarExpandToggle
-                    copy={copy}
-                    expanded={historyExpanded}
-                    onClick={() => setHistoryExpanded((prev) => !prev)}
-                  />
-                ) : null}
-            </RightPaneCollapsibleSection>
+                {hasMoreRequesterInteractions ? <SidebarExpandToggle copy={copy} expanded={historyExpanded} onClick={() => setHistoryExpanded(prev => !prev)} /> : null}
+            </RightPaneCollapsibleSection> : null}
 
             {isDeleted && <div className={styles.deletedBadge}>{copy.empty.deletedBadge}</div>}
-              </>
-            )}
+              </>}
           </aside>
 
           <aside className={styles.rightSidebar}>
-            <button
-              type="button"
-              className={styles.sidebarActionBtn}
-              title={hasKnowledgeBase ? copy.sidebar.kbTitle : copy.sidebar.kbDisabledTitle}
-              onClick={() => {
-                if (hasKnowledgeBase) {
-                  window.open(knowledgeBaseUrl, "_blank", "noopener,noreferrer");
-                }
-              }}
-              disabled={!hasKnowledgeBase}
-              aria-disabled={!hasKnowledgeBase || undefined}
-            >
-              <Icon icon="mdi:book-open-page-variant-outline" />
+            <button type="button" className={`${styles.sidebarActionBtn} ${rightPaneView === "context" ? styles.sidebarActionBtnActive : ""}`.trim()} title={copy.sidebar.classicViewTitle} aria-label={copy.sidebar.classicViewAria} aria-pressed={rightPaneView === "context"} onClick={() => setRightPaneView("context")}>
+              <Icon icon="mdi:view-dashboard-outline" />
             </button>
-            <button
-              type="button"
-              className={styles.sidebarActionBtn}
-              title={copy.sidebar.equipmentTitle}
-              onClick={() =>
-                onNavigate?.("Equipment", {
-                  clientId: effectiveTicketClientId || ticket?.client_id || null,
-                  clientName: breadcrumbClientLabel || clientLabel || undefined,
-                })
-              }
-              disabled={!effectiveTicketClientId && !ticket?.client_id}
-            >
-              <Icon icon="mdi:server-network" />
-            </button>
-            <button
-              type="button"
-              className={`${styles.sidebarActionBtn} ${rightPaneView === "history" ? styles.sidebarActionBtnActive : ""}`.trim()}
-              title={rightPaneView === "history" ? copy.rightPane.historyBackTitle : copy.rightPane.historyToggleTitle}
-              aria-label={rightPaneView === "history" ? copy.rightPane.historyBackAria : copy.rightPane.historyToggleAria}
-              aria-pressed={rightPaneView === "history"}
-              onClick={() =>
-                setRightPaneView((prev) => (prev === "history" ? "context" : "history"))
-              }
-            >
+            {aiFeatures.ticketRunbook ? <button type="button" className={`${styles.sidebarActionBtn} ${rightPaneView === "runbook" ? styles.sidebarActionBtnActive : ""}`.trim()} title={copy.sidebar.runbookTitle} aria-label={copy.rightPane.runbookToggleAria} aria-pressed={rightPaneView === "runbook"} onClick={() => setRightPaneView("runbook")}>
+                <Icon icon="mdi:clipboard-list-outline" aria-hidden />
+              </button> : null}
+            <button type="button" className={`${styles.sidebarActionBtn} ${rightPaneView === "history" ? styles.sidebarActionBtnActive : ""}`.trim()} title={copy.rightPane.historyToggleTitle} aria-label={copy.rightPane.historyToggleAria} aria-pressed={rightPaneView === "history"} onClick={() => {
+              setRightPaneView("history");
+              void refreshTicketHistory({
+                showSpinner: true
+              });
+            }}>
               <Icon icon="mdi:history" />
             </button>
-            {!isDeleted && (
-              <button
-                type="button"
-                className={styles.sidebarActionBtn}
-                title={copy.sidebar.deleteTitle}
-                onClick={softDeleteCurrentTicket}
-              >
+            {hasKnowledgeBase ? <>
+                <span className={styles.sidebarSeparator} aria-hidden />
+                <button type="button" className={styles.sidebarActionBtn} title={copy.sidebar.kbTitle} onClick={() => window.open(knowledgeBaseUrl, "_blank", "noopener,noreferrer")}>
+                  <Icon icon="mdi:book-open-page-variant-outline" />
+                </button>
+              </> : null}
+            <span className={styles.sidebarSeparator} aria-hidden />
+            {!isDeleted && <button type="button" className={styles.sidebarActionBtn} title={copy.sidebar.deleteTitle} onClick={softDeleteCurrentTicket}>
                 <Icon icon="mdi:trash-can-outline" />
-              </button>
-            )}
+              </button>}
           </aside>
         </div>
 
         <div className={`${styles.ticketChromeBar} ${styles.footerBar}`}>
-          {isTicketClosed && !isDeleted ? (
-            <div className={styles.footerClosedWrap}>
+          {isTicketClosed && !isDeleted ? <div className={styles.footerClosedWrap}>
               <span className={styles.footerClosedHint}>
                 <Icon icon="mdi:lock-outline" aria-hidden />
                 {copy.footer.closedHint}
               </span>
-              <button
-                type="button"
-                className={styles.footerReopenBtn}
-                onClick={() => setReopenModalOpen(true)}
-                disabled={reopeningTicket}
-              >
+              <button type="button" className={styles.footerReopenBtn} onClick={() => setReopenModalOpen(true)} disabled={reopeningTicket}>
                 <Icon icon="mdi:lock-open-outline" aria-hidden />
                 {reopeningTicket ? copy.footer.reopening : copy.footer.reopen}
               </button>
-            </div>
-          ) : (
-            <>
+            </div> : <>
           <div className={styles.footerLeft}>
             <div className={styles.footerMacroWrap}>
               <Icon icon="mdi:flash-outline" className={styles.footerIcon} />
-              <select
-                className={styles.footerSelect}
-                value={macroSelection}
-                onChange={(e) => setMacroSelection(e.target.value)}
-                disabled={isReadOnly}
-              >
+              <select className={styles.footerSelect} value={macroSelection} onChange={e => setMacroSelection(e.target.value)} disabled={isReadOnly}>
                 <option value="">{copy.footer.applyMacro}</option>
-                {availableMacros.map((macro) => (
-                  <option key={macro.id} value={macro.id}>
+                {availableMacros.map(macro => <option key={macro.id} value={macro.id}>
                     {macro.name}
-                  </option>
-                ))}
+                  </option>)}
               </select>
-              <button
-                type="button"
-                className={styles.footerGhostBtn}
-                onClick={runMacro}
-                disabled={!macroSelection || isReadOnly}
-              >
-                Appliquer
+              <button type="button" className={styles.footerGhostBtn} onClick={runMacro} disabled={!macroSelection || isReadOnly}>
+                Apply
               </button>
             </div>
           </div>
           <div className={styles.footerRight}>
-            {isDeleted && (
-              <>
+            {isDeleted && <>
                 <button type="button" className={styles.footerGhostBtn} onClick={restoreCurrentTicket}>
                   {copy.footer.restore}
                 </button>
-                {isAdmin && (
-                  <button type="button" className={styles.footerDangerBtn} onClick={permanentlyDeleteCurrentTicket}>
+                {isAdmin && <button type="button" className={styles.footerDangerBtn} onClick={permanentlyDeleteCurrentTicket}>
                     {copy.footer.permanentDelete}
-                  </button>
-                )}
-              </>
-            )}
+                  </button>}
+              </>}
             <div className={styles.footerSubmitWrap}>
-              {(showConsumeCreditOption || showRefundCreditOption || supportCredit?.consumed) && (
-                <div className={styles.creditFooterBox}>
-                  {supportCredit?.consumed ? (
-                    <span className={styles.creditFooterInfo}>
+              {(showConsumeCreditOption || showRefundCreditOption || supportCredit?.consumed) && <div className={styles.creditFooterBox}>
+                  {supportCredit?.consumed ? <span className={styles.creditFooterInfo}>
                       <Icon icon="mdi:ticket-confirmation-outline" />
-                      {Number(supportCredit?.totalDebited || 0) > 0
-                        ? copy.formatCreditConsumed(supportCredit.totalDebited)
-                        : copy.footer.creditConsumed}
-                    </span>
-                  ) : (
-                    <span className={styles.creditFooterInfo}>
+                      {Number(supportCredit?.totalDebited || 0) > 0 ? copy.formatCreditConsumed(supportCredit.totalDebited) : copy.footer.creditConsumed}
+                    </span> : <span className={styles.creditFooterInfo}>
                       <Icon icon="mdi:ticket-confirmation-outline" />
                       {copy.formatCreditAvailable(supportCredit?.balance ?? 0)}
-                    </span>
-                  )}
-                  {showConsumeCreditOption && (
-                    <label className={styles.creditFooterCheck}>
-                      <input
-                        type="checkbox"
-                        checked={consumeSupportCredit}
-                        onChange={(e) => setConsumeSupportCredit(e.target.checked)}
-                        disabled={Number(supportCredit?.balance || 0) <= 0}
-                      />
+                    </span>}
+                  {showConsumeCreditOption && <label className={styles.creditFooterCheck}>
+                      <input type="checkbox" checked={consumeSupportCredit} onChange={e => setConsumeSupportCredit(e.target.checked)} disabled={Number(supportCredit?.balance || 0) <= 0} />
                       {copy.footer.consumeCredit}
-                    </label>
-                  )}
-                  {showRefundCreditOption && (
-                    <label className={styles.creditFooterCheck}>
-                      <input
-                        type="checkbox"
-                        checked={refundSupportCredit}
-                        onChange={(e) => setRefundSupportCredit(e.target.checked)}
-                      />
+                    </label>}
+                  {showRefundCreditOption && <label className={styles.creditFooterCheck}>
+                      <input type="checkbox" checked={refundSupportCredit} onChange={e => setRefundSupportCredit(e.target.checked)} />
                       {copy.footer.refundCredit}
-                    </label>
-                  )}
-                </div>
-              )}
+                    </label>}
+                </div>}
               <div className={styles.footerSubmitActions}>
-              <button
-                type="button"
-                className={styles.footerSubmitBtn}
-                onClick={handleFooterSubmit}
-                disabled={isReadOnly || submittingStatus !== ""}
-              >
-                {submittingStatus ? copy.footer.sending : copy.submitActions.find((a) => a.id === selectedSubmitAction)?.label || copy.submitActions[0]?.label}
+              <button type="button" className={styles.footerSubmitBtn} onClick={handleFooterSubmit} disabled={isReadOnly || submittingStatus !== ""}>
+                {submittingStatus ? copy.footer.sending : copy.submitActions.find(a => a.id === selectedSubmitAction)?.label || copy.submitActions[0]?.label}
               </button>
               <div className={styles.footerSubmitChevronWrap}>
                 <Icon icon="mdi:chevron-down" className={styles.footerSubmitChevronIcon} />
-                <select
-                  className={styles.footerSubmitSelectOverlay}
-                  value={selectedSubmitAction}
-                  onChange={(e) => setSelectedSubmitAction(e.target.value)}
-                  disabled={isReadOnly || submittingStatus !== ""}
-                  aria-label={copy.footer.submitStatusAria}
-                >
-                  {copy.submitActions.map((action) => (
-                    <option key={action.id} value={action.id}>
+                <select className={styles.footerSubmitSelectOverlay} value={selectedSubmitAction} onChange={e => setSelectedSubmitAction(e.target.value)} disabled={isReadOnly || submittingStatus !== ""} aria-label={copy.footer.submitStatusAria}>
+                  {copy.submitActions.map(action => <option key={action.id} value={action.id}>
                       {action.label}
-                    </option>
-                  ))}
+                    </option>)}
                 </select>
               </div>
               </div>
             </div>
           </div>
-            </>
-          )}
+            </>}
         </div>
-        </div>
-      )}
+        </div>}
 
-      {macroAttachmentModalOpen && (
-        <div className={styles.ticketActionModalOverlay} onClick={closeMacroAttachmentModal}>
-          <div className={styles.ticketActionModalCard} onClick={(event) => event.stopPropagation()}>
+      {macroAttachmentModalOpen && <div className={styles.ticketActionModalOverlay} onClick={closeMacroAttachmentModal}>
+          <div className={styles.ticketActionModalCard} onClick={event => event.stopPropagation()}>
             <div className={styles.ticketActionModalHeader}>
               <h3 className={styles.ticketActionModalTitle}>
-                <Icon icon="mdi:paperclip" style={{ marginRight: "0.5rem", verticalAlign: "middle" }} />
+                <Icon icon="mdi:paperclip" style={{
+                marginRight: "0.5rem",
+                verticalAlign: "middle"
+              }} />
                 {copy.macroAttachmentModal.title}
               </h3>
               <button type="button" className={styles.ticketActionModalCloseBtn} onClick={closeMacroAttachmentModal}>
@@ -6105,46 +4667,26 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
               <label className={styles.uploadBtn}>
                 <Icon icon="mdi:paperclip" />
                 {copy.macroAttachmentModal.addFiles}
-                <input
-                  type="file"
-                  multiple
-                  accept={ATTACHMENT_ACCEPT}
-                  onChange={(e) => {
-                    const selectedFiles = Array.from(e.target.files || []);
-                    try {
-                      applySelectedMacroAttachments(selectedFiles);
-                    } catch (error) {
-                      toast.error(error.message || copy.attachmentInvalid);
-                    } finally {
-                      e.target.value = "";
-                    }
-                  }}
-                />
+                <input type="file" multiple accept={ATTACHMENT_ACCEPT} onChange={e => {
+                const selectedFiles = Array.from(e.target.files || []);
+                try {
+                  applySelectedMacroAttachments(selectedFiles);
+                } catch (error) {
+                  toast.error(error.message || copy.attachmentInvalid);
+                } finally {
+                  e.target.value = "";
+                }
+              }} />
               </label>
 
-              {macroAttachmentFiles.length > 0 && (
-                <div className={styles.attachmentsDraft}>
-                  {macroAttachmentFiles.map((file) => (
-                    <span key={`${file.name}-${file.size}-${file.lastModified || 0}`}>
+              {macroAttachmentFiles.length > 0 && <div className={styles.attachmentsDraft}>
+                  {macroAttachmentFiles.map(file => <span key={`${file.name}-${file.size}-${file.lastModified || 0}`}>
                       {file.name}
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setMacroAttachmentFiles((prev) =>
-                            prev.filter(
-                              (entry) =>
-                                `${entry.name}-${entry.size}-${entry.lastModified || 0}` !==
-                                `${file.name}-${file.size}-${file.lastModified || 0}`
-                            )
-                          )
-                        }
-                      >
+                      <button type="button" onClick={() => setMacroAttachmentFiles(prev => prev.filter(entry => `${entry.name}-${entry.size}-${entry.lastModified || 0}` !== `${file.name}-${file.size}-${file.lastModified || 0}`))}>
                         ×
                       </button>
-                    </span>
-                  ))}
-                </div>
-              )}
+                    </span>)}
+                </div>}
             </div>
 
             <div className={styles.ticketActionModalFooter}>
@@ -6156,97 +4698,29 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
               </button>
             </div>
           </div>
-        </div>
-      )}
+        </div>}
 
-      <TicketExclusionModal
-        open={exclusionModalOpen}
-        ticket={ticket}
-        requesterEmail={requesterEmail && requesterEmail !== "-" ? requesterEmail : ""}
-        saving={savingExclusion}
-        onClose={closeExclusionModal}
-        onConfirm={addCurrentTicketToExclusions}
-      />
+      <TicketExclusionModal open={exclusionModalOpen} ticket={ticket} requesterEmail={requesterEmail && requesterEmail !== "-" ? requesterEmail : ""} saving={savingExclusion} onClose={closeExclusionModal} onConfirm={addCurrentTicketToExclusions} />
 
-      <TicketSplitModal
-        open={splitModalOpen}
-        ticket={ticket}
-        targets={availableLinkTargets}
-        saving={savingSplit}
-        onClose={closeSplitModal}
-        onConfirm={splitCurrentTicket}
-      />
+      <TicketSplitModal open={splitModalOpen} ticket={ticket} targets={availableLinkTargets} saving={savingSplit} onClose={closeSplitModal} onConfirm={splitCurrentTicket} />
 
-      <TicketReminderModal
-        open={reminderModalOpen}
-        ticket={ticket}
-        requesterName={requesterDisplayName}
-        reminder={ticketReminder}
-        saving={savingReminder}
-        deleting={deletingReminder}
-        onClose={closeReminderModal}
-        onSave={saveTicketReminder}
-        onDelete={deleteTicketReminder}
-      />
+      <TicketReminderModal open={reminderModalOpen} ticket={ticket} requesterName={requesterDisplayName} reminder={ticketReminder} saving={savingReminder} deleting={deletingReminder} onClose={closeReminderModal} onSave={saveTicketReminder} onDelete={deleteTicketReminder} />
 
-      <TicketResolveModal
-        open={resolveModalOpen}
-        ticket={ticket}
-        copy={copy.resolveModal}
-        locale={locale}
-        saving={savingResolve}
-        hasPendingReply={resolvePendingReply}
-        creditEnabled={resolveCreditEnabled}
-        onCreditEnabledChange={setResolveCreditEnabled}
-        creditAmounts={resolveCreditAmounts}
-        onCreditAmountsChange={setResolveCreditAmounts}
-        creditsProLocked={isCommunity}
-        onCreditsProClick={() => setProPromoFeature("credits")}
-        supportCredit={supportCredit}
-        supportCreditBalance={supportCredit?.balance ?? 0}
-        onClose={() => {
-          if (savingResolve) return;
-          resolveAfterReplyRef.current = false;
-          pendingResolveReplyRef.current = null;
-          setResolvePendingReply(false);
-          setResolveModalOpen(false);
-        }}
-        onConfirm={handleConfirmResolve}
-      />
+      <TicketResolveModal open={resolveModalOpen} ticket={ticket} copy={copy.resolveModal} locale={locale} saving={savingResolve} hasPendingReply={resolvePendingReply} creditEnabled={resolveCreditEnabled} onCreditEnabledChange={setResolveCreditEnabled} creditAmounts={resolveCreditAmounts} onCreditAmountsChange={setResolveCreditAmounts} creditsProLocked={isCommunity} onCreditsProClick={() => setProPromoFeature("credits")} supportCredit={supportCredit} supportCreditBalance={supportCredit?.balance ?? 0} onClose={() => {
+        if (savingResolve) return;
+        resolveAfterReplyRef.current = false;
+        pendingResolveReplyRef.current = null;
+        setResolvePendingReply(false);
+        setResolveModalOpen(false);
+      }} onConfirm={handleConfirmResolve} />
 
-      <TicketReopenModal
-        open={reopenModalOpen}
-        ticket={ticket}
-        copy={copy.reopenModal}
-        saving={reopeningTicket}
-        onClose={() => !reopeningTicket && setReopenModalOpen(false)}
-        onConfirm={confirmReopenTicket}
-      />
+      <TicketReopenModal open={reopenModalOpen} ticket={ticket} copy={copy.reopenModal} saving={reopeningTicket} onClose={() => !reopeningTicket && setReopenModalOpen(false)} onConfirm={confirmReopenTicket} />
 
-      <TicketConfirmModal
-        open={Boolean(deleteConfirmConfig)}
-        title={deleteConfirmConfig?.title}
-        message={deleteConfirmConfig?.message}
-        confirmLabel={deleteConfirmConfig?.confirmLabel}
-        variant="danger"
-        icon={deleteConfirmConfig?.icon}
-        loading={deletingTicket}
-        onClose={closeDeleteConfirm}
-        onConfirm={confirmDeleteTicket}
-      />
+      <TicketConfirmModal open={Boolean(deleteConfirmConfig)} title={deleteConfirmConfig?.title} message={deleteConfirmConfig?.message} confirmLabel={deleteConfirmConfig?.confirmLabel} variant="danger" icon={deleteConfirmConfig?.icon} loading={deletingTicket} onClose={closeDeleteConfirm} onConfirm={confirmDeleteTicket} />
 
-      <ProFeaturePromoModal
-        open={Boolean(proPromoFeature)}
-        featureKey={proPromoFeature}
-        onClose={() => setProPromoFeature(null)}
-      />
+      <ProFeaturePromoModal open={Boolean(proPromoFeature)} featureKey={proPromoFeature} onClose={() => setProPromoFeature(null)} />
 
-      {showSideConversationModal && (
-        <div
-          className={styles.sideChatPopup}
-          ref={newSideConversationPopupRef}
-          style={newSideConversationPopupStyle || undefined}
-        >
+      {showSideConversationModal && <div className={styles.sideChatPopup} ref={newSideConversationPopupRef} style={newSideConversationPopupStyle || undefined}>
           <div className={styles.sideChatHeader}>
             <div>
               <div className={styles.sideChatTitle}>{copy.sideModal.newTitle}</div>
@@ -6258,58 +4732,39 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
           </div>
           <div className={styles.sideConversationBody}>
             <label className={styles.fieldLabel}>{copy.sideModal.target}</label>
-            <select
-              className={styles.input}
-              value={sideConversation.team}
-              onChange={(e) => setSideConversation((prev) => ({ ...prev, team: e.target.value }))}
-            >
-              {copy.sideConversationTeamOptions.map((opt) => (
-              <option key={opt.key} value={opt.key}>{opt.label}</option>
-            ))}
+            <select className={styles.input} value={sideConversation.team} onChange={e => setSideConversation(prev => ({
+            ...prev,
+            team: e.target.value
+          }))}>
+              {copy.sideConversationTeamOptions.map(opt => <option key={opt.key} value={opt.key}>{opt.label}</option>)}
             </select>
 
             <label className={styles.fieldLabel}>{copy.sideModal.subject}</label>
-            <input
-              className={styles.input}
-              type="text"
-              placeholder={copy.sideModal.subjectPlaceholder}
-              value={sideConversation.subject}
-              onChange={(e) => setSideConversation((prev) => ({ ...prev, subject: e.target.value }))}
-            />
+            <input className={styles.input} type="text" placeholder={copy.sideModal.subjectPlaceholder} value={sideConversation.subject} onChange={e => setSideConversation(prev => ({
+            ...prev,
+            subject: e.target.value
+          }))} />
 
             <label className={styles.fieldLabel}>{copy.sideModal.recipient}</label>
-            <input
-              className={styles.input}
-              type="text"
-              list="side-conversation-users"
-              placeholder={copy.sideModal.recipientPlaceholder}
-              value={sideConversation.to}
-              onChange={(e) => setSideConversation((prev) => ({ ...prev, to: e.target.value }))}
-            />
+            <input className={styles.input} type="text" list="side-conversation-users" placeholder={copy.sideModal.recipientPlaceholder} value={sideConversation.to} onChange={e => setSideConversation(prev => ({
+            ...prev,
+            to: e.target.value
+          }))} />
 
             <label className={styles.fieldLabel}>{copy.sideModal.cc}</label>
-            <input
-              className={styles.input}
-              type="text"
-              list="side-conversation-users"
-              placeholder={copy.sideModal.ccPlaceholder}
-              value={sideConversation.cc}
-              onChange={(e) => setSideConversation((prev) => ({ ...prev, cc: e.target.value }))}
-            />
+            <input className={styles.input} type="text" list="side-conversation-users" placeholder={copy.sideModal.ccPlaceholder} value={sideConversation.cc} onChange={e => setSideConversation(prev => ({
+            ...prev,
+            cc: e.target.value
+          }))} />
             <datalist id="side-conversation-users">
-              {userSearchOptions.map((opt) => (
-                <option key={opt.id} value={opt.label} />
-              ))}
+              {userSearchOptions.map(opt => <option key={opt.id} value={opt.label} />)}
             </datalist>
 
             <label className={styles.fieldLabel}>{copy.sideModal.message}</label>
-            <textarea
-              className={styles.editor}
-              rows={5}
-              placeholder={copy.sideModal.messagePlaceholder}
-              value={sideConversation.message}
-              onChange={(e) => setSideConversation((prev) => ({ ...prev, message: e.target.value }))}
-            />
+            <textarea className={styles.editor} rows={5} placeholder={copy.sideModal.messagePlaceholder} value={sideConversation.message} onChange={e => setSideConversation(prev => ({
+            ...prev,
+            message: e.target.value
+          }))} />
           </div>
           <div className={styles.sideConversationFooter}>
             <button type="button" className={styles.secondaryBtn} onClick={() => setShowSideConversationModal(false)}>
@@ -6320,20 +4775,14 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
               {copy.sideModal.send}
             </button>
           </div>
-        </div>
-      )}
+        </div>}
 
-      {activeSideConversation && (
-        <div
-          className={styles.sideChatPopup}
-          ref={activeSideConversationPopupRef}
-          style={activeSideConversationPopupStyle || undefined}
-        >
+      {activeSideConversation && <div className={styles.sideChatPopup} ref={activeSideConversationPopupRef} style={activeSideConversationPopupStyle || undefined}>
           <div className={styles.sideChatHeader}>
             <div>
               <div className={styles.sideChatTitle}>{activeSideConversation.subject}</div>
               <div className={styles.sideChatSubtitle}>
-                {copy.sideConversationTeamOptions.find((opt) => opt.key === activeSideConversation.team)?.label || activeSideConversation.team}
+                {copy.sideConversationTeamOptions.find(opt => opt.key === activeSideConversation.team)?.label || activeSideConversation.team}
                 {" · "}
                 {activeSideConversation.status === "done" ? copy.sideModal.statusDone : copy.sideModal.statusOpen}
                 {activeSideConversation.to ? ` · To: ${activeSideConversation.to}` : ""}
@@ -6345,55 +4794,31 @@ export default function TicketDetailPage({ onNavigate, ticketData }) {
             </button>
           </div>
           <div className={styles.sideChatMessages}>
-            {activeSideConversation.messages.map((msg) => (
-              <div key={msg.id} className={styles.sideChatMessage}>
+            {activeSideConversation.messages.map(msg => <div key={msg.id} className={styles.sideChatMessage}>
                 <div className={styles.sideChatMessageMeta}>
                   <strong>{msg.author}</strong>
                   <span>{copy.formatDateTime(msg.createdAt)}</span>
-                  {canDeleteSideConversationMessage(msg.id) && (
-                    <SmartTooltip content={copy.comment.deleteTooltip}>
-                      <button
-                        type="button"
-                        className={styles.commentDeleteBtn}
-                        onClick={() => deleteComment(msg.id)}
-                        disabled={String(deletingCommentId) === String(msg.id)}
-                        aria-label={copy.comment.deleteAria}
-                      >
+                  {canDeleteSideConversationMessage(msg.id) && <SmartTooltip content={copy.comment.deleteTooltip}>
+                      <button type="button" className={styles.commentDeleteBtn} onClick={() => deleteComment(msg.id)} disabled={String(deletingCommentId) === String(msg.id)} aria-label={copy.comment.deleteAria}>
                         <Icon icon="mdi:trash-can-outline" />
                       </button>
-                    </SmartTooltip>
-                  )}
+                    </SmartTooltip>}
                 </div>
                 <p>{msg.content}</p>
-              </div>
-            ))}
+              </div>)}
           </div>
           <div className={styles.sideChatComposer}>
-            <input
-              className={styles.input}
-              type="text"
-              placeholder={copy.sideModal.replyPlaceholder}
-              value={sideReplyDraft}
-              onChange={(e) => setSideReplyDraft(e.target.value)}
-              disabled={activeSideConversation.status === "done"}
-            />
+            <input className={styles.input} type="text" placeholder={copy.sideModal.replyPlaceholder} value={sideReplyDraft} onChange={e => setSideReplyDraft(e.target.value)} disabled={activeSideConversation.status === "done"} />
             <button type="button" className={styles.secondaryBtn} onClick={submitSideReply} disabled={activeSideConversation.status === "done"}>
               {copy.sideModal.sendReply}
             </button>
-            {activeSideConversation.status === "done" ? (
-              <button type="button" className={styles.primaryBtn} onClick={reopenSideConversation}>
+            {activeSideConversation.status === "done" ? <button type="button" className={styles.primaryBtn} onClick={reopenSideConversation}>
                 {copy.sideModal.reopen}
-              </button>
-            ) : (
-              <button type="button" className={styles.primaryBtn} onClick={markSideConversationDone}>
+              </button> : <button type="button" className={styles.primaryBtn} onClick={markSideConversationDone}>
                 {copy.sideModal.close}
-              </button>
-            )}
+              </button>}
           </div>
-        </div>
-      )}
+        </div>}
       </div>
-    </div>
-  );
+    </div>;
 }
-

@@ -1,4 +1,4 @@
-/* Configuration tickets · contenu des sections */
+
 
 .content {
   flex: 1;
@@ -84,7 +84,7 @@
   flex-shrink: 0;
 }
 
-/* Tables */
+
 .tableWithPager {
   display: flex;
   flex-direction: column;
@@ -227,7 +227,7 @@
   cursor: not-allowed;
 }
 
-/* Forms */
+
 .settingRow {
   margin-bottom: 0;
 }
@@ -322,7 +322,7 @@
   cursor: not-allowed;
 }
 
-/* Modals */
+
 .modalOverlay {
   position: fixed;
   inset: 0;
@@ -407,7 +407,7 @@
   background: var(--msp-surface-2);
 }
 
-/* Chat preview */
+
 .chatPreview {
   border: 1px solid var(--msp-border);
   border-radius: 12px;

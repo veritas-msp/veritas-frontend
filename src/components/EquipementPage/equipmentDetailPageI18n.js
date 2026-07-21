@@ -3,7 +3,6 @@ import { getEquipmentModuleLabel } from "./equipmentModalsI18n";
 import { getFormFields } from "./equipmentFormFieldsI18n";
 import { localizeFormSection } from "./equipmentModalsI18n";
 import { normalizeServerType, normalizeStorageType } from "./equipmentFormConfig";
-
 const FR = {
   loading: "Chargement…",
   loadingTags: "Chargement des étiquettes…",
@@ -17,7 +16,7 @@ const FR = {
     events: "Événements",
     stats: "Statistiques",
     documents: "Documents",
-    logs: "Logs",
+    logs: "Logs"
   },
   hero: {
     metaAria: "Informations matériel",
@@ -38,7 +37,7 @@ const FR = {
     refreshCheckmk: "Actualiser CheckMK",
     mappingCheckmk: "Mapping CheckMK",
     mapCheckmk: "Mapper CheckMK",
-    openQuickConnect: "Ouvrir QuickConnect",
+    openQuickConnect: "Ouvrir QuickConnect"
   },
   specs: {
     title: "Fiche matériel",
@@ -49,7 +48,7 @@ const FR = {
     sourceManual: "Saisie",
     sourceRmm: "Agent RMM",
     sourceCheckmk: "CheckMK",
-    openHaPeer: "Ouvrir la fiche du pair HA",
+    openHaPeer: "Ouvrir la fiche du pair HA"
   },
   events: {
     title: "Événements liés",
@@ -58,7 +57,7 @@ const FR = {
     emptyHint: "Planifiez une intervention ou consultez les tickets liés à ce matériel sur la période choisie.",
     colTitle: "Titre",
     colDate: "Date",
-    fallbackTitle: "Événement",
+    fallbackTitle: "Événement"
   },
   dateRange: {
     aria: "Filtrer par période",
@@ -69,8 +68,8 @@ const FR = {
       "7d": "7 j",
       "30d": "30 j",
       "90d": "3 mois",
-      "1y": "1 an",
-    },
+      "1y": "1 an"
+    }
   },
   activity: {
     colKind: "Type",
@@ -83,14 +82,14 @@ const FR = {
       in_progress: "En cours",
       pending: "En attente",
       resolved: "Résolu",
-      closed: "Clôturé",
+      closed: "Clôturé"
     },
     priority: {
       urgent: "Urgent",
       high: "Élevée",
       normal: "Normale",
-      low: "Basse",
-    },
+      low: "Basse"
+    }
   },
   stats: {
     title: "Statistiques",
@@ -112,7 +111,7 @@ const FR = {
     rmmManaged: "Agent RMM",
     rmmYes: "Géré par agent",
     lastSync: "Dernière remontée",
-    avgResolution: "Délai moyen de résolution : {hours} h",
+    avgResolution: "Délai moyen de résolution : {hours} h"
   },
   documents: {
     subtitle: "Factures, schémas, manuels et pièces jointes liés à ce matériel.",
@@ -137,15 +136,15 @@ const FR = {
       Configuration: "Configuration",
       Manuel: "Manuel",
       Procédure: "Procédure",
-      Autre: "Autre",
+      Autre: "Autre"
     },
     toasts: {
       loadError: "Impossible de charger les documents",
       added: "Document ajouté",
       uploadError: "Erreur lors de l'upload",
       deleted: "Document supprimé",
-      deleteError: "Erreur lors de la suppression",
-    },
+      deleteError: "Erreur lors de la suppression"
+    }
   },
   alertSettings: {
     statusSuspended: "Suspendues",
@@ -156,12 +155,11 @@ const FR = {
       "240": "4 heures",
       "1440": "24 heures",
       "10080": "7 jours",
-      "43200": "30 jours",
+      "43200": "30 jours"
     },
     modal: {
       title: "Alertes supervision",
-      subtitle:
-        "Par défaut, aucun ticket automatique. Activez ou suspendez les alertes pour ce périphérique (CheckMK ou agent RMM).",
+      subtitle: "Par défaut, aucun ticket automatique. Activez ou suspendez les alertes pour ce périphérique (CheckMK ou agent RMM).",
       unavailable: "Identifiant périphérique indisponible · gestion des alertes impossible.",
       currentStatus: "État actuel",
       mode: "Mode",
@@ -178,7 +176,7 @@ const FR = {
       close: "Fermer",
       cancel: "Annuler",
       save: "Enregistrer",
-      saving: "Enregistrement…",
+      saving: "Enregistrement…"
     },
     toasts: {
       loadError: "Impossible de charger les alertes",
@@ -186,12 +184,12 @@ const FR = {
       disabled: "Alertes supervision désactivées",
       suspended: "Alertes suspendues pour ce périphérique",
       reactivated: "Alertes réactivées",
-      saveError: "Erreur lors de l'enregistrement",
-    },
+      saveError: "Erreur lors de l'enregistrement"
+    }
   },
   metrics: {
     unavailableTitle: "Métriques indisponibles",
-    unavailableHint: "L'agent RMM doit être enrôlé pour afficher l'historique.",
+    unavailableHint: "L'agent RMM doit être enrôlé pour afficher l'historique."
   },
   logs: {
     title: "Journal d'activité",
@@ -217,10 +215,10 @@ const FR = {
       user: "Actions utilisateur",
       modifications: "Modifications de champs",
       rmm: "Agent RMM",
-      remote: "Connexions distantes",
+      remote: "Connexions distantes"
     },
     purgeNone: "Aucun log à supprimer",
-    purgeSuccess: "{count} log(s) supprimé(s)",
+    purgeSuccess: "{count} log(s) supprimé(s)"
   },
   agent: {
     online: "En ligne",
@@ -233,7 +231,7 @@ const FR = {
     tooltipLastInventory: "Dernier inventaire : {when}",
     tooltipManualEntry: "Poste saisi manuellement (sans agent RMM)",
     chip: "Agent v{version}",
-    versionTitle: "Version de l'agent RMM installé sur ce poste",
+    versionTitle: "Version de l'agent RMM installé sur ce poste"
   },
   rmm: {
     title: "Surveillance RMM",
@@ -245,12 +243,9 @@ const FR = {
     heartbeatTooltip: "Heartbeat : {when}",
     fullSyncTooltip: "Sync complet : {when}",
     nextCollectionTooltip: "Prochaine récolte : {when}",
-    installAgentGeneral:
-      "Poste géré manuellement dans Veritas. Installez l'agent Veritas sur le PC pour remonter automatiquement l'inventaire (OS, réseau, matériel, correctifs…).",
-    installAgentPeripherals:
-      "Installez l'agent Veritas sur ce poste pour remonter imprimantes, écrans et logiciels.",
-    installAgentOperations:
-      "Installez l'agent Veritas sur ce poste pour suivre les mises à jour Windows, BitLocker et les services critiques.",
+    installAgentGeneral: "Poste géré manuellement dans Veritas. Installez l'agent Veritas sur le PC pour remonter automatiquement l'inventaire (OS, réseau, matériel, correctifs…).",
+    installAgentPeripherals: "Installez l'agent Veritas sur ce poste pour remonter imprimantes, écrans et logiciels.",
+    installAgentOperations: "Installez l'agent Veritas sur ce poste pour suivre les mises à jour Windows, BitLocker et les services critiques.",
     syncPending: {
       title: "Sync complet demandé",
       bannerTitle: "Sync complet en attente",
@@ -259,7 +254,7 @@ const FR = {
       cancel: "Annuler",
       nextAgentPass: "En attente du prochain passage de l'agent",
       wuaNote: "Sync complet demandé · analyse WUA {when}.",
-      nextAgentPassLabel: "au prochain passage agent",
+      nextAgentPassLabel: "au prochain passage agent"
     },
     instant: {
       aria: "Instantané agent",
@@ -280,7 +275,7 @@ const FR = {
       cpuMissing: "CPU non remonté par l'agent",
       ramMissing: "RAM non remontée par l'agent",
       diskMissing: "Aucun volume disque remonté par l'agent",
-      diskCapacityMissing: "{title} · capacité non remontée",
+      diskCapacityMissing: "{title} · capacité non remontée"
     },
     fields: {
       workstation: "Poste",
@@ -324,8 +319,8 @@ const FR = {
       disabled: "Désactivé",
       sensors: "Capteurs",
       maxTemperature: "Température max.",
-      battery: "Batterie",
-    },
+      battery: "Batterie"
+    }
   },
   fields: {
     clientName: "Entreprise",
@@ -397,20 +392,20 @@ const FR = {
     nbPrises: "Nombre de prises",
     dateBatterie: "Date batterie",
     commentaire: "Notes",
-    assignedSsids: "SSID",
+    assignedSsids: "SSID"
   },
   formatValues: {
     yes: "Oui",
     no: "Non",
     ipNonFixe: "IP non fixe",
     principale: "Principale",
-    assignedSsids: "{count} SSID assigné(s)",
+    assignedSsids: "{count} SSID assigné(s)"
   },
   relative: {
     justNow: "à l'instant",
     minutesAgo: "il y a {count} min",
     hoursAgo: "il y a {count} h",
-    daysAgo: "il y a {count} j",
+    daysAgo: "il y a {count} j"
   },
   toasts: {
     rmmAgentNotFound: "Agent RMM introuvable pour ce poste",
@@ -427,7 +422,7 @@ const FR = {
     tagAdded: "Étiquette ajoutée",
     tagAddError: "Erreur lors de l'ajout de l'étiquette",
     tagRemoved: "Étiquette retirée",
-    tagRemoveError: "Erreur lors de la suppression de l'étiquette",
+    tagRemoveError: "Erreur lors de la suppression de l'étiquette"
   },
   types: {
     serverVirtual: "Serveur virtuel",
@@ -435,17 +430,30 @@ const FR = {
     storageNas: "Stockage NAS",
     internetSeparator: " · ",
     internetConnectionTypes: {
-      Fibre: "Fibre", ADSL: "ADSL", SDSL: "SDSL", VDSL: "VDSL", "4G": "4G", "5G": "5G",
-      Satellite: "Satellite", Câble: "Câble", Radio: "Radio", "SD-WAN": "SD-WAN", Autre: "Autre",
+      Fibre: "Fibre",
+      ADSL: "ADSL",
+      SDSL: "SDSL",
+      VDSL: "VDSL",
+      "4G": "4G",
+      "5G": "5G",
+      Satellite: "Satellite",
+      Câble: "Câble",
+      Radio: "Radio",
+      "SD-WAN": "SD-WAN",
+      Autre: "Autre"
     },
     extraModuleLabels: {
-      NAS: "Stockage", Ordinateurs: "Ordinateur", Sauvegarde: "Sauvegarde",
-      "Caméra de sécurité": "Caméra de sécurité", "Robot de sauvegarde": "Robot de sauvegarde",
-      "Disque dur externe": "Disque dur externe", "Stockage virtuel": "Stockage virtuel", "Stockage cloud": "Stockage cloud",
-    },
-  },
+      NAS: "Stockage",
+      Ordinateurs: "Ordinateur",
+      Sauvegarde: "Sauvegarde",
+      "Caméra de sécurité": "Caméra de sécurité",
+      "Robot de sauvegarde": "Robot de sauvegarde",
+      "Disque dur externe": "Disque dur externe",
+      "Stockage virtuel": "Stockage virtuel",
+      "Stockage cloud": "Stockage cloud"
+    }
+  }
 };
-
 const EN = {
   loading: "Loading…",
   loadingTags: "Loading tags…",
@@ -459,7 +467,7 @@ const EN = {
     events: "Events",
     stats: "Statistics",
     documents: "Documents",
-    logs: "Logs",
+    logs: "Logs"
   },
   hero: {
     metaAria: "Hardware information",
@@ -480,7 +488,7 @@ const EN = {
     refreshCheckmk: "Refresh CheckMK",
     mappingCheckmk: "CheckMK mapping",
     mapCheckmk: "Map CheckMK",
-    openQuickConnect: "Open QuickConnect",
+    openQuickConnect: "Open QuickConnect"
   },
   specs: {
     title: "Hardware record",
@@ -491,7 +499,7 @@ const EN = {
     sourceManual: "Manual",
     sourceRmm: "RMM agent",
     sourceCheckmk: "CheckMK",
-    openHaPeer: "Open HA peer record",
+    openHaPeer: "Open HA peer record"
   },
   events: {
     title: "Related events",
@@ -500,14 +508,19 @@ const EN = {
     emptyHint: "Schedule maintenance or review tickets linked to this device for the selected period.",
     colTitle: "Title",
     colDate: "Date",
-    fallbackTitle: "Event",
+    fallbackTitle: "Event"
   },
   dateRange: {
     aria: "Filter by period",
     custom: "Custom",
     from: "From",
     to: "To",
-    presets: { "7d": "7 d", "30d": "30 d", "90d": "3 mo", "1y": "1 y" },
+    presets: {
+      "7d": "7 d",
+      "30d": "30 d",
+      "90d": "3 mo",
+      "1y": "1 y"
+    }
   },
   activity: {
     colKind: "Type",
@@ -520,14 +533,14 @@ const EN = {
       in_progress: "In progress",
       pending: "Pending",
       resolved: "Resolved",
-      closed: "Closed",
+      closed: "Closed"
     },
     priority: {
       urgent: "Urgent",
       high: "High",
       normal: "Normal",
-      low: "Low",
-    },
+      low: "Low"
+    }
   },
   stats: {
     title: "Statistics",
@@ -549,7 +562,7 @@ const EN = {
     rmmManaged: "RMM agent",
     rmmYes: "Agent managed",
     lastSync: "Last sync",
-    avgResolution: "Average resolution time: {hours} h",
+    avgResolution: "Average resolution time: {hours} h"
   },
   documents: {
     subtitle: "Invoices, diagrams, manuals and attachments linked to this device.",
@@ -574,15 +587,15 @@ const EN = {
       Configuration: "Configuration",
       Manuel: "Manual",
       Procédure: "Procedure",
-      Autre: "Other",
+      Autre: "Other"
     },
     toasts: {
       loadError: "Unable to load documents",
       added: "Document added",
       uploadError: "Upload failed",
       deleted: "Document deleted",
-      deleteError: "Unable to delete document",
-    },
+      deleteError: "Unable to delete document"
+    }
   },
   alertSettings: {
     statusSuspended: "Suspended",
@@ -593,12 +606,11 @@ const EN = {
       "240": "4 hours",
       "1440": "24 hours",
       "10080": "7 days",
-      "43200": "30 days",
+      "43200": "30 days"
     },
     modal: {
       title: "Monitoring alerts",
-      subtitle:
-        "By default, no automatic tickets. Enable or suspend alerts for this device (CheckMK or RMM agent).",
+      subtitle: "By default, no automatic tickets. Enable or suspend alerts for this device (CheckMK or RMM agent).",
       unavailable: "Device identifier unavailable · cannot manage alerts.",
       currentStatus: "Current status",
       mode: "Mode",
@@ -615,7 +627,7 @@ const EN = {
       close: "Close",
       cancel: "Cancel",
       save: "Save",
-      saving: "Saving…",
+      saving: "Saving…"
     },
     toasts: {
       loadError: "Unable to load alerts",
@@ -623,12 +635,12 @@ const EN = {
       disabled: "Monitoring alerts disabled",
       suspended: "Alerts suspended for this device",
       reactivated: "Alerts re-enabled",
-      saveError: "Unable to save settings",
-    },
+      saveError: "Unable to save settings"
+    }
   },
   metrics: {
     unavailableTitle: "Metrics unavailable",
-    unavailableHint: "The RMM agent must be enrolled to show history.",
+    unavailableHint: "The RMM agent must be enrolled to show history."
   },
   logs: {
     title: "Activity log",
@@ -654,10 +666,10 @@ const EN = {
       user: "User actions",
       modifications: "Field changes",
       rmm: "RMM agent",
-      remote: "Remote connections",
+      remote: "Remote connections"
     },
     purgeNone: "No logs to delete",
-    purgeSuccess: "{count} log(s) deleted",
+    purgeSuccess: "{count} log(s) deleted"
   },
   agent: {
     online: "Online",
@@ -670,7 +682,7 @@ const EN = {
     tooltipLastInventory: "Last inventory: {when}",
     tooltipManualEntry: "Manually entered workstation (no RMM agent)",
     chip: "Agent v{version}",
-    versionTitle: "RMM agent version installed on this workstation",
+    versionTitle: "RMM agent version installed on this workstation"
   },
   rmm: {
     title: "RMM monitoring",
@@ -682,12 +694,9 @@ const EN = {
     heartbeatTooltip: "Heartbeat: {when}",
     fullSyncTooltip: "Full sync: {when}",
     nextCollectionTooltip: "Next collection: {when}",
-    installAgentGeneral:
-      "Workstation managed manually in Veritas. Install the Veritas agent on the PC to automatically report inventory (OS, network, hardware, patches…).",
-    installAgentPeripherals:
-      "Install the Veritas agent on this workstation to report printers, displays and software.",
-    installAgentOperations:
-      "Install the Veritas agent on this workstation to track Windows updates, BitLocker and critical services.",
+    installAgentGeneral: "Workstation managed manually in Veritas. Install the Veritas agent on the PC to automatically report inventory (OS, network, hardware, patches…).",
+    installAgentPeripherals: "Install the Veritas agent on this workstation to report printers, displays and software.",
+    installAgentOperations: "Install the Veritas agent on this workstation to track Windows updates, BitLocker and critical services.",
     syncPending: {
       title: "Full sync requested",
       bannerTitle: "Full sync pending",
@@ -696,7 +705,7 @@ const EN = {
       cancel: "Cancel",
       nextAgentPass: "Waiting for next agent pass",
       wuaNote: "Full sync requested · WUA scan {when}.",
-      nextAgentPassLabel: "on next agent pass",
+      nextAgentPassLabel: "on next agent pass"
     },
     instant: {
       aria: "Agent snapshot",
@@ -717,7 +726,7 @@ const EN = {
       cpuMissing: "CPU not reported by agent",
       ramMissing: "RAM not reported by agent",
       diskMissing: "No disk volume reported by agent",
-      diskCapacityMissing: "{title} · capacity not reported",
+      diskCapacityMissing: "{title} · capacity not reported"
     },
     fields: {
       workstation: "Workstation",
@@ -761,8 +770,8 @@ const EN = {
       disabled: "Disabled",
       sensors: "Sensors",
       maxTemperature: "Max. temperature",
-      battery: "Battery",
-    },
+      battery: "Battery"
+    }
   },
   fields: {
     clientName: "Company",
@@ -834,10 +843,21 @@ const EN = {
     nbPrises: "Outlet count",
     dateBatterie: "Battery date",
     commentaire: "Notes",
-    assignedSsids: "SSID",
+    assignedSsids: "SSID"
   },
-  formatValues: { yes: "Yes", no: "No", ipNonFixe: "Non-fixed IP", principale: "Primary", assignedSsids: "{count} assigned SSID(s)" },
-  relative: { justNow: "just now", minutesAgo: "{count} min ago", hoursAgo: "{count} h ago", daysAgo: "{count} d ago" },
+  formatValues: {
+    yes: "Yes",
+    no: "No",
+    ipNonFixe: "Non-fixed IP",
+    principale: "Primary",
+    assignedSsids: "{count} assigned SSID(s)"
+  },
+  relative: {
+    justNow: "just now",
+    minutesAgo: "{count} min ago",
+    hoursAgo: "{count} h ago",
+    daysAgo: "{count} d ago"
+  },
   toasts: {
     rmmAgentNotFound: "RMM agent not found for this workstation",
     fullSyncRequested: "Full sync requested.",
@@ -853,7 +873,7 @@ const EN = {
     tagAdded: "Tag added",
     tagAddError: "Error adding tag",
     tagRemoved: "Tag removed",
-    tagRemoveError: "Error removing tag",
+    tagRemoveError: "Error removing tag"
   },
   types: {
     serverVirtual: "Virtual server",
@@ -861,17 +881,30 @@ const EN = {
     storageNas: "NAS storage",
     internetSeparator: " · ",
     internetConnectionTypes: {
-      Fibre: "Fiber", ADSL: "ADSL", SDSL: "SDSL", VDSL: "VDSL", "4G": "4G", "5G": "5G",
-      Satellite: "Satellite", Câble: "Cable", Radio: "Radio", "SD-WAN": "SD-WAN", Autre: "Other",
+      Fibre: "Fiber",
+      ADSL: "ADSL",
+      SDSL: "SDSL",
+      VDSL: "VDSL",
+      "4G": "4G",
+      "5G": "5G",
+      Satellite: "Satellite",
+      Câble: "Cable",
+      Radio: "Radio",
+      "SD-WAN": "SD-WAN",
+      Autre: "Other"
     },
     extraModuleLabels: {
-      NAS: "Storage", Ordinateurs: "Computer", Sauvegarde: "Backup",
-      "Caméra de sécurité": "Security camera", "Robot de sauvegarde": "Backup robot",
-      "Disque dur externe": "External hard drive", "Stockage virtuel": "Virtual storage", "Stockage cloud": "Cloud storage",
-    },
-  },
+      NAS: "Storage",
+      Ordinateurs: "Computer",
+      Sauvegarde: "Backup",
+      "Caméra de sécurité": "Security camera",
+      "Robot de sauvegarde": "Backup robot",
+      "Disque dur externe": "External hard drive",
+      "Stockage virtuel": "Virtual storage",
+      "Stockage cloud": "Cloud storage"
+    }
+  }
 };
-
 const DE = {
   ...EN,
   loading: "Laden…",
@@ -881,13 +914,59 @@ const DE = {
     ...EN.hero,
     alertsTooltip: "Alarme: {status}",
     alertsAria: "Überwachungsalarme verwalten",
-    alertsMenu: "Überwachungsalarme",
+    alertsMenu: "Überwachungsalarme"
   },
-  tabs: { ...EN.tabs, aria: "Datensatzabschnitte", general: "Allgemein", system: "System", peripherals: "Peripherie", metrics: "Metriken", events: "Ereignisse", stats: "Statistiken", documents: "Dokumente", logs: "Logs" },
-  specs: { ...EN.specs, title: "Gerätedatensatz", empty: "Keine Informationen für dieses Gerät.", rmmSubtitle: "Name, Standort, VLAN, Notizen.", manualFields: "Manuell erfasste Veritas-Felder.", manualOrIntegrations: "Manuelle Eingabe oder Integrationen.", sourceManual: "Eingabe", sourceRmm: "RMM-Agent", sourceCheckmk: "CheckMK" },
-  events: { ...EN.events, title: "Verknüpfte Ereignisse", create: "Ereignis erstellen", emptyTitle: "Keine Ereignisse", emptyHint: "Planen Sie eine Wartung oder Intervention für dieses Gerät.", colTitle: "Titel", colDate: "Datum", fallbackTitle: "Ereignis" },
-  metrics: { unavailableTitle: "Metriken nicht verfügbar", unavailableHint: "Der RMM-Agent muss registriert sein, um den Verlauf anzuzeigen." },
-  agent: { ...EN.agent, online: "Online", offline: "Offline", offlineAlert: "Offline (+48 h)", unknown: "Unbekannt", manual: "Manuell", tooltipManaged: "RMM-Agent · {status}", tooltipVersion: "Agent-Version: v{version}", tooltipLastInventory: "Letztes Inventar: {when}", tooltipManualEntry: "Manuell erfasster Computer (ohne RMM-Agent)", chip: "Agent v{version}", versionTitle: "Auf diesem Computer installierte RMM-Agent-Version" },
+  tabs: {
+    ...EN.tabs,
+    aria: "Datensatzabschnitte",
+    general: "Allgemein",
+    system: "System",
+    peripherals: "Peripherie",
+    metrics: "Metriken",
+    events: "Ereignisse",
+    stats: "Statistiken",
+    documents: "Dokumente",
+    logs: "Logs"
+  },
+  specs: {
+    ...EN.specs,
+    title: "Gerätedatensatz",
+    empty: "Keine Informationen für dieses Gerät.",
+    rmmSubtitle: "Name, Standort, VLAN, Notizen.",
+    manualFields: "Manuell erfasste Veritas-Felder.",
+    manualOrIntegrations: "Manuelle Eingabe oder Integrationen.",
+    sourceManual: "Eingabe",
+    sourceRmm: "RMM-Agent",
+    sourceCheckmk: "CheckMK"
+  },
+  events: {
+    ...EN.events,
+    title: "Verknüpfte Ereignisse",
+    create: "Ereignis erstellen",
+    emptyTitle: "Keine Ereignisse",
+    emptyHint: "Planen Sie eine Wartung oder Intervention für dieses Gerät.",
+    colTitle: "Titel",
+    colDate: "Datum",
+    fallbackTitle: "Ereignis"
+  },
+  metrics: {
+    unavailableTitle: "Metriken nicht verfügbar",
+    unavailableHint: "Der RMM-Agent muss registriert sein, um den Verlauf anzuzeigen."
+  },
+  agent: {
+    ...EN.agent,
+    online: "Online",
+    offline: "Offline",
+    offlineAlert: "Offline (+48 h)",
+    unknown: "Unbekannt",
+    manual: "Manuell",
+    tooltipManaged: "RMM-Agent · {status}",
+    tooltipVersion: "Agent-Version: v{version}",
+    tooltipLastInventory: "Letztes Inventar: {when}",
+    tooltipManualEntry: "Manuell erfasster Computer (ohne RMM-Agent)",
+    chip: "Agent v{version}",
+    versionTitle: "Auf diesem Computer installierte RMM-Agent-Version"
+  },
   rmm: {
     ...EN.rmm,
     title: "RMM-Überwachung",
@@ -899,14 +978,112 @@ const DE = {
     installAgentGeneral: "Computer manuell in Veritas verwaltet. Installieren Sie den Veritas-Agenten, um Inventar automatisch zu melden (OS, Netzwerk, Hardware, Patches…).",
     installAgentPeripherals: "Installieren Sie den Veritas-Agenten, um Drucker, Bildschirme und Software zu melden.",
     installAgentOperations: "Installieren Sie den Veritas-Agenten, um Windows-Updates, BitLocker und kritische Dienste zu verfolgen.",
-    syncPending: { ...EN.rmm.syncPending, title: "Vollständiger Sync angefordert", bannerTitle: "Vollständiger Sync ausstehend", bannerDetail: "Vollinventar beim nächsten Agentenlauf", requested: "angefordert {when}", cancel: "Abbrechen", nextAgentPass: "Warten auf nächsten Agentenlauf", wuaNote: "Vollständiger Sync angefordert · WUA-Scan {when}.", nextAgentPassLabel: "beim nächsten Agentenlauf" },
-    instant: { ...EN.rmm.instant, aria: "Agent-Snapshot", cpuCurrent: "Aktuelle CPU", ramCurrent: "Aktueller RAM", disk: "Festplatte {drive}", diskPrimary: "primär", temperature: "Temperatur", sectionTitle: "Sofortstatus", sectionDesc: "Kreisdiagramme der letzten Agentenmeldung · sofortige Anzeige.", cpuLoad: "CPU-Auslastung", ramMemory: "RAM-Speicher", used: "genutzt", usedF: "genutzt", occupied: "belegt", capacity: "Kapazität", noData: "Daten nicht verfügbar", cpuMissing: "CPU nicht vom Agenten gemeldet", ramMissing: "RAM nicht vom Agenten gemeldet", diskMissing: "Kein Festplattenvolume vom Agenten gemeldet", diskCapacityMissing: "{title} · Kapazität nicht gemeldet" },
-    fields: { ...EN.rmm.fields, workstation: "Computer", agentIdentity: "Agent-Identität", netbios: "NetBIOS-Name", session: "Sitzung", activeProcesses: "Aktive Prozesse", domain: "Domäne / Workgroup", windows: "Windows", edition: "Edition", version: "Version", build: "Build", system: "System", kernelVersion: "Kernel-Version", license: "Lizenz", lastBoot: "Letzter Start", osInstall: "OS-Installation", infrastructure: "Infrastruktur", network: "Netzwerk", mainIp: "Primäre IP", mainMac: "Primäre MAC", gateway: "Gateway", hardware: "Hardware", brand: "Marke", model: "Modell", serial: "Seriennummer", processor: "Prozessor", coresThreads: "Kerne / Threads", frequency: "Frequenz", gpu: "Grafikkarte", security: "Sicherheit", active: "Aktiv", inactive: "Inaktiv", realtimeProtection: "Echtzeitschutz", yes: "Ja", no: "Nein", signatureVersion: "Signaturversion", firewallProfile: "Firewall {profile}", enabled: "Aktiviert", disabled: "Deaktiviert", sensors: "Sensoren", maxTemperature: "Max. Temperatur", battery: "Batterie" },
+    syncPending: {
+      ...EN.rmm.syncPending,
+      title: "Vollständiger Sync angefordert",
+      bannerTitle: "Vollständiger Sync ausstehend",
+      bannerDetail: "Vollinventar beim nächsten Agentenlauf",
+      requested: "angefordert {when}",
+      cancel: "Abbrechen",
+      nextAgentPass: "Warten auf nächsten Agentenlauf",
+      wuaNote: "Vollständiger Sync angefordert · WUA-Scan {when}.",
+      nextAgentPassLabel: "beim nächsten Agentenlauf"
+    },
+    instant: {
+      ...EN.rmm.instant,
+      aria: "Agent-Snapshot",
+      cpuCurrent: "Aktuelle CPU",
+      ramCurrent: "Aktueller RAM",
+      disk: "Festplatte {drive}",
+      diskPrimary: "primär",
+      temperature: "Temperatur",
+      sectionTitle: "Sofortstatus",
+      sectionDesc: "Kreisdiagramme der letzten Agentenmeldung · sofortige Anzeige.",
+      cpuLoad: "CPU-Auslastung",
+      ramMemory: "RAM-Speicher",
+      used: "genutzt",
+      usedF: "genutzt",
+      occupied: "belegt",
+      capacity: "Kapazität",
+      noData: "Daten nicht verfügbar",
+      cpuMissing: "CPU nicht vom Agenten gemeldet",
+      ramMissing: "RAM nicht vom Agenten gemeldet",
+      diskMissing: "Kein Festplattenvolume vom Agenten gemeldet",
+      diskCapacityMissing: "{title} · Kapazität nicht gemeldet"
+    },
+    fields: {
+      ...EN.rmm.fields,
+      workstation: "Computer",
+      agentIdentity: "Agent-Identität",
+      netbios: "NetBIOS-Name",
+      session: "Sitzung",
+      activeProcesses: "Aktive Prozesse",
+      domain: "Domäne / Workgroup",
+      windows: "Windows",
+      edition: "Edition",
+      version: "Version",
+      build: "Build",
+      system: "System",
+      kernelVersion: "Kernel-Version",
+      license: "Lizenz",
+      lastBoot: "Letzter Start",
+      osInstall: "OS-Installation",
+      infrastructure: "Infrastruktur",
+      network: "Netzwerk",
+      mainIp: "Primäre IP",
+      mainMac: "Primäre MAC",
+      gateway: "Gateway",
+      hardware: "Hardware",
+      brand: "Marke",
+      model: "Modell",
+      serial: "Seriennummer",
+      processor: "Prozessor",
+      coresThreads: "Kerne / Threads",
+      frequency: "Frequenz",
+      gpu: "Grafikkarte",
+      security: "Sicherheit",
+      active: "Aktiv",
+      inactive: "Inaktiv",
+      realtimeProtection: "Echtzeitschutz",
+      yes: "Ja",
+      no: "Nein",
+      signatureVersion: "Signaturversion",
+      firewallProfile: "Firewall {profile}",
+      enabled: "Aktiviert",
+      disabled: "Deaktiviert",
+      sensors: "Sensoren",
+      maxTemperature: "Max. Temperatur",
+      battery: "Batterie"
+    }
   },
-  fields: { ...EN.fields, clientName: "Unternehmen", name: "Name", nameVeritas: "Veritas-Name", location: "Standort", manufacturer: "Marke", commentaire: "Notizen" },
-  formatValues: { yes: "Ja", no: "Nein", ipNonFixe: "Keine feste IP", principale: "Primär", assignedSsids: "{count} zugewiesene SSID(s)" },
-  relative: { justNow: "gerade eben", minutesAgo: "vor {count} Min.", hoursAgo: "vor {count} Std.", daysAgo: "vor {count} T." },
-  types: { ...EN.types, serverVirtual: "Virtueller Server", serverPhysical: "Physischer Server", storageNas: "NAS-Speicher" },
+  fields: {
+    ...EN.fields,
+    clientName: "Unternehmen",
+    name: "Name",
+    nameVeritas: "Veritas-Name",
+    location: "Standort",
+    manufacturer: "Marke",
+    commentaire: "Notizen"
+  },
+  formatValues: {
+    yes: "Ja",
+    no: "Nein",
+    ipNonFixe: "Keine feste IP",
+    principale: "Primär",
+    assignedSsids: "{count} zugewiesene SSID(s)"
+  },
+  relative: {
+    justNow: "gerade eben",
+    minutesAgo: "vor {count} Min.",
+    hoursAgo: "vor {count} Std.",
+    daysAgo: "vor {count} T."
+  },
+  types: {
+    ...EN.types,
+    serverVirtual: "Virtueller Server",
+    serverPhysical: "Physischer Server",
+    storageNas: "NAS-Speicher"
+  },
   stats: {
     ...EN.stats,
     title: "Statistiken",
@@ -927,7 +1104,7 @@ const DE = {
     rmmManaged: "RMM-Agent",
     rmmYes: "Durch Agent verwaltet",
     lastSync: "Letzte Meldung",
-    avgResolution: "Durchschnittliche Lösungszeit: {hours} h",
+    avgResolution: "Durchschnittliche Lösungszeit: {hours} h"
   },
   activity: {
     ...EN.activity,
@@ -935,10 +1112,33 @@ const DE = {
     colStatus: "Status / Typ",
     kindPlanning: "Planung",
     kindTicket: "Ticket",
-    status: { new: "Neu", in_progress: "In Bearbeitung", pending: "Ausstehend", resolved: "Gelöst", closed: "Geschlossen" },
-    priority: { urgent: "Dringend", high: "Hoch", normal: "Normal", low: "Niedrig" },
+    status: {
+      new: "Neu",
+      in_progress: "In Bearbeitung",
+      pending: "Ausstehend",
+      resolved: "Gelöst",
+      closed: "Geschlossen"
+    },
+    priority: {
+      urgent: "Dringend",
+      high: "Hoch",
+      normal: "Normal",
+      low: "Niedrig"
+    }
   },
-  dateRange: { ...EN.dateRange, aria: "Nach Zeitraum filtern", custom: "Benutzerdefiniert", from: "Von", to: "Bis", presets: { "7d": "7 T.", "30d": "30 T.", "90d": "3 Mon.", "1y": "1 J." } },
+  dateRange: {
+    ...EN.dateRange,
+    aria: "Nach Zeitraum filtern",
+    custom: "Benutzerdefiniert",
+    from: "Von",
+    to: "Bis",
+    presets: {
+      "7d": "7 T.",
+      "30d": "30 T.",
+      "90d": "3 Mon.",
+      "1y": "1 J."
+    }
+  },
   documents: {
     ...EN.documents,
     subtitle: "Rechnungen, Schemas, Handbücher und Anhänge zu diesem Gerät.",
@@ -963,15 +1163,15 @@ const DE = {
       Configuration: "Konfiguration",
       Manuel: "Handbuch",
       Procédure: "Prozedur",
-      Autre: "Sonstiges",
+      Autre: "Sonstiges"
     },
     toasts: {
       loadError: "Dokumente konnten nicht geladen werden",
       added: "Dokument hinzugefügt",
       uploadError: "Upload fehlgeschlagen",
       deleted: "Dokument gelöscht",
-      deleteError: "Dokument konnte nicht gelöscht werden",
-    },
+      deleteError: "Dokument konnte nicht gelöscht werden"
+    }
   },
   alertSettings: {
     ...EN.alertSettings,
@@ -983,13 +1183,12 @@ const DE = {
       "240": "4 Stunden",
       "1440": "24 Stunden",
       "10080": "7 Tage",
-      "43200": "30 Tage",
+      "43200": "30 Tage"
     },
     modal: {
       ...EN.alertSettings.modal,
       title: "Überwachungsalarme",
-      subtitle:
-        "Standardmäßig keine automatischen Tickets. Alarme für dieses Gerät aktivieren oder aussetzen (CheckMK oder RMM-Agent).",
+      subtitle: "Standardmäßig keine automatischen Tickets. Alarme für dieses Gerät aktivieren oder aussetzen (CheckMK oder RMM-Agent).",
       unavailable: "Gerätekennung nicht verfügbar · Alarmverwaltung nicht möglich.",
       currentStatus: "Aktueller Status",
       modeDisabled: "Deaktiviert (Standard)",
@@ -1005,7 +1204,7 @@ const DE = {
       close: "Schließen",
       cancel: "Abbrechen",
       save: "Speichern",
-      saving: "Speichern…",
+      saving: "Speichern…"
     },
     toasts: {
       loadError: "Alarme konnten nicht geladen werden",
@@ -1013,11 +1212,10 @@ const DE = {
       disabled: "Überwachungsalarme deaktiviert",
       suspended: "Alarme für dieses Gerät ausgesetzt",
       reactivated: "Alarme reaktiviert",
-      saveError: "Speichern fehlgeschlagen",
-    },
-  },
+      saveError: "Speichern fehlgeschlagen"
+    }
+  }
 };
-
 const IT = {
   ...EN,
   loading: "Caricamento…",
@@ -1027,13 +1225,59 @@ const IT = {
     ...EN.hero,
     alertsTooltip: "Avvisi: {status}",
     alertsAria: "Gestisci avvisi di supervisione",
-    alertsMenu: "Avvisi di supervisione",
+    alertsMenu: "Avvisi di supervisione"
   },
-  tabs: { ...EN.tabs, aria: "Sezioni scheda", general: "Generale", system: "Sistema", peripherals: "Periferiche", metrics: "Metriche", events: "Eventi", stats: "Statistiche", documents: "Documenti", logs: "Log" },
-  specs: { ...EN.specs, title: "Scheda dispositivo", empty: "Nessuna informazione per questo dispositivo.", rmmSubtitle: "Nome, sede, VLAN, note.", manualFields: "Campi Veritas inseriti manualmente.", manualOrIntegrations: "Inserimento manuale o integrazioni.", sourceManual: "Inserimento", sourceRmm: "Agente RMM", sourceCheckmk: "CheckMK" },
-  events: { ...EN.events, title: "Eventi collegati", create: "Crea evento", emptyTitle: "Nessun evento", emptyHint: "Pianifica un intervento o manutenzione per questo dispositivo.", colTitle: "Titolo", colDate: "Data", fallbackTitle: "Evento" },
-  metrics: { unavailableTitle: "Metriche non disponibili", unavailableHint: "L'agente RMM deve essere registrato per mostrare lo storico." },
-  agent: { ...EN.agent, online: "Online", offline: "Offline", offlineAlert: "Offline (+48 h)", unknown: "Sconosciuto", manual: "Manuale", tooltipManaged: "Agente RMM · {status}", tooltipVersion: "Versione agente: v{version}", tooltipLastInventory: "Ultimo inventario: {when}", tooltipManualEntry: "Computer inserito manualmente (senza agente RMM)", chip: "Agente v{version}", versionTitle: "Versione agente RMM installata su questo computer" },
+  tabs: {
+    ...EN.tabs,
+    aria: "Sezioni scheda",
+    general: "Generale",
+    system: "Sistema",
+    peripherals: "Periferiche",
+    metrics: "Metriche",
+    events: "Eventi",
+    stats: "Statistiche",
+    documents: "Documenti",
+    logs: "Log"
+  },
+  specs: {
+    ...EN.specs,
+    title: "Scheda dispositivo",
+    empty: "Nessuna informazione per questo dispositivo.",
+    rmmSubtitle: "Nome, sede, VLAN, note.",
+    manualFields: "Campi Veritas inseriti manualmente.",
+    manualOrIntegrations: "Inserimento manuale o integrazioni.",
+    sourceManual: "Inserimento",
+    sourceRmm: "Agente RMM",
+    sourceCheckmk: "CheckMK"
+  },
+  events: {
+    ...EN.events,
+    title: "Eventi collegati",
+    create: "Crea evento",
+    emptyTitle: "Nessun evento",
+    emptyHint: "Pianifica un intervento o manutenzione per questo dispositivo.",
+    colTitle: "Titolo",
+    colDate: "Data",
+    fallbackTitle: "Evento"
+  },
+  metrics: {
+    unavailableTitle: "Metriche non disponibili",
+    unavailableHint: "L'agente RMM deve essere registrato per mostrare lo storico."
+  },
+  agent: {
+    ...EN.agent,
+    online: "Online",
+    offline: "Offline",
+    offlineAlert: "Offline (+48 h)",
+    unknown: "Sconosciuto",
+    manual: "Manuale",
+    tooltipManaged: "Agente RMM · {status}",
+    tooltipVersion: "Versione agente: v{version}",
+    tooltipLastInventory: "Ultimo inventario: {when}",
+    tooltipManualEntry: "Computer inserito manualmente (senza agente RMM)",
+    chip: "Agente v{version}",
+    versionTitle: "Versione agente RMM installata su questo computer"
+  },
   rmm: {
     ...EN.rmm,
     title: "Monitoraggio RMM",
@@ -1045,14 +1289,112 @@ const IT = {
     installAgentGeneral: "Computer gestito manualmente in Veritas. Installa l'agente Veritas per rilevare automaticamente l'inventario (OS, rete, hardware, patch…).",
     installAgentPeripherals: "Installa l'agente Veritas per rilevare stampanti, schermi e software.",
     installAgentOperations: "Installa l'agente Veritas per monitorare aggiornamenti Windows, BitLocker e servizi critici.",
-    syncPending: { ...EN.rmm.syncPending, title: "Sync completo richiesto", bannerTitle: "Sync completo in attesa", bannerDetail: "Inventario completo al prossimo passaggio agente", requested: "richiesto {when}", cancel: "Annulla", nextAgentPass: "In attesa del prossimo passaggio agente", wuaNote: "Sync completo richiesto · scansione WUA {when}.", nextAgentPassLabel: "al prossimo passaggio agente" },
-    instant: { ...EN.rmm.instant, aria: "Istantanea agente", cpuCurrent: "CPU attuale", ramCurrent: "RAM attuale", disk: "Disco {drive}", diskPrimary: "principale", temperature: "Temperatura", sectionTitle: "Stato istantaneo", sectionDesc: "Grafici a torta dell'ultimo report agente · lettura immediata.", cpuLoad: "Carico CPU", ramMemory: "Memoria RAM", used: "usato", usedF: "usata", occupied: "occupato", capacity: "capacità", noData: "Dati non disponibili", cpuMissing: "CPU non rilevata dall'agente", ramMissing: "RAM non rilevata dall'agente", diskMissing: "Nessun volume disco rilevato dall'agente", diskCapacityMissing: "{title} · capacità non rilevata" },
-    fields: { ...EN.rmm.fields, workstation: "Computer", agentIdentity: "Identità agente", netbios: "Nome NetBIOS", session: "Sessione", activeProcesses: "Processi attivi", domain: "Dominio / workgroup", windows: "Windows", edition: "Edizione", version: "Versione", build: "Build", system: "Sistema", kernelVersion: "Versione kernel", license: "Licenza", lastBoot: "Ultimo avvio", osInstall: "Installazione OS", infrastructure: "Infrastruttura", network: "Rete", mainIp: "IP principale", mainMac: "MAC principale", gateway: "Gateway", hardware: "Hardware", brand: "Marca", model: "Modello", serial: "N. serie", processor: "Processore", coresThreads: "Core / thread", frequency: "Frequenza", gpu: "Scheda grafica", security: "Sicurezza", active: "Attivo", inactive: "Inattivo", realtimeProtection: "Protezione in tempo reale", yes: "Sì", no: "No", signatureVersion: "Versione firme", firewallProfile: "Firewall {profile}", enabled: "Attivato", disabled: "Disattivato", sensors: "Sensori", maxTemperature: "Temp. max.", battery: "Batteria" },
+    syncPending: {
+      ...EN.rmm.syncPending,
+      title: "Sync completo richiesto",
+      bannerTitle: "Sync completo in attesa",
+      bannerDetail: "Inventario completo al prossimo passaggio agente",
+      requested: "richiesto {when}",
+      cancel: "Annulla",
+      nextAgentPass: "In attesa del prossimo passaggio agente",
+      wuaNote: "Sync completo richiesto · scansione WUA {when}.",
+      nextAgentPassLabel: "al prossimo passaggio agente"
+    },
+    instant: {
+      ...EN.rmm.instant,
+      aria: "Istantanea agente",
+      cpuCurrent: "CPU attuale",
+      ramCurrent: "RAM attuale",
+      disk: "Disco {drive}",
+      diskPrimary: "principale",
+      temperature: "Temperatura",
+      sectionTitle: "Stato istantaneo",
+      sectionDesc: "Grafici a torta dell'ultimo report agente · lettura immediata.",
+      cpuLoad: "Carico CPU",
+      ramMemory: "Memoria RAM",
+      used: "usato",
+      usedF: "usata",
+      occupied: "occupato",
+      capacity: "capacità",
+      noData: "Dati non disponibili",
+      cpuMissing: "CPU non rilevata dall'agente",
+      ramMissing: "RAM non rilevata dall'agente",
+      diskMissing: "Nessun volume disco rilevato dall'agente",
+      diskCapacityMissing: "{title} · capacità non rilevata"
+    },
+    fields: {
+      ...EN.rmm.fields,
+      workstation: "Computer",
+      agentIdentity: "Identità agente",
+      netbios: "Nome NetBIOS",
+      session: "Sessione",
+      activeProcesses: "Processi attivi",
+      domain: "Dominio / workgroup",
+      windows: "Windows",
+      edition: "Edizione",
+      version: "Versione",
+      build: "Build",
+      system: "Sistema",
+      kernelVersion: "Versione kernel",
+      license: "Licenza",
+      lastBoot: "Ultimo avvio",
+      osInstall: "Installazione OS",
+      infrastructure: "Infrastruttura",
+      network: "Rete",
+      mainIp: "IP principale",
+      mainMac: "MAC principale",
+      gateway: "Gateway",
+      hardware: "Hardware",
+      brand: "Marca",
+      model: "Modello",
+      serial: "N. serie",
+      processor: "Processore",
+      coresThreads: "Core / thread",
+      frequency: "Frequenza",
+      gpu: "Scheda grafica",
+      security: "Sicurezza",
+      active: "Attivo",
+      inactive: "Inattivo",
+      realtimeProtection: "Protezione in tempo reale",
+      yes: "Sì",
+      no: "No",
+      signatureVersion: "Versione firme",
+      firewallProfile: "Firewall {profile}",
+      enabled: "Attivato",
+      disabled: "Disattivato",
+      sensors: "Sensori",
+      maxTemperature: "Temp. max.",
+      battery: "Batteria"
+    }
   },
-  fields: { ...EN.fields, clientName: "Azienda", name: "Nome", nameVeritas: "Nome Veritas", location: "Sede", manufacturer: "Marca", commentaire: "Note" },
-  formatValues: { yes: "Sì", no: "No", ipNonFixe: "IP non fissa", principale: "Principale", assignedSsids: "{count} SSID assegnati" },
-  relative: { justNow: "proprio ora", minutesAgo: "{count} min fa", hoursAgo: "{count} h fa", daysAgo: "{count} g fa" },
-  types: { ...EN.types, serverVirtual: "Server virtuale", serverPhysical: "Server fisico", storageNas: "Storage NAS" },
+  fields: {
+    ...EN.fields,
+    clientName: "Azienda",
+    name: "Nome",
+    nameVeritas: "Nome Veritas",
+    location: "Sede",
+    manufacturer: "Marca",
+    commentaire: "Note"
+  },
+  formatValues: {
+    yes: "Sì",
+    no: "No",
+    ipNonFixe: "IP non fissa",
+    principale: "Principale",
+    assignedSsids: "{count} SSID assegnati"
+  },
+  relative: {
+    justNow: "proprio ora",
+    minutesAgo: "{count} min fa",
+    hoursAgo: "{count} h fa",
+    daysAgo: "{count} g fa"
+  },
+  types: {
+    ...EN.types,
+    serverVirtual: "Server virtuale",
+    serverPhysical: "Server fisico",
+    storageNas: "Storage NAS"
+  },
   stats: {
     ...EN.stats,
     title: "Statistiche",
@@ -1073,17 +1415,40 @@ const IT = {
     rmmManaged: "Agente RMM",
     rmmYes: "Gestito da agente",
     lastSync: "Ultima sincronizzazione",
-    avgResolution: "Tempo medio di risoluzione: {hours} h",
+    avgResolution: "Tempo medio di risoluzione: {hours} h"
   },
   activity: {
     ...EN.activity,
     colKind: "Tipo",
     colStatus: "Stato / tipo",
     kindPlanning: "Pianificazione",
-    status: { new: "Nuovo", in_progress: "In corso", pending: "In attesa", resolved: "Risolto", closed: "Chiuso" },
-    priority: { urgent: "Urgente", high: "Alta", normal: "Normale", low: "Bassa" },
+    status: {
+      new: "Nuovo",
+      in_progress: "In corso",
+      pending: "In attesa",
+      resolved: "Risolto",
+      closed: "Chiuso"
+    },
+    priority: {
+      urgent: "Urgente",
+      high: "Alta",
+      normal: "Normale",
+      low: "Bassa"
+    }
   },
-  dateRange: { ...EN.dateRange, aria: "Filtra per periodo", custom: "Personalizzato", from: "Da", to: "A", presets: { "7d": "7 g", "30d": "30 g", "90d": "3 mesi", "1y": "1 anno" } },
+  dateRange: {
+    ...EN.dateRange,
+    aria: "Filtra per periodo",
+    custom: "Personalizzato",
+    from: "Da",
+    to: "A",
+    presets: {
+      "7d": "7 g",
+      "30d": "30 g",
+      "90d": "3 mesi",
+      "1y": "1 anno"
+    }
+  },
   documents: {
     ...EN.documents,
     subtitle: "Fatture, schemi, manuali e allegati collegati a questo dispositivo.",
@@ -1108,15 +1473,15 @@ const IT = {
       Configuration: "Configurazione",
       Manuel: "Manuale",
       Procédure: "Procedura",
-      Autre: "Altro",
+      Autre: "Altro"
     },
     toasts: {
       loadError: "Impossibile caricare i documenti",
       added: "Documento aggiunto",
       uploadError: "Caricamento non riuscito",
       deleted: "Documento eliminato",
-      deleteError: "Impossibile eliminare il documento",
-    },
+      deleteError: "Impossibile eliminare il documento"
+    }
   },
   alertSettings: {
     ...EN.alertSettings,
@@ -1128,13 +1493,12 @@ const IT = {
       "240": "4 ore",
       "1440": "24 ore",
       "10080": "7 giorni",
-      "43200": "30 giorni",
+      "43200": "30 giorni"
     },
     modal: {
       ...EN.alertSettings.modal,
       title: "Avvisi di supervisione",
-      subtitle:
-        "Per impostazione predefinita, nessun ticket automatico. Attiva o sospendi gli avvisi per questo dispositivo (CheckMK o agente RMM).",
+      subtitle: "Per impostazione predefinita, nessun ticket automatico. Attiva o sospendi gli avvisi per questo dispositivo (CheckMK o agente RMM).",
       unavailable: "Identificativo dispositivo non disponibile · impossibile gestire gli avvisi.",
       currentStatus: "Stato attuale",
       modeDisabled: "Disattivate (predefinito)",
@@ -1150,7 +1514,7 @@ const IT = {
       close: "Chiudi",
       cancel: "Annulla",
       save: "Salva",
-      saving: "Salvataggio…",
+      saving: "Salvataggio…"
     },
     toasts: {
       loadError: "Impossibile caricare gli avvisi",
@@ -1158,11 +1522,10 @@ const IT = {
       disabled: "Avvisi di supervisione disattivati",
       suspended: "Avvisi sospesi per questo dispositivo",
       reactivated: "Avvisi riattivati",
-      saveError: "Salvataggio non riuscito",
-    },
-  },
+      saveError: "Salvataggio non riuscito"
+    }
+  }
 };
-
 const ES = {
   ...EN,
   loading: "Cargando…",
@@ -1172,13 +1535,59 @@ const ES = {
     ...EN.hero,
     alertsTooltip: "Alertas: {status}",
     alertsAria: "Gestionar alertas de supervisión",
-    alertsMenu: "Alertas de supervisión",
+    alertsMenu: "Alertas de supervisión"
   },
-  tabs: { ...EN.tabs, aria: "Secciones de la ficha", general: "General", system: "Sistema", peripherals: "Periféricos", metrics: "Métricas", events: "Eventos", stats: "Estadísticas", documents: "Documentos", logs: "Logs" },
-  specs: { ...EN.specs, title: "Ficha de equipo", empty: "No hay información para este equipo.", rmmSubtitle: "Nombre, sitio, VLAN, notas.", manualFields: "Campos Veritas introducidos manualmente.", manualOrIntegrations: "Entrada manual o integraciones.", sourceManual: "Entrada", sourceRmm: "Agente RMM", sourceCheckmk: "CheckMK" },
-  events: { ...EN.events, title: "Eventos relacionados", create: "Crear evento", emptyTitle: "Ningún evento", emptyHint: "Planifique una intervención o mantenimiento para este equipo.", colTitle: "Título", colDate: "Fecha", fallbackTitle: "Evento" },
-  metrics: { unavailableTitle: "Métricas no disponibles", unavailableHint: "El agente RMM debe estar registrado para mostrar el historial." },
-  agent: { ...EN.agent, online: "En línea", offline: "Desconectado", offlineAlert: "Desconectado (+48 h)", unknown: "Desconocido", manual: "Manual", tooltipManaged: "Agente RMM · {status}", tooltipVersion: "Versión agente: v{version}", tooltipLastInventory: "Último inventario: {when}", tooltipManualEntry: "Equipo introducido manualmente (sin agente RMM)", chip: "Agente v{version}", versionTitle: "Versión del agente RMM instalada en este equipo" },
+  tabs: {
+    ...EN.tabs,
+    aria: "Secciones de la ficha",
+    general: "General",
+    system: "Sistema",
+    peripherals: "Periféricos",
+    metrics: "Métricas",
+    events: "Eventos",
+    stats: "Estadísticas",
+    documents: "Documentos",
+    logs: "Logs"
+  },
+  specs: {
+    ...EN.specs,
+    title: "Ficha de equipo",
+    empty: "No hay información para este equipo.",
+    rmmSubtitle: "Nombre, sitio, VLAN, notas.",
+    manualFields: "Campos Veritas introducidos manualmente.",
+    manualOrIntegrations: "Entrada manual o integraciones.",
+    sourceManual: "Entrada",
+    sourceRmm: "Agente RMM",
+    sourceCheckmk: "CheckMK"
+  },
+  events: {
+    ...EN.events,
+    title: "Eventos relacionados",
+    create: "Crear evento",
+    emptyTitle: "Ningún evento",
+    emptyHint: "Planifique una intervención o mantenimiento para este equipo.",
+    colTitle: "Título",
+    colDate: "Fecha",
+    fallbackTitle: "Evento"
+  },
+  metrics: {
+    unavailableTitle: "Métricas no disponibles",
+    unavailableHint: "El agente RMM debe estar registrado para mostrar el historial."
+  },
+  agent: {
+    ...EN.agent,
+    online: "En línea",
+    offline: "Desconectado",
+    offlineAlert: "Desconectado (+48 h)",
+    unknown: "Desconocido",
+    manual: "Manual",
+    tooltipManaged: "Agente RMM · {status}",
+    tooltipVersion: "Versión agente: v{version}",
+    tooltipLastInventory: "Último inventario: {when}",
+    tooltipManualEntry: "Equipo introducido manualmente (sin agente RMM)",
+    chip: "Agente v{version}",
+    versionTitle: "Versión del agente RMM instalada en este equipo"
+  },
   rmm: {
     ...EN.rmm,
     title: "Supervisión RMM",
@@ -1190,14 +1599,112 @@ const ES = {
     installAgentGeneral: "Equipo gestionado manualmente en Veritas. Instale el agente Veritas para reportar automáticamente el inventario (SO, red, hardware, parches…).",
     installAgentPeripherals: "Instale el agente Veritas para reportar impresoras, pantallas y software.",
     installAgentOperations: "Instale el agente Veritas para seguir actualizaciones Windows, BitLocker y servicios críticos.",
-    syncPending: { ...EN.rmm.syncPending, title: "Sync completo solicitado", bannerTitle: "Sync completo pendiente", bannerDetail: "Inventario completo en el próximo paso del agente", requested: "solicitado {when}", cancel: "Cancelar", nextAgentPass: "Esperando el próximo paso del agente", wuaNote: "Sync completo solicitado · análisis WUA {when}.", nextAgentPassLabel: "en el próximo paso del agente" },
-    instant: { ...EN.rmm.instant, aria: "Instantánea agente", cpuCurrent: "CPU actual", ramCurrent: "RAM actual", disk: "Disco {drive}", diskPrimary: "principal", temperature: "Temperatura", sectionTitle: "Estado instantáneo", sectionDesc: "Gráficos circulares del último reporte del agente · lectura inmediata.", cpuLoad: "Carga CPU", ramMemory: "Memoria RAM", used: "usado", usedF: "usada", occupied: "ocupado", capacity: "capacidad", noData: "Datos no disponibles", cpuMissing: "CPU no reportada por el agente", ramMissing: "RAM no reportada por el agente", diskMissing: "Ningún volumen de disco reportado por el agente", diskCapacityMissing: "{title} · capacidad no reportada" },
-    fields: { ...EN.rmm.fields, workstation: "Equipo", agentIdentity: "Identidad agente", netbios: "Nombre NetBIOS", session: "Sesión", activeProcesses: "Procesos activos", domain: "Dominio / workgroup", windows: "Windows", edition: "Edición", version: "Versión", build: "Build", system: "Sistema", kernelVersion: "Versión kernel", license: "Licencia", lastBoot: "Último arranque", osInstall: "Instalación SO", infrastructure: "Infraestructura", network: "Red", mainIp: "IP principal", mainMac: "MAC principal", gateway: "Pasarela", hardware: "Hardware", brand: "Marca", model: "Modelo", serial: "N.º serie", processor: "Procesador", coresThreads: "Núcleos / hilos", frequency: "Frecuencia", gpu: "Tarjeta gráfica", security: "Seguridad", active: "Activo", inactive: "Inactivo", realtimeProtection: "Protección en tiempo real", yes: "Sí", no: "No", signatureVersion: "Versión firmas", firewallProfile: "Firewall {profile}", enabled: "Activado", disabled: "Desactivado", sensors: "Sensores", maxTemperature: "Temp. máx.", battery: "Batería" },
+    syncPending: {
+      ...EN.rmm.syncPending,
+      title: "Sync completo solicitado",
+      bannerTitle: "Sync completo pendiente",
+      bannerDetail: "Inventario completo en el próximo paso del agente",
+      requested: "solicitado {when}",
+      cancel: "Cancelar",
+      nextAgentPass: "Esperando el próximo paso del agente",
+      wuaNote: "Sync completo solicitado · análisis WUA {when}.",
+      nextAgentPassLabel: "en el próximo paso del agente"
+    },
+    instant: {
+      ...EN.rmm.instant,
+      aria: "Instantánea agente",
+      cpuCurrent: "CPU actual",
+      ramCurrent: "RAM actual",
+      disk: "Disco {drive}",
+      diskPrimary: "principal",
+      temperature: "Temperatura",
+      sectionTitle: "Estado instantáneo",
+      sectionDesc: "Gráficos circulares del último reporte del agente · lectura inmediata.",
+      cpuLoad: "Carga CPU",
+      ramMemory: "Memoria RAM",
+      used: "usado",
+      usedF: "usada",
+      occupied: "ocupado",
+      capacity: "capacidad",
+      noData: "Datos no disponibles",
+      cpuMissing: "CPU no reportada por el agente",
+      ramMissing: "RAM no reportada por el agente",
+      diskMissing: "Ningún volumen de disco reportado por el agente",
+      diskCapacityMissing: "{title} · capacidad no reportada"
+    },
+    fields: {
+      ...EN.rmm.fields,
+      workstation: "Equipo",
+      agentIdentity: "Identidad agente",
+      netbios: "Nombre NetBIOS",
+      session: "Sesión",
+      activeProcesses: "Procesos activos",
+      domain: "Dominio / workgroup",
+      windows: "Windows",
+      edition: "Edición",
+      version: "Versión",
+      build: "Build",
+      system: "Sistema",
+      kernelVersion: "Versión kernel",
+      license: "Licencia",
+      lastBoot: "Último arranque",
+      osInstall: "Instalación SO",
+      infrastructure: "Infraestructura",
+      network: "Red",
+      mainIp: "IP principal",
+      mainMac: "MAC principal",
+      gateway: "Pasarela",
+      hardware: "Hardware",
+      brand: "Marca",
+      model: "Modelo",
+      serial: "N.º serie",
+      processor: "Procesador",
+      coresThreads: "Núcleos / hilos",
+      frequency: "Frecuencia",
+      gpu: "Tarjeta gráfica",
+      security: "Seguridad",
+      active: "Activo",
+      inactive: "Inactivo",
+      realtimeProtection: "Protección en tiempo real",
+      yes: "Sí",
+      no: "No",
+      signatureVersion: "Versión firmas",
+      firewallProfile: "Firewall {profile}",
+      enabled: "Activado",
+      disabled: "Desactivado",
+      sensors: "Sensores",
+      maxTemperature: "Temp. máx.",
+      battery: "Batería"
+    }
   },
-  fields: { ...EN.fields, clientName: "Empresa", name: "Nombre", nameVeritas: "Nombre Veritas", location: "Sitio", manufacturer: "Marca", commentaire: "Notas" },
-  formatValues: { yes: "Sí", no: "No", ipNonFixe: "IP no fija", principale: "Principal", assignedSsids: "{count} SSID asignados" },
-  relative: { justNow: "ahora mismo", minutesAgo: "hace {count} min", hoursAgo: "hace {count} h", daysAgo: "hace {count} d" },
-  types: { ...EN.types, serverVirtual: "Servidor virtual", serverPhysical: "Servidor físico", storageNas: "Almacenamiento NAS" },
+  fields: {
+    ...EN.fields,
+    clientName: "Empresa",
+    name: "Nombre",
+    nameVeritas: "Nombre Veritas",
+    location: "Sitio",
+    manufacturer: "Marca",
+    commentaire: "Notas"
+  },
+  formatValues: {
+    yes: "Sí",
+    no: "No",
+    ipNonFixe: "IP no fija",
+    principale: "Principal",
+    assignedSsids: "{count} SSID asignados"
+  },
+  relative: {
+    justNow: "ahora mismo",
+    minutesAgo: "hace {count} min",
+    hoursAgo: "hace {count} h",
+    daysAgo: "hace {count} d"
+  },
+  types: {
+    ...EN.types,
+    serverVirtual: "Servidor virtual",
+    serverPhysical: "Servidor físico",
+    storageNas: "Almacenamiento NAS"
+  },
   stats: {
     ...EN.stats,
     title: "Estadísticas",
@@ -1218,17 +1725,40 @@ const ES = {
     rmmManaged: "Agente RMM",
     rmmYes: "Gestionado por agente",
     lastSync: "Última sincronización",
-    avgResolution: "Tiempo medio de resolución: {hours} h",
+    avgResolution: "Tiempo medio de resolución: {hours} h"
   },
   activity: {
     ...EN.activity,
     colKind: "Tipo",
     colStatus: "Estado / tipo",
     kindPlanning: "Planificación",
-    status: { new: "Nuevo", in_progress: "En curso", pending: "Pendiente", resolved: "Resuelto", closed: "Cerrado" },
-    priority: { urgent: "Urgente", high: "Alta", normal: "Normal", low: "Baja" },
+    status: {
+      new: "Nuevo",
+      in_progress: "En curso",
+      pending: "Pendiente",
+      resolved: "Resuelto",
+      closed: "Cerrado"
+    },
+    priority: {
+      urgent: "Urgente",
+      high: "Alta",
+      normal: "Normal",
+      low: "Baja"
+    }
   },
-  dateRange: { ...EN.dateRange, aria: "Filtrar por periodo", custom: "Personalizado", from: "Desde", to: "Hasta", presets: { "7d": "7 d", "30d": "30 d", "90d": "3 meses", "1y": "1 año" } },
+  dateRange: {
+    ...EN.dateRange,
+    aria: "Filtrar por periodo",
+    custom: "Personalizado",
+    from: "Desde",
+    to: "Hasta",
+    presets: {
+      "7d": "7 d",
+      "30d": "30 d",
+      "90d": "3 meses",
+      "1y": "1 año"
+    }
+  },
   documents: {
     ...EN.documents,
     subtitle: "Facturas, esquemas, manuales y adjuntos vinculados a este dispositivo.",
@@ -1253,15 +1783,15 @@ const ES = {
       Configuration: "Configuración",
       Manuel: "Manual",
       Procédure: "Procedimiento",
-      Autre: "Otro",
+      Autre: "Otro"
     },
     toasts: {
       loadError: "No se pudieron cargar los documentos",
       added: "Documento añadido",
       uploadError: "Error al subir el archivo",
       deleted: "Documento eliminado",
-      deleteError: "No se pudo eliminar el documento",
-    },
+      deleteError: "No se pudo eliminar el documento"
+    }
   },
   alertSettings: {
     ...EN.alertSettings,
@@ -1273,13 +1803,12 @@ const ES = {
       "240": "4 horas",
       "1440": "24 horas",
       "10080": "7 días",
-      "43200": "30 días",
+      "43200": "30 días"
     },
     modal: {
       ...EN.alertSettings.modal,
       title: "Alertas de supervisión",
-      subtitle:
-        "Por defecto, sin tickets automáticos. Active o suspenda las alertas de este dispositivo (CheckMK o agente RMM).",
+      subtitle: "Por defecto, sin tickets automáticos. Active o suspenda las alertas de este dispositivo (CheckMK o agente RMM).",
       unavailable: "Identificador de dispositivo no disponible · no se pueden gestionar las alertas.",
       currentStatus: "Estado actual",
       modeDisabled: "Desactivadas (predeterminado)",
@@ -1295,7 +1824,7 @@ const ES = {
       close: "Cerrar",
       cancel: "Cancelar",
       save: "Guardar",
-      saving: "Guardando…",
+      saving: "Guardando…"
     },
     toasts: {
       loadError: "No se pudieron cargar las alertas",
@@ -1303,46 +1832,44 @@ const ES = {
       disabled: "Alertas de supervisión desactivadas",
       suspended: "Alertas suspendidas para este dispositivo",
       reactivated: "Alertas reactivadas",
-      saveError: "No se pudo guardar la configuración",
-    },
-  },
+      saveError: "No se pudo guardar la configuración"
+    }
+  }
 };
-
-const PAGE_COPY = { fr: FR, en: EN, de: DE, it: IT, es: ES };
-
+const PAGE_COPY = {
+  fr: FR,
+  en: EN,
+  de: DE,
+  it: IT,
+  es: ES
+};
 const ALERT_DURATION_VALUES = [60, 240, 1440, 10080, 43200];
-
 export const getEquipmentDetailCopy = createLocaleGetter(PAGE_COPY);
-
 export function getAlertStatusLabel(locale, suspended, alertsEnabled) {
   const labels = getEquipmentDetailCopy(locale).alertSettings;
   if (suspended) return labels.statusSuspended;
   return alertsEnabled ? labels.statusActive : labels.statusDisabled;
 }
-
 export function getAlertDurationOptions(locale) {
   const durations = getEquipmentDetailCopy(locale).alertSettings.durations;
-  return ALERT_DURATION_VALUES.map((value) => ({
+  return ALERT_DURATION_VALUES.map(value => ({
     value,
-    label: durations[String(value)] || String(value),
+    label: durations[String(value)] || String(value)
   }));
 }
-
 export function formatAlertSettingsDateTime(iso, locale) {
   if (!iso) return "-";
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return "-";
-  const localeCode =
-    locale === "en" ? "en-GB" : locale === "de" ? "de-DE" : locale === "it" ? "it-IT" : locale === "es" ? "es-ES" : "fr-FR";
+  const localeCode = locale === "en" ? "en-GB" : locale === "de" ? "de-DE" : locale === "it" ? "it-IT" : locale === "es" ? "es-ES" : "fr-FR";
   return date.toLocaleString(localeCode, {
     day: "2-digit",
     month: "short",
     year: "numeric",
     hour: "2-digit",
-    minute: "2-digit",
+    minute: "2-digit"
   });
 }
-
 export function formatEquipmentDetailRelative(isoOrDate, locale) {
   if (!isoOrDate) return "-";
   const d = new Date(isoOrDate);
@@ -1351,15 +1878,24 @@ export function formatEquipmentDetailRelative(isoOrDate, locale) {
   const diffMs = Date.now() - d.getTime();
   const diffMin = Math.floor(diffMs / 60000);
   if (diffMin < 1) return copy.justNow;
-  if (diffMin < 60) return interpolate(copy.minutesAgo, { count: diffMin });
+  if (diffMin < 60) return interpolate(copy.minutesAgo, {
+    count: diffMin
+  });
   const diffH = Math.floor(diffMin / 60);
-  if (diffH < 24) return interpolate(copy.hoursAgo, { count: diffH });
+  if (diffH < 24) return interpolate(copy.hoursAgo, {
+    count: diffH
+  });
   const diffD = Math.floor(diffH / 24);
-  if (diffD < 7) return interpolate(copy.daysAgo, { count: diffD });
+  if (diffD < 7) return interpolate(copy.daysAgo, {
+    count: diffD
+  });
   const localeCode = locale === "en" ? "en-GB" : locale === "de" ? "de-DE" : locale === "it" ? "it-IT" : locale === "es" ? "es-ES" : "fr-FR";
-  return d.toLocaleString(localeCode, { dateStyle: "short", timeStyle: "short", hour12: false });
+  return d.toLocaleString(localeCode, {
+    dateStyle: "short",
+    timeStyle: "short",
+    hour12: false
+  });
 }
-
 export function getEquipmentDetailFieldLabel(fieldKey, locale, equipment) {
   const copy = getEquipmentDetailCopy(locale);
   if (equipment?.type === "Ordinateurs" && fieldKey === "name") {
@@ -1367,18 +1903,15 @@ export function getEquipmentDetailFieldLabel(fieldKey, locale, equipment) {
   }
   return copy.fields[fieldKey] || fieldKey;
 }
-
 function resolveDetailModuleKey(equipment) {
   if (!equipment) return "Serveurs";
   if (equipment.type === "NAS" || equipment.type === "SAN") return "Stockage";
   return equipment.type || "Serveurs";
 }
-
 function localizeInternetConnectionType(type, locale) {
   const types = getEquipmentDetailCopy(locale).types.internetConnectionTypes;
   return types?.[type] || type;
 }
-
 function localizeStorageTypeLabel(storageTypeRaw, locale) {
   const copy = getEquipmentDetailCopy(locale);
   const key = normalizeStorageType(storageTypeRaw);
@@ -1387,7 +1920,6 @@ function localizeStorageTypeLabel(storageTypeRaw, locale) {
   if (key && typeOptions[key]?.label) return typeOptions[key].label;
   return copy.types.extraModuleLabels?.[storageTypeRaw] || storageTypeRaw;
 }
-
 function localizeModuleTypeLabel(apiType, locale) {
   const extra = getEquipmentDetailCopy(locale).types.extraModuleLabels;
   if (extra?.[apiType]) return extra[apiType];
@@ -1396,7 +1928,6 @@ function localizeModuleTypeLabel(apiType, locale) {
   if (fromModals && fromModals !== moduleKey) return fromModals;
   return extra?.[moduleKey] || apiType;
 }
-
 export function getEquipmentDetailTypeLabel(equipment, locale) {
   if (!equipment) return "";
   const types = getEquipmentDetailCopy(locale).types;
@@ -1418,9 +1949,7 @@ export function getEquipmentDetailTypeLabel(equipment, locale) {
   }
   return localizeModuleTypeLabel(equipment.type || moduleKey, locale);
 }
-
 export function localizeEquipmentDetailSection(section, moduleKey, options, locale) {
   return localizeFormSection(section, moduleKey, options, locale);
 }
-
 export { interpolate };

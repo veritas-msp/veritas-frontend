@@ -746,7 +746,7 @@
   color: var(--msp-muted, #5c6b82);
 }
 
-/* ── Mode sombre (html.dark / body.dark) ── */
+
 :global(html.dark) .kpiCard:hover,
 :global(body.dark) .kpiCard:hover {
   border-color: #4a8fd4;

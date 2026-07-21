@@ -8,7 +8,6 @@ import { useAppLocale } from "../../hooks/useAppGeneralSettings";
 import { getProfileFormSections } from "./adminFormModalsI18n";
 import layout from "../EnterprisesPage/EnterpriseFormModal.module.css";
 import formStyles from "./IngestionRuleFormModal.module.css";
-
 export default function ProfileFormModal({
   open,
   draft,
@@ -16,7 +15,7 @@ export default function ProfileFormModal({
   saving = false,
   profiles = [],
   onClose,
-  onSave,
+  onSave
 }) {
   const locale = useAppLocale();
   const commonCopy = useCommonCopy();
@@ -24,29 +23,23 @@ export default function ProfileFormModal({
   const modalCopy = useAdminModalCopy("profileForm");
   const formSections = useMemo(() => getProfileFormSections(locale), [locale]);
   const [activeSection, setActiveSection] = useState("general");
-
   useEffect(() => {
     if (!open) return;
     setActiveSection("general");
   }, [open]);
-
-  const sectionMeta = useMemo(
-    () => ({
-      general: Boolean(String(draft?.name || "").trim()),
-      inheritance: true,
-    }),
-    [draft]
-  );
-
+  const sectionMeta = useMemo(() => ({
+    general: Boolean(String(draft?.name || "").trim()),
+    inheritance: true
+  }), [draft]);
   if (!open || !draft) return null;
-
-  const patchDraft = (patch) => setDraft((prev) => ({ ...prev, ...patch }));
-
+  const patchDraft = patch => setDraft(prev => ({
+    ...prev,
+    ...patch
+  }));
   const renderSectionContent = () => {
     switch (activeSection) {
       case "general":
-        return (
-          <>
+        return <>
             <div className={layout.sectionHead}>
               <h3 className={layout.sectionTitle}>{modalCopy.generalTitle}</h3>
               <p className={layout.sectionDesc}>{modalCopy.generalDesc}</p>
@@ -56,36 +49,22 @@ export default function ProfileFormModal({
                 <label className={`${layout.label} ${layout.labelRequired}`} htmlFor="profile-name">
                   {modalCopy.nameLabel}
                 </label>
-                <input
-                  id="profile-name"
-                  type="text"
-                  className={layout.input}
-                  value={draft.name || ""}
-                  onChange={(e) => patchDraft({ name: e.target.value })}
-                  placeholder={modalCopy.namePlaceholder}
-                  autoFocus
-                />
+                <input id="profile-name" type="text" className={layout.input} value={draft.name || ""} onChange={e => patchDraft({
+                name: e.target.value
+              })} placeholder={modalCopy.namePlaceholder} autoFocus />
               </div>
               <div className={layout.field}>
                 <label className={layout.label} htmlFor="profile-label">
                   {modalCopy.labelField}
                 </label>
-                <input
-                  id="profile-label"
-                  type="text"
-                  className={layout.input}
-                  value={draft.label || ""}
-                  onChange={(e) => patchDraft({ label: e.target.value })}
-                  placeholder={modalCopy.labelPlaceholder}
-                />
+                <input id="profile-label" type="text" className={layout.input} value={draft.label || ""} onChange={e => patchDraft({
+                label: e.target.value
+              })} placeholder={modalCopy.labelPlaceholder} />
               </div>
             </div>
-          </>
-        );
-
+          </>;
       case "inheritance":
-        return (
-          <>
+        return <>
             <div className={layout.sectionHead}>
               <h3 className={layout.sectionTitle}>{modalCopy.inheritanceTitle}</h3>
               <p className={layout.sectionDesc}>{modalCopy.inheritanceDesc}</p>
@@ -95,46 +74,37 @@ export default function ProfileFormModal({
                 <label className={layout.label} htmlFor="profile-parent">
                   {modalCopy.parentLabel}
                 </label>
-                <select
-                  id="profile-parent"
-                  className={layout.input}
-                  value={draft.parentProfile || ""}
-                  onChange={(e) => patchDraft({ parentProfile: e.target.value })}
-                >
+                <select id="profile-parent" className={layout.input} value={draft.parentProfile || ""} onChange={e => patchDraft({
+                parentProfile: e.target.value
+              })}>
                   <option value="">{modalCopy.noParent}</option>
-                  {profiles.map((p) => (
-                    <option key={p.name} value={p.name}>
+                  {profiles.map(p => <option key={p.name} value={p.name}>
                       {p.label || p.name}
-                    </option>
-                  ))}
+                    </option>)}
                 </select>
               </div>
             </div>
-            <div className={formStyles.statusRow} style={{ marginTop: "0.75rem" }}>
+            <div className={formStyles.statusRow} style={{
+            marginTop: "0.75rem"
+          }}>
               <div>
                 <div className={formStyles.statusLabel}>{modalCopy.defaultRightsLabel}</div>
                 <p className={formStyles.statusHint}>{modalCopy.defaultRightsHint}</p>
               </div>
-              <Icon icon="mdi:shield-account-outline" style={{ fontSize: "1.4rem", color: "var(--msp-muted)" }} aria-hidden />
+              <Icon icon="mdi:shield-account-outline" style={{
+              fontSize: "1.4rem",
+              color: "var(--msp-muted)"
+            }} aria-hidden />
             </div>
-          </>
-        );
-
+          </>;
       default:
         return null;
     }
   };
-
-  return createPortal(
-    <div className={layout.overlay} onClick={onClose} role="presentation">
-      <div
-        className={layout.shell}
-        style={{ maxWidth: "min(720px, 100%)" }}
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="profile-form-title"
-      >
+  return createPortal(<div className={layout.overlay} onClick={onClose} role="presentation">
+      <div className={layout.shell} style={{
+      maxWidth: "min(720px, 100%)"
+    }} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="profile-form-title">
         <div className={layout.accentBar} aria-hidden />
         <header className={layout.header}>
           <div className={layout.headerMain}>
@@ -156,22 +126,14 @@ export default function ProfileFormModal({
 
         <div className={layout.body}>
           <nav className={layout.nav} aria-label={modalCopy.sectionsAria}>
-            {formSections.map((section) => (
-              <button
-                key={section.id}
-                type="button"
-                className={`${layout.navItem} ${activeSection === section.id ? layout.navItemActive : ""}`}
-                onClick={() => setActiveSection(section.id)}
-                aria-current={activeSection === section.id ? "step" : undefined}
-              >
+            {formSections.map(section => <button key={section.id} type="button" className={`${layout.navItem} ${activeSection === section.id ? layout.navItemActive : ""}`} onClick={() => setActiveSection(section.id)} aria-current={activeSection === section.id ? "step" : undefined}>
                 <Icon icon={section.icon} className={layout.navItemIcon} aria-hidden />
                 <span className={layout.navItemText}>
                   <span className={layout.navItemLabel}>{section.label}</span>
                   <span className={layout.navItemHint}>{section.description}</span>
                 </span>
                 {sectionMeta[section.id] && <span className={layout.navBadge}>✓</span>}
-              </button>
-            ))}
+              </button>)}
           </nav>
 
           <div className={layout.content}>{renderSectionContent()}</div>
@@ -185,28 +147,17 @@ export default function ProfileFormModal({
             <button type="button" className={layout.ghostBtn} onClick={onClose} disabled={saving}>
               {commonCopy.cancel}
             </button>
-            <button
-              type="button"
-              className={layout.primaryBtn}
-              onClick={onSave}
-              disabled={saving || !String(draft.name || "").trim()}
-            >
-              {saving ? (
-                <>
+            <button type="button" className={layout.primaryBtn} onClick={onSave} disabled={saving || !String(draft.name || "").trim()}>
+              {saving ? <>
                   <Icon icon="mdi:loading" className={layout.spinning} aria-hidden />
                   {adminCopy.creating}
-                </>
-              ) : (
-                <>
+                </> : <>
                   <Icon icon="mdi:check" aria-hidden />
                   {modalCopy.createBtn}
-                </>
-              )}
+                </>}
             </button>
           </div>
         </footer>
       </div>
-    </div>,
-    document.getElementById("modal-root") || document.body
-  );
+    </div>, document.getElementById("modal-root") || document.body);
 }

@@ -1,11 +1,9 @@
 import { normalizeLocale, pickLocaleMessages } from "../../../i18n/translate";
-
 const INTERVENTION_REPORT = {
   fr: {
     alerts: {
       stepContext: "Renseignez l'intervenant et le bénéficiaire.",
-      stepInterventions:
-        "Indiquez la date, la durée et la description de l'intervention.",
+      stepInterventions: "Indiquez la date, la durée et la description de l'intervention.",
       stepReport: "Rédigez le compte-rendu ou ajoutez des tâches à suivre.",
       stepValidation: "Complétez les signatures pour finaliser le rapport.",
       signatureMotif: "Indiquez le motif de l'absence de signature.",
@@ -19,14 +17,13 @@ const INTERVENTION_REPORT = {
       saveName: "Indiquez un nom pour enregistrer le rapport.",
       saveError: "Erreur lors de la sauvegarde.",
       saveSuccess: "Rapport enregistré dans la bibliothèque.",
-      saveSuccessVisible:
-        "Rapport enregistré et partagé avec l'entreprise sur le portail client.",
+      saveSuccessVisible: "Rapport enregistré et partagé avec l'entreprise sur le portail client.",
       saveSuccessInternal: "Rapport enregistré (interne agents, masqué client).",
       saveVaultError: "Rapport enregistré, mais l'archivage documentaire a échoué.",
       overwriteTitle: "Document existant",
       overwriteMessage: "Un document avec ce nom existe déjà. Voulez-vous l'écraser ?",
       overwriteConfirm: "Oui, écraser",
-      overwriteCancel: "Annuler",
+      overwriteCancel: "Annuler"
     },
     saveModal: {
       eyebrow: "Rapport d'intervention",
@@ -37,7 +34,7 @@ const INTERVENTION_REPORT = {
       footerHint: "Bibliothèque agents + coffre entreprise",
       confirm: "Enregistrer",
       cancel: "Annuler",
-      saving: "Enregistrement…",
+      saving: "Enregistrement…"
     },
     context: {
       intervenant: "Intervenant",
@@ -47,7 +44,7 @@ const INTERVENTION_REPORT = {
       companyTaxId: "SIRET / N° TVA",
       client: "Client",
       adresse: "Adresse du site",
-      contactSite: "Contact sur site",
+      contactSite: "Contact sur site"
     },
     interventions: {
       dateIntervention: "Date d'intervention",
@@ -65,7 +62,7 @@ const INTERVENTION_REPORT = {
       depose: "Déposé",
       enleve: "Enlevé",
       repare: "Réparé",
-      emptyMovements: "Aucun mouvement renseigné.",
+      emptyMovements: "Aucun mouvement renseigné."
     },
     todos: {
       title: "Tâches et suivi",
@@ -75,7 +72,7 @@ const INTERVENTION_REPORT = {
       placeholder: "Description de la tâche…",
       plannedFor: "Prévu pour",
       done: "Fait",
-      pending: "À faire",
+      pending: "À faire"
     },
     report: {
       compteRendu: "Compte-rendu d'intervention",
@@ -90,7 +87,7 @@ const INTERVENTION_REPORT = {
       accord: "Je reconnais l'exactitude du compte-rendu",
       prestataire: "Signature prestataire",
       clientSign: "Signature client",
-      clear: "Effacer",
+      clear: "Effacer"
     },
     validation: {
       previewTitle: "Aperçu du rapport",
@@ -113,8 +110,8 @@ const INTERVENTION_REPORT = {
       recipientName: "Nom du signataire",
       reserve: "Réserves",
       place: "Fait à",
-      date: "Date",
-    },
+      date: "Date"
+    }
   },
   en: {
     alerts: {
@@ -139,7 +136,7 @@ const INTERVENTION_REPORT = {
       overwriteTitle: "Document already exists",
       overwriteMessage: "A document with this name already exists. Overwrite it?",
       overwriteConfirm: "Yes, overwrite",
-      overwriteCancel: "Cancel",
+      overwriteCancel: "Cancel"
     },
     saveModal: {
       eyebrow: "Intervention report",
@@ -150,7 +147,7 @@ const INTERVENTION_REPORT = {
       footerHint: "Agent library + company vault",
       confirm: "Save",
       cancel: "Cancel",
-      saving: "Saving…",
+      saving: "Saving…"
     },
     context: {
       intervenant: "Provider",
@@ -160,7 +157,7 @@ const INTERVENTION_REPORT = {
       companyTaxId: "Tax ID",
       client: "Client",
       adresse: "Site address",
-      contactSite: "On-site contact",
+      contactSite: "On-site contact"
     },
     interventions: {
       dateIntervention: "Intervention date",
@@ -178,7 +175,7 @@ const INTERVENTION_REPORT = {
       depose: "Deposited",
       enleve: "Removed",
       repare: "Repaired",
-      emptyMovements: "No movements recorded.",
+      emptyMovements: "No movements recorded."
     },
     todos: {
       title: "Tasks & follow-up",
@@ -188,7 +185,7 @@ const INTERVENTION_REPORT = {
       placeholder: "Task description…",
       plannedFor: "Planned for",
       done: "Done",
-      pending: "Pending",
+      pending: "Pending"
     },
     report: {
       compteRendu: "Intervention report",
@@ -203,7 +200,7 @@ const INTERVENTION_REPORT = {
       accord: "I acknowledge the accuracy of this report",
       prestataire: "Provider signature",
       clientSign: "Client signature",
-      clear: "Clear",
+      clear: "Clear"
     },
     validation: {
       previewTitle: "Report preview",
@@ -226,11 +223,10 @@ const INTERVENTION_REPORT = {
       recipientName: "Signatory",
       reserve: "Reservations",
       place: "Place",
-      date: "Date",
-    },
-  },
+      date: "Date"
+    }
+  }
 };
-
 export function getInterventionReportCopy(locale) {
   return pickLocaleMessages(INTERVENTION_REPORT, normalizeLocale(locale));
 }

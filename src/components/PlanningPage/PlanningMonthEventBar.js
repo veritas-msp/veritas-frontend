@@ -1,31 +1,18 @@
 import { Icon } from "@iconify/react";
 import moment from "moment";
 import SmartTooltip from "../SmartTooltip";
-import {
-  getPlanningEventTypeIcon,
-} from "./planningEventTypes";
-import {
-  getPlanningEventId,
-  isPlanningEventDraggable,
-  PLANNING_EVENT_DRAG_MIME,
-} from "./planningEventMove";
+import { getPlanningEventTypeIcon } from "./planningEventTypes";
+import { getPlanningEventId, isPlanningEventDraggable, PLANNING_EVENT_DRAG_MIME } from "./planningEventMove";
 import { attachMonthEventResize } from "./planningMonthResize";
-import {
-  applyPlanningDragPickup,
-  clearPlanningDragPickup,
-  clearPlanningMonthEventDragging,
-  markPlanningMonthEventDragging,
-  suppressPlanningEventClickBriefly,
-} from "./planningDragFeedback";
+import { applyPlanningDragPickup, clearPlanningDragPickup, clearPlanningMonthEventDragging, markPlanningMonthEventDragging, suppressPlanningEventClickBriefly } from "./planningDragFeedback";
 import styles from "./PlanningPage.module.css";
-
 export default function PlanningMonthEventBar({
   event,
   continuesPrior = false,
   continuesAfter = false,
   renderPreview,
   onMonthEventResize,
-  eventFallbackTitle = "Événement",
+  eventFallbackTitle = "Event"
 }) {
   const title = event.title || eventFallbackTitle;
   const timeStr = event.start ? moment(event.start).format("HH:mm") : "";
@@ -34,8 +21,7 @@ export default function PlanningMonthEventBar({
   const canInteract = isPlanningEventDraggable(event);
   const canResizeLeft = canInteract && !continuesPrior && Boolean(onMonthEventResize);
   const canResizeRight = canInteract && !continuesAfter && Boolean(onMonthEventResize);
-
-  const handleNativeDragStart = (dragEvent) => {
+  const handleNativeDragStart = dragEvent => {
     if (!canInteract || !eventId) return;
     dragEvent.stopPropagation();
     markPlanningMonthEventDragging();
@@ -43,81 +29,34 @@ export default function PlanningMonthEventBar({
     dragEvent.dataTransfer.setData(PLANNING_EVENT_DRAG_MIME, String(eventId));
     dragEvent.dataTransfer.effectAllowed = "move";
   };
-
-  const handleNativeDragEnd = (dragEvent) => {
+  const handleNativeDragEnd = dragEvent => {
     clearPlanningDragPickup(dragEvent);
     clearPlanningMonthEventDragging();
     suppressPlanningEventClickBriefly();
   };
-
-  const stopCalendarBubble = (domEvent) => {
+  const stopCalendarBubble = domEvent => {
     domEvent.stopPropagation();
   };
-
-  const beginResize = (edge) => (pointerEvent) => {
+  const beginResize = edge => pointerEvent => {
     attachMonthEventResize({
       event,
       edge,
       pointerEvent,
-      onResize: onMonthEventResize,
+      onResize: onMonthEventResize
     });
   };
-
-  return (
-    <span
-      className={`${styles.eventBarShell} ${canResizeLeft || canResizeRight ? styles.eventBarShellResizable : ""}`}
-      onClick={stopCalendarBubble}
-    >
-      {canResizeLeft ? (
-        <button
-          type="button"
-          className={`${styles.eventBarResizeHandle} ${styles.eventBarResizeHandleLeft}`}
-          aria-label="Modifier le début"
-          onPointerDown={beginResize("left")}
-          onClick={stopCalendarBubble}
-        />
-      ) : null}
-      {canInteract ? (
-        <span
-          className={styles.eventBarDragHandle}
-          draggable
-          onDragStart={handleNativeDragStart}
-          onDragEnd={handleNativeDragEnd}
-          onClick={stopCalendarBubble}
-          onPointerDown={stopCalendarBubble}
-          role="button"
-          aria-label="Déplacer l'événement"
-          title="Déplacer"
-        >
+  return <span className={`${styles.eventBarShell} ${canResizeLeft || canResizeRight ? styles.eventBarShellResizable : ""}`} onClick={stopCalendarBubble}>
+      {canResizeLeft ? <button type="button" className={`${styles.eventBarResizeHandle} ${styles.eventBarResizeHandleLeft}`} aria-label="Adjust start" onPointerDown={beginResize("left")} onClick={stopCalendarBubble} /> : null}
+      {canInteract ? <span className={styles.eventBarDragHandle} draggable onDragStart={handleNativeDragStart} onDragEnd={handleNativeDragEnd} onClick={stopCalendarBubble} onPointerDown={stopCalendarBubble} role="button" aria-label="Move event" title="Move">
           <Icon icon="mdi:drag-vertical" aria-hidden />
-        </span>
-      ) : null}
-      <SmartTooltip
-        trigger="click-contextmenu"
-        interactive
-        clickSuppressOnDrag
-        content={renderPreview(event)}
-        tooltipClassName={styles.eventHoverPortal}
-        data-tooltip-position="planning-popover"
-        as="span"
-        className={styles.eventBarWrapper}
-        onContextMenu={stopCalendarBubble}
-      >
+        </span> : null}
+      <SmartTooltip trigger="click-contextmenu" interactive clickSuppressOnDrag content={renderPreview(event)} tooltipClassName={styles.eventHoverPortal} data-tooltip-position="planning-popover" as="span" className={styles.eventBarWrapper} onContextMenu={stopCalendarBubble}>
         <span className={styles.eventBarContent}>
           <Icon icon={typeIcon} className={styles.eventTypeIcon} aria-hidden />
           {timeStr ? <span className={styles.eventBarTime}>{timeStr}</span> : null}
           <span className={styles.eventBarTitle}>{title}</span>
         </span>
       </SmartTooltip>
-      {canResizeRight ? (
-        <button
-          type="button"
-          className={`${styles.eventBarResizeHandle} ${styles.eventBarResizeHandleRight}`}
-          aria-label="Modifier la fin"
-          onPointerDown={beginResize("right")}
-          onClick={stopCalendarBubble}
-        />
-      ) : null}
-    </span>
-  );
+      {canResizeRight ? <button type="button" className={`${styles.eventBarResizeHandle} ${styles.eventBarResizeHandleRight}`} aria-label="Adjust end" onPointerDown={beginResize("right")} onClick={stopCalendarBubble} /> : null}
+    </span>;
 }

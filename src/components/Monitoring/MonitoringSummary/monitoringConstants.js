@@ -1,33 +1,33 @@
-export const REPORT_OPTIONS = [
-  { id: "infrastructure", label: "Infrastructure" },
-  { id: "cybersecurite", label: "Cybersécurité" },
-  { id: "services", label: "Services" }
-];
-
+export const REPORT_OPTIONS = [{
+  id: "infrastructure",
+  label: "Infrastructure"
+}, {
+  id: "cybersecurite",
+  label: "Cybersecurity"
+}, {
+  id: "services",
+  label: "Services"
+}];
 export const fallbackModulesByReport = {
   infrastructure: ["internet", "firewall", "serveurs", "stockage", "switch", "wifi"],
   cybersecurite: ["sauvegarde", "antivirus", "antispam", "firewallregles"],
   services: ["office365", "ndd"]
 };
-
 export const reportTitleMap = {
   infrastructure: "Infrastructure",
-  cybersecurite: "Cybersécurité",
-  services: "Services Managés"
+  cybersecurite: "Cybersecurity",
+  services: "Managed Services"
 };
-
 export const reportDescriptionMap = {
-  infrastructure: "Topologie, actifs critiques et santé du socle technique.",
-  cybersecurite: "Protection, sauvegarde et contrôle des menaces.",
-  services: "Visibilité sur les services managés et la couche SaaS."
+  infrastructure: "Topology, critical assets, and health of the technical foundation.",
+  cybersecurite: "Protection, backup, and threat control.",
+  services: "Visibility into managed services and the SaaS layer."
 };
-
 export const reportSubtitleMap = {
   infrastructure: "INFRASTRUCTURE",
-  cybersecurite: "CYBERSÉCURITÉ",
-  services: "SERVICES MANAGÉS"
+  cybersecurite: "CYBERSECURITY",
+  services: "MANAGED SERVICES"
 };
-
 export const SECTION_ID_MAP = {
   'internet': 'internet-section',
   'serveurs': 'serveurs-section',
@@ -42,4 +42,3 @@ export const SECTION_ID_MAP = {
   'ndd': 'ndd-section',
   'office365': 'office365-section'
 };
-

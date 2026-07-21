@@ -1,4 +1,4 @@
-/* PlanningPage · extensions MSP (base : EnterprisesPage.module.css) */
+
 
 .planningShell {
   gap: 1rem;
@@ -848,7 +848,7 @@
   cursor: pointer;
 }
 
-/* Numéros de jour uniquement : le clic sélectionne la case (rbc-day-bg) */
+
 .calendarMonthWrapper :global(.rbc-month-row) :global(.rbc-row-content) > :global(.rbc-row:first-child) {
   pointer-events: none;
 }
@@ -1243,7 +1243,7 @@
   }
 }
 
-/* Bouton Ã‰vÃ©nement */
+
 .eventButton {
   display: flex;
   align-items: center;
@@ -1382,7 +1382,7 @@
   color: #e8edf5;
 }
 
-/* Modal */
+
 .modalOverlay {
   position: fixed;
   inset: 0;
@@ -1544,7 +1544,7 @@
   font-size: 0.875rem !important;
 }
 
-/* Dark mode pour le bouton et le modal */
+
 :global(.dark) .eventButton {
   background-color: #1a1a2e;
   border-color: #2a2a4a;
@@ -1609,7 +1609,7 @@
   color: #9ca3af !important;
 }
 
-/* Styles du formulaire */
+
 .formGroup {
   margin-bottom: 1.25rem;
 }
@@ -2434,7 +2434,7 @@
   gap: 0.5rem;
 }
 
-/* Dark mode pour le formulaire */
+
 :global(.dark) .formLabel {
   color: #f9fafb;
 }
@@ -2698,7 +2698,7 @@
   border-color: #15D1A0;
 }
 
-/* Styles pour l'affichage personnalisÃ© des Ã©vÃ©nements */
+
 .eventContent {
   display: flex;
   flex-direction: column;
@@ -2767,7 +2767,7 @@
   color: #ffffff;
 }
 
-/* Dark mode pour la sidebar */
+
 :global(.dark) .sidebar {
   background-color: #1a1a2e;
   border-right-color: #2a2a4a;

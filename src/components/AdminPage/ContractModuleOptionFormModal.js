@@ -12,7 +12,6 @@ import IconPicker from "./IconPicker";
 import layout from "../EnterprisesPage/EnterpriseFormModal.module.css";
 import formStyles from "./IngestionRuleFormModal.module.css";
 import styles from "./ContractModuleOptionFormModal.module.css";
-
 export default function ContractModuleOptionFormModal({
   open,
   mode = "create",
@@ -20,7 +19,7 @@ export default function ContractModuleOptionFormModal({
   setDraft,
   saving = false,
   onClose,
-  onSave,
+  onSave
 }) {
   const locale = useAppLocale();
   const commonCopy = useCommonCopy();
@@ -29,85 +28,59 @@ export default function ContractModuleOptionFormModal({
   const formSections = useMemo(() => getContractModuleOptionFormSections(locale), [locale]);
   const isCreate = mode === "create";
   const [activeSection, setActiveSection] = useState("identity");
-
   useEffect(() => {
     if (!open) return;
     setActiveSection("identity");
   }, [open]);
-
-  const sectionMeta = useMemo(
-    () => ({
-      identity: Boolean(String(draft?.label || "").trim()),
-      presentation: true,
-    }),
-    [draft]
-  );
-
+  const sectionMeta = useMemo(() => ({
+    identity: Boolean(String(draft?.label || "").trim()),
+    presentation: true
+  }), [draft]);
   if (!open || !draft) return null;
-
-  const patchDraft = (patch) => setDraft((prev) => ({ ...prev, ...patch }));
-
-  const modalTitle = isCreate
-    ? modalCopy.createTitle
-    : interpolate(modalCopy.editTitle, { name: draft.label || modalCopy.editFallback });
+  const patchDraft = patch => setDraft(prev => ({
+    ...prev,
+    ...patch
+  }));
+  const modalTitle = isCreate ? modalCopy.createTitle : interpolate(modalCopy.editTitle, {
+    name: draft.label || modalCopy.editFallback
+  });
   const modalSubtitle = isCreate ? modalCopy.createSubtitle : modalCopy.editSubtitle;
-
   const renderSectionContent = () => {
     switch (activeSection) {
       case "identity":
-        return (
-          <>
+        return <>
             <div className={layout.sectionHead}>
               <h3 className={layout.sectionTitle}>{modalCopy.identityTitle}</h3>
               <p className={layout.sectionDesc}>{modalCopy.identityDesc}</p>
             </div>
             <div className={layout.fieldGrid2}>
-              {isCreate ? (
-                <div className={`${layout.field} ${layout.fieldFull}`}>
+              {isCreate ? <div className={`${layout.field} ${layout.fieldFull}`}>
                   <label className={layout.label} htmlFor="option-module-key">
                     {modalCopy.moduleKeyLabel}
                   </label>
-                  <input
-                    id="option-module-key"
-                    type="text"
-                    className={layout.input}
-                    value={draft.moduleKey || ""}
-                    onChange={(e) => patchDraft({ moduleKey: e.target.value })}
-                    placeholder={modalCopy.moduleKeyPlaceholder}
-                    autoFocus
-                  />
+                  <input id="option-module-key" type="text" className={layout.input} value={draft.moduleKey || ""} onChange={e => patchDraft({
+                moduleKey: e.target.value
+              })} placeholder={modalCopy.moduleKeyPlaceholder} autoFocus />
                   <p className={layout.sectionDesc}>{modalCopy.moduleKeyHintCreate}</p>
-                </div>
-              ) : (
-                <div className={`${layout.field} ${layout.fieldFull}`}>
+                </div> : <div className={`${layout.field} ${layout.fieldFull}`}>
                   <label className={layout.label} htmlFor="option-module-key">
                     {modalCopy.moduleKeyLabel}
                   </label>
                   <input id="option-module-key" type="text" className={layout.input} value={draft.moduleKey || ""} disabled />
                   <p className={layout.sectionDesc}>{modalCopy.moduleKeyHintEdit}</p>
-                </div>
-              )}
+                </div>}
               <div className={`${layout.field} ${layout.fieldFull}`}>
                 <label className={`${layout.label} ${layout.labelRequired}`} htmlFor="option-label">
                   {modalCopy.displayLabel}
                 </label>
-                <input
-                  id="option-label"
-                  type="text"
-                  className={layout.input}
-                  value={draft.label || ""}
-                  onChange={(e) => patchDraft({ label: e.target.value })}
-                  placeholder={modalCopy.displayLabelPlaceholder}
-                  autoFocus={!isCreate}
-                />
+                <input id="option-label" type="text" className={layout.input} value={draft.label || ""} onChange={e => patchDraft({
+                label: e.target.value
+              })} placeholder={modalCopy.displayLabelPlaceholder} autoFocus={!isCreate} />
               </div>
             </div>
-          </>
-        );
-
+          </>;
       case "presentation":
-        return (
-          <>
+        return <>
             <div className={layout.sectionHead}>
               <h3 className={layout.sectionTitle}>{modalCopy.presentationTitle}</h3>
               <p className={layout.sectionDesc}>{modalCopy.presentationDesc}</p>
@@ -115,7 +88,9 @@ export default function ContractModuleOptionFormModal({
             <div className={`${layout.field} ${layout.fieldFull}`}>
               <span className={layout.label}>{adminCopy.icon}</span>
               <div className={styles.iconPickerWrap}>
-                <IconPicker value={draft.icon || "mdi:puzzle-outline"} onChange={(icon) => patchDraft({ icon })} />
+                <IconPicker value={draft.icon || "mdi:puzzle-outline"} onChange={icon => patchDraft({
+                icon
+              })} />
               </div>
             </div>
             <div className={layout.fieldGrid2}>
@@ -123,14 +98,9 @@ export default function ContractModuleOptionFormModal({
                 <label className={layout.label} htmlFor="option-sort-order">
                   {adminCopy.order}
                 </label>
-                <input
-                  id="option-sort-order"
-                  type="number"
-                  className={layout.input}
-                  value={draft.sortOrder ?? ""}
-                  onChange={(e) => patchDraft({ sortOrder: e.target.value })}
-                  placeholder={adminCopy.auto}
-                />
+                <input id="option-sort-order" type="number" className={layout.input} value={draft.sortOrder ?? ""} onChange={e => patchDraft({
+                sortOrder: e.target.value
+              })} placeholder={adminCopy.auto} />
               </div>
             </div>
             <div className={formStyles.statusRow}>
@@ -138,32 +108,20 @@ export default function ContractModuleOptionFormModal({
                 <div className={formStyles.statusLabel}>{modalCopy.optionActiveLabel}</div>
                 <p className={formStyles.statusHint}>{modalCopy.optionActiveHint}</p>
               </div>
-              <Switch
-                checked={Boolean(draft.enabled)}
-                onChange={(on) => patchDraft({ enabled: on })}
-                label={draft.enabled ? adminCopy.visible : adminCopy.hidden}
-              />
+              <Switch checked={Boolean(draft.enabled)} onChange={on => patchDraft({
+              enabled: on
+            })} label={draft.enabled ? adminCopy.visible : adminCopy.hidden} />
             </div>
-          </>
-        );
-
+          </>;
       default:
         return null;
     }
   };
-
   const canSave = Boolean(String(draft.label || "").trim());
-
-  return createPortal(
-    <div className={layout.overlay} onClick={onClose} role="presentation">
-      <div
-        className={layout.shell}
-        style={{ maxWidth: "min(720px, 100%)" }}
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="contract-module-option-form-title"
-      >
+  return createPortal(<div className={layout.overlay} onClick={onClose} role="presentation">
+      <div className={layout.shell} style={{
+      maxWidth: "min(720px, 100%)"
+    }} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="contract-module-option-form-title">
         <div className={layout.accentBar} aria-hidden />
         <header className={layout.header}>
           <div className={layout.headerMain}>
@@ -185,22 +143,14 @@ export default function ContractModuleOptionFormModal({
 
         <div className={layout.body}>
           <nav className={layout.nav} aria-label={modalCopy.sectionsAria}>
-            {formSections.map((section) => (
-              <button
-                key={section.id}
-                type="button"
-                className={`${layout.navItem} ${activeSection === section.id ? layout.navItemActive : ""}`}
-                onClick={() => setActiveSection(section.id)}
-                aria-current={activeSection === section.id ? "step" : undefined}
-              >
+            {formSections.map(section => <button key={section.id} type="button" className={`${layout.navItem} ${activeSection === section.id ? layout.navItemActive : ""}`} onClick={() => setActiveSection(section.id)} aria-current={activeSection === section.id ? "step" : undefined}>
                 <Icon icon={section.icon} className={layout.navItemIcon} aria-hidden />
                 <span className={layout.navItemText}>
                   <span className={layout.navItemLabel}>{section.label}</span>
                   <span className={layout.navItemHint}>{section.description}</span>
                 </span>
                 {sectionMeta[section.id] && <span className={layout.navBadge}>✓</span>}
-              </button>
-            ))}
+              </button>)}
           </nav>
 
           <div className={layout.content}>{renderSectionContent()}</div>
@@ -215,27 +165,19 @@ export default function ContractModuleOptionFormModal({
               {commonCopy.cancel}
             </button>
             <button type="button" className={layout.primaryBtn} onClick={onSave} disabled={saving || !canSave}>
-              {saving ? (
-                <>
+              {saving ? <>
                   <Icon icon="mdi:loading" className={layout.spinning} aria-hidden />
                   {commonCopy.saving}
-                </>
-              ) : isCreate ? (
-                <>
+                </> : isCreate ? <>
                   <Icon icon="mdi:plus" aria-hidden />
                   {modalCopy.addBtn}
-                </>
-              ) : (
-                <>
+                </> : <>
                   <Icon icon="mdi:content-save-outline" aria-hidden />
                   {commonCopy.save}
-                </>
-              )}
+                </>}
             </button>
           </div>
         </footer>
       </div>
-    </div>,
-    document.getElementById("modal-root") || document.body
-  );
+    </div>, document.getElementById("modal-root") || document.body);
 }

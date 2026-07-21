@@ -1,28 +1,37 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 const STATUS_FILTER_KEYS = ["new", "in_progress", "pending", "resolved", "closed"];
-
 const STATUS_FILTER_META = {
-  new: { icon: "mdi:inbox-arrow-down", kpiTone: "blue" },
-  in_progress: { icon: "mdi:progress-clock", kpiTone: "amber" },
-  pending: { icon: "mdi:pause-circle-outline", kpiTone: "violet" },
-  resolved: { icon: "mdi:check-circle-outline", kpiTone: "blue" },
-  closed: { icon: "mdi:archive-outline", kpiTone: "orange" },
+  new: {
+    icon: "mdi:inbox-arrow-down",
+    kpiTone: "blue"
+  },
+  in_progress: {
+    icon: "mdi:progress-clock",
+    kpiTone: "amber"
+  },
+  pending: {
+    icon: "mdi:pause-circle-outline",
+    kpiTone: "violet"
+  },
+  resolved: {
+    icon: "mdi:check-circle-outline",
+    kpiTone: "blue"
+  },
+  closed: {
+    icon: "mdi:archive-outline",
+    kpiTone: "orange"
+  }
 };
-
 const TICKET_TYPE_KEYS = ["incident", "demande", "probleme", "changement"];
-
 const CHANNEL_KEYS = ["web", "phone", "email", "chat", "api", "whatsapp"];
-
 const CHANNEL_ICONS = {
   web: "mdi:web",
   phone: "mdi:phone",
   email: "mdi:email-outline",
   chat: "mdi:message-outline",
   api: "mdi:api",
-  whatsapp: "mdi:whatsapp",
+  whatsapp: "mdi:whatsapp"
 };
-
 const TICKETS_COPY = {
   fr: {
     eyebrow: "Helpdesk",
@@ -43,6 +52,8 @@ const TICKETS_COPY = {
     playModeDisabled: "Mode ticket aléatoire désactivé",
     exportCsv: "Exporter en CSV",
     exportCsvAria: "Exporter CSV",
+    columnsSettings: "Paramétrer les colonnes",
+    columnsSettingsAria: "Paramétrer les colonnes du tableau",
     newTicket: "Nouveau ticket",
     newTicketAria: "Nouveau ticket",
     statusFilters: {
@@ -50,21 +61,21 @@ const TICKETS_COPY = {
       in_progress: "En cours",
       pending: "En attente",
       resolved: "Résolus",
-      closed: "Clos",
+      closed: "Clos"
     },
     statusBadge: {
       new: "Nouveau",
       in_progress: "En cours",
       pending: "En attente",
       resolved: "Résolu",
-      closed: "Clos",
+      closed: "Clos"
     },
     priority: {
       low: "Basse",
       normal: "Normale",
       high: "Haute",
       urgent: "Urgente",
-      majorIncident: "Incident majeur",
+      majorIncident: "Incident majeur"
     },
     channels: {
       web: "Web",
@@ -72,13 +83,25 @@ const TICKETS_COPY = {
       email: "Email",
       chat: "Chat",
       api: "API",
-      whatsapp: "WhatsApp",
+      whatsapp: "WhatsApp"
     },
     ticketTypes: {
-      incident: { label: "Incident", hint: "Panne ou interruption de service" },
-      demande: { label: "Demande", hint: "Besoin ou question client" },
-      probleme: { label: "Problème", hint: "Cause racine récurrente" },
-      changement: { label: "Changement", hint: "Modification planifiée" },
+      incident: {
+        label: "Incident",
+        hint: "Panne ou interruption de service"
+      },
+      demande: {
+        label: "Demande",
+        hint: "Besoin ou question client"
+      },
+      probleme: {
+        label: "Problème",
+        hint: "Cause racine récurrente"
+      },
+      changement: {
+        label: "Changement",
+        hint: "Modification planifiée"
+      }
     },
     allTypes: "Tous types",
     views: {
@@ -102,7 +125,7 @@ const TICKETS_COPY = {
       editView: "Modifier la vue",
       editViewNamed: "Modifier la vue {name}",
       collapsePane: "Replier les vues",
-      expandPane: "Afficher les vues",
+      expandPane: "Afficher les vues"
     },
     search: {
       placeholder: "Ticket, client, demandeur, sujet…",
@@ -110,13 +133,13 @@ const TICKETS_COPY = {
       clear: "Effacer",
       filterType: "Filtrer par type",
       viewMeta: "Vue « {name} »",
-      defaultViewName: "Tickets",
+      defaultViewName: "Tickets"
     },
     empty: {
       trashTitle: "Corbeille vide",
       noTicketsTitle: "Aucun ticket trouvé",
       trashHint: "Les tickets supprimés apparaîtront ici.",
-      activeHint: "Ajustez vos filtres ou créez un nouveau ticket support.",
+      activeHint: "Ajustez vos filtres ou créez un nouveau ticket support."
     },
     bulk: {
       selected: "sélectionné",
@@ -136,7 +159,7 @@ const TICKETS_COPY = {
       confirmDelete: "Supprimer",
       confirmPurge: "Supprimer définitivement",
       ticketLabel: "{count} ticket",
-      ticketLabelPlural: "{count} tickets",
+      ticketLabelPlural: "{count} tickets"
     },
     bulkModal: {
       title: "Actions groupées",
@@ -159,12 +182,12 @@ const TICKETS_COPY = {
       assigneeModes: {
         replace: "Remplacer les assignés",
         add: "Ajouter des assignés",
-        remove: "Retirer des assignés",
+        remove: "Retirer des assignés"
       },
       watcherModes: {
         add: "Ajouter des followers",
         replace: "Remplacer les followers",
-        remove: "Retirer des followers",
+        remove: "Retirer des followers"
       },
       userFallback: "Utilisateur",
       contactFallback: "Contact #{id}",
@@ -173,9 +196,9 @@ const TICKETS_COPY = {
         noContact: "Choisissez un contact demandeur.",
         noUser: "Choisissez un utilisateur demandeur.",
         noAssignee: "Sélectionnez au moins un assigné.",
-        noWatcher: "Sélectionnez au moins un follower.",
+        noWatcher: "Sélectionnez au moins un follower."
       },
-      submitError: "Erreur lors de l'action groupée",
+      submitError: "Erreur lors de l'action groupée"
     },
     table: {
       selectAll: "Sélectionner tous les tickets de la page",
@@ -202,34 +225,39 @@ const TICKETS_COPY = {
       purgeTitle: "Supprimer définitivement",
       delete: "Supprimer",
       slaFirstResponse: "Délai première prise en charge",
-      slaResolution: "Délai résolution",
+      slaResolution: "Délai résolution"
     },
     tooltip: {
       majorIncident: "Incident majeur",
       comment: "{count} commentaire",
-      commentPlural: "{count} commentaires",
+      commentPlural: "{count} commentaires"
     },
     sla: {},
     followersCount: "{count} followers",
     export: {
       filenamePrefix: "tickets",
       truncated: "Export limité aux 10 000 premiers tickets correspondant aux filtres.",
-      headers: [
-        "ID",
-        "Sujet",
-        "Type",
-        "Canal",
-        "Demandeur",
-        "Client",
-        "Assignes",
-        "Followers",
-        "Statut",
-        "Priorite",
-        "Creation",
-        "Derniere modification",
-      ],
+      headers: ["ID", "Sujet", "Type", "Canal", "Demandeur", "Client", "Assignes", "Followers", "Statut", "Priorite", "Creation", "Derniere modification"]
+    },
+    columnsModal: {
+      title: "Colonnes du tableau",
+      subtitle: "Choisissez les colonnes visibles dans la liste des tickets.",
+      privateTab: "Vue privée",
+      publicTab: "Vue publique",
+      privateHintInactive: "Pas encore de vue privée : la vue publique s’affiche. Cochez des colonnes pour créer la vôtre.",
+      privateHintActive: "Votre vue privée remplace la vue publique.",
+      publicHint: "Colonnes visibles par défaut pour tous les utilisateurs sans vue privée.",
+      adminOnly: "Seuls les administrateurs peuvent modifier la vue publique.",
+      resetPrivate: "Revenir à la vue publique",
+      resetSuccess: "Vue privée réinitialisée",
+      savePrivateSuccess: "Vue privée enregistrée",
+      savePublicSuccess: "Vue publique enregistrée",
+      saveError: "Erreur lors de l’enregistrement des colonnes",
+      atLeastOne: "Sélectionnez au moins une colonne.",
+      save: "Enregistrer"
     },
     toasts: {
+      loadColumns: "Erreur lors du chargement des colonnes",
       loadViews: "Erreur lors du chargement des vues",
       loadData: "Erreur lors du chargement des données",
       loadTickets: "Erreur lors du chargement des tickets",
@@ -255,8 +283,8 @@ const TICKETS_COPY = {
       reorderViews: "Erreur lors du réordonnancement des vues",
       viewUpdated: "Vue mise à jour",
       viewCreated: "Vue créée",
-      exportError: "Erreur lors de l'export CSV",
-    },
+      exportError: "Erreur lors de l'export CSV"
+    }
   },
   en: {
     eyebrow: "Helpdesk",
@@ -277,6 +305,8 @@ const TICKETS_COPY = {
     playModeDisabled: "Random ticket mode disabled",
     exportCsv: "Export as CSV",
     exportCsvAria: "Export CSV",
+    columnsSettings: "Configure columns",
+    columnsSettingsAria: "Configure table columns",
     newTicket: "New ticket",
     newTicketAria: "New ticket",
     statusFilters: {
@@ -284,21 +314,21 @@ const TICKETS_COPY = {
       in_progress: "In progress",
       pending: "Pending",
       resolved: "Resolved",
-      closed: "Closed",
+      closed: "Closed"
     },
     statusBadge: {
       new: "New",
       in_progress: "In progress",
       pending: "Pending",
       resolved: "Resolved",
-      closed: "Closed",
+      closed: "Closed"
     },
     priority: {
       low: "Low",
       normal: "Normal",
       high: "High",
       urgent: "Urgent",
-      majorIncident: "Major incident",
+      majorIncident: "Major incident"
     },
     channels: {
       web: "Web",
@@ -306,13 +336,25 @@ const TICKETS_COPY = {
       email: "Email",
       chat: "Chat",
       api: "API",
-      whatsapp: "WhatsApp",
+      whatsapp: "WhatsApp"
     },
     ticketTypes: {
-      incident: { label: "Incident", hint: "Outage or service interruption" },
-      demande: { label: "Request", hint: "Customer need or question" },
-      probleme: { label: "Problem", hint: "Recurring root cause" },
-      changement: { label: "Change", hint: "Planned modification" },
+      incident: {
+        label: "Incident",
+        hint: "Outage or service interruption"
+      },
+      demande: {
+        label: "Request",
+        hint: "Customer need or question"
+      },
+      probleme: {
+        label: "Problem",
+        hint: "Recurring root cause"
+      },
+      changement: {
+        label: "Change",
+        hint: "Planned modification"
+      }
     },
     allTypes: "All types",
     views: {
@@ -336,7 +378,7 @@ const TICKETS_COPY = {
       editView: "Edit view",
       editViewNamed: "Edit view {name}",
       collapsePane: "Collapse views",
-      expandPane: "Show views",
+      expandPane: "Show views"
     },
     search: {
       placeholder: "Ticket, client, requester, subject…",
@@ -344,13 +386,13 @@ const TICKETS_COPY = {
       clear: "Clear",
       filterType: "Filter by type",
       viewMeta: "View « {name} »",
-      defaultViewName: "Tickets",
+      defaultViewName: "Tickets"
     },
     empty: {
       trashTitle: "Trash is empty",
       noTicketsTitle: "No tickets found",
       trashHint: "Deleted tickets will appear here.",
-      activeHint: "Adjust your filters or create a new support ticket.",
+      activeHint: "Adjust your filters or create a new support ticket."
     },
     bulk: {
       selected: "selected",
@@ -370,7 +412,7 @@ const TICKETS_COPY = {
       confirmDelete: "Delete",
       confirmPurge: "Delete permanently",
       ticketLabel: "{count} ticket",
-      ticketLabelPlural: "{count} tickets",
+      ticketLabelPlural: "{count} tickets"
     },
     bulkModal: {
       title: "Bulk actions",
@@ -393,12 +435,12 @@ const TICKETS_COPY = {
       assigneeModes: {
         replace: "Replace assignees",
         add: "Add assignees",
-        remove: "Remove assignees",
+        remove: "Remove assignees"
       },
       watcherModes: {
         add: "Add followers",
         replace: "Replace followers",
-        remove: "Remove followers",
+        remove: "Remove followers"
       },
       userFallback: "User",
       contactFallback: "Contact #{id}",
@@ -407,9 +449,9 @@ const TICKETS_COPY = {
         noContact: "Choose a requester contact.",
         noUser: "Choose a requester user.",
         noAssignee: "Select at least one assignee.",
-        noWatcher: "Select at least one follower.",
+        noWatcher: "Select at least one follower."
       },
-      submitError: "Error during bulk action",
+      submitError: "Error during bulk action"
     },
     table: {
       selectAll: "Select all tickets on this page",
@@ -436,34 +478,39 @@ const TICKETS_COPY = {
       purgeTitle: "Delete permanently",
       delete: "Delete",
       slaFirstResponse: "First response deadline",
-      slaResolution: "Resolution deadline",
+      slaResolution: "Resolution deadline"
     },
     tooltip: {
       majorIncident: "Major incident",
       comment: "{count} comment",
-      commentPlural: "{count} comments",
+      commentPlural: "{count} comments"
     },
     sla: {},
     followersCount: "{count} followers",
     export: {
       filenamePrefix: "tickets",
       truncated: "Export limited to the first 10,000 tickets matching the filters.",
-      headers: [
-        "ID",
-        "Subject",
-        "Type",
-        "Channel",
-        "Requester",
-        "Client",
-        "Assignees",
-        "Followers",
-        "Status",
-        "Priority",
-        "Created",
-        "Last updated",
-      ],
+      headers: ["ID", "Subject", "Type", "Channel", "Requester", "Client", "Assignees", "Followers", "Status", "Priority", "Created", "Last updated"]
+    },
+    columnsModal: {
+      title: "Table columns",
+      subtitle: "Choose which columns are visible in the ticket list.",
+      privateTab: "Private view",
+      publicTab: "Public view",
+      privateHintInactive: "No private view yet — the public view is used. Toggle columns to create yours.",
+      privateHintActive: "Your private columns override the public view.",
+      publicHint: "Default columns for all users without a private view.",
+      adminOnly: "Only administrators can edit the public view.",
+      resetPrivate: "Use public view",
+      resetSuccess: "Private view reset",
+      savePrivateSuccess: "Private view saved",
+      savePublicSuccess: "Public view saved",
+      saveError: "Error saving columns",
+      atLeastOne: "Select at least one column.",
+      save: "Save"
     },
     toasts: {
+      loadColumns: "Error loading columns",
       loadViews: "Error loading views",
       loadData: "Error loading data",
       loadTickets: "Error loading tickets",
@@ -489,8 +536,8 @@ const TICKETS_COPY = {
       reorderViews: "Error reordering views",
       viewUpdated: "View updated",
       viewCreated: "View created",
-      exportError: "Error exporting CSV",
-    },
+      exportError: "Error exporting CSV"
+    }
   },
   de: {
     eyebrow: "Helpdesk",
@@ -511,6 +558,8 @@ const TICKETS_COPY = {
     playModeDisabled: "Zufallsmodus deaktiviert",
     exportCsv: "Als CSV exportieren",
     exportCsvAria: "CSV exportieren",
+    columnsSettings: "Spalten konfigurieren",
+    columnsSettingsAria: "Tabellenspalten konfigurieren",
     newTicket: "Neues Ticket",
     newTicketAria: "Neues Ticket",
     statusFilters: {
@@ -518,21 +567,21 @@ const TICKETS_COPY = {
       in_progress: "In Bearbeitung",
       pending: "Wartend",
       resolved: "Gelöst",
-      closed: "Geschlossen",
+      closed: "Geschlossen"
     },
     statusBadge: {
       new: "Neu",
       in_progress: "In Bearbeitung",
       pending: "Wartend",
       resolved: "Gelöst",
-      closed: "Geschlossen",
+      closed: "Geschlossen"
     },
     priority: {
       low: "Niedrig",
       normal: "Normal",
       high: "Hoch",
       urgent: "Dringend",
-      majorIncident: "Schwerer Vorfall",
+      majorIncident: "Schwerer Vorfall"
     },
     channels: {
       web: "Web",
@@ -540,13 +589,25 @@ const TICKETS_COPY = {
       email: "E-Mail",
       chat: "Chat",
       api: "API",
-      whatsapp: "WhatsApp",
+      whatsapp: "WhatsApp"
     },
     ticketTypes: {
-      incident: { label: "Vorfall", hint: "Ausfall oder Dienstunterbrechung" },
-      demande: { label: "Anfrage", hint: "Kundenbedarf oder Frage" },
-      probleme: { label: "Problem", hint: "Wiederkehrende Ursache" },
-      changement: { label: "Änderung", hint: "Geplante Änderung" },
+      incident: {
+        label: "Vorfall",
+        hint: "Ausfall oder Dienstunterbrechung"
+      },
+      demande: {
+        label: "Anfrage",
+        hint: "Kundenbedarf oder Frage"
+      },
+      probleme: {
+        label: "Problem",
+        hint: "Wiederkehrende Ursache"
+      },
+      changement: {
+        label: "Änderung",
+        hint: "Geplante Änderung"
+      }
     },
     allTypes: "Alle Typen",
     views: {
@@ -570,7 +631,7 @@ const TICKETS_COPY = {
       editView: "Ansicht bearbeiten",
       editViewNamed: "Ansicht {name} bearbeiten",
       collapsePane: "Ansichten einklappen",
-      expandPane: "Ansichten anzeigen",
+      expandPane: "Ansichten anzeigen"
     },
     search: {
       placeholder: "Ticket, Kunde, Anfragender, Betreff…",
@@ -578,13 +639,13 @@ const TICKETS_COPY = {
       clear: "Löschen",
       filterType: "Nach Typ filtern",
       viewMeta: "Ansicht « {name} »",
-      defaultViewName: "Tickets",
+      defaultViewName: "Tickets"
     },
     empty: {
       trashTitle: "Papierkorb leer",
       noTicketsTitle: "Keine Tickets gefunden",
       trashHint: "Gelöschte Tickets erscheinen hier.",
-      activeHint: "Filter anpassen oder neues Support-Ticket erstellen.",
+      activeHint: "Filter anpassen oder neues Support-Ticket erstellen."
     },
     bulk: {
       selected: "ausgewählt",
@@ -604,7 +665,7 @@ const TICKETS_COPY = {
       confirmDelete: "Löschen",
       confirmPurge: "Endgültig löschen",
       ticketLabel: "{count} Ticket",
-      ticketLabelPlural: "{count} Tickets",
+      ticketLabelPlural: "{count} Tickets"
     },
     bulkModal: {
       title: "Massenaktionen",
@@ -627,12 +688,12 @@ const TICKETS_COPY = {
       assigneeModes: {
         replace: "Zugewiesene ersetzen",
         add: "Zugewiesene hinzufügen",
-        remove: "Zugewiesene entfernen",
+        remove: "Zugewiesene entfernen"
       },
       watcherModes: {
         add: "Follower hinzufügen",
         replace: "Follower ersetzen",
-        remove: "Follower entfernen",
+        remove: "Follower entfernen"
       },
       userFallback: "Benutzer",
       contactFallback: "Kontakt #{id}",
@@ -641,9 +702,9 @@ const TICKETS_COPY = {
         noContact: "Wählen Sie einen anfragenden Kontakt.",
         noUser: "Wählen Sie einen anfragenden Benutzer.",
         noAssignee: "Wählen Sie mindestens einen Zugewiesenen.",
-        noWatcher: "Wählen Sie mindestens einen Follower.",
+        noWatcher: "Wählen Sie mindestens einen Follower."
       },
-      submitError: "Fehler bei der Massenaktion",
+      submitError: "Fehler bei der Massenaktion"
     },
     table: {
       selectAll: "Alle Tickets auf dieser Seite auswählen",
@@ -670,34 +731,39 @@ const TICKETS_COPY = {
       purgeTitle: "Endgültig löschen",
       delete: "Löschen",
       slaFirstResponse: "Frist erste Reaktion",
-      slaResolution: "Frist Lösung",
+      slaResolution: "Frist Lösung"
     },
     tooltip: {
       majorIncident: "Schwerer Vorfall",
       comment: "{count} Kommentar",
-      commentPlural: "{count} Kommentare",
+      commentPlural: "{count} Kommentare"
     },
     sla: {},
     followersCount: "{count} Follower",
     export: {
       filenamePrefix: "tickets",
       truncated: "Export auf die ersten 10.000 passenden Tickets begrenzt.",
-      headers: [
-        "ID",
-        "Betreff",
-        "Typ",
-        "Kanal",
-        "Anfragender",
-        "Kunde",
-        "Zugewiesen",
-        "Follower",
-        "Status",
-        "Prioritaet",
-        "Erstellt",
-        "Letzte Aenderung",
-      ],
+      headers: ["ID", "Betreff", "Typ", "Kanal", "Anfragender", "Kunde", "Zugewiesen", "Follower", "Status", "Prioritaet", "Erstellt", "Letzte Aenderung"]
+    },
+    columnsModal: {
+      title: "Tabellenspalten",
+      subtitle: "Wählen Sie die sichtbaren Spalten in der Ticketliste.",
+      privateTab: "Private Ansicht",
+      publicTab: "Öffentliche Ansicht",
+      privateHintInactive: "Noch keine private Ansicht — die öffentliche Ansicht wird verwendet. Spalten umschalten, um Ihre zu erstellen.",
+      privateHintActive: "Ihre private Ansicht überschreibt die öffentliche Ansicht.",
+      publicHint: "Standardspalten für alle Benutzer ohne private Ansicht.",
+      adminOnly: "Nur Administratoren können die öffentliche Ansicht bearbeiten.",
+      resetPrivate: "Öffentliche Ansicht verwenden",
+      resetSuccess: "Private Ansicht zurückgesetzt",
+      savePrivateSuccess: "Private Ansicht gespeichert",
+      savePublicSuccess: "Öffentliche Ansicht gespeichert",
+      saveError: "Fehler beim Speichern der Spalten",
+      atLeastOne: "Wählen Sie mindestens eine Spalte.",
+      save: "Speichern"
     },
     toasts: {
+      loadColumns: "Fehler beim Laden der Spalten",
       loadViews: "Fehler beim Laden der Ansichten",
       loadData: "Fehler beim Laden der Daten",
       loadTickets: "Fehler beim Laden der Tickets",
@@ -723,8 +789,8 @@ const TICKETS_COPY = {
       reorderViews: "Fehler beim Neuordnen der Ansichten",
       viewUpdated: "Ansicht aktualisiert",
       viewCreated: "Ansicht erstellt",
-      exportError: "Fehler beim CSV-Export",
-    },
+      exportError: "Fehler beim CSV-Export"
+    }
   },
   it: {
     eyebrow: "Helpdesk",
@@ -745,6 +811,8 @@ const TICKETS_COPY = {
     playModeDisabled: "Modalità ticket casuale disattivata",
     exportCsv: "Esporta in CSV",
     exportCsvAria: "Esporta CSV",
+    columnsSettings: "Configura colonne",
+    columnsSettingsAria: "Configura le colonne della tabella",
     newTicket: "Nuovo ticket",
     newTicketAria: "Nuovo ticket",
     statusFilters: {
@@ -752,21 +820,21 @@ const TICKETS_COPY = {
       in_progress: "In corso",
       pending: "In attesa",
       resolved: "Risolti",
-      closed: "Chiusi",
+      closed: "Chiusi"
     },
     statusBadge: {
       new: "Nuovo",
       in_progress: "In corso",
       pending: "In attesa",
       resolved: "Risolto",
-      closed: "Chiuso",
+      closed: "Chiuso"
     },
     priority: {
       low: "Bassa",
       normal: "Normale",
       high: "Alta",
       urgent: "Urgente",
-      majorIncident: "Incidente grave",
+      majorIncident: "Incidente grave"
     },
     channels: {
       web: "Web",
@@ -774,13 +842,25 @@ const TICKETS_COPY = {
       email: "Email",
       chat: "Chat",
       api: "API",
-      whatsapp: "WhatsApp",
+      whatsapp: "WhatsApp"
     },
     ticketTypes: {
-      incident: { label: "Incidente", hint: "Guasto o interruzione del servizio" },
-      demande: { label: "Richiesta", hint: "Esigenza o domanda del cliente" },
-      probleme: { label: "Problema", hint: "Causa radice ricorrente" },
-      changement: { label: "Cambio", hint: "Modifica pianificata" },
+      incident: {
+        label: "Incidente",
+        hint: "Guasto o interruzione del servizio"
+      },
+      demande: {
+        label: "Richiesta",
+        hint: "Esigenza o domanda del cliente"
+      },
+      probleme: {
+        label: "Problema",
+        hint: "Causa radice ricorrente"
+      },
+      changement: {
+        label: "Cambio",
+        hint: "Modifica pianificata"
+      }
     },
     allTypes: "Tutti i tipi",
     views: {
@@ -804,7 +884,7 @@ const TICKETS_COPY = {
       editView: "Modifica vista",
       editViewNamed: "Modifica vista {name}",
       collapsePane: "Comprimi viste",
-      expandPane: "Mostra viste",
+      expandPane: "Mostra viste"
     },
     search: {
       placeholder: "Ticket, cliente, richiedente, oggetto…",
@@ -812,13 +892,13 @@ const TICKETS_COPY = {
       clear: "Cancella",
       filterType: "Filtra per tipo",
       viewMeta: "Vista « {name} »",
-      defaultViewName: "Ticket",
+      defaultViewName: "Ticket"
     },
     empty: {
       trashTitle: "Cestino vuoto",
       noTicketsTitle: "Nessun ticket trovato",
       trashHint: "I ticket eliminati appariranno qui.",
-      activeHint: "Modifica i filtri o crea un nuovo ticket di supporto.",
+      activeHint: "Modifica i filtri o crea un nuovo ticket di supporto."
     },
     bulk: {
       selected: "selezionato",
@@ -838,7 +918,7 @@ const TICKETS_COPY = {
       confirmDelete: "Elimina",
       confirmPurge: "Elimina definitivamente",
       ticketLabel: "{count} ticket",
-      ticketLabelPlural: "{count} ticket",
+      ticketLabelPlural: "{count} ticket"
     },
     bulkModal: {
       title: "Azioni di massa",
@@ -861,12 +941,12 @@ const TICKETS_COPY = {
       assigneeModes: {
         replace: "Sostituisci assegnatari",
         add: "Aggiungi assegnatari",
-        remove: "Rimuovi assegnatari",
+        remove: "Rimuovi assegnatari"
       },
       watcherModes: {
         add: "Aggiungi follower",
         replace: "Sostituisci follower",
-        remove: "Rimuovi follower",
+        remove: "Rimuovi follower"
       },
       userFallback: "Utente",
       contactFallback: "Contatto #{id}",
@@ -875,9 +955,9 @@ const TICKETS_COPY = {
         noContact: "Scegli un contatto richiedente.",
         noUser: "Scegli un utente richiedente.",
         noAssignee: "Seleziona almeno un assegnatario.",
-        noWatcher: "Seleziona almeno un follower.",
+        noWatcher: "Seleziona almeno un follower."
       },
-      submitError: "Errore durante l'azione di massa",
+      submitError: "Errore durante l'azione di massa"
     },
     table: {
       selectAll: "Seleziona tutti i ticket della pagina",
@@ -904,34 +984,39 @@ const TICKETS_COPY = {
       purgeTitle: "Elimina definitivamente",
       delete: "Elimina",
       slaFirstResponse: "Scadenza prima risposta",
-      slaResolution: "Scadenza risoluzione",
+      slaResolution: "Scadenza risoluzione"
     },
     tooltip: {
       majorIncident: "Incidente grave",
       comment: "{count} commento",
-      commentPlural: "{count} commenti",
+      commentPlural: "{count} commenti"
     },
     sla: {},
     followersCount: "{count} follower",
     export: {
       filenamePrefix: "tickets",
       truncated: "Export limitato ai primi 10.000 ticket corrispondenti ai filtri.",
-      headers: [
-        "ID",
-        "Oggetto",
-        "Tipo",
-        "Canale",
-        "Richiedente",
-        "Cliente",
-        "Assegnati",
-        "Follower",
-        "Stato",
-        "Priorita",
-        "Creazione",
-        "Ultima modifica",
-      ],
+      headers: ["ID", "Oggetto", "Tipo", "Canale", "Richiedente", "Cliente", "Assegnati", "Follower", "Stato", "Priorita", "Creazione", "Ultima modifica"]
+    },
+    columnsModal: {
+      title: "Colonne della tabella",
+      subtitle: "Scegli le colonne visibili nell’elenco ticket.",
+      privateTab: "Vista privata",
+      publicTab: "Vista pubblica",
+      privateHintInactive: "Nessuna vista privata — viene usata la vista pubblica. Seleziona le colonne per crearne una.",
+      privateHintActive: "La tua vista privata sostituisce la vista pubblica.",
+      publicHint: "Colonne predefinite per tutti gli utenti senza vista privata.",
+      adminOnly: "Solo gli amministratori possono modificare la vista pubblica.",
+      resetPrivate: "Usa la vista pubblica",
+      resetSuccess: "Vista privata reimpostata",
+      savePrivateSuccess: "Vista privata salvata",
+      savePublicSuccess: "Vista pubblica salvata",
+      saveError: "Errore nel salvataggio delle colonne",
+      atLeastOne: "Seleziona almeno una colonna.",
+      save: "Salva"
     },
     toasts: {
+      loadColumns: "Errore nel caricamento delle colonne",
       loadViews: "Errore nel caricamento delle viste",
       loadData: "Errore nel caricamento dei dati",
       loadTickets: "Errore nel caricamento dei ticket",
@@ -957,8 +1042,8 @@ const TICKETS_COPY = {
       reorderViews: "Errore nel riordino delle viste",
       viewUpdated: "Vista aggiornata",
       viewCreated: "Vista creata",
-      exportError: "Errore nell'export CSV",
-    },
+      exportError: "Errore nell'export CSV"
+    }
   },
   es: {
     eyebrow: "Helpdesk",
@@ -979,6 +1064,8 @@ const TICKETS_COPY = {
     playModeDisabled: "Modo ticket aleatorio desactivado",
     exportCsv: "Exportar a CSV",
     exportCsvAria: "Exportar CSV",
+    columnsSettings: "Configurar columnas",
+    columnsSettingsAria: "Configurar columnas de la tabla",
     newTicket: "Nuevo ticket",
     newTicketAria: "Nuevo ticket",
     statusFilters: {
@@ -986,21 +1073,21 @@ const TICKETS_COPY = {
       in_progress: "En curso",
       pending: "En espera",
       resolved: "Resueltos",
-      closed: "Cerrados",
+      closed: "Cerrados"
     },
     statusBadge: {
       new: "Nuevo",
       in_progress: "En curso",
       pending: "En espera",
       resolved: "Resuelto",
-      closed: "Cerrado",
+      closed: "Cerrado"
     },
     priority: {
       low: "Baja",
       normal: "Normal",
       high: "Alta",
       urgent: "Urgente",
-      majorIncident: "Incidente grave",
+      majorIncident: "Incidente grave"
     },
     channels: {
       web: "Web",
@@ -1008,13 +1095,25 @@ const TICKETS_COPY = {
       email: "Email",
       chat: "Chat",
       api: "API",
-      whatsapp: "WhatsApp",
+      whatsapp: "WhatsApp"
     },
     ticketTypes: {
-      incident: { label: "Incidente", hint: "Avería o interrupción del servicio" },
-      demande: { label: "Solicitud", hint: "Necesidad o pregunta del cliente" },
-      probleme: { label: "Problema", hint: "Causa raíz recurrente" },
-      changement: { label: "Cambio", hint: "Modificación planificada" },
+      incident: {
+        label: "Incidente",
+        hint: "Avería o interrupción del servicio"
+      },
+      demande: {
+        label: "Solicitud",
+        hint: "Necesidad o pregunta del cliente"
+      },
+      probleme: {
+        label: "Problema",
+        hint: "Causa raíz recurrente"
+      },
+      changement: {
+        label: "Cambio",
+        hint: "Modificación planificada"
+      }
     },
     allTypes: "Todos los tipos",
     views: {
@@ -1038,7 +1137,7 @@ const TICKETS_COPY = {
       editView: "Editar vista",
       editViewNamed: "Editar vista {name}",
       collapsePane: "Contraer vistas",
-      expandPane: "Mostrar vistas",
+      expandPane: "Mostrar vistas"
     },
     search: {
       placeholder: "Ticket, cliente, solicitante, asunto…",
@@ -1046,13 +1145,13 @@ const TICKETS_COPY = {
       clear: "Borrar",
       filterType: "Filtrar por tipo",
       viewMeta: "Vista « {name} »",
-      defaultViewName: "Tickets",
+      defaultViewName: "Tickets"
     },
     empty: {
       trashTitle: "Papelera vacía",
       noTicketsTitle: "Ningún ticket encontrado",
       trashHint: "Los tickets eliminados aparecerán aquí.",
-      activeHint: "Ajusta los filtros o crea un nuevo ticket de soporte.",
+      activeHint: "Ajusta los filtros o crea un nuevo ticket de soporte."
     },
     bulk: {
       selected: "seleccionado",
@@ -1072,7 +1171,7 @@ const TICKETS_COPY = {
       confirmDelete: "Eliminar",
       confirmPurge: "Eliminar definitivamente",
       ticketLabel: "{count} ticket",
-      ticketLabelPlural: "{count} tickets",
+      ticketLabelPlural: "{count} tickets"
     },
     bulkModal: {
       title: "Acciones masivas",
@@ -1095,12 +1194,12 @@ const TICKETS_COPY = {
       assigneeModes: {
         replace: "Reemplazar asignados",
         add: "Añadir asignados",
-        remove: "Quitar asignados",
+        remove: "Quitar asignados"
       },
       watcherModes: {
         add: "Añadir seguidores",
         replace: "Reemplazar seguidores",
-        remove: "Quitar seguidores",
+        remove: "Quitar seguidores"
       },
       userFallback: "Usuario",
       contactFallback: "Contacto #{id}",
@@ -1109,9 +1208,9 @@ const TICKETS_COPY = {
         noContact: "Elige un contacto solicitante.",
         noUser: "Elige un usuario solicitante.",
         noAssignee: "Selecciona al menos un asignado.",
-        noWatcher: "Selecciona al menos un seguidor.",
+        noWatcher: "Selecciona al menos un seguidor."
       },
-      submitError: "Error en la acción masiva",
+      submitError: "Error en la acción masiva"
     },
     table: {
       selectAll: "Seleccionar todos los tickets de la página",
@@ -1138,34 +1237,39 @@ const TICKETS_COPY = {
       purgeTitle: "Eliminar definitivamente",
       delete: "Eliminar",
       slaFirstResponse: "Plazo primera respuesta",
-      slaResolution: "Plazo resolución",
+      slaResolution: "Plazo resolución"
     },
     tooltip: {
       majorIncident: "Incidente grave",
       comment: "{count} comentario",
-      commentPlural: "{count} comentarios",
+      commentPlural: "{count} comentarios"
     },
     sla: {},
     followersCount: "{count} seguidores",
     export: {
       filenamePrefix: "tickets",
       truncated: "Exportación limitada a los primeros 10.000 tickets que coincidan con los filtros.",
-      headers: [
-        "ID",
-        "Asunto",
-        "Tipo",
-        "Canal",
-        "Solicitante",
-        "Cliente",
-        "Asignados",
-        "Seguidores",
-        "Estado",
-        "Prioridad",
-        "Creacion",
-        "Ultima modificacion",
-      ],
+      headers: ["ID", "Asunto", "Tipo", "Canal", "Solicitante", "Cliente", "Asignados", "Seguidores", "Estado", "Prioridad", "Creacion", "Ultima modificacion"]
+    },
+    columnsModal: {
+      title: "Columnas de la tabla",
+      subtitle: "Elige las columnas visibles en la lista de tickets.",
+      privateTab: "Vista privada",
+      publicTab: "Vista pública",
+      privateHintInactive: "Aún no hay vista privada — se usa la vista pública. Marca columnas para crear la tuya.",
+      privateHintActive: "Tu vista privada sustituye la vista pública.",
+      publicHint: "Columnas por defecto para todos los usuarios sin vista privada.",
+      adminOnly: "Solo los administradores pueden editar la vista pública.",
+      resetPrivate: "Usar la vista pública",
+      resetSuccess: "Vista privada restablecida",
+      savePrivateSuccess: "Vista privada guardada",
+      savePublicSuccess: "Vista pública guardada",
+      saveError: "Error al guardar las columnas",
+      atLeastOne: "Selecciona al menos una columna.",
+      save: "Guardar"
     },
     toasts: {
+      loadColumns: "Error al cargar las columnas",
       loadViews: "Error al cargar las vistas",
       loadData: "Error al cargar los datos",
       loadTickets: "Error al cargar los tickets",
@@ -1191,45 +1295,45 @@ const TICKETS_COPY = {
       reorderViews: "Error al reordenar las vistas",
       viewUpdated: "Vista actualizada",
       viewCreated: "Vista creada",
-      exportError: "Error al exportar CSV",
-    },
-  },
+      exportError: "Error al exportar CSV"
+    }
+  }
 };
-
 export function getTicketPageCopy(locale) {
   const t = pickLocaleMessages(TICKETS_COPY, locale);
-
-  const ticketTypeOptions = TICKET_TYPE_KEYS.map((value) => ({
+  const ticketTypeOptions = TICKET_TYPE_KEYS.map(value => ({
     value,
     label: t.ticketTypes[value].label,
-    hint: t.ticketTypes[value].hint,
+    hint: t.ticketTypes[value].hint
   }));
-
   return {
     ...t,
-    statusFilters: STATUS_FILTER_KEYS.map((key) => ({
+    statusFilters: STATUS_FILTER_KEYS.map(key => ({
       key,
       label: t.statusFilters[key],
-      ...STATUS_FILTER_META[key],
+      ...STATUS_FILTER_META[key]
     })),
     ticketTypeOptions,
-    typeFilterOptions: [{ value: "", label: t.allTypes }, ...ticketTypeOptions],
-    getStatusBadge: (status) => t.statusBadge[status] || status,
-    getPriorityLabel: (priority) => t.priority[priority] || priority || "-",
-    getChannelMeta: (channel) => ({
+    typeFilterOptions: [{
+      value: "",
+      label: t.allTypes
+    }, ...ticketTypeOptions],
+    getStatusBadge: status => t.statusBadge[status] || status,
+    getPriorityLabel: priority => t.priority[priority] || priority || "-",
+    getChannelMeta: channel => ({
       label: t.channels[channel] || channel || "-",
-      icon: CHANNEL_ICONS[channel] || "mdi:help-circle-outline",
+      icon: CHANNEL_ICONS[channel] || "mdi:help-circle-outline"
     }),
-    getTypeLabel: (type) => {
+    getTypeLabel: type => {
       const normalized = String(type || "").trim().toLowerCase();
       const safeType = normalized === "request" ? "demande" : normalized;
-      const match = ticketTypeOptions.find((option) => option.value === safeType);
+      const match = ticketTypeOptions.find(option => option.value === safeType);
       return match?.label || safeType || "-";
     },
-    getTypeTooltip: (type) => {
+    getTypeTooltip: type => {
       const normalized = String(type || "").trim().toLowerCase();
       const safeType = normalized === "request" ? "demande" : normalized;
-      const match = ticketTypeOptions.find((option) => option.value === safeType);
+      const match = ticketTypeOptions.find(option => option.value === safeType);
       if (!match) return safeType || "-";
       return `${match.label} · ${match.hint}`;
     },
@@ -1237,75 +1341,89 @@ export function getTicketPageCopy(locale) {
       if (priority === "urgent" || isMajor) {
         return {
           icon: "mdi:alert-octagon",
-          label: isMajor ? t.priority.majorIncident : t.priority.urgent,
+          label: isMajor ? t.priority.majorIncident : t.priority.urgent
         };
       }
       if (priority === "low") {
-        return { icon: "mdi:arrow-down", label: t.priority.low };
+        return {
+          icon: "mdi:arrow-down",
+          label: t.priority.low
+        };
       }
       if (priority === "normal") {
-        return { icon: "mdi:minus", label: t.priority.normal };
+        return {
+          icon: "mdi:minus",
+          label: t.priority.normal
+        };
       }
       return {
         icon: "mdi:arrow-up",
-        label: t.priority[priority] || priority || "-",
+        label: t.priority[priority] || priority || "-"
       };
     },
-    formatTicketCount: (count) =>
-      interpolate(count === 1 ? t.ticketCount : t.ticketCountPlural, { count: String(count) }),
-    formatTrashSubtitle: (count) =>
-      interpolate(count === 1 ? t.trashSubtitle : t.trashSubtitlePlural, { count: String(count) }),
-    formatSatisfactionCount: (count) =>
-      interpolate(count === 1 ? t.satisfactionCount : t.satisfactionCountPlural, { count: String(count) }),
-    formatViewTicketCountAria: (count) =>
-      interpolate(count === 1 ? t.views.ticketCountAria : t.views.ticketCountAriaPlural, {
-        count: String(count),
-      }),
-    formatBulkTicketLabel: (count) =>
-      interpolate(count === 1 ? t.bulk.ticketLabel : t.bulk.ticketLabelPlural, { count: String(count) }),
-    formatCommentCount: (count) =>
-      interpolate(count === 1 ? t.tooltip.comment : t.tooltip.commentPlural, { count: String(count) }),
-    formatFollowersCount: (count) => interpolate(t.followersCount, { count: String(count) }),
-    formatViewMeta: (name) =>
-      interpolate(t.search.viewMeta, { name: name || t.search.defaultViewName }),
-    formatDragViewAria: (name) => interpolate(t.views.dragView, { name }),
-    formatEditViewAria: (name) => interpolate(t.views.editViewNamed, { name }),
-    formatSelectTicketAria: (id) => interpolate(t.table.selectOne, { id: String(id) }),
-    formatBulkRestored: (successCount) =>
-      interpolate(successCount === 1 ? t.toasts.bulkRestored : t.toasts.bulkRestoredPlural, {
-        count: String(successCount),
-      }),
-    formatBulkPurged: (successCount) =>
-      interpolate(successCount === 1 ? t.toasts.bulkPurged : t.toasts.bulkPurgedPlural, {
-        count: String(successCount),
-      }),
-    formatBulkDeleted: (successCount) =>
-      interpolate(successCount === 1 ? t.toasts.bulkDeleted : t.toasts.bulkDeletedPlural, {
-        count: String(successCount),
-      }),
-    formatBulkUpdated: (successCount) =>
-      interpolate(successCount === 1 ? t.toasts.bulkUpdated : t.toasts.bulkUpdatedPlural, {
-        count: String(successCount),
-      }),
-    formatBulkModalSelected: (count) =>
-      interpolate(count === 1 ? t.bulkModal.selected : t.bulkModal.selectedPlural, {
-        count: String(count),
-      }),
-    statusOptions: ["new", "in_progress", "pending", "resolved", "closed"].map((value) => ({
+    formatTicketCount: count => interpolate(count === 1 ? t.ticketCount : t.ticketCountPlural, {
+      count: String(count)
+    }),
+    formatTrashSubtitle: count => interpolate(count === 1 ? t.trashSubtitle : t.trashSubtitlePlural, {
+      count: String(count)
+    }),
+    formatSatisfactionCount: count => interpolate(count === 1 ? t.satisfactionCount : t.satisfactionCountPlural, {
+      count: String(count)
+    }),
+    formatViewTicketCountAria: count => interpolate(count === 1 ? t.views.ticketCountAria : t.views.ticketCountAriaPlural, {
+      count: String(count)
+    }),
+    formatBulkTicketLabel: count => interpolate(count === 1 ? t.bulk.ticketLabel : t.bulk.ticketLabelPlural, {
+      count: String(count)
+    }),
+    formatCommentCount: count => interpolate(count === 1 ? t.tooltip.comment : t.tooltip.commentPlural, {
+      count: String(count)
+    }),
+    formatFollowersCount: count => interpolate(t.followersCount, {
+      count: String(count)
+    }),
+    formatViewMeta: name => interpolate(t.search.viewMeta, {
+      name: name || t.search.defaultViewName
+    }),
+    formatDragViewAria: name => interpolate(t.views.dragView, {
+      name
+    }),
+    formatEditViewAria: name => interpolate(t.views.editViewNamed, {
+      name
+    }),
+    formatSelectTicketAria: id => interpolate(t.table.selectOne, {
+      id: String(id)
+    }),
+    formatBulkRestored: successCount => interpolate(successCount === 1 ? t.toasts.bulkRestored : t.toasts.bulkRestoredPlural, {
+      count: String(successCount)
+    }),
+    formatBulkPurged: successCount => interpolate(successCount === 1 ? t.toasts.bulkPurged : t.toasts.bulkPurgedPlural, {
+      count: String(successCount)
+    }),
+    formatBulkDeleted: successCount => interpolate(successCount === 1 ? t.toasts.bulkDeleted : t.toasts.bulkDeletedPlural, {
+      count: String(successCount)
+    }),
+    formatBulkUpdated: successCount => interpolate(successCount === 1 ? t.toasts.bulkUpdated : t.toasts.bulkUpdatedPlural, {
+      count: String(successCount)
+    }),
+    formatBulkModalSelected: count => interpolate(count === 1 ? t.bulkModal.selected : t.bulkModal.selectedPlural, {
+      count: String(count)
+    }),
+    statusOptions: ["new", "in_progress", "pending", "resolved", "closed"].map(value => ({
       value,
-      label: t.statusBadge[value],
+      label: t.statusBadge[value]
     })),
-    priorityOptions: ["low", "normal", "high", "urgent"].map((value) => ({
+    priorityOptions: ["low", "normal", "high", "urgent"].map(value => ({
       value,
-      label: t.priority[value],
+      label: t.priority[value]
     })),
-    assigneeModes: ["replace", "add", "remove"].map((value) => ({
+    assigneeModes: ["replace", "add", "remove"].map(value => ({
       value,
-      label: t.bulkModal.assigneeModes[value],
+      label: t.bulkModal.assigneeModes[value]
     })),
-    watcherModes: ["add", "replace", "remove"].map((value) => ({
+    watcherModes: ["add", "replace", "remove"].map(value => ({
       value,
-      label: t.bulkModal.watcherModes[value],
-    })),
+      label: t.bulkModal.watcherModes[value]
+    }))
   };
 }

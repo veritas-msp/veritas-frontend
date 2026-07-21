@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react";
 import { CHART_COLORS } from "./DashboardCharts";
 import styles from "./DashboardTopCard.module.css";
-
 export default function DashboardTopCard({
   title,
   icon,
@@ -10,31 +9,21 @@ export default function DashboardTopCard({
   emptyLabel,
   viewAllLabel,
   othersLabel,
-  onOpen,
+  onOpen
 }) {
   if (!items?.length) {
-    return (
-      <article className={styles.card}>
+    return <article className={styles.card}>
         <h3 className={styles.cardTitle}>
           {icon ? <Icon icon={icon} aria-hidden /> : null}
           {title}
         </h3>
         <p className={styles.emptyHint}>{emptyLabel}</p>
-      </article>
-    );
+      </article>;
   }
-
   const preview = items.slice(0, previewCount);
-  const max = Math.max(...preview.map((item) => item.count), 1);
+  const max = Math.max(...preview.map(item => item.count), 1);
   const hiddenCount = Math.max(0, items.length - preview.length);
-
-  return (
-    <button
-      type="button"
-      className={styles.card}
-      onClick={onOpen}
-      aria-haspopup="dialog"
-    >
+  return <button type="button" className={styles.card} onClick={onOpen} aria-haspopup="dialog">
       <div className={styles.cardHeader}>
         <h3 className={styles.cardTitle}>
           {icon ? <Icon icon={icon} aria-hidden /> : null}
@@ -44,8 +33,7 @@ export default function DashboardTopCard({
       </div>
 
       <ol className={styles.list}>
-        {preview.map((item, index) => (
-          <li key={item.name} className={styles.row}>
+        {preview.map((item, index) => <li key={item.name} className={styles.row}>
             <span className={styles.rank}>{index + 1}</span>
             <div className={styles.rowBody}>
               <div className={styles.rowMeta}>
@@ -56,24 +44,17 @@ export default function DashboardTopCard({
                 </span>
               </div>
               <div className={styles.rowTrack}>
-                <span
-                  className={styles.rowFill}
-                  style={{
-                    width: `${Math.round((item.count / max) * 100)}%`,
-                    background: CHART_COLORS[index % CHART_COLORS.length],
-                  }}
-                />
+                <span className={styles.rowFill} style={{
+              width: `${Math.round(item.count / max * 100)}%`,
+              background: CHART_COLORS[index % CHART_COLORS.length]
+            }} />
               </div>
             </div>
-          </li>
-        ))}
+          </li>)}
       </ol>
 
-      {hiddenCount > 0 ? (
-        <span className={styles.moreHint}>
+      {hiddenCount > 0 ? <span className={styles.moreHint}>
           {othersLabel || `+${hiddenCount}`}
-        </span>
-      ) : null}
-    </button>
-  );
+        </span> : null}
+    </button>;
 }

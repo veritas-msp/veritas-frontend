@@ -81,37 +81,37 @@
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
 }
 
-/* Statut Excellent */
+
 .statusDot.excellent {
   background-color: #10b981;
   color: #10b981;
 }
 
-/* Statut Good */
+
 .statusDot.good {
   background-color: #22c55e;
   color: #22c55e;
 }
 
-/* Statut Poor */
+
 .statusDot.poor {
   background-color: #eab308;
   color: #eab308;
 }
 
-/* Statut Warning */
+
 .statusDot.warning {
   background-color: #f59e0b;
   color: #f59e0b;
 }
 
-/* Statut Critical */
+
 .statusDot.critical {
   background-color: #ef4444;
   color: #ef4444;
 }
 
-/* Statut Unknown */
+
 .statusDot.unknown {
   background-color: #9ca3af;
   color: #9ca3af;
@@ -444,7 +444,7 @@
   background-color: #ffffff;
 }
 
-/* Masquer les flèches haut/bas */
+
 .metricInput::-webkit-outer-spin-button,
 .metricInput::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -452,7 +452,7 @@
   display: none;
 }
 
-/* Styles pour Firefox */
+
 .metricInput[type="number"] {
   appearance: textfield;
   -moz-appearance: textfield;
@@ -594,7 +594,7 @@
   color: #fca5a5;
 }
 
-/* Tooltip note globale */
+
 .scoreTooltipContainer {
   position: relative;
   display: inline-flex;
@@ -711,7 +711,7 @@
   border-color: #4a4a6a;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1200px) {
   .switchGrid {
     grid-template-columns: repeat(2, 1fr);
@@ -768,7 +768,7 @@
   }
 }
 
-/* Nouveaux styles pour les boutons d'action */
+
 .switchType {
   display: flex;
   align-items: center;
@@ -785,7 +785,7 @@
   flex: 0 0 auto;
 }
 
-/* Aligné sur le style des boutons du header EnterpriseDetailPage */
+
 .commentToggleButton {
   display: inline-flex;
   align-items: center;
@@ -865,7 +865,7 @@
   margin-bottom: 0.5rem;
 }
 
-/* Modal d'édition */
+
 .editModalOverlay {
   position: fixed;
   inset: 0;
@@ -1018,7 +1018,7 @@
   opacity: 0.6;
 }
 
-/* Carte de notation (55% de la largeur) */
+
 .scoreCardLeft {
   flex: 0 0 55%;
   min-width: 0;
@@ -1037,7 +1037,7 @@
   height: 100px;
 }
 
-/* Classes pour les cartes de statistiques (45% de la largeur) */
+
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1176,7 +1176,7 @@
   color: var(--text-primary);
 }
 
-/* Styles pour les sous-titres */
+
 .switchMetaFlex {
   display: flex;
   justify-content: space-between;

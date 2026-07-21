@@ -34,8 +34,7 @@ export default {
     average: "Media",
     edited: "editado",
     confidentialUse: "Uso confidencial",
-    attachmentFormats:
-      "PDF, JPG, PNG, DOC, DOCX, CSV, XLS, XLSX, MP4, 3GP, MP3, OGG, AAC, AMR, M4A",
+    attachmentFormats: "PDF, JPG, PNG, DOC, DOCX, CSV, XLS, XLSX, MP4, 3GP, MP3, OGG, AAC, AMR, M4A"
   },
   layout: {
     brandSub: "Portal del cliente",
@@ -82,15 +81,14 @@ export default {
     stopImpersonation: "Salir de la suplantación",
     loadError: "Error al cargar el portal.",
     stopImpersonationSuccess: "Ha vuelto a su sesión de agente.",
-    stopImpersonationError: "No se pudo salir de la suplantación.",
+    stopImpersonationError: "No se pudo salir de la suplantación."
   },
   dashboard: {
     pageTitle: "Resumen",
     healthBadge: "Salud informática {pct}%",
     actionRequiredTitleOne: "{count} ticket requiere su atención",
     actionRequiredTitleMany: "{count} tickets requieren su atención",
-    actionRequiredDesc:
-      "Se requiere la validación de la resolución o una respuesta suya para continuar.",
+    actionRequiredDesc: "Se requiere la validación de la resolución o una respuesta suya para continuar.",
     autoCloseAt: "Cierre automático el {date}",
     pendingYourResponse: "En espera de su respuesta",
     seeInSupport: "Ver en Soporte",
@@ -152,7 +150,7 @@ export default {
     cloudSummaryUsersMany: "{count} usuarios",
     cloudSummaryServicesOne: "{count} servicio",
     cloudSummaryServicesMany: "{count} servicios",
-    cloudSummaryBackup: "{instances} instancia(s) · {jobs} job(s)",
+    cloudSummaryBackup: "{instances} instancia(s) · {jobs} job(s)"
   },
   overviewCatalog: {
     workstations: "Puestos de trabajo",
@@ -169,14 +167,13 @@ export default {
     save: "Copia de seguridad",
     antivirus: "Antivirus",
     antispam: "Antispam",
-    ndd: "Dominios",
+    ndd: "Dominios"
   },
   devices: {
     eyebrow: "Infraestructura",
     pageTitle: "Mis equipos",
     emptyTitle: "Ningún equipo registrado",
-    emptyDesc:
-      "Su parque e infraestructura aparecerán aquí una vez configurados por su equipo Veritas.",
+    emptyDesc: "Su parque e infraestructura aparecerán aquí una vez configurados por su equipo Veritas.",
     tabOverview: "Resumen",
     tabDevices: "Equipos",
     filterAll: "Todos",
@@ -195,7 +192,7 @@ export default {
     agentOffline: "Agente desconectado",
     agentUnknown: "Estado desconocido",
     noItemsInCategory: "Ningún equipo en esta categoría.",
-    noWorkstationsData: "Datos detallados de puestos no disponibles.",
+    noWorkstationsData: "Datos detallados de puestos no disponibles."
   },
   contract: {
     eyebrow: "Contrato",
@@ -207,14 +204,13 @@ export default {
     infraGroupTitle: "Infraestructura",
     cloudGroupTitle: "Cloud y ciberseguridad",
     optionActive: "Contratado",
-    optionInactive: "No contratado",
+    optionInactive: "No contratado"
   },
   services: {
     eyebrow: "Servicios",
     pageTitle: "Mis servicios",
     emptyTitle: "Ningún servicio en la nube configurado",
-    emptyDesc:
-      "Microsoft 365, copia de seguridad, antivirus y otros servicios aparecerán aquí una vez activados.",
+    emptyDesc: "Microsoft 365, copia de seguridad, antivirus y otros servicios aparecerán aquí una vez activados.",
     filterAll: "Todos",
     filterByType: "Filtrar por tipo",
     tableService: "Servicio",
@@ -252,7 +248,7 @@ export default {
     domain: "Dominio",
     jobCount: "{count} jobs",
     jobCountOne: "{count} job",
-    saveJobLabel: "Job de copia",
+    saveJobLabel: "Job de copia"
   },
   fleet: {
     workstations: "Puestos de trabajo",
@@ -325,7 +321,7 @@ export default {
     health: {
       controlled: "Parque bajo control",
       vigilance: "Puntos de vigilancia",
-      watch: "Parque que requiere atención",
+      watch: "Parque que requiere atención"
     },
     chartLabels: {
       notSpecified: "No especificado",
@@ -356,8 +352,8 @@ export default {
       disk512to1tb: "512 GB – 1 TB",
       disk1tbPlus: "1 TB o más",
       powerDesktop: "PC de escritorio",
-      powerGeneric: "Puesto genérico",
-    },
+      powerGeneric: "Puesto genérico"
+    }
   },
   profile: {
     eyebrow: "Cuenta",
@@ -368,8 +364,7 @@ export default {
     identityTitle: "Identidad",
     identityDesc: "Actualice su información de inicio de sesión y visualización.",
     coordinatesTitle: "Datos de contacto",
-    coordinatesDesc:
-      "Correos electrónicos y teléfonos compartidos con su equipo Veritas. El correo favorito también se utiliza para iniciar sesión.",
+    coordinatesDesc: "Correos electrónicos y teléfonos compartidos con su equipo Veritas. El correo favorito también se utiliza para iniciar sesión.",
     coordinatesEmpty: "Aún no hay datos de contacto. Haga clic en Editar para añadirlos.",
     editCoordinates: "Editar",
     saveCoordinates: "Guardar",
@@ -392,14 +387,11 @@ export default {
       enabled: "Activado",
       pending: "Configuración en curso",
       off: "Desactivado",
-      enabledDesc:
-        "Su cuenta está protegida por un código de un solo uso generado por una aplicación de autenticación.",
-      pendingDesc:
-        "La configuración MFA se inició pero no se completó. Escanee el código QR y valide un código.",
-      offDesc:
-        "Añada una capa de seguridad con Microsoft Authenticator, Google Authenticator o una app compatible TOTP.",
+      enabledDesc: "Su cuenta está protegida por un código de un solo uso generado por una aplicación de autenticación.",
+      pendingDesc: "La configuración MFA se inició pero no se completó. Escanee el código QR y valide un código.",
+      offDesc: "Añada una capa de seguridad con Microsoft Authenticator, Google Authenticator o una app compatible TOTP.",
       continueSetup: "Continuar configuración",
-      enable: "Activar MFA",
+      enable: "Activar MFA"
     },
     loadError: "No se pudo cargar su perfil",
     modals: {
@@ -408,27 +400,27 @@ export default {
         title: "Editar nombre mostrado",
         label: "Nombre mostrado",
         hint: "De 2 a 50 caracteres.",
-        placeholder: "Su nombre",
+        placeholder: "Su nombre"
       },
       email: {
         title: "Editar correo electrónico",
         label: "Dirección de correo electrónico",
         hint: "Debe ser única en la plataforma.",
-        placeholder: "nombre@empresa.com",
+        placeholder: "nombre@empresa.com"
       },
       password: {
         title: "Cambiar contraseña",
         label: "Nueva contraseña",
         hint: "Mínimo 6 caracteres.",
         confirmLabel: "Confirmar contraseña",
-        confirmAction: "Actualizar",
+        confirmAction: "Actualizar"
       },
       portalEmail: {
         title: "Cambiar correo de inicio de sesión",
         desc: "El correo favorito se convertirá en su identificador de acceso al portal tras guardar.",
         previous: "Correo anterior",
         next: "Nuevo correo favorito",
-        confirmAction: "Confirmar y guardar",
+        confirmAction: "Confirmar y guardar"
       },
       mfa: {
         title: "Configurar autenticación de dos factores",
@@ -436,8 +428,8 @@ export default {
         qrAlt: "Código QR MFA",
         manualKey: "Clave manual:",
         codePlaceholder: "000000",
-        enable: "Activar MFA",
-      },
+        enable: "Activar MFA"
+      }
     },
     toast: {
       usernameTooShort: "El nombre mostrado debe tener al menos 2 caracteres.",
@@ -455,8 +447,8 @@ export default {
       contactIncomplete: "Complete o elimine las entradas de contacto vacías antes de guardar.",
       mfaSetupError: "Error de configuración MFA.",
       mfaEnabled: "Autenticación de dos factores activada.",
-      mfaInvalidCode: "Código no válido.",
-    },
+      mfaInvalidCode: "Código no válido."
+    }
   },
   ticket: {
     status: {
@@ -465,21 +457,27 @@ export default {
       pending: "En espera",
       in_progress: "En curso",
       resolved: "Resuelto",
-      closed: "Cerrado",
+      closed: "Cerrado"
     },
     priority: {
       low: "Baja",
       normal: "Normal",
       high: "Alta",
-      urgent: "Urgente",
+      urgent: "Urgente"
     },
     types: {
-      incident: { label: "Incidente", hint: "Avería o interrupción del servicio" },
-      demande: { label: "Solicitud", hint: "Necesidad o consulta" },
+      incident: {
+        label: "Incidente",
+        hint: "Avería o interrupción del servicio"
+      },
+      demande: {
+        label: "Solicitud",
+        hint: "Necesidad o consulta"
+      }
     },
     typeLabels: {
       probleme: "Problema",
-      changement: "Cambio",
+      changement: "Cambio"
     },
     channels: {
       web: "Portal del cliente",
@@ -487,18 +485,18 @@ export default {
       email: "Correo electrónico",
       chat: "Chat",
       api: "API",
-      whatsapp: "WhatsApp",
+      whatsapp: "WhatsApp"
     },
     statusFilters: {
       action_required: "Acción requerida",
       open: "Abiertos",
       all: "Todos",
       resolved: "Resueltos",
-      closed: "Cerrados",
+      closed: "Cerrados"
     },
     badges: {
       validationRequired: "Validación requerida",
-      actionRequired: "Acción requerida",
+      actionRequired: "Acción requerida"
     },
     list: {
       eyebrow: "Soporte",
@@ -523,7 +521,7 @@ export default {
       rated: "Valoración registrada",
       notRated: "Sin valorar",
       openTicketAria: "Abrir ticket {id}",
-      loadError: "No se pudieron cargar los tickets.",
+      loadError: "No se pudieron cargar los tickets."
     },
     detail: {
       loading: "Cargando ticket…",
@@ -537,8 +535,7 @@ export default {
       editMessageAria: "Editar mensaje",
       editMessageTitle: "Editar mensaje",
       validationQuestion: "¿Le conviene la solución propuesta?",
-      validationMeta:
-        "Confirme si el problema está resuelto o rechace para una nueva atención.",
+      validationMeta: "Confirme si el problema está resuelto o rechace para una nueva atención.",
       validationCommentPlaceholder: "Comentario opcional…",
       rejectResolution: "No, el problema persiste",
       acceptResolution: "Sí, está resuelto",
@@ -551,11 +548,9 @@ export default {
       ticketClosed: "cerrado",
       ticketResolved: "resuelto",
       ticketFinishedTitle: "Ticket {status}",
-      ticketFinishedText:
-        "Puede consultar el historial pero ya no puede enviar nuevos mensajes.",
+      ticketFinishedText: "Puede consultar el historial pero ya no puede enviar nuevos mensajes.",
       satisfactionInviteTitle: "Su opinión nos importa",
-      satisfactionInviteText:
-        "Comparta su experiencia en segundos · sus comentarios nos ayudan a mejorar el soporte.",
+      satisfactionInviteText: "Comparta su experiencia en segundos · sus comentarios nos ayudan a mejorar el soporte.",
       giveFeedback: "Dar mi opinión",
       thanksTitle: "¡Gracias por su comentario!",
       thanksText: "Su valoración ha sido registrada",
@@ -566,8 +561,7 @@ export default {
       modalEditTitle: "Editar mi valoración",
       modalViewTitle: "Su valoración",
       modalNewTitle: "Su opinión sobre el soporte",
-      modalSubtitle:
-        "Valore cada aspecto de 1 a 5 estrellas y añada un comentario si lo desea.",
+      modalSubtitle: "Valore cada aspecto de 1 a 5 estrellas y añada un comentario si lo desea.",
       commentLabel: "Comentario",
       commentOptional: "Comentario (opcional)",
       commentPlaceholder: "Comparta un comentario libre sobre su experiencia…",
@@ -581,8 +575,7 @@ export default {
       starNoteLabel: "Nota",
       starNoteFor: "Nota · {label}",
       validationAccepted: "¡Gracias! El ticket ha sido cerrado.",
-      validationRejected:
-        "Su comentario ha sido enviado al soporte. El ticket está de nuevo en curso.",
+      validationRejected: "Su comentario ha sido enviado al soporte. El ticket está de nuevo en curso.",
       validationError: "No se pudo guardar su respuesta.",
       satisfactionIncomplete: "Valore cada criterio de 1 a 5 estrellas.",
       satisfactionThanks: "¡Gracias por su comentario!",
@@ -595,7 +588,7 @@ export default {
       messageEmpty: "El mensaje no puede estar vacío.",
       messageEdited: "Mensaje modificado.",
       messageEditError: "No se pudo modificar el mensaje.",
-      loadError: "No se pudo cargar el ticket.",
+      loadError: "No se pudo cargar el ticket."
     },
     infoPanel: {
       aria: "Información del ticket",
@@ -620,7 +613,7 @@ export default {
       respondedAt: "Respondido:",
       activity: "Actividad",
       messages: "Mensajes:",
-      feedbackRecorded: "Opinión registrada",
+      feedbackRecorded: "Opinión registrada"
     },
     create: {
       eyebrow: "Helpdesk",
@@ -632,12 +625,7 @@ export default {
       dropHint: "{formats} · 15 MB máx. por archivo, {max} máx.",
       tipsTitle: "Consejos",
       tipsAria: "Mostrar consejos de entrada",
-      tips: [
-        "Describa el problema o la necesidad con precisión, incluyendo el contexto empresarial.",
-        "Indique el impacto en su actividad (personas afectadas, servicios implicados).",
-        "Enumere los pasos ya intentados para acelerar el diagnóstico.",
-        "Adjunte capturas de pantalla o documentos útiles para el soporte.",
-      ],
+      tips: ["Describa el problema o la necesidad con precisión, incluyendo el contexto empresarial.", "Indique el impacto en su actividad (personas afectadas, servicios implicados).", "Enumere los pasos ya intentados para acelerar el diagnóstico.", "Adjunte capturas de pantalla o documentos útiles para el soporte."],
       detailsTitle: "Detalles del ticket",
       subject: "Asunto",
       description: "Descripción detallada",
@@ -647,12 +635,12 @@ export default {
       issueNatureOptions: {
         hardware: "Hardware",
         software: "Software",
-        unsure: "No lo sé",
+        unsure: "No lo sé"
       },
       issueNatureLabels: {
         hardware: "Hardware",
         software: "Software",
-        unsure: "No especificado",
+        unsure: "No especificado"
       },
       documents: "Documentos",
       dropFilesTitle: "Arrastre archivos aquí o explore",
@@ -713,11 +701,11 @@ export default {
       confirmCreate: "Confirmar creación",
       titlePlaceholders: {
         incident: "Puesto inaccesible · error de red al iniciar",
-        demande: "Crear cuenta para nuevo empleado",
+        demande: "Crear cuenta para nuevo empleado"
       },
       descriptionPlaceholders: {
         incident: "Describa el problema y su impacto en su actividad.",
-        demande: "Especifique su necesidad, el contexto empresarial y la fecha deseada si procede.",
+        demande: "Especifique su necesidad, el contexto empresarial y la fecha deseada si procede."
       },
       loadDashboardError: "No se pudieron cargar los datos de la empresa.",
       invalidAttachment: "Archivo adjunto no válido",
@@ -729,30 +717,30 @@ export default {
       attachmentsFailed: "Ticket creado, pero no se pudieron enviar los archivos adjuntos.",
       createError: "No se pudo crear el ticket.",
       contactSlotFrom: "A partir del {date} a las {time}{note}",
-      contactSlotRange: "{date} · {start} – {end}{note}",
+      contactSlotRange: "{date} · {start} – {end}{note}"
     },
     satisfactionCriteria: {
       responsiveness: {
         label: "Capacidad de respuesta",
-        hint: "Rapidez de atención y seguimiento de su solicitud",
+        hint: "Rapidez de atención y seguimiento de su solicitud"
       },
       solution_quality: {
         label: "Calidad de la solución",
-        hint: "Pertinencia y eficacia de la resolución proporcionada",
+        hint: "Pertinencia y eficacia de la resolución proporcionada"
       },
       communication: {
         label: "Comunicación",
-        hint: "Claridad, escucha y cortesía en las interacciones",
+        hint: "Claridad, escucha y cortesía en las interacciones"
       },
       professionalism: {
         label: "Profesionalismo",
-        hint: "Experiencia y actitud del equipo de soporte",
+        hint: "Experiencia y actitud del equipo de soporte"
       },
       overall: {
         label: "Impresión general",
-        hint: "Su satisfacción general con esta solicitud",
-      },
-    },
+        hint: "Su satisfacción general con esta solicitud"
+      }
+    }
   },
   vault: {
     eyebrow: "Caja fuerte",
@@ -766,11 +754,9 @@ export default {
     filterAria: "Filtrar por tipo",
     allTypes: "Todos los tipos",
     emptyDocumentsTitle: "Ningún documento",
-    emptyDocumentsHint:
-      "Su equipo de soporte puede depositar aquí facturas, contratos, guías e informes.",
+    emptyDocumentsHint: "Su equipo de soporte puede depositar aquí facturas, contratos, guías e informes.",
     emptySecretsTitle: "Ningún acceso compartido",
-    emptySecretsHint:
-      "Su soporte puede compartir aquí una contraseña o un acceso temporal, con vencimiento y límite de consultas.",
+    emptySecretsHint: "Su soporte puede compartir aquí una contraseña o un acceso temporal, con vencimiento y límite de consultas.",
     expiresAt: "Vence el {date}",
     viewsRemainingOne: "{remaining} consulta restante de {max}",
     viewsRemainingMany: "{remaining} consultas restantes de {max}",
@@ -784,8 +770,7 @@ export default {
     loginLabel: "Usuario",
     secretLabel: "Contraseña / secreto",
     revealMeta: "Vence el {date} · {views}",
-    revealWarning:
-      "No comparta este secreto por correo electrónico sin cifrar. Puede solicitar su eliminación inmediata una vez utilizado.",
+    revealWarning: "No comparta este secreto por correo electrónico sin cifrar. Puede solicitar su eliminación inmediata una vez utilizado.",
     deleteAccess: "Eliminar este acceso",
     deleting: "Eliminando…",
     deleteSuccess: "Acceso eliminado.",
@@ -807,7 +792,7 @@ export default {
       Rapport: "Informe",
       Contrat: "Contrato",
       Procédure: "Procedimiento",
-      Autre: "Otro",
-    },
-  },
+      Autre: "Otro"
+    }
+  }
 };

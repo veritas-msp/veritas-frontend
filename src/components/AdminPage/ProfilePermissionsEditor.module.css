@@ -1,0 +1,227 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: 0;
+}
+
+.banner {
+  flex-shrink: 0;
+  margin: 0 0 10px;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--msp-accent, #2b5fab);
+  background: var(--msp-accent-soft, rgba(43, 95, 171, 0.1));
+  border: 1px solid color-mix(in srgb, var(--msp-accent, #2b5fab) 28%, transparent);
+  border-radius: 6px;
+}
+
+.state,
+.stateError {
+  padding: 24px 16px;
+  font-size: 0.84rem;
+  color: var(--msp-muted);
+  text-align: center;
+}
+
+.stateError {
+  color: #b91c1c;
+}
+
+.tableWrap {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  border: 1px solid var(--msp-border);
+  border-radius: 8px;
+  background: var(--msp-surface);
+}
+
+.matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  table-layout: fixed;
+}
+
+.matrix thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  padding: 10px 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--msp-muted-light);
+  background: var(--msp-surface);
+  border-bottom: 1px solid var(--msp-border);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.colResource {
+  text-align: left !important;
+  width: 24%;
+  min-width: 140px;
+  padding-left: 16px !important;
+  position: sticky;
+  left: 0;
+  z-index: 4;
+  background: var(--msp-surface);
+}
+
+.colAction {
+  width: 10%;
+}
+
+.colAll {
+  width: 8%;
+}
+
+.sectionRow td {
+  padding: 10px 16px 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--msp-muted);
+  background: var(--msp-surface-2);
+  border-bottom: 1px solid var(--msp-border-light);
+  position: sticky;
+  left: 0;
+}
+
+.dataRow td,
+.footerRow td {
+  padding: 0;
+  border-bottom: 1px solid var(--msp-border-light);
+  vertical-align: middle;
+  background: var(--msp-surface);
+}
+
+.dataRow:hover td {
+  background: var(--msp-surface-3);
+}
+
+.resourceCell {
+  padding: 9px 16px !important;
+  text-align: left;
+  font-weight: 500;
+  color: var(--msp-text);
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: inherit;
+}
+
+.actionCell {
+  text-align: center;
+  padding: 6px 4px !important;
+}
+
+.na {
+  color: var(--msp-muted-light);
+  font-size: 0.75rem;
+  user-select: none;
+  opacity: 0.55;
+}
+
+.check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0;
+}
+
+.check input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.checkBox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1.5px solid var(--msp-border);
+  background: var(--msp-surface);
+  color: #fff;
+  transition: background 0.1s, border-color 0.1s;
+}
+
+.check:hover:not(.checkLocked) .checkBox {
+  border-color: color-mix(in srgb, var(--msp-accent, #2b5fab) 55%, var(--msp-border));
+}
+
+.checkOn .checkBox {
+  background: var(--msp-accent, #2b5fab);
+  border-color: var(--msp-accent, #2b5fab);
+}
+
+.checkPartial .checkBox {
+  border-color: var(--msp-accent, #2b5fab);
+  background: var(--msp-surface);
+}
+
+.partialMark {
+  display: block;
+  width: 8px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--msp-accent, #2b5fab);
+}
+
+.checkLocked {
+  cursor: default;
+  opacity: 0.75;
+}
+
+.checkIcon {
+  width: 12px;
+  height: 12px;
+}
+
+.footerRow td {
+  background: var(--msp-surface-2);
+  border-top: 1px solid var(--msp-border);
+  border-bottom: none;
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+}
+
+.footerRow .resourceCell {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--msp-muted);
+  z-index: 3;
+}
+
+:global(html.dark) .matrix thead th,
+:global(html.dark) .colResource {
+  background: var(--msp-surface);
+}
+
+:global(html.dark) .sectionRow td,
+:global(html.dark) .footerRow td {
+  background: var(--msp-surface-2);
+}
+
+:global(html.dark) .checkBox {
+  background: var(--msp-surface);
+  border-color: var(--msp-border);
+}
+
+:global(html.dark) .checkOn .checkBox {
+  background: var(--msp-accent, #60a5fa);
+  border-color: var(--msp-accent, #60a5fa);
+}

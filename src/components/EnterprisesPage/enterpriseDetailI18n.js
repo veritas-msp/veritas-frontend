@@ -1,14 +1,12 @@
 import { createLocaleGetter, interpolate } from "../../i18n/translate";
 import { getEnterprisesPageCopy } from "./enterprisesPageI18n";
-
 const DETAIL_STATUS_COLORS = {
   suspended: "#f59e0b",
   unknown: "#9ca3af",
   expired: "#ef4444",
   expiring: "#f59e0b",
-  active: "#13BA8E",
+  active: "#13BA8E"
 };
-
 const DETAIL_COPY = {
   fr: {
     notFound: "Client introuvable",
@@ -24,6 +22,10 @@ const DETAIL_COPY = {
     addTag: "Ajouter une étiquette",
     actionsMenu: "Actions sur le client",
     actionsMenuTooltip: "Actions sur le client",
+    aiSummaryTooltip: "Résumé IA de l'entreprise",
+    monitoringAlerts: "Alertes de supervision",
+    monitoringAlertsTooltip: "Configurer les alertes de supervision",
+    monitoringAlertsSuspendedTooltip: "Alertes suspendues — cliquer pour gérer",
     configureAntivirus: "Configurer l'antivirus",
     configureAntispam: "Configurer l'antispam",
     configureMicrosoftTenant: "Configurer le tenant Microsoft",
@@ -47,13 +49,14 @@ const DETAIL_COPY = {
     prestationsCount: "{count} ticket(s)",
     campaignsTitle: "Campagnes",
     campaignsOngoing: "{count} en cours",
+    addCampaign: "Créer une campagne MFA",
     vaultTitle: "Coffre-fort documentaire",
     addToVault: "Ajouter au coffre-fort",
     sidebar: {
       showMore: "Voir plus",
       showLess: "Voir moins",
       expandSection: "Développer la section",
-      collapseSection: "Réduire la section",
+      collapseSection: "Réduire la section"
     },
     sidebarInfo: "Informations",
     sectorLabel: "Secteur d'activité",
@@ -106,7 +109,7 @@ const DETAIL_COPY = {
       label: "Note",
       placeholder: "Saisissez votre note sur ce client…",
       addBtn: "Ajouter la note",
-      saveBtn: "Enregistrer",
+      saveBtn: "Enregistrer"
     },
     table: {
       number: "N°",
@@ -118,7 +121,7 @@ const DETAIL_COPY = {
       created: "Créée le",
       name: "Nom",
       progress: "Progression",
-      start: "Début",
+      start: "Début"
     },
     emptySupportTickets: "Aucun ticket support pour ce client.",
     emptyPrestationTickets: "Aucun ticket prestations / services pour ce client.",
@@ -129,55 +132,45 @@ const DETAIL_COPY = {
       steps: {
         hero: {
           title: "Vue d'ensemble de l'entreprise",
-          content:
-            "Ici vous retrouvez le nom, le statut du contrat, le commercial référent, le nombre d'équipements et les étiquettes. Le menu ⋮ permet d'exporter le dossier ou de modifier la fiche.",
+          content: "Ici vous retrouvez le nom, le statut du contrat, le commercial référent, le nombre d'équipements et les étiquettes. Le menu ⋮ permet d'exporter le dossier ou de modifier la fiche."
         },
         sidebarInfo: {
           title: "Informations contractuelles",
-          content:
-            "Le panneau de droite regroupe l'identité légale, les dates de contrat et les modules activés pour ce client. Dépliez la section pour voir le SIRET, le secteur et l'adresse.",
+          content: "Le panneau de droite regroupe l'identité légale, les dates de contrat et les modules activés pour ce client. Dépliez la section pour voir le SIRET, le secteur et l'adresse."
         },
         sidebarContacts: {
           title: "Contacts de l'entreprise",
-          content:
-            "Consultez les interlocuteurs rattachés, copiez leur carte ou ouvrez leur fiche. Utilisez le bouton + pour ajouter un nouveau contact.",
+          content: "Consultez les interlocuteurs rattachés, copiez leur carte ou ouvrez leur fiche. Utilisez le bouton + pour ajouter un nouveau contact."
         },
         infraMap: {
           title: "Cartographie infrastructure",
-          content:
-            "Visualisez en un coup d'œil les domaines, la cybersécurité, les services cloud et le matériel référencé pour cette entreprise.",
+          content: "Visualisez en un coup d'œil les domaines, la cybersécurité, les services cloud et le matériel référencé pour cette entreprise."
         },
         equipment: {
           title: "Périphériques et matériel",
-          content:
-            "Parcourez l'inventaire détaillé, filtrez les équipements et ajoutez du matériel avec le bouton +. C'est la base pour le support et le monitoring.",
+          content: "Parcourez l'inventaire détaillé, filtrez les équipements et ajoutez du matériel avec le bouton +. C'est la base pour le support et le monitoring."
         },
         equipmentStats: {
           title: "Statistiques du parc",
-          content:
-            "Sur la table Ordinateurs, ouvrez les statistiques dans un nouvel onglet pour analyser le parc : répartition des marques et modèles, OS, RAM, conformité RMM, cycle de vie Windows et estimation de consommation électrique.",
+          content: "Sur la table Ordinateurs, ouvrez les statistiques dans un nouvel onglet pour analyser le parc : répartition des marques et modèles, OS, RAM, conformité RMM, cycle de vie Windows et estimation de consommation électrique."
         },
         activity: {
           title: "Activité récente",
-          content:
-            "Suivez les tickets support, les prestations et les événements planifiés liés à ce client. Cliquez sur une ligne pour ouvrir le détail.",
+          content: "Suivez les tickets support, les prestations et les événements planifiés liés à ce client. Cliquez sur une ligne pour ouvrir le détail."
         },
         vault: {
           title: "Coffre-fort documentaire",
-          content:
-            "Factures, notices, guides et rapports partagés avec le contact sur son portail client. Recherchez, filtrez par type et déposez un document avec le bouton +. Indiquez si le fichier est visible côté portail.",
+          content: "Factures, notices, guides et rapports partagés avec le contact sur son portail client. Recherchez, filtrez par type et déposez un document avec le bouton +. Indiquez si le fichier est visible côté portail."
         },
         sidebarNotes: {
           title: "Notes internes",
-          content:
-            "Consignez ici les informations utiles à l'équipe : consignes, historique de contexte, points d'attention. Seuls les agents y ont accès.",
+          content: "Consignez ici les informations utiles à l'équipe : consignes, historique de contexte, points d'attention. Seuls les agents y ont accès."
         },
         heroActions: {
           title: "Actions rapides",
-          content:
-            "Depuis le menu d'actions, exportez le dossier de réversibilité ou ouvrez le formulaire de modification pour mettre à jour l'entreprise.",
-        },
-      },
+          content: "Depuis le menu d'actions, exportez le dossier de réversibilité ou ouvrez le formulaire de modification pour mettre à jour l'entreprise."
+        }
+      }
     },
     close: "Fermer",
     understood: "Compris",
@@ -190,11 +183,11 @@ const DETAIL_COPY = {
       title: "Fiche contact · {name}",
       role: "Poste",
       email: "Email",
-      phone: "Téléphone",
+      phone: "Téléphone"
     },
     deleteBlocked: {
       generic: "Suppression impossible · des éléments sont encore liés à cette entreprise.",
-      withDetails: "Éléments liés ({total}) · {details}. Retirez-les avant de supprimer l'entreprise.",
+      withDetails: "Éléments liés ({total}) · {details}. Retirez-les avant de supprimer l'entreprise."
     },
     toast: {
       noComputersToAnalyze: "Aucun ordinateur à analyser pour cette entreprise.",
@@ -230,7 +223,7 @@ const DETAIL_COPY = {
       domainRemovedMonitoring: "Domaine retiré de la surveillance.",
       domainRemoved: "Domaine retiré.",
       antivirusAssociationRemoved: "Association antivirus supprimée.",
-      antispamAssociationRemoved: "Association antispam supprimée.",
+      antispamAssociationRemoved: "Association antispam supprimée."
     },
     proFeatures: {
       reversibility: "Dossier de réversibilité",
@@ -239,13 +232,13 @@ const DETAIL_COPY = {
       creditPacks: "Carnets de crédits support",
       sla: "SLA support",
       prestations: "Ticket de Prestations / Services",
-      vault: "Coffre-fort documentaire",
+      vault: "Coffre-fort documentaire"
     },
     contractTypes: {
       EDUCATION: "Éducation / scolaire",
       PROFESSIONNEL: "Professionnel",
       HEBERGEMENT: "Hébergement",
-      unknown: "Non renseigné",
+      unknown: "Non renseigné"
     },
     ticketStatus: {
       open: "Ouvert",
@@ -253,7 +246,7 @@ const DETAIL_COPY = {
       pending: "En attente",
       in_progress: "En cours",
       resolved: "Résolu",
-      closed: "Clos",
+      closed: "Clos"
     },
     prestationCategories: {
       "prestation-audit": "Audit",
@@ -263,11 +256,11 @@ const DETAIL_COPY = {
       "prestation-intervention-distante": "Intervention distante",
       "prestation-intervention-site": "Intervention site",
       "prestation-production": "Production",
-      "prestation-etude-avant-vente": "Étude avant-vente",
+      "prestation-etude-avant-vente": "Étude avant-vente"
     },
     eventActionMenu: {
       editEvent: "Modifier l'événement",
-      goToPlanning: "Aller au planning",
+      goToPlanning: "Aller au planning"
     },
     eventBookmarks: {
       barAria: "Événements récents et à venir",
@@ -301,7 +294,7 @@ const DETAIL_COPY = {
       summaryCounts: "{recent} récent(s) · {upcoming} à venir",
       summaryLoading: "Chargement…",
       summaryEmpty: "Aucun événement",
-      summaryProLocked: "Veritas Pro",
+      summaryProLocked: "Veritas Pro"
     },
     eventTypes: {
       intervention: "Intervention",
@@ -310,7 +303,7 @@ const DETAIL_COPY = {
       maintenance_preventive: "Maintenance préventive",
       mise_a_jour: "Mise à jour",
       integration_monitoring: "Intégration monitoring",
-      other: "Autre",
+      other: "Autre"
     },
     campaignTypes: {
       microsoft_security: "Sécurité Microsoft",
@@ -320,27 +313,21 @@ const DETAIL_COPY = {
       phishing_simulation: "Simulation de phishing",
       vulnerability_scan: "Scan de vulnérabilités",
       incident_response: "Réponse aux incidents",
-      compliance_audit: "Audit de conformité",
+      compliance_audit: "Audit de conformité"
     },
     campaignStatuses: {
       en_preparation: "En préparation",
       active: "Active",
       en_cours: "En cours",
       suspendue: "Suspendue",
-      inactive: "Terminée",
+      inactive: "Terminée"
     },
     modals: {
       photoTitle: "Ajout de photo",
       comingSoonTitle: "Fonctionnalité à venir",
       comingSoonIntro: "Bientôt, vous pourrez ajouter des photos à vos clients pour :",
-      comingSoonBullets: [
-        "Documenter les informations visuelles",
-        "Enregistrer des photos avant/après intervention",
-        "Créer un historique visuel de vos clients",
-        "Et bien plus encore...",
-      ],
-      comingSoonNote:
-        "Cette fonctionnalité permettra de garder une trace visuelle de tous vos clients et de leurs évolutions.",
+      comingSoonBullets: ["Documenter les informations visuelles", "Enregistrer des photos avant/après intervention", "Créer un historique visuel de vos clients", "Et bien plus encore..."],
+      comingSoonNote: "Cette fonctionnalité permettra de garder une trace visuelle de tous vos clients et de leurs évolutions.",
       domainsTitle: "Noms de domaine ({count})",
       domainName: "Nom de domaine",
       registrar: "Registrar",
@@ -385,8 +372,8 @@ const DETAIL_COPY = {
       no: "Non",
       endpointsPreview: "Affichage des 20 premiers endpoints. Total: {count}",
       noEndpoints: "Aucun endpoint disponible pour cette solution",
-      statusInactive: "Inactif",
-    },
+      statusInactive: "Inactif"
+    }
   },
   en: {
     notFound: "Client not found",
@@ -402,12 +389,16 @@ const DETAIL_COPY = {
     addTag: "Add a tag",
     actionsMenu: "Client actions",
     actionsMenuTooltip: "Client actions",
+    aiSummaryTooltip: "AI company summary",
+    monitoringAlerts: "Monitoring alerts",
+    monitoringAlertsTooltip: "Configure monitoring alerts",
+    monitoringAlertsSuspendedTooltip: "Alerts suspended — click to manage",
     configureAntivirus: "Configure antivirus",
     configureAntispam: "Configure antispam",
     configureMicrosoftTenant: "Configure Microsoft tenant",
     editEnterprise: "Edit company",
-    reversibilityDossier: "Reversibility dossier",
-    generatingDossier: "Generating dossier…",
+    reversibilityFolder: "Reversibility dossier",
+    generatingFolder: "Generating dossier…",
     infraMapTitle: "Infrastructure map",
     filterBadge: "Filter: {value}",
     peripheralsTitle: "Peripherals",
@@ -425,13 +416,14 @@ const DETAIL_COPY = {
     prestationsCount: "{count} ticket(s)",
     campaignsTitle: "Campaigns",
     campaignsOngoing: "{count} ongoing",
+    addCampaign: "Create MFA campaign",
     vaultTitle: "Document vault",
     addToVault: "Add to vault",
     sidebar: {
       showMore: "Show more",
       showLess: "Show less",
       expandSection: "Expand section",
-      collapseSection: "Collapse section",
+      collapseSection: "Collapse section"
     },
     sidebarInfo: "Information",
     sectorLabel: "Industry sector",
@@ -484,7 +476,7 @@ const DETAIL_COPY = {
       label: "Note",
       placeholder: "Enter your note about this client…",
       addBtn: "Add note",
-      saveBtn: "Save",
+      saveBtn: "Save"
     },
     table: {
       number: "No.",
@@ -496,7 +488,7 @@ const DETAIL_COPY = {
       created: "Created",
       name: "Name",
       progress: "Progress",
-      start: "Start",
+      start: "Start"
     },
     emptySupportTickets: "No support tickets for this client.",
     emptyPrestationTickets: "No services tickets for this client.",
@@ -507,55 +499,45 @@ const DETAIL_COPY = {
       steps: {
         hero: {
           title: "Company overview",
-          content:
-            "Find the name, contract status, account manager, equipment count and tags here. The ⋮ menu lets you export the dossier or edit the record.",
+          content: "Find the name, contract status, account manager, equipment count and tags here. The ⋮ menu lets you export the dossier or edit the record."
         },
         sidebarInfo: {
           title: "Contract information",
-          content:
-            "The right panel groups legal identity, contract dates and enabled modules. Expand the section to see legal ID, sector and address.",
+          content: "The right panel groups legal identity, contract dates and enabled modules. Expand the section to see legal ID, sector and address."
         },
         sidebarContacts: {
           title: "Company contacts",
-          content:
-            "View linked contacts, copy their card or open their record. Use + to add a new contact.",
+          content: "View linked contacts, copy their card or open their record. Use + to add a new contact."
         },
         infraMap: {
           title: "Infrastructure map",
-          content:
-            "See domains, cybersecurity, cloud services and referenced hardware for this company at a glance.",
+          content: "See domains, cybersecurity, cloud services and referenced hardware for this company at a glance."
         },
         equipment: {
           title: "Peripherals and hardware",
-          content:
-            "Browse the detailed inventory, filter equipment and add hardware with +. This is the basis for support and monitoring.",
+          content: "Browse the detailed inventory, filter equipment and add hardware with +. This is the basis for support and monitoring."
         },
         equipmentStats: {
           title: "Fleet statistics",
-          content:
-            "On the Computers table, open statistics in a new tab to analyze the fleet: brands and models, OS, RAM, RMM compliance, Windows lifecycle and power consumption estimate.",
+          content: "On the Computers table, open statistics in a new tab to analyze the fleet: brands and models, OS, RAM, RMM compliance, Windows lifecycle and power consumption estimate."
         },
         activity: {
           title: "Recent activity",
-          content:
-            "Track support tickets, service requests and scheduled events for this client. Click a row to open details.",
+          content: "Track support tickets, service requests and scheduled events for this client. Click a row to open details."
         },
         vault: {
           title: "Document vault",
-          content:
-            "Invoices, manuals, guides and reports shared with contacts on their client portal. Search, filter by type and upload with the + button. Choose whether each file is visible on the portal.",
+          content: "Invoices, manuals, guides and reports shared with contacts on their client portal. Search, filter by type and upload with the + button. Choose whether each file is visible on the portal."
         },
         sidebarNotes: {
           title: "Internal notes",
-          content:
-            "Record information useful to the team: instructions, context history, points of attention. Only agents have access.",
+          content: "Record information useful to the team: instructions, context history, points of attention. Only agents have access."
         },
         heroActions: {
           title: "Quick actions",
-          content:
-            "From the actions menu, export the reversibility dossier or open the edit form to update the company.",
-        },
-      },
+          content: "From the actions menu, export the reversibility dossier or open the edit form to update the company."
+        }
+      }
     },
     close: "Close",
     understood: "Got it",
@@ -568,11 +550,11 @@ const DETAIL_COPY = {
       title: "Contact record · {name}",
       role: "Job title",
       email: "Email",
-      phone: "Phone",
+      phone: "Phone"
     },
     deleteBlocked: {
       generic: "Cannot delete · items are still linked to this company.",
-      withDetails: "Linked items ({total}) · {details}. Remove them before deleting the company.",
+      withDetails: "Linked items ({total}) · {details}. Remove them before deleting the company."
     },
     toast: {
       noComputersToAnalyze: "No computers to analyze for this company.",
@@ -608,7 +590,7 @@ const DETAIL_COPY = {
       domainRemovedMonitoring: "Domain removed from monitoring.",
       domainRemoved: "Domain removed.",
       antivirusAssociationRemoved: "Antivirus association removed.",
-      antispamAssociationRemoved: "Antispam association removed.",
+      antispamAssociationRemoved: "Antispam association removed."
     },
     proFeatures: {
       reversibility: "Reversibility dossier",
@@ -617,13 +599,13 @@ const DETAIL_COPY = {
       creditPacks: "Support credit packs",
       sla: "Support SLA",
       prestations: "Services / delivery tickets",
-      vault: "Document vault",
+      vault: "Document vault"
     },
     contractTypes: {
       EDUCATION: "Education / school",
       PROFESSIONNEL: "Professional",
       HEBERGEMENT: "Hosting",
-      unknown: "Not specified",
+      unknown: "Not specified"
     },
     ticketStatus: {
       open: "Open",
@@ -631,7 +613,7 @@ const DETAIL_COPY = {
       pending: "Pending",
       in_progress: "In progress",
       resolved: "Resolved",
-      closed: "Closed",
+      closed: "Closed"
     },
     prestationCategories: {
       "prestation-audit": "Audit",
@@ -641,11 +623,11 @@ const DETAIL_COPY = {
       "prestation-intervention-distante": "Remote intervention",
       "prestation-intervention-site": "On-site intervention",
       "prestation-production": "Production",
-      "prestation-etude-avant-vente": "Pre-sales study",
+      "prestation-etude-avant-vente": "Pre-sales study"
     },
     eventActionMenu: {
       editEvent: "Edit event",
-      goToPlanning: "Go to schedule",
+      goToPlanning: "Go to schedule"
     },
     eventBookmarks: {
       barAria: "Recent and upcoming events",
@@ -679,7 +661,7 @@ const DETAIL_COPY = {
       summaryCounts: "{recent} recent · {upcoming} upcoming",
       summaryLoading: "Loading…",
       summaryEmpty: "No events",
-      summaryProLocked: "Veritas Pro",
+      summaryProLocked: "Veritas Pro"
     },
     eventTypes: {
       intervention: "Intervention",
@@ -688,7 +670,7 @@ const DETAIL_COPY = {
       maintenance_preventive: "Preventive maintenance",
       mise_a_jour: "Update",
       integration_monitoring: "Monitoring integration",
-      other: "Other",
+      other: "Other"
     },
     campaignTypes: {
       microsoft_security: "Microsoft security",
@@ -698,27 +680,21 @@ const DETAIL_COPY = {
       phishing_simulation: "Phishing simulation",
       vulnerability_scan: "Vulnerability scan",
       incident_response: "Incident response",
-      compliance_audit: "Compliance audit",
+      compliance_audit: "Compliance audit"
     },
     campaignStatuses: {
       en_preparation: "In preparation",
       active: "Active",
       en_cours: "In progress",
       suspendue: "Suspended",
-      inactive: "Completed",
+      inactive: "Completed"
     },
     modals: {
       photoTitle: "Add photo",
       comingSoonTitle: "Coming soon",
       comingSoonIntro: "Soon you will be able to add photos to your clients to:",
-      comingSoonBullets: [
-        "Document visual information",
-        "Record before/after intervention photos",
-        "Create a visual history of your clients",
-        "And much more...",
-      ],
-      comingSoonNote:
-        "This feature will keep a visual record of all your clients and their evolution.",
+      comingSoonBullets: ["Document visual information", "Record before/after intervention photos", "Create a visual history of your clients", "And much more..."],
+      comingSoonNote: "This feature will keep a visual record of all your clients and their evolution.",
       domainsTitle: "Domain names ({count})",
       domainName: "Domain name",
       registrar: "Registrar",
@@ -763,8 +739,8 @@ const DETAIL_COPY = {
       no: "No",
       endpointsPreview: "Showing first 20 endpoints. Total: {count}",
       noEndpoints: "No endpoints available for this solution",
-      statusInactive: "Inactive",
-    },
+      statusInactive: "Inactive"
+    }
   },
   de: {
     notFound: "Kunde nicht gefunden",
@@ -780,6 +756,10 @@ const DETAIL_COPY = {
     addTag: "Tag hinzufügen",
     actionsMenu: "Kundenaktionen",
     actionsMenuTooltip: "Kundenaktionen",
+    aiSummaryTooltip: "KI-Unternehmenszusammenfassung",
+    monitoringAlerts: "Überwachungswarnungen",
+    monitoringAlertsTooltip: "Überwachungswarnungen konfigurieren",
+    monitoringAlertsSuspendedTooltip: "Warnungen pausiert — zum Verwalten klicken",
     configureAntivirus: "Antivirus konfigurieren",
     configureAntispam: "Antispam konfigurieren",
     configureMicrosoftTenant: "Microsoft-Tenant konfigurieren",
@@ -803,13 +783,14 @@ const DETAIL_COPY = {
     prestationsCount: "{count} Ticket(s)",
     campaignsTitle: "Kampagnen",
     campaignsOngoing: "{count} laufend",
+    addCampaign: "MFA-Kampagne erstellen",
     vaultTitle: "Dokumententresor",
     addToVault: "Zum Tresor hinzufügen",
     sidebar: {
       showMore: "Mehr anzeigen",
       showLess: "Weniger anzeigen",
       expandSection: "Abschnitt erweitern",
-      collapseSection: "Abschnitt reduzieren",
+      collapseSection: "Abschnitt reduzieren"
     },
     sidebarInfo: "Informationen",
     sectorLabel: "Branche",
@@ -862,7 +843,7 @@ const DETAIL_COPY = {
       label: "Notiz",
       placeholder: "Notiz zu diesem Kunden eingeben…",
       addBtn: "Notiz hinzufügen",
-      saveBtn: "Speichern",
+      saveBtn: "Speichern"
     },
     table: {
       number: "Nr.",
@@ -874,7 +855,7 @@ const DETAIL_COPY = {
       created: "Erstellt",
       name: "Name",
       progress: "Fortschritt",
-      start: "Start",
+      start: "Start"
     },
     emptySupportTickets: "Keine Support-Tickets für diesen Kunden.",
     emptyPrestationTickets: "Keine Leistungs-Tickets für diesen Kunden.",
@@ -885,46 +866,45 @@ const DETAIL_COPY = {
       steps: {
         hero: {
           title: "Unternehmensübersicht",
-          content: "Name, Vertragsstatus, Account Manager, Geräteanzahl und Tags. Das ⋮-Menü exportiert das Dossier oder bearbeitet die Fiche.",
+          content: "Name, Vertragsstatus, Account Manager, Geräteanzahl und Tags. Das ⋮-Menü exportiert das Dossier oder bearbeitet die Fiche."
         },
         sidebarInfo: {
           title: "Vertragsinformationen",
-          content: "Rechtes Panel: Rechtsidentität, Vertragsdaten und aktivierte Module. Aufklappen für ID, Sektor und Adresse.",
+          content: "Rechtes Panel: Rechtsidentität, Vertragsdaten und aktivierte Module. Aufklappen für ID, Sektor und Adresse."
         },
         sidebarContacts: {
           title: "Unternehmenskontakte",
-          content: "Ansprechpartner ansehen, Karte kopieren oder Fiche öffnen. Mit + neuen Kontakt hinzufügen.",
+          content: "Ansprechpartner ansehen, Karte kopieren oder Fiche öffnen. Mit + neuen Kontakt hinzufügen."
         },
         infraMap: {
           title: "Infrastruktur-Kartographie",
-          content: "Domains, Cybersicherheit, Cloud-Dienste und referenzierte Hardware auf einen Blick.",
+          content: "Domains, Cybersicherheit, Cloud-Dienste und referenzierte Hardware auf einen Blick."
         },
         equipment: {
           title: "Peripherie und Hardware",
-          content: "Inventar durchsuchen, filtern und mit + Geräte hinzufügen. Basis für Support und Monitoring.",
+          content: "Inventar durchsuchen, filtern und mit + Geräte hinzufügen. Basis für Support und Monitoring."
         },
         equipmentStats: {
           title: "Park-Statistiken",
-          content: "In der Tabelle Computer Statistiken in neuem Tab öffnen: Marken, OS, RAM, RMM-Konformität, Windows-Lebenszyklus, Stromverbrauch.",
+          content: "In der Tabelle Computer Statistiken in neuem Tab öffnen: Marken, OS, RAM, RMM-Konformität, Windows-Lebenszyklus, Stromverbrauch."
         },
         activity: {
           title: "Aktuelle Aktivität",
-          content: "Support-Tickets, Leistungen und geplante Ereignisse verfolgen. Zeile anklicken für Details.",
+          content: "Support-Tickets, Leistungen und geplante Ereignisse verfolgen. Zeile anklicken für Details."
         },
         vault: {
           title: "Dokumententresor",
-          content:
-            "Rechnungen, Handbücher, Anleitungen und Berichte, die mit Kontakten im Kundenportal geteilt werden. Suchen, nach Typ filtern und mit + hochladen. Legen Sie fest, ob die Datei im Portal sichtbar ist.",
+          content: "Rechnungen, Handbücher, Anleitungen und Berichte, die mit Kontakten im Kundenportal geteilt werden. Suchen, nach Typ filtern und mit + hochladen. Legen Sie fest, ob die Datei im Portal sichtbar ist."
         },
         sidebarNotes: {
           title: "Interne Notizen",
-          content: "Nützliche Infos für das Team: Anweisungen, Kontext, Hinweise. Nur für Agenten.",
+          content: "Nützliche Infos für das Team: Anweisungen, Kontext, Hinweise. Nur für Agenten."
         },
         heroActions: {
           title: "Schnellaktionen",
-          content: "Reversibilitätsdossier exportieren oder Bearbeitungsformular öffnen.",
-        },
-      },
+          content: "Reversibilitätsdossier exportieren oder Bearbeitungsformular öffnen."
+        }
+      }
     },
     close: "Schließen",
     understood: "Verstanden",
@@ -937,12 +917,11 @@ const DETAIL_COPY = {
       title: "Kontaktdatensatz · {name}",
       role: "Funktion",
       email: "E-Mail",
-      phone: "Telefon",
+      phone: "Telefon"
     },
     deleteBlocked: {
       generic: "Löschen nicht möglich · Elemente sind noch mit diesem Unternehmen verknüpft.",
-      withDetails:
-        "Verknüpfte Elemente ({total}) · {details}. Entfernen Sie diese vor dem Löschen des Unternehmens.",
+      withDetails: "Verknüpfte Elemente ({total}) · {details}. Entfernen Sie diese vor dem Löschen des Unternehmens."
     },
     toast: {
       noComputersToAnalyze: "Keine Computer zur Analyse für dieses Unternehmen.",
@@ -978,7 +957,7 @@ const DETAIL_COPY = {
       domainRemovedMonitoring: "Domain aus der Überwachung entfernt.",
       domainRemoved: "Domain entfernt.",
       antivirusAssociationRemoved: "Antivirus-Zuordnung entfernt.",
-      antispamAssociationRemoved: "Antispam-Zuordnung entfernt.",
+      antispamAssociationRemoved: "Antispam-Zuordnung entfernt."
     },
     proFeatures: {
       reversibility: "Reversibilitätsdossier",
@@ -987,13 +966,13 @@ const DETAIL_COPY = {
       creditPacks: "Support-Guthabenpakete",
       sla: "Support-SLA",
       prestations: "Leistungs-Tickets",
-      vault: "Dokumententresor",
+      vault: "Dokumententresor"
     },
     contractTypes: {
       EDUCATION: "Bildung / Schule",
       PROFESSIONNEL: "Professionell",
       HEBERGEMENT: "Hosting",
-      unknown: "Nicht angegeben",
+      unknown: "Nicht angegeben"
     },
     ticketStatus: {
       open: "Offen",
@@ -1001,7 +980,7 @@ const DETAIL_COPY = {
       pending: "Ausstehend",
       in_progress: "In Bearbeitung",
       resolved: "Gelöst",
-      closed: "Geschlossen",
+      closed: "Geschlossen"
     },
     prestationCategories: {
       "prestation-audit": "Audit",
@@ -1011,11 +990,11 @@ const DETAIL_COPY = {
       "prestation-intervention-distante": "Remote-Einsatz",
       "prestation-intervention-site": "Vor-Ort-Einsatz",
       "prestation-production": "Produktion",
-      "prestation-etude-avant-vente": "Vorverkaufsstudie",
+      "prestation-etude-avant-vente": "Vorverkaufsstudie"
     },
     eventActionMenu: {
       editEvent: "Termin bearbeiten",
-      goToPlanning: "Zum Planer",
+      goToPlanning: "Zum Planer"
     },
     eventBookmarks: {
       barAria: "Kürzliche und bevorstehende Termine",
@@ -1049,7 +1028,7 @@ const DETAIL_COPY = {
       summaryCounts: "{recent} kürzlich · {upcoming} bevorstehend",
       summaryLoading: "Laden…",
       summaryEmpty: "Keine Termine",
-      summaryProLocked: "Veritas Pro",
+      summaryProLocked: "Veritas Pro"
     },
     eventTypes: {
       intervention: "Einsatz",
@@ -1058,7 +1037,7 @@ const DETAIL_COPY = {
       maintenance_preventive: "Präventive Wartung",
       mise_a_jour: "Update",
       integration_monitoring: "Monitoring-Integration",
-      other: "Sonstiges",
+      other: "Sonstiges"
     },
     campaignTypes: {
       microsoft_security: "Microsoft-Sicherheit",
@@ -1068,27 +1047,21 @@ const DETAIL_COPY = {
       phishing_simulation: "Phishing-Simulation",
       vulnerability_scan: "Schwachstellen-Scan",
       incident_response: "Incident Response",
-      compliance_audit: "Compliance-Audit",
+      compliance_audit: "Compliance-Audit"
     },
     campaignStatuses: {
       en_preparation: "In Vorbereitung",
       active: "Aktiv",
       en_cours: "Laufend",
       suspendue: "Ausgesetzt",
-      inactive: "Abgeschlossen",
+      inactive: "Abgeschlossen"
     },
     modals: {
       photoTitle: "Foto hinzufügen",
       comingSoonTitle: "Demnächst verfügbar",
       comingSoonIntro: "Bald können Sie Fotos zu Ihren Kunden hinzufügen, um:",
-      comingSoonBullets: [
-        "Visuelle Informationen zu dokumentieren",
-        "Vorher/Nachher-Fotos von Einsätzen zu speichern",
-        "Eine visuelle Historie Ihrer Kunden zu erstellen",
-        "Und vieles mehr...",
-      ],
-      comingSoonNote:
-        "Diese Funktion ermöglicht eine visuelle Nachverfolgung aller Kunden und ihrer Entwicklung.",
+      comingSoonBullets: ["Visuelle Informationen zu dokumentieren", "Vorher/Nachher-Fotos von Einsätzen zu speichern", "Eine visuelle Historie Ihrer Kunden zu erstellen", "Und vieles mehr..."],
+      comingSoonNote: "Diese Funktion ermöglicht eine visuelle Nachverfolgung aller Kunden und ihrer Entwicklung.",
       domainsTitle: "Domainnamen ({count})",
       domainName: "Domainname",
       registrar: "Registrar",
@@ -1133,8 +1106,8 @@ const DETAIL_COPY = {
       no: "Nein",
       endpointsPreview: "Anzeige der ersten 20 Endpoints. Gesamt: {count}",
       noEndpoints: "Keine Endpoints für diese Lösung verfügbar",
-      statusInactive: "Inaktiv",
-    },
+      statusInactive: "Inaktiv"
+    }
   },
   it: {
     notFound: "Cliente non trovato",
@@ -1150,6 +1123,10 @@ const DETAIL_COPY = {
     addTag: "Aggiungi etichetta",
     actionsMenu: "Azioni sul cliente",
     actionsMenuTooltip: "Azioni sul cliente",
+    aiSummaryTooltip: "Riepilogo AI dell'azienda",
+    monitoringAlerts: "Avvisi di monitoraggio",
+    monitoringAlertsTooltip: "Configura gli avvisi di monitoraggio",
+    monitoringAlertsSuspendedTooltip: "Avvisi sospesi — clicca per gestire",
     configureAntivirus: "Configura antivirus",
     configureAntispam: "Configura antispam",
     configureMicrosoftTenant: "Configura tenant Microsoft",
@@ -1173,13 +1150,14 @@ const DETAIL_COPY = {
     prestationsCount: "{count} ticket",
     campaignsTitle: "Campagne",
     campaignsOngoing: "{count} in corso",
+    addCampaign: "Crea campagna MFA",
     vaultTitle: "Cassaforte documenti",
     addToVault: "Aggiungi alla cassaforte",
     sidebar: {
       showMore: "Mostra di più",
       showLess: "Mostra meno",
       expandSection: "Espandi sezione",
-      collapseSection: "Comprimi sezione",
+      collapseSection: "Comprimi sezione"
     },
     sidebarInfo: "Informazioni",
     sectorLabel: "Settore di attività",
@@ -1232,7 +1210,7 @@ const DETAIL_COPY = {
       label: "Nota",
       placeholder: "Inserisci la nota su questo cliente…",
       addBtn: "Aggiungi nota",
-      saveBtn: "Salva",
+      saveBtn: "Salva"
     },
     table: {
       number: "N°",
@@ -1244,7 +1222,7 @@ const DETAIL_COPY = {
       created: "Creata il",
       name: "Nome",
       progress: "Avanzamento",
-      start: "Inizio",
+      start: "Inizio"
     },
     emptySupportTickets: "Nessun ticket supporto per questo cliente.",
     emptyPrestationTickets: "Nessun ticket prestazioni per questo cliente.",
@@ -1255,46 +1233,45 @@ const DETAIL_COPY = {
       steps: {
         hero: {
           title: "Panoramica azienda",
-          content: "Nome, stato contratto, commerciale, numero dispositivi ed etichette. Il menu ⋮ esporta il dossier o modifica la scheda.",
+          content: "Nome, stato contratto, commerciale, numero dispositivi ed etichette. Il menu ⋮ esporta il dossier o modifica la scheda."
         },
         sidebarInfo: {
           title: "Informazioni contrattuali",
-          content: "Pannello destro: identità legale, date contratto e moduli attivi. Espandi per ID legale, settore e indirizzo.",
+          content: "Pannello destro: identità legale, date contratto e moduli attivi. Espandi per ID legale, settore e indirizzo."
         },
         sidebarContacts: {
           title: "Contatti azienda",
-          content: "Consulta i referenti, copia la scheda o apri la ficha. Usa + per aggiungere un contatto.",
+          content: "Consulta i referenti, copia la scheda o apri la ficha. Usa + per aggiungere un contatto."
         },
         infraMap: {
           title: "Cartografia infrastruttura",
-          content: "Domini, cybersicurezza, servizi cloud e hardware di riferimento a colpo d'occhio.",
+          content: "Domini, cybersicurezza, servizi cloud e hardware di riferimento a colpo d'occhio."
         },
         equipment: {
           title: "Periferiche e hardware",
-          content: "Inventario dettagliato, filtri e aggiunta con +. Base per supporto e monitoring.",
+          content: "Inventario dettagliato, filtri e aggiunta con +. Base per supporto e monitoring."
         },
         equipmentStats: {
           title: "Statistiche parco",
-          content: "Nella tabella Computer, apri statistiche in nuova scheda: marche, OS, RAM, conformità RMM, ciclo Windows, consumo.",
+          content: "Nella tabella Computer, apri statistiche in nuova scheda: marche, OS, RAM, conformità RMM, ciclo Windows, consumo."
         },
         activity: {
           title: "Attività recente",
-          content: "Ticket supporto, prestazioni ed eventi pianificati. Clicca una riga per i dettagli.",
+          content: "Ticket supporto, prestazioni ed eventi pianificati. Clicca una riga per i dettagli."
         },
         vault: {
           title: "Cassaforte documenti",
-          content:
-            "Fatture, manuali, guide e report condivisi con i contatti sul portale cliente. Cerca, filtra per tipo e carica con il pulsante +. Indica se il file è visibile sul portale.",
+          content: "Fatture, manuali, guide e report condivisi con i contatti sul portale cliente. Cerca, filtra per tipo e carica con il pulsante +. Indica se il file è visibile sul portale."
         },
         sidebarNotes: {
           title: "Note interne",
-          content: "Informazioni utili al team: istruzioni, contesto, punti di attenzione. Solo agenti.",
+          content: "Informazioni utili al team: istruzioni, contesto, punti di attenzione. Solo agenti."
         },
         heroActions: {
           title: "Azioni rapide",
-          content: "Esporta dossier reversibilità o apri modifica azienda dal menu azioni.",
-        },
-      },
+          content: "Esporta dossier reversibilità o apri modifica azienda dal menu azioni."
+        }
+      }
     },
     close: "Chiudi",
     understood: "Capito",
@@ -1307,12 +1284,11 @@ const DETAIL_COPY = {
       title: "Scheda contatto · {name}",
       role: "Ruolo",
       email: "Email",
-      phone: "Telefono",
+      phone: "Telefono"
     },
     deleteBlocked: {
       generic: "Eliminazione impossibile · elementi ancora collegati a questa azienda.",
-      withDetails:
-        "Elementi collegati ({total}) · {details}. Rimuoverli prima di eliminare l'azienda.",
+      withDetails: "Elementi collegati ({total}) · {details}. Rimuoverli prima di eliminare l'azienda."
     },
     toast: {
       noComputersToAnalyze: "Nessun computer da analizzare per questa azienda.",
@@ -1348,7 +1324,7 @@ const DETAIL_COPY = {
       domainRemovedMonitoring: "Dominio rimosso dal monitoraggio.",
       domainRemoved: "Dominio rimosso.",
       antivirusAssociationRemoved: "Associazione antivirus rimossa.",
-      antispamAssociationRemoved: "Associazione antispam rimossa.",
+      antispamAssociationRemoved: "Associazione antispam rimossa."
     },
     proFeatures: {
       reversibility: "Dossier di reversibilità",
@@ -1357,13 +1333,13 @@ const DETAIL_COPY = {
       creditPacks: "Carnet crediti supporto",
       sla: "SLA supporto",
       prestations: "Ticket Prestazioni / Servizi",
-      vault: "Cassaforte documenti",
+      vault: "Cassaforte documenti"
     },
     contractTypes: {
       EDUCATION: "Istruzione / scuola",
       PROFESSIONNEL: "Professionale",
       HEBERGEMENT: "Hosting",
-      unknown: "Non indicato",
+      unknown: "Non indicato"
     },
     ticketStatus: {
       open: "Aperto",
@@ -1371,7 +1347,7 @@ const DETAIL_COPY = {
       pending: "In attesa",
       in_progress: "In corso",
       resolved: "Risolto",
-      closed: "Chiuso",
+      closed: "Chiuso"
     },
     prestationCategories: {
       "prestation-audit": "Audit",
@@ -1381,11 +1357,11 @@ const DETAIL_COPY = {
       "prestation-intervention-distante": "Intervento remoto",
       "prestation-intervention-site": "Intervento in sede",
       "prestation-production": "Produzione",
-      "prestation-etude-avant-vente": "Studio pre-vendita",
+      "prestation-etude-avant-vente": "Studio pre-vendita"
     },
     eventActionMenu: {
       editEvent: "Modifica evento",
-      goToPlanning: "Vai al planning",
+      goToPlanning: "Vai al planning"
     },
     eventBookmarks: {
       barAria: "Eventi recenti e in arrivo",
@@ -1419,7 +1395,7 @@ const DETAIL_COPY = {
       summaryCounts: "{recent} recenti · {upcoming} in arrivo",
       summaryLoading: "Caricamento…",
       summaryEmpty: "Nessun evento",
-      summaryProLocked: "Veritas Pro",
+      summaryProLocked: "Veritas Pro"
     },
     eventTypes: {
       intervention: "Intervento",
@@ -1428,7 +1404,7 @@ const DETAIL_COPY = {
       maintenance_preventive: "Manutenzione preventiva",
       mise_a_jour: "Aggiornamento",
       integration_monitoring: "Integrazione monitoring",
-      other: "Altro",
+      other: "Altro"
     },
     campaignTypes: {
       microsoft_security: "Sicurezza Microsoft",
@@ -1438,27 +1414,21 @@ const DETAIL_COPY = {
       phishing_simulation: "Simulazione phishing",
       vulnerability_scan: "Scansione vulnerabilità",
       incident_response: "Risposta agli incidenti",
-      compliance_audit: "Audit di conformità",
+      compliance_audit: "Audit di conformità"
     },
     campaignStatuses: {
       en_preparation: "In preparazione",
       active: "Attiva",
       en_cours: "In corso",
       suspendue: "Sospesa",
-      inactive: "Terminata",
+      inactive: "Terminata"
     },
     modals: {
       photoTitle: "Aggiungi foto",
       comingSoonTitle: "Funzionalità in arrivo",
       comingSoonIntro: "Presto potrai aggiungere foto ai tuoi clienti per:",
-      comingSoonBullets: [
-        "Documentare informazioni visive",
-        "Registrare foto prima/dopo intervento",
-        "Creare uno storico visivo dei clienti",
-        "E molto altro...",
-      ],
-      comingSoonNote:
-        "Questa funzionalità manterrà una traccia visiva di tutti i clienti e della loro evoluzione.",
+      comingSoonBullets: ["Documentare informazioni visive", "Registrare foto prima/dopo intervento", "Creare uno storico visivo dei clienti", "E molto altro..."],
+      comingSoonNote: "Questa funzionalità manterrà una traccia visiva di tutti i clienti e della loro evoluzione.",
       domainsTitle: "Nomi di dominio ({count})",
       domainName: "Nome di dominio",
       registrar: "Registrar",
@@ -1503,8 +1473,8 @@ const DETAIL_COPY = {
       no: "No",
       endpointsPreview: "Visualizzazione dei primi 20 endpoint. Totale: {count}",
       noEndpoints: "Nessun endpoint disponibile per questa soluzione",
-      statusInactive: "Inattivo",
-    },
+      statusInactive: "Inattivo"
+    }
   },
   es: {
     notFound: "Cliente no encontrado",
@@ -1520,6 +1490,10 @@ const DETAIL_COPY = {
     addTag: "Añadir etiqueta",
     actionsMenu: "Acciones del cliente",
     actionsMenuTooltip: "Acciones del cliente",
+    aiSummaryTooltip: "Resumen IA de la empresa",
+    monitoringAlerts: "Alertas de supervisión",
+    monitoringAlertsTooltip: "Configurar las alertas de supervisión",
+    monitoringAlertsSuspendedTooltip: "Alertas suspendidas — clic para gestionar",
     configureAntivirus: "Configurar antivirus",
     configureAntispam: "Configurar antispam",
     configureMicrosoftTenant: "Configurar tenant Microsoft",
@@ -1543,13 +1517,14 @@ const DETAIL_COPY = {
     prestationsCount: "{count} ticket(s)",
     campaignsTitle: "Campañas",
     campaignsOngoing: "{count} en curso",
+    addCampaign: "Crear campaña MFA",
     vaultTitle: "Caja fuerte documental",
     addToVault: "Añadir a la caja fuerte",
     sidebar: {
       showMore: "Ver más",
       showLess: "Ver menos",
       expandSection: "Expandir sección",
-      collapseSection: "Contraer sección",
+      collapseSection: "Contraer sección"
     },
     sidebarInfo: "Información",
     sectorLabel: "Sector de actividad",
@@ -1602,7 +1577,7 @@ const DETAIL_COPY = {
       label: "Nota",
       placeholder: "Escriba su nota sobre este cliente…",
       addBtn: "Añadir nota",
-      saveBtn: "Guardar",
+      saveBtn: "Guardar"
     },
     table: {
       number: "N°",
@@ -1614,7 +1589,7 @@ const DETAIL_COPY = {
       created: "Creada",
       name: "Nombre",
       progress: "Progreso",
-      start: "Inicio",
+      start: "Inicio"
     },
     emptySupportTickets: "Ningún ticket de soporte para este cliente.",
     emptyPrestationTickets: "Ningún ticket de prestaciones para este cliente.",
@@ -1625,46 +1600,45 @@ const DETAIL_COPY = {
       steps: {
         hero: {
           title: "Vista general de la empresa",
-          content: "Nombre, estado del contrato, comercial, equipos y etiquetas. El menú ⋮ exporta el dossier o edita la ficha.",
+          content: "Nombre, estado del contrato, comercial, equipos y etiquetas. El menú ⋮ exporta el dossier o edita la ficha."
         },
         sidebarInfo: {
           title: "Información contractual",
-          content: "Panel derecho: identidad legal, fechas de contrato y módulos activos. Despliegue para ID, sector y dirección.",
+          content: "Panel derecho: identidad legal, fechas de contrato y módulos activos. Despliegue para ID, sector y dirección."
         },
         sidebarContacts: {
           title: "Contactos de la empresa",
-          content: "Consulte interlocutores, copie su ficha o ábrala. Use + para añadir contacto.",
+          content: "Consulte interlocutores, copie su ficha o ábrala. Use + para añadir contacto."
         },
         infraMap: {
           title: "Cartografía de infraestructura",
-          content: "Dominios, ciberseguridad, servicios cloud y hardware referenciado de un vistazo.",
+          content: "Dominios, ciberseguridad, servicios cloud y hardware referenciado de un vistazo."
         },
         equipment: {
           title: "Periféricos y hardware",
-          content: "Inventario detallado, filtros y alta con +. Base para soporte y monitoring.",
+          content: "Inventario detallado, filtros y alta con +. Base para soporte y monitoring."
         },
         equipmentStats: {
           title: "Estadísticas del parque",
-          content: "En la tabla Ordenadores, abra estadísticas en nueva pestaña: marcas, SO, RAM, conformidad RMM, ciclo Windows, consumo.",
+          content: "En la tabla Ordenadores, abra estadísticas en nueva pestaña: marcas, SO, RAM, conformidad RMM, ciclo Windows, consumo."
         },
         activity: {
           title: "Actividad reciente",
-          content: "Tickets soporte, prestaciones y eventos planificados. Haga clic en una fila para detalles.",
+          content: "Tickets soporte, prestaciones y eventos planificados. Haga clic en una fila para detalles."
         },
         vault: {
           title: "Caja fuerte documental",
-          content:
-            "Facturas, manuales, guías e informes compartidos con los contactos en su portal cliente. Busque, filtre por tipo y suba un documento con el botón +. Indique si el archivo es visible en el portal.",
+          content: "Facturas, manuales, guías e informes compartidos con los contactos en su portal cliente. Busque, filtre por tipo y suba un documento con el botón +. Indique si el archivo es visible en el portal."
         },
         sidebarNotes: {
           title: "Notas internas",
-          content: "Información útil para el equipo: instrucciones, contexto, puntos de atención. Solo agentes.",
+          content: "Información útil para el equipo: instrucciones, contexto, puntos de atención. Solo agentes."
         },
         heroActions: {
           title: "Acciones rápidas",
-          content: "Exporte dossier de reversibilidad o abra edición desde el menú de acciones.",
-        },
-      },
+          content: "Exporte dossier de reversibilidad o abra edición desde el menú de acciones."
+        }
+      }
     },
     close: "Cerrar",
     understood: "Entendido",
@@ -1677,12 +1651,11 @@ const DETAIL_COPY = {
       title: "Ficha contacto · {name}",
       role: "Puesto",
       email: "Email",
-      phone: "Teléfono",
+      phone: "Teléfono"
     },
     deleteBlocked: {
       generic: "Eliminación imposible · hay elementos vinculados a esta empresa.",
-      withDetails:
-        "Elementos vinculados ({total}) · {details}. Elimínelos antes de borrar la empresa.",
+      withDetails: "Elementos vinculados ({total}) · {details}. Elimínelos antes de borrar la empresa."
     },
     toast: {
       noComputersToAnalyze: "Ningún ordenador que analizar para esta empresa.",
@@ -1718,7 +1691,7 @@ const DETAIL_COPY = {
       domainRemovedMonitoring: "Dominio retirado de la supervisión.",
       domainRemoved: "Dominio retirado.",
       antivirusAssociationRemoved: "Asociación antivirus eliminada.",
-      antispamAssociationRemoved: "Asociación antispam eliminada.",
+      antispamAssociationRemoved: "Asociación antispam eliminada."
     },
     proFeatures: {
       reversibility: "Dossier de reversibilidad",
@@ -1727,13 +1700,13 @@ const DETAIL_COPY = {
       creditPacks: "Carnets de créditos soporte",
       sla: "SLA soporte",
       prestations: "Tickets Prestaciones / Servicios",
-      vault: "Caja fuerte documental",
+      vault: "Caja fuerte documental"
     },
     contractTypes: {
       EDUCATION: "Educación / escolar",
       PROFESSIONNEL: "Profesional",
       HEBERGEMENT: "Alojamiento",
-      unknown: "No indicado",
+      unknown: "No indicado"
     },
     ticketStatus: {
       open: "Abierto",
@@ -1741,7 +1714,7 @@ const DETAIL_COPY = {
       pending: "Pendiente",
       in_progress: "En curso",
       resolved: "Resuelto",
-      closed: "Cerrado",
+      closed: "Cerrado"
     },
     prestationCategories: {
       "prestation-audit": "Auditoría",
@@ -1751,11 +1724,11 @@ const DETAIL_COPY = {
       "prestation-intervention-distante": "Intervención remota",
       "prestation-intervention-site": "Intervención in situ",
       "prestation-production": "Producción",
-      "prestation-etude-avant-vente": "Estudio previo a venta",
+      "prestation-etude-avant-vente": "Estudio previo a venta"
     },
     eventActionMenu: {
       editEvent: "Editar evento",
-      goToPlanning: "Ir al planning",
+      goToPlanning: "Ir al planning"
     },
     eventBookmarks: {
       barAria: "Eventos recientes y próximos",
@@ -1789,7 +1762,7 @@ const DETAIL_COPY = {
       summaryCounts: "{recent} recientes · {upcoming} próximos",
       summaryLoading: "Cargando…",
       summaryEmpty: "Ningún evento",
-      summaryProLocked: "Veritas Pro",
+      summaryProLocked: "Veritas Pro"
     },
     eventTypes: {
       intervention: "Intervención",
@@ -1798,7 +1771,7 @@ const DETAIL_COPY = {
       maintenance_preventive: "Mantenimiento preventivo",
       mise_a_jour: "Actualización",
       integration_monitoring: "Integración monitoring",
-      other: "Otro",
+      other: "Otro"
     },
     campaignTypes: {
       microsoft_security: "Seguridad Microsoft",
@@ -1808,27 +1781,21 @@ const DETAIL_COPY = {
       phishing_simulation: "Simulación de phishing",
       vulnerability_scan: "Escaneo de vulnerabilidades",
       incident_response: "Respuesta a incidentes",
-      compliance_audit: "Auditoría de conformidad",
+      compliance_audit: "Auditoría de conformidad"
     },
     campaignStatuses: {
       en_preparation: "En preparación",
       active: "Activa",
       en_cours: "En curso",
       suspendue: "Suspendida",
-      inactive: "Terminada",
+      inactive: "Terminada"
     },
     modals: {
       photoTitle: "Añadir foto",
       comingSoonTitle: "Funcionalidad próximamente",
       comingSoonIntro: "Pronto podrá añadir fotos a sus clientes para:",
-      comingSoonBullets: [
-        "Documentar información visual",
-        "Registrar fotos antes/después de intervención",
-        "Crear un historial visual de sus clientes",
-        "Y mucho más...",
-      ],
-      comingSoonNote:
-        "Esta funcionalidad permitirá mantener un registro visual de todos sus clientes y su evolución.",
+      comingSoonBullets: ["Documentar información visual", "Registrar fotos antes/después de intervención", "Crear un historial visual de sus clientes", "Y mucho más..."],
+      comingSoonNote: "Esta funcionalidad permitirá mantener un registro visual de todos sus clientes y su evolución.",
       domainsTitle: "Nombres de dominio ({count})",
       domainName: "Nombre de dominio",
       registrar: "Registrar",
@@ -1873,63 +1840,49 @@ const DETAIL_COPY = {
       no: "No",
       endpointsPreview: "Mostrando los primeros 20 endpoints. Total: {count}",
       noEndpoints: "Ningún endpoint disponible para esta solución",
-      statusInactive: "Inactivo",
-    },
-  },
+      statusInactive: "Inactivo"
+    }
+  }
 };
-
 export const getEnterpriseDetailCopy = createLocaleGetter(DETAIL_COPY);
-
 export function getContractStatusDetail(expirationDate, isSuspended = false, locale) {
   const result = getEnterprisesPageCopy(locale).getContractStatus(expirationDate, isSuspended);
   return {
     ...result,
-    color: DETAIL_STATUS_COLORS[result.status] || result.color,
+    color: DETAIL_STATUS_COLORS[result.status] || result.color
   };
 }
-
 export function getContractTypeLabel(type, locale) {
   const labels = getEnterpriseDetailCopy(locale).contractTypes;
   return labels[type] || labels.unknown;
 }
-
 export function getPrestationCategoryLabel(category, locale) {
   const labels = getEnterpriseDetailCopy(locale).prestationCategories;
   if (labels[category]) return labels[category];
-  const fallback = String(category || "")
-    .replace(/^prestation-/, "")
-    .replace(/-/g, " ")
-    .trim();
+  const fallback = String(category || "").replace(/^prestation-/, "").replace(/-/g, " ").trim();
   return fallback || "-";
 }
-
 export function getTicketStatusLabel(status, locale) {
   const labels = getEnterpriseDetailCopy(locale).ticketStatus;
   const key = status === "open" ? "new" : status;
   return labels[key] || labels[status] || status || "-";
 }
-
 export function getTicketStatusLabels(locale) {
   return getEnterpriseDetailCopy(locale).ticketStatus;
 }
-
 export function getEventTypeLabel(type, locale) {
   const labels = getEnterpriseDetailCopy(locale).eventTypes;
   return labels[type] || type || "-";
 }
-
 export function getEventTypeLabels(locale) {
   return getEnterpriseDetailCopy(locale).eventTypes;
 }
-
 export function getCampaignTypeLabel(type, locale) {
   const labels = getEnterpriseDetailCopy(locale).campaignTypes;
   return labels[type] || type || "-";
 }
-
 export function getCampaignStatusLabel(status, locale) {
   const labels = getEnterpriseDetailCopy(locale).campaignStatuses;
   return labels[String(status || "").toLowerCase()] || status || "-";
 }
-
 export { interpolate };

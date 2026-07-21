@@ -3,14 +3,7 @@ import { createPortal } from "react-dom";
 import { Icon } from "@iconify/react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
-import {
-  deleteClientFile,
-  fetchClientFiles,
-  getDownloadUrl,
-  getPreviewUrl,
-  updateClientFile,
-  uploadClientFile,
-} from "../../api/clientFiles";
+import { deleteClientFile, fetchClientFiles, getDownloadUrl, getPreviewUrl, updateClientFile, uploadClientFile } from "../../api/clientFiles";
 import { useAppLocale } from "../../hooks/useAppGeneralSettings";
 import { useVeritasEdition } from "../../hooks/useVeritasEdition";
 import { getEnterpriseVaultCopy } from "./enterpriseVaultI18n";
@@ -18,13 +11,18 @@ import VaultDocumentPreviewModal from "../shared/VaultDocumentPreviewModal/Vault
 import pageLayout from "./EnterprisesPage.module.css";
 import formStyles from "./EnterpriseFormModal.module.css";
 import styles from "./EnterpriseVaultPanel.module.css";
-
 const IMAGE_MIMES = new Set(["image/jpeg", "image/png", "image/gif", "image/webp"]);
 const DEFAULT_CATEGORY = "Autre";
-
-export default forwardRef(function EnterpriseVaultPanel({ clientId, clientName, copy: copyProp }, ref) {
+export default forwardRef(function EnterpriseVaultPanel({
+  clientId,
+  clientName,
+  copy: copyProp
+}, ref) {
   const locale = useAppLocale();
-  const { isCommunity, loaded: editionLoaded } = useVeritasEdition();
+  const {
+    isCommunity,
+    loaded: editionLoaded
+  } = useVeritasEdition();
   const internalCopy = useMemo(() => getEnterpriseVaultCopy(locale), [locale]);
   const copy = copyProp ?? internalCopy;
   const [files, setFiles] = useState([]);
@@ -34,7 +32,6 @@ export default forwardRef(function EnterpriseVaultPanel({ clientId, clientName, 
   const [previewFile, setPreviewFile] = useState(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [editingFile, setEditingFile] = useState(null);
-
   const load = useCallback(async () => {
     if (!editionLoaded) {
       setLoading(true);
@@ -47,7 +44,9 @@ export default forwardRef(function EnterpriseVaultPanel({ clientId, clientName, 
     }
     setLoading(true);
     try {
-      const rows = await fetchClientFiles({ clientId });
+      const rows = await fetchClientFiles({
+        clientId
+      });
       setFiles(Array.isArray(rows) ? rows : []);
     } catch (err) {
       setFiles([]);
@@ -58,42 +57,26 @@ export default forwardRef(function EnterpriseVaultPanel({ clientId, clientName, 
       setLoading(false);
     }
   }, [clientId, copy.toast.loadError, editionLoaded, isCommunity]);
-
   useEffect(() => {
     load();
   }, [load]);
-
-  useImperativeHandle(
-    ref,
-    () => ({
-      openUploadModal: () => setShowUploadModal(true),
-    }),
-    []
-  );
-
+  useImperativeHandle(ref, () => ({
+    openUploadModal: () => setShowUploadModal(true)
+  }), []);
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return files.filter((file) => {
+    return files.filter(file => {
       if (categoryFilter !== "all" && file.category !== categoryFilter) return false;
       if (!q) return true;
-      return (
-        String(file.file_name || "").toLowerCase().includes(q) ||
-        String(file.category || "").toLowerCase().includes(q) ||
-        String(file.description || "").toLowerCase().includes(q)
-      );
+      return String(file.file_name || "").toLowerCase().includes(q) || String(file.category || "").toLowerCase().includes(q) || String(file.description || "").toLowerCase().includes(q);
     });
   }, [files, search, categoryFilter]);
-
-  const sharedCount = useMemo(
-    () => files.filter((file) => file.visible_to_client).length,
-    [files]
-  );
-
-  const handleDelete = async (file) => {
+  const sharedCount = useMemo(() => files.filter(file => file.visible_to_client).length, [files]);
+  const handleDelete = async file => {
     if (!window.confirm(copy.formatDeleteConfirm(file.file_name))) return;
     try {
       await deleteClientFile(file.id);
-      setFiles((prev) => prev.filter((row) => row.id !== file.id));
+      setFiles(prev => prev.filter(row => row.id !== file.id));
       if (previewFile?.id === file.id) setPreviewFile(null);
       if (editingFile?.id === file.id) setEditingFile(null);
       toast.success(copy.toast.removed);
@@ -101,28 +84,38 @@ export default forwardRef(function EnterpriseVaultPanel({ clientId, clientName, 
       toast.error(err.message || copy.toast.deleteError);
     }
   };
-
-  const handleDescriptionUpdated = (updatedFile) => {
-    setFiles((prev) => prev.map((row) => (row.id === updatedFile.id ? { ...row, ...updatedFile } : row)));
-    setPreviewFile((prev) => (prev?.id === updatedFile.id ? { ...prev, ...updatedFile } : prev));
+  const handleDescriptionUpdated = updatedFile => {
+    setFiles(prev => prev.map(row => row.id === updatedFile.id ? {
+      ...row,
+      ...updatedFile
+    } : row));
+    setPreviewFile(prev => prev?.id === updatedFile.id ? {
+      ...prev,
+      ...updatedFile
+    } : prev);
     setEditingFile(null);
     toast.success(copy.toast.descriptionUpdated);
   };
-
-  const handleShareWithPortal = async (file) => {
+  const handleShareWithPortal = async file => {
     if (!file?.id || file.visible_to_client) return;
     try {
-      const updated = await updateClientFile(file.id, { visibleToClient: true });
-      setFiles((prev) => prev.map((row) => (row.id === updated.id ? { ...row, ...updated } : row)));
-      setPreviewFile((prev) => (prev?.id === updated.id ? { ...prev, ...updated } : prev));
+      const updated = await updateClientFile(file.id, {
+        visibleToClient: true
+      });
+      setFiles(prev => prev.map(row => row.id === updated.id ? {
+        ...row,
+        ...updated
+      } : row));
+      setPreviewFile(prev => prev?.id === updated.id ? {
+        ...prev,
+        ...updated
+      } : prev);
       toast.success(copy.toast.sharedOnPortal);
     } catch (err) {
       toast.error(err.message || copy.toast.shareError);
     }
   };
-
-  return (
-    <div className={styles.panelRoot}>
+  return <div className={styles.panelRoot}>
       <p className={styles.introText}>
         {copy.panel.intro}
         {copy.formatIntroSharedCount(sharedCount)}
@@ -131,125 +124,56 @@ export default forwardRef(function EnterpriseVaultPanel({ clientId, clientName, 
       <div className={styles.filters}>
         <div className={`${pageLayout.searchWrap} ${styles.searchWrap}`}>
           <FaSearch className={pageLayout.searchIcon} aria-hidden />
-          <input
-            className={pageLayout.searchInput}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder={copy.panel.searchPlaceholder}
-          />
-          {search ? (
-            <button
-              type="button"
-              className={pageLayout.clearButton}
-              onClick={() => setSearch("")}
-              aria-label={copy.panel.clearSearchAria}
-            >
+          <input className={pageLayout.searchInput} value={search} onChange={e => setSearch(e.target.value)} placeholder={copy.panel.searchPlaceholder} />
+          {search ? <button type="button" className={pageLayout.clearButton} onClick={() => setSearch("")} aria-label={copy.panel.clearSearchAria}>
               <FaTimes />
-            </button>
-          ) : null}
+            </button> : null}
         </div>
-        <select
-          className={`${pageLayout.sortSelect} ${styles.filterSelect}`}
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-        >
+        <select className={`${pageLayout.sortSelect} ${styles.filterSelect}`} value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)}>
           <option value="all">{copy.panel.allTypes}</option>
-          {copy.categoryKeys.map((cat) => (
-            <option key={cat} value={cat}>
+          {copy.categoryKeys.map(cat => <option key={cat} value={cat}>
               {copy.getCategoryLabel(cat)}
-            </option>
-          ))}
+            </option>)}
         </select>
       </div>
 
-      {loading ? (
-        <div className={styles.loadingState}>
+      {loading ? <div className={styles.loadingState}>
           <Icon icon="mdi:loading" className={styles.spinning} aria-hidden />
           {copy.panel.loading}
-        </div>
-      ) : filtered.length === 0 ? (
-        <div className={styles.empty}>
+        </div> : filtered.length === 0 ? <div className={styles.empty}>
           <Icon icon="mdi:safe-square-outline" className={styles.emptyIcon} aria-hidden />
           <p>{copy.panel.empty}</p>
-        </div>
-      ) : (
-        <div className={styles.grid}>
-          {filtered.map((file) => (
-            <VaultFileCard
-              key={file.id}
-              file={file}
-              copy={copy}
-              onPreview={() => setPreviewFile(file)}
-              onEditDescription={() => setEditingFile(file)}
-              onShareWithPortal={() => handleShareWithPortal(file)}
-              onDelete={() => handleDelete(file)}
-            />
-          ))}
-        </div>
-      )}
+        </div> : <div className={styles.grid}>
+          {filtered.map(file => <VaultFileCard key={file.id} file={file} copy={copy} onPreview={() => setPreviewFile(file)} onEditDescription={() => setEditingFile(file)} onShareWithPortal={() => handleShareWithPortal(file)} onDelete={() => handleDelete(file)} />)}
+        </div>}
 
-      {showUploadModal ? (
-        <VaultUploadModal
-          clientId={clientId}
-          clientName={clientName}
-          copy={copy}
-          onClose={() => setShowUploadModal(false)}
-          onUploaded={(newFile) => {
-            setFiles((prev) => [newFile, ...prev]);
-            setShowUploadModal(false);
-            toast.success(
-              newFile?.visible_to_client
-                ? copy.toast.uploadedVisible
-                : copy.toast.uploadedInternal
-            );
-          }}
-        />
-      ) : null}
+      {showUploadModal ? <VaultUploadModal clientId={clientId} clientName={clientName} copy={copy} onClose={() => setShowUploadModal(false)} onUploaded={newFile => {
+      setFiles(prev => [newFile, ...prev]);
+      setShowUploadModal(false);
+      toast.success(newFile?.visible_to_client ? copy.toast.uploadedVisible : copy.toast.uploadedInternal);
+    }} /> : null}
 
-      {previewFile ? (
-        <VaultDocumentPreviewModal
-          file={previewFile}
-          copy={copy}
-          onClose={() => setPreviewFile(null)}
-          previewUrl={getPreviewUrl(previewFile.id)}
-          downloadUrl={getDownloadUrl(previewFile.id)}
-          onEditDescription={() => {
-            setEditingFile(previewFile);
-            setPreviewFile(null);
-          }}
-          showEmptyDescription
-          categoryBadgeClassName={styles.categoryBadge}
-        />
-      ) : null}
+      {previewFile ? <VaultDocumentPreviewModal file={previewFile} copy={copy} onClose={() => setPreviewFile(null)} previewUrl={getPreviewUrl(previewFile.id)} downloadUrl={getDownloadUrl(previewFile.id)} onEditDescription={() => {
+      setEditingFile(previewFile);
+      setPreviewFile(null);
+    }} showEmptyDescription categoryBadgeClassName={styles.categoryBadge} /> : null}
 
-      {editingFile ? (
-        <VaultEditDescriptionModal
-          file={editingFile}
-          copy={copy}
-          onClose={() => setEditingFile(null)}
-          onSaved={handleDescriptionUpdated}
-        />
-      ) : null}
-    </div>
-  );
+      {editingFile ? <VaultEditDescriptionModal file={editingFile} copy={copy} onClose={() => setEditingFile(null)} onSaved={handleDescriptionUpdated} /> : null}
+    </div>;
 });
-
-function VaultFileCard({ file, copy, onPreview, onEditDescription, onShareWithPortal, onDelete }) {
+function VaultFileCard({
+  file,
+  copy,
+  onPreview,
+  onEditDescription,
+  onShareWithPortal,
+  onDelete
+}) {
   const isImage = IMAGE_MIMES.has(file.mime_type);
   const isPdf = file.mime_type === "application/pdf";
-
-  return (
-    <div className={styles.card}>
+  return <div className={styles.card}>
       <div className={styles.cardThumb} onClick={onPreview} title={copy.card.previewTitle}>
-        {isImage ? (
-          <img src={getPreviewUrl(file.id)} alt={file.file_name} className={styles.thumbImg} />
-        ) : (
-          <Icon
-            icon={isPdf ? "mdi:file-pdf-box" : "mdi:file-document-outline"}
-            className={`${styles.thumbIcon} ${isPdf ? styles.thumbPdf : styles.thumbDoc}`}
-            aria-hidden
-          />
-        )}
+        {isImage ? <img src={getPreviewUrl(file.id)} alt={file.file_name} className={styles.thumbImg} /> : <Icon icon={isPdf ? "mdi:file-pdf-box" : "mdi:file-document-outline"} className={`${styles.thumbIcon} ${isPdf ? styles.thumbPdf : styles.thumbDoc}`} aria-hidden />}
       </div>
       <div className={styles.cardBody}>
         <p className={styles.cardName} title={file.file_name}>
@@ -257,78 +181,51 @@ function VaultFileCard({ file, copy, onPreview, onEditDescription, onShareWithPo
         </p>
         <div className={styles.cardBadgesRow}>
           <span className={styles.categoryBadge}>{copy.getCategoryLabel(file.category)}</span>
-          {file.visible_to_client ? (
-            <span className={styles.sharedBadge}>
+          {file.visible_to_client ? <span className={styles.sharedBadge}>
               <Icon icon="mdi:account-eye-outline" aria-hidden />
               {copy.card.visiblePortal}
-            </span>
-          ) : (
-            <button
-              type="button"
-              className={`${styles.internalBadge} ${styles.internalBadgeAction}`}
-              onClick={onShareWithPortal}
-              title={copy.card.notSharedTitle}
-            >
+            </span> : <button type="button" className={`${styles.internalBadge} ${styles.internalBadgeAction}`} onClick={onShareWithPortal} title={copy.card.notSharedTitle}>
               <Icon icon="mdi:account-eye-off-outline" aria-hidden />
               {copy.card.notShared}
-            </button>
-          )}
+            </button>}
         </div>
-        {file.description ? (
-          <p className={styles.cardDesc}>{file.description}</p>
-        ) : (
-          <p className={styles.cardDescEmpty}>{copy.card.noDescription}</p>
-        )}
+        {file.description ? <p className={styles.cardDesc}>{file.description}</p> : <p className={styles.cardDescEmpty}>{copy.card.noDescription}</p>}
         <p className={styles.cardDate}>
           {copy.formatDate(file.created_at)} · {copy.formatSize(file.size_bytes)}
         </p>
       </div>
       <div className={styles.cardActions}>
-        <a
-          href={getDownloadUrl(file.id)}
-          download={file.file_name}
-          className={styles.actionBtn}
-          title={copy.card.downloadTitle}
-        >
+        <a href={getDownloadUrl(file.id)} download={file.file_name} className={styles.actionBtn} title={copy.card.downloadTitle}>
           <Icon icon="mdi:download-outline" aria-hidden />
         </a>
-        <button
-          type="button"
-          className={styles.actionBtn}
-          onClick={onEditDescription}
-          title={copy.card.editDescriptionTitle}
-          aria-label={copy.card.editDescriptionAria}
-        >
+        <button type="button" className={styles.actionBtn} onClick={onEditDescription} title={copy.card.editDescriptionTitle} aria-label={copy.card.editDescriptionAria}>
           <Icon icon="mdi:pencil-outline" aria-hidden />
         </button>
-        <button
-          type="button"
-          className={`${styles.actionBtn} ${styles.actionDelete}`}
-          onClick={onDelete}
-          title={copy.card.removeTitle}
-        >
+        <button type="button" className={`${styles.actionBtn} ${styles.actionDelete}`} onClick={onDelete} title={copy.card.removeTitle}>
           <Icon icon="mdi:trash-can-outline" aria-hidden />
         </button>
       </div>
-    </div>
-  );
+    </div>;
 }
-
-function VaultUploadModal({ clientId, clientName, copy, onClose, onUploaded }) {
+function VaultUploadModal({
+  clientId,
+  clientName,
+  copy,
+  onClose,
+  onUploaded
+}) {
   const [category, setCategory] = useState(DEFAULT_CATEGORY);
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
   const [visibleToClient, setVisibleToClient] = useState(false);
   const [uploading, setUploading] = useState(false);
   const dropRef = useRef(null);
-
-  const handleDrop = (e) => {
+  const handleDrop = e => {
     e.preventDefault();
     const dropped = e.dataTransfer?.files?.[0];
     if (dropped) setFile(dropped);
   };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     if (!clientId) return toast.error(copy.toast.clientNotFound);
     if (!file) return toast.error(copy.toast.fileRequired);
@@ -340,7 +237,7 @@ function VaultUploadModal({ clientId, clientName, copy, onClose, onUploaded }) {
         category,
         description,
         file,
-        visibleToClient,
+        visibleToClient
       });
       onUploaded(result);
     } catch (err) {
@@ -349,18 +246,9 @@ function VaultUploadModal({ clientId, clientName, copy, onClose, onUploaded }) {
       setUploading(false);
     }
   };
-
   const modal = copy.uploadModal;
-
-  return createPortal(
-    <div className={formStyles.overlay} onClick={onClose} role="presentation">
-      <div
-        className={`${formStyles.shell} ${formStyles.shellMedium}`}
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="vault-upload-modal-title"
-      >
+  return createPortal(<div className={formStyles.overlay} onClick={onClose} role="presentation">
+      <div className={`${formStyles.shell} ${formStyles.shellMedium}`} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="vault-upload-modal-title">
         <div className={formStyles.accentBar} aria-hidden />
         <header className={formStyles.header}>
           <div className={formStyles.headerMain}>
@@ -375,13 +263,7 @@ function VaultUploadModal({ clientId, clientName, copy, onClose, onUploaded }) {
               <p className={formStyles.subtitle}>{modal.subtitle}</p>
             </div>
           </div>
-          <button
-            type="button"
-            className={formStyles.closeBtn}
-            onClick={onClose}
-            disabled={uploading}
-            aria-label={modal.closeAria}
-          >
+          <button type="button" className={formStyles.closeBtn} onClick={onClose} disabled={uploading} aria-label={modal.closeAria}>
             <FaTimes />
           </button>
         </header>
@@ -394,18 +276,10 @@ function VaultUploadModal({ clientId, clientName, copy, onClose, onUploaded }) {
               <label className={formStyles.label} htmlFor="vault-category">
                 {modal.categoryLabel}
               </label>
-              <select
-                id="vault-category"
-                className={formStyles.input}
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                disabled={uploading}
-              >
-                {copy.categoryKeys.map((cat) => (
-                  <option key={cat} value={cat}>
+              <select id="vault-category" className={formStyles.input} value={category} onChange={e => setCategory(e.target.value)} disabled={uploading}>
+                {copy.categoryKeys.map(cat => <option key={cat} value={cat}>
                     {copy.getCategoryLabel(cat)}
-                  </option>
-                ))}
+                  </option>)}
               </select>
             </div>
 
@@ -413,46 +287,23 @@ function VaultUploadModal({ clientId, clientName, copy, onClose, onUploaded }) {
               <label className={formStyles.label} htmlFor="vault-description">
                 {modal.descriptionLabel}
               </label>
-              <input
-                id="vault-description"
-                className={formStyles.input}
-                type="text"
-                placeholder={modal.descriptionPlaceholder}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                disabled={uploading}
-              />
+              <input id="vault-description" className={formStyles.input} type="text" placeholder={modal.descriptionPlaceholder} value={description} onChange={e => setDescription(e.target.value)} disabled={uploading} />
             </div>
 
             <div className={formStyles.field}>
               <span className={`${formStyles.label} ${formStyles.labelRequired}`}>{modal.fileLabel}</span>
-              <div
-                ref={dropRef}
-                className={`${styles.dropZone} ${file ? styles.dropZoneActive : ""}`}
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={handleDrop}
-                onClick={() => document.getElementById("vault-file-input")?.click()}
-              >
-                <input
-                  id="vault-file-input"
-                  type="file"
-                  style={{ display: "none" }}
-                  onChange={(e) => setFile(e.target.files?.[0] || null)}
-                  accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.csv"
-                  disabled={uploading}
-                />
-                {file ? (
-                  <span className={styles.dropZoneFile}>
+              <div ref={dropRef} className={`${styles.dropZone} ${file ? styles.dropZoneActive : ""}`} onDragOver={e => e.preventDefault()} onDrop={handleDrop} onClick={() => document.getElementById("vault-file-input")?.click()}>
+                <input id="vault-file-input" type="file" style={{
+                display: "none"
+              }} onChange={e => setFile(e.target.files?.[0] || null)} accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.csv" disabled={uploading} />
+                {file ? <span className={styles.dropZoneFile}>
                     <Icon icon="mdi:file-document-outline" aria-hidden />
                     {file.name} ({copy.formatSize(file.size)})
-                  </span>
-                ) : (
-                  <span className={styles.dropZoneHint}>
+                  </span> : <span className={styles.dropZoneHint}>
                     <Icon icon="mdi:cloud-upload-outline" aria-hidden />
                     {modal.dropHint}
                     <small>{modal.dropFormats}</small>
-                  </span>
-                )}
+                  </span>}
               </div>
             </div>
 
@@ -461,16 +312,7 @@ function VaultUploadModal({ clientId, clientName, copy, onClose, onUploaded }) {
                 <span className={formStyles.label}>{modal.visiblePortalLabel}</span>
                 <p className={styles.visibilitySwitchHint}>{modal.visiblePortalHint}</p>
               </div>
-              <button
-                type="button"
-                role="switch"
-                aria-checked={visibleToClient}
-                className={`${styles.visibilitySwitch} ${
-                  visibleToClient ? styles.visibilitySwitchOn : ""
-                }`}
-                onClick={() => setVisibleToClient((value) => !value)}
-                disabled={uploading}
-              >
+              <button type="button" role="switch" aria-checked={visibleToClient} className={`${styles.visibilitySwitch} ${visibleToClient ? styles.visibilitySwitchOn : ""}`} onClick={() => setVisibleToClient(value => !value)} disabled={uploading}>
                 <span className={styles.visibilitySwitchTrack}>
                   <span className={styles.visibilitySwitchThumb} />
                 </span>
@@ -488,45 +330,41 @@ function VaultUploadModal({ clientId, clientName, copy, onClose, onUploaded }) {
                 {modal.cancel}
               </button>
               <button type="submit" className={formStyles.primaryBtn} disabled={uploading || !file}>
-                {uploading ? (
-                  <>
+                {uploading ? <>
                     <Icon icon="mdi:loading" className={formStyles.spinning} aria-hidden />
                     {modal.uploading}
-                  </>
-                ) : (
-                  <>
+                  </> : <>
                     <Icon icon="mdi:upload-outline" aria-hidden />
                     {modal.upload}
-                  </>
-                )}
+                  </>}
               </button>
             </div>
           </footer>
         </form>
       </div>
-    </div>,
-    document.getElementById("modal-root") || document.body
-  );
+    </div>, document.getElementById("modal-root") || document.body);
 }
-
-function VaultEditDescriptionModal({ file, copy, onClose, onSaved }) {
+function VaultEditDescriptionModal({
+  file,
+  copy,
+  onClose,
+  onSaved
+}) {
   const [description, setDescription] = useState(file?.description || "");
   const [visibleToClient, setVisibleToClient] = useState(Boolean(file?.visible_to_client));
   const [saving, setSaving] = useState(false);
-
   useEffect(() => {
     setDescription(file?.description || "");
     setVisibleToClient(Boolean(file?.visible_to_client));
   }, [file]);
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     if (!file?.id) return;
     try {
       setSaving(true);
       const updated = await updateClientFile(file.id, {
         description: description.trim(),
-        visibleToClient,
+        visibleToClient
       });
       onSaved(updated);
     } catch (err) {
@@ -535,18 +373,9 @@ function VaultEditDescriptionModal({ file, copy, onClose, onSaved }) {
       setSaving(false);
     }
   };
-
   const modal = copy.editModal;
-
-  return createPortal(
-    <div className={formStyles.overlay} onClick={onClose} role="presentation">
-      <div
-        className={`${formStyles.shell} ${formStyles.shellMedium}`}
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="vault-edit-description-title"
-      >
+  return createPortal(<div className={formStyles.overlay} onClick={onClose} role="presentation">
+      <div className={`${formStyles.shell} ${formStyles.shellMedium}`} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="vault-edit-description-title">
         <div className={formStyles.accentBar} aria-hidden />
         <header className={formStyles.header}>
           <div className={formStyles.headerMain}>
@@ -561,13 +390,7 @@ function VaultEditDescriptionModal({ file, copy, onClose, onSaved }) {
               <p className={formStyles.subtitle}>{file?.file_name}</p>
             </div>
           </div>
-          <button
-            type="button"
-            className={formStyles.closeBtn}
-            onClick={onClose}
-            disabled={saving}
-            aria-label={modal.closeAria}
-          >
+          <button type="button" className={formStyles.closeBtn} onClick={onClose} disabled={saving} aria-label={modal.closeAria}>
             <FaTimes />
           </button>
         </header>
@@ -578,16 +401,7 @@ function VaultEditDescriptionModal({ file, copy, onClose, onSaved }) {
               <label className={formStyles.label} htmlFor="vault-edit-description">
                 {modal.descriptionLabel}
               </label>
-              <textarea
-                id="vault-edit-description"
-                className={formStyles.input}
-                rows={4}
-                maxLength={2000}
-                placeholder={modal.descriptionPlaceholder}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                disabled={saving}
-              />
+              <textarea id="vault-edit-description" className={formStyles.input} rows={4} maxLength={2000} placeholder={modal.descriptionPlaceholder} value={description} onChange={e => setDescription(e.target.value)} disabled={saving} />
             </div>
 
             <div className={styles.visibilitySwitchRow}>
@@ -595,16 +409,7 @@ function VaultEditDescriptionModal({ file, copy, onClose, onSaved }) {
                 <span className={formStyles.label}>{modal.visiblePortalLabel}</span>
                 <p className={styles.visibilitySwitchHint}>{modal.visiblePortalHint}</p>
               </div>
-              <button
-                type="button"
-                role="switch"
-                aria-checked={visibleToClient}
-                className={`${styles.visibilitySwitch} ${
-                  visibleToClient ? styles.visibilitySwitchOn : ""
-                }`}
-                onClick={() => setVisibleToClient((value) => !value)}
-                disabled={saving}
-              >
+              <button type="button" role="switch" aria-checked={visibleToClient} className={`${styles.visibilitySwitch} ${visibleToClient ? styles.visibilitySwitchOn : ""}`} onClick={() => setVisibleToClient(value => !value)} disabled={saving}>
                 <span className={styles.visibilitySwitchTrack}>
                   <span className={styles.visibilitySwitchThumb} />
                 </span>
@@ -622,23 +427,17 @@ function VaultEditDescriptionModal({ file, copy, onClose, onSaved }) {
                 {modal.cancel}
               </button>
               <button type="submit" className={formStyles.primaryBtn} disabled={saving}>
-                {saving ? (
-                  <>
+                {saving ? <>
                     <Icon icon="mdi:loading" className={formStyles.spinning} aria-hidden />
                     {modal.saving}
-                  </>
-                ) : (
-                  <>
+                  </> : <>
                     <Icon icon="mdi:content-save-outline" aria-hidden />
                     {modal.save}
-                  </>
-                )}
+                  </>}
               </button>
             </div>
           </footer>
         </form>
       </div>
-    </div>,
-    document.getElementById("modal-root") || document.body
-  );
+    </div>, document.getElementById("modal-root") || document.body);
 }

@@ -8,7 +8,7 @@
   padding-bottom: 1rem;
 }
 
-/* ─── En-tête host + jauge ─── */
+
 .header {
   display: flex;
   align-items: flex-start;
@@ -178,7 +178,7 @@
   cursor: not-allowed;
 }
 
-/* ─── KPIs ─── */
+
 .kpiGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
@@ -232,7 +232,7 @@
   color: var(--msp-muted-light);
 }
 
-/* ─── Sections ─── */
+
 .gridLayout {
   display: grid;
   grid-template-columns: 1fr;
@@ -486,7 +486,7 @@
   color: inherit;
 }
 
-/* ─── Tableaux ─── */
+
 .tableWrap {
   max-height: 420px;
   overflow: auto;
@@ -641,7 +641,7 @@
   padding: 0 0.5rem;
 }
 
-/* ─── Skeleton ─── */
+
 .skeleton {
   background: linear-gradient(90deg, var(--msp-surface-3) 0%, rgba(255, 255, 255, 0.07) 50%, var(--msp-surface-3) 100%);
   background-size: 200% 100%;

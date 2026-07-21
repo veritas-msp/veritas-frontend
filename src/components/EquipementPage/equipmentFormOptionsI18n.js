@@ -2,7 +2,6 @@ import { createLocaleGetter } from "../../i18n/translate";
 import { SERVER_ROLE_GROUPS } from "./constants/serverRoleOptions";
 import { STORAGE_RAID_OPTIONS, STORAGE_ROLE_OPTIONS } from "./constants/storageRoleOptions";
 import { OS_OPTION_GROUPS, SERVER_HYPERVISOR_OPTIONS } from "./equipmentFormConfig";
-
 const SERVER_ROLE_GROUP_LABELS_FR = {
   Infrastructure: "Infrastructure",
   "Annuaire & réseau": "Annuaire & réseau",
@@ -14,9 +13,8 @@ const SERVER_ROLE_GROUP_LABELS_FR = {
   "Supervision & sécurité": "Supervision & sécurité",
   "Messagerie & collaboration": "Messagerie & collaboration",
   "Développement & DevOps": "Développement & DevOps",
-  Autre: "Autre",
+  Autre: "Autre"
 };
-
 const SERVER_ROLE_OPTION_LABELS_FR = {
   Hôte: "Hôte",
   Hyperviseur: "Hyperviseur",
@@ -70,9 +68,8 @@ const SERVER_ROLE_OPTION_LABELS_FR = {
   "Conteneurs / Kubernetes": "Conteneurs / Kubernetes",
   "Registry / Artefacts": "Registry / Artefacts",
   Test: "Test",
-  Autres: "Autres",
+  Autres: "Autres"
 };
-
 const SERVER_ROLE_GROUP_LABELS_EN = {
   Infrastructure: "Infrastructure",
   "Annuaire & réseau": "Directory & network",
@@ -84,9 +81,8 @@ const SERVER_ROLE_GROUP_LABELS_EN = {
   "Supervision & sécurité": "Monitoring & security",
   "Messagerie & collaboration": "Messaging & collaboration",
   "Développement & DevOps": "Development & DevOps",
-  Autre: "Other",
+  Autre: "Other"
 };
-
 const SERVER_ROLE_OPTION_LABELS_EN = {
   Hôte: "Host",
   Hyperviseur: "Hypervisor",
@@ -140,9 +136,8 @@ const SERVER_ROLE_OPTION_LABELS_EN = {
   "Conteneurs / Kubernetes": "Containers / Kubernetes",
   "Registry / Artefacts": "Registry / Artifacts",
   Test: "Test",
-  Autres: "Other",
+  Autres: "Other"
 };
-
 const STORAGE_ROLE_LABELS_FR = {
   "Stockage de sauvegarde": "Stockage de sauvegarde",
   "Stockage de fichiers communs": "Stockage de fichiers communs",
@@ -151,9 +146,8 @@ const STORAGE_ROLE_LABELS_FR = {
   "Stockage de réplication": "Stockage de réplication",
   "Stockage VM / vSAN": "Stockage VM / vSAN",
   "Stockage cloud / tiering": "Stockage cloud / tiering",
-  Autre: "Autre",
+  Autre: "Autre"
 };
-
 const STORAGE_ROLE_LABELS_EN = {
   "Stockage de sauvegarde": "Backup storage",
   "Stockage de fichiers communs": "Shared file storage",
@@ -162,44 +156,42 @@ const STORAGE_ROLE_LABELS_EN = {
   "Stockage de réplication": "Replication storage",
   "Stockage VM / vSAN": "VM / vSAN storage",
   "Stockage cloud / tiering": "Cloud / tiering storage",
-  Autre: "Other",
+  Autre: "Other"
 };
-
 const RAID_LABELS_FR = {
   Aucun: "Aucun",
-  Autre: "Autre",
+  Autre: "Autre"
 };
-
 const RAID_LABELS_EN = {
   Aucun: "None",
-  Autre: "Other",
+  Autre: "Other"
 };
-
 const OS_GROUP_LABELS_FR = {
   "Windows Server": "Windows Server",
   "Windows client": "Windows client",
   "Linux · Ubuntu": "Linux · Ubuntu",
   "Linux · Debian": "Linux · Debian",
-  Autre: "Autre",
+  Autre: "Autre"
 };
-
 const OS_GROUP_LABELS_EN = {
   "Windows Server": "Windows Server",
   "Windows client": "Windows client",
   "Linux · Ubuntu": "Linux · Ubuntu",
   "Linux · Debian": "Linux · Debian",
-  Autre: "Other",
+  Autre: "Other"
 };
-
-const HYPERVISOR_LABELS_FR = { Autre: "Autre" };
-const HYPERVISOR_LABELS_EN = { Autre: "Other" };
-
+const HYPERVISOR_LABELS_FR = {
+  Autre: "Autre"
+};
+const HYPERVISOR_LABELS_EN = {
+  Autre: "Other"
+};
 const WIDGETS_FR = {
   roleTagsSelect: {
     filterPlaceholder: "Filtrer…",
     noMatch: "Aucun rôle correspondant",
     savedRoles: "Rôles enregistrés",
-    removeAria: "Retirer {label}",
+    removeAria: "Retirer {label}"
   },
   serverSpec: {
     ram: "RAM",
@@ -213,11 +205,11 @@ const WIDGETS_FR = {
     removeVolumeAria: "Retirer le volume {index}",
     addVolume: "Ajouter un volume",
     totalCapacityApprox: "Capacité totale ≈ {hint}",
-    vcpuSuffix: "vCPU",
+    vcpuSuffix: "vCPU"
   },
   capacity: {
     unitGb: "Go",
-    totalApprox: "≈ {hint}",
+    totalApprox: "≈ {hint}"
   },
   diskBay: {
     title: "Baies de disques",
@@ -233,7 +225,7 @@ const WIDGETS_FR = {
     baysLabel: "Baies",
     legendInstalled: "Disque installé",
     legendEmpty: "Baie libre",
-    unitGb: "Go",
+    unitGb: "Go"
   },
   remoteAccess: {
     title: "Solution de prise en main",
@@ -245,40 +237,39 @@ const WIDGETS_FR = {
     solutions: {
       anydesk: {
         description: "Client AnyDesk installé sur le serveur",
-        idLabel: "ID AnyDesk",
+        idLabel: "ID AnyDesk"
       },
       teamviewer: {
         description: "ID numérique TeamViewer",
-        idLabel: "ID TeamViewer",
+        idLabel: "ID TeamViewer"
       },
       rustdesk: {
         description: "ID RustDesk ou code de connexion",
-        idLabel: "ID RustDesk",
+        idLabel: "ID RustDesk"
       },
       splashtop: {
         description: "Code session ou identifiant Splashtop",
-        idLabel: "Identifiant Splashtop",
+        idLabel: "Identifiant Splashtop"
       },
       rdp: {
         label: "Bureau à distance (RDP)",
         description: "Adresse IP ou nom d'hôte Windows",
-        idLabel: "Hôte RDP",
+        idLabel: "Hôte RDP"
       },
       other: {
         label: "Autre",
         description: "Autre outil (identifiant libre)",
-        idLabel: "Identifiant",
-      },
-    },
-  },
+        idLabel: "Identifiant"
+      }
+    }
+  }
 };
-
 const WIDGETS_EN = {
   roleTagsSelect: {
     filterPlaceholder: "Filter…",
     noMatch: "No matching role",
     savedRoles: "Saved roles",
-    removeAria: "Remove {label}",
+    removeAria: "Remove {label}"
   },
   serverSpec: {
     ram: "RAM",
@@ -292,11 +283,11 @@ const WIDGETS_EN = {
     removeVolumeAria: "Remove volume {index}",
     addVolume: "Add volume",
     totalCapacityApprox: "Total capacity ≈ {hint}",
-    vcpuSuffix: "vCPU",
+    vcpuSuffix: "vCPU"
   },
   capacity: {
     unitGb: "GB",
-    totalApprox: "≈ {hint}",
+    totalApprox: "≈ {hint}"
   },
   diskBay: {
     title: "Disk bays",
@@ -312,7 +303,7 @@ const WIDGETS_EN = {
     baysLabel: "Bays",
     legendInstalled: "Installed disk",
     legendEmpty: "Empty bay",
-    unitGb: "GB",
+    unitGb: "GB"
   },
   remoteAccess: {
     title: "Remote management solution",
@@ -324,58 +315,54 @@ const WIDGETS_EN = {
     solutions: {
       anydesk: {
         description: "AnyDesk client installed on the server",
-        idLabel: "AnyDesk ID",
+        idLabel: "AnyDesk ID"
       },
       teamviewer: {
         description: "TeamViewer numeric ID",
-        idLabel: "TeamViewer ID",
+        idLabel: "TeamViewer ID"
       },
       rustdesk: {
         description: "RustDesk ID or connection code",
-        idLabel: "RustDesk ID",
+        idLabel: "RustDesk ID"
       },
       splashtop: {
         description: "Splashtop session code or identifier",
-        idLabel: "Splashtop identifier",
+        idLabel: "Splashtop identifier"
       },
       rdp: {
         label: "Remote desktop (RDP)",
         description: "IP address or Windows hostname",
-        idLabel: "RDP host",
+        idLabel: "RDP host"
       },
       other: {
         label: "Other",
         description: "Other tool (free-form identifier)",
-        idLabel: "Identifier",
-      },
-    },
-  },
+        idLabel: "Identifier"
+      }
+    }
+  }
 };
-
 function mapSelectOptions(values, labelsMap) {
-  return values.map((value) => ({
+  return values.map(value => ({
     value,
-    label: labelsMap?.[value] ?? value,
+    label: labelsMap?.[value] ?? value
   }));
 }
-
 function buildServerRoleGroups(groupLabels, optionLabels) {
-  return SERVER_ROLE_GROUPS.map((group) => ({
+  return SERVER_ROLE_GROUPS.map(group => ({
     label: groupLabels[group.label] ?? group.label,
-    options: group.options.map((value) => ({
+    options: group.options.map(value => ({
       value,
-      label: optionLabels[value] ?? value,
-    })),
+      label: optionLabels[value] ?? value
+    }))
   }));
 }
-
 function buildOsOptionGroups(groupLabels) {
-  return OS_OPTION_GROUPS.map((group) => ({
+  return OS_OPTION_GROUPS.map(group => ({
     label: groupLabels[group.label] ?? group.label,
-    options: group.options,
+    options: group.options
   }));
 }
-
 function buildLocalePack({
   serverRoleGroupLabels,
   serverRoleOptionLabels,
@@ -383,20 +370,19 @@ function buildLocalePack({
   raidLabels,
   osGroupLabels,
   hypervisorLabels,
-  widgets,
+  widgets
 }) {
   const serverRoleGroups = buildServerRoleGroups(serverRoleGroupLabels, serverRoleOptionLabels);
   return {
     serverRoleGroups,
-    serverRoleOptions: serverRoleGroups.flatMap((group) => group.options),
+    serverRoleOptions: serverRoleGroups.flatMap(group => group.options),
     storageRoleOptions: mapSelectOptions(STORAGE_ROLE_OPTIONS, storageRoleLabels),
     storageRaidOptions: mapSelectOptions(STORAGE_RAID_OPTIONS, raidLabels),
     osOptionGroups: buildOsOptionGroups(osGroupLabels),
     hypervisorOptions: mapSelectOptions(SERVER_HYPERVISOR_OPTIONS, hypervisorLabels),
-    widgets,
+    widgets
   };
 }
-
 const FR = buildLocalePack({
   serverRoleGroupLabels: SERVER_ROLE_GROUP_LABELS_FR,
   serverRoleOptionLabels: SERVER_ROLE_OPTION_LABELS_FR,
@@ -404,9 +390,8 @@ const FR = buildLocalePack({
   raidLabels: RAID_LABELS_FR,
   osGroupLabels: OS_GROUP_LABELS_FR,
   hypervisorLabels: HYPERVISOR_LABELS_FR,
-  widgets: WIDGETS_FR,
+  widgets: WIDGETS_FR
 });
-
 const EN = buildLocalePack({
   serverRoleGroupLabels: SERVER_ROLE_GROUP_LABELS_EN,
   serverRoleOptionLabels: SERVER_ROLE_OPTION_LABELS_EN,
@@ -414,41 +399,37 @@ const EN = buildLocalePack({
   raidLabels: RAID_LABELS_EN,
   osGroupLabels: OS_GROUP_LABELS_EN,
   hypervisorLabels: HYPERVISOR_LABELS_EN,
-  widgets: WIDGETS_EN,
+  widgets: WIDGETS_EN
 });
-
 const DE = {
   ...EN,
-  serverRoleGroups: buildServerRoleGroups(
-    {
-      ...SERVER_ROLE_GROUP_LABELS_EN,
-      Infrastructure: "Infrastruktur",
-      "Annuaire & réseau": "Verzeichnis & Netzwerk",
-      "Fichiers & impression": "Dateien & Druck",
-      "Bureau à distance & VDI": "Remotedesktop & VDI",
-      "Bases de données": "Datenbanken",
-      "Sauvegarde & reprise": "Backup & Wiederherstellung",
-      "Supervision & sécurité": "Überwachung & Sicherheit",
-      "Messagerie & collaboration": "Messaging & Zusammenarbeit",
-      "Développement & DevOps": "Entwicklung & DevOps",
-      Autre: "Sonstige",
-    },
-    {
-      ...SERVER_ROLE_OPTION_LABELS_EN,
-      Hôte: "Host",
-      Hyperviseur: "Hypervisor",
-      "Load balancer": "Load Balancer",
-      "Stockage SAN/NAS": "SAN/NAS-Speicher",
-      "Contrôleur de domaine": "Domänencontroller",
-      "Partage de fichiers": "Dateifreigabe",
-      Impression: "Drucken",
-      Sauvegarde: "Backup",
-      Réplication: "Replikation",
-      Archivage: "Archivierung",
-      Messagerie: "Messaging",
-      Autres: "Sonstige",
-    }
-  ),
+  serverRoleGroups: buildServerRoleGroups({
+    ...SERVER_ROLE_GROUP_LABELS_EN,
+    Infrastructure: "Infrastruktur",
+    "Annuaire & réseau": "Verzeichnis & Netzwerk",
+    "Fichiers & impression": "Dateien & Druck",
+    "Bureau à distance & VDI": "Remotedesktop & VDI",
+    "Bases de données": "Datenbanken",
+    "Sauvegarde & reprise": "Backup & Wiederherstellung",
+    "Supervision & sécurité": "Überwachung & Sicherheit",
+    "Messagerie & collaboration": "Messaging & Zusammenarbeit",
+    "Développement & DevOps": "Entwicklung & DevOps",
+    Autre: "Sonstige"
+  }, {
+    ...SERVER_ROLE_OPTION_LABELS_EN,
+    Hôte: "Host",
+    Hyperviseur: "Hypervisor",
+    "Load balancer": "Load Balancer",
+    "Stockage SAN/NAS": "SAN/NAS-Speicher",
+    "Contrôleur de domaine": "Domänencontroller",
+    "Partage de fichiers": "Dateifreigabe",
+    Impression: "Drucken",
+    Sauvegarde: "Backup",
+    Réplication: "Replikation",
+    Archivage: "Archivierung",
+    Messagerie: "Messaging",
+    Autres: "Sonstige"
+  }),
   storageRoleOptions: mapSelectOptions(STORAGE_ROLE_OPTIONS, {
     ...STORAGE_ROLE_LABELS_EN,
     "Stockage de sauvegarde": "Backup-Speicher",
@@ -456,24 +437,32 @@ const DE = {
     "Stockage principal": "Primärspeicher",
     "Stockage d'archivage": "Archivspeicher",
     "Stockage de réplication": "Replikationsspeicher",
-    Autre: "Sonstige",
+    Autre: "Sonstige"
   }),
-  storageRaidOptions: mapSelectOptions(STORAGE_RAID_OPTIONS, { Aucun: "Keine", Autre: "Sonstige" }),
-  osOptionGroups: buildOsOptionGroups({ ...OS_GROUP_LABELS_EN, Autre: "Sonstige" }),
-  hypervisorOptions: mapSelectOptions(SERVER_HYPERVISOR_OPTIONS, { Autre: "Sonstige" }),
+  storageRaidOptions: mapSelectOptions(STORAGE_RAID_OPTIONS, {
+    Aucun: "Keine",
+    Autre: "Sonstige"
+  }),
+  osOptionGroups: buildOsOptionGroups({
+    ...OS_GROUP_LABELS_EN,
+    Autre: "Sonstige"
+  }),
+  hypervisorOptions: mapSelectOptions(SERVER_HYPERVISOR_OPTIONS, {
+    Autre: "Sonstige"
+  }),
   widgets: {
     ...WIDGETS_EN,
     roleTagsSelect: {
       filterPlaceholder: "Filtern…",
       noMatch: "Keine passende Rolle",
       savedRoles: "Gespeicherte Rollen",
-      removeAria: "{label} entfernen",
+      removeAria: "{label} entfernen"
     },
     serverSpec: {
       ...WIDGETS_EN.serverSpec,
       storage: "Speicher",
       addVolume: "Volume hinzufügen",
-      totalCapacityApprox: "Gesamtkapazität ≈ {hint}",
+      totalCapacityApprox: "Gesamtkapazität ≈ {hint}"
     },
     diskBay: {
       ...WIDGETS_EN.diskBay,
@@ -482,7 +471,7 @@ const DE = {
       installedSummary: "{active} / {max} installiert",
       legendInstalled: "Festplatte installiert",
       legendEmpty: "Freier Einschub",
-      baysLabel: "Einschübe",
+      baysLabel: "Einschübe"
     },
     remoteAccess: {
       ...WIDGETS_EN.remoteAccess,
@@ -493,47 +482,47 @@ const DE = {
         rdp: {
           label: "Remotedesktop (RDP)",
           description: "IP-Adresse oder Windows-Hostname",
-          idLabel: "RDP-Host",
+          idLabel: "RDP-Host"
         },
-        other: { label: "Sonstige", description: "Anderes Tool (freie Kennung)", idLabel: "Kennung" },
-      },
-    },
-  },
+        other: {
+          label: "Sonstige",
+          description: "Anderes Tool (freie Kennung)",
+          idLabel: "Kennung"
+        }
+      }
+    }
+  }
 };
-DE.serverRoleOptions = DE.serverRoleGroups.flatMap((group) => group.options);
-
+DE.serverRoleOptions = DE.serverRoleGroups.flatMap(group => group.options);
 const IT = {
   ...EN,
-  serverRoleGroups: buildServerRoleGroups(
-    {
-      ...SERVER_ROLE_GROUP_LABELS_EN,
-      Infrastructure: "Infrastruttura",
-      "Annuaire & réseau": "Directory e rete",
-      "Fichiers & impression": "File e stampa",
-      "Bureau à distance & VDI": "Desktop remoto e VDI",
-      "Bases de données": "Database",
-      "Sauvegarde & reprise": "Backup e ripristino",
-      "Supervision & sécurité": "Monitoraggio e sicurezza",
-      "Messagerie & collaboration": "Messaggistica e collaborazione",
-      "Développement & DevOps": "Sviluppo e DevOps",
-      Autre: "Altro",
-    },
-    {
-      ...SERVER_ROLE_OPTION_LABELS_EN,
-      Hôte: "Host",
-      Hyperviseur: "Hypervisor",
-      "Load balancer": "Bilanciatore di carico",
-      "Stockage SAN/NAS": "Storage SAN/NAS",
-      "Contrôleur de domaine": "Controller di dominio",
-      "Partage de fichiers": "Condivisione file",
-      Impression: "Stampa",
-      Sauvegarde: "Backup",
-      Réplication: "Replica",
-      Archivage: "Archiviazione",
-      Messagerie: "Messaggistica",
-      Autres: "Altro",
-    }
-  ),
+  serverRoleGroups: buildServerRoleGroups({
+    ...SERVER_ROLE_GROUP_LABELS_EN,
+    Infrastructure: "Infrastruttura",
+    "Annuaire & réseau": "Directory e rete",
+    "Fichiers & impression": "File e stampa",
+    "Bureau à distance & VDI": "Desktop remoto e VDI",
+    "Bases de données": "Database",
+    "Sauvegarde & reprise": "Backup e ripristino",
+    "Supervision & sécurité": "Monitoraggio e sicurezza",
+    "Messagerie & collaboration": "Messaggistica e collaborazione",
+    "Développement & DevOps": "Sviluppo e DevOps",
+    Autre: "Altro"
+  }, {
+    ...SERVER_ROLE_OPTION_LABELS_EN,
+    Hôte: "Host",
+    Hyperviseur: "Hypervisor",
+    "Load balancer": "Bilanciatore di carico",
+    "Stockage SAN/NAS": "Storage SAN/NAS",
+    "Contrôleur de domaine": "Controller di dominio",
+    "Partage de fichiers": "Condivisione file",
+    Impression: "Stampa",
+    Sauvegarde: "Backup",
+    Réplication: "Replica",
+    Archivage: "Archiviazione",
+    Messagerie: "Messaggistica",
+    Autres: "Altro"
+  }),
   storageRoleOptions: mapSelectOptions(STORAGE_ROLE_OPTIONS, {
     ...STORAGE_ROLE_LABELS_EN,
     "Stockage de sauvegarde": "Storage di backup",
@@ -541,24 +530,32 @@ const IT = {
     "Stockage principal": "Storage principale",
     "Stockage d'archivage": "Storage di archivio",
     "Stockage de réplication": "Storage di replica",
-    Autre: "Altro",
+    Autre: "Altro"
   }),
-  storageRaidOptions: mapSelectOptions(STORAGE_RAID_OPTIONS, { Aucun: "Nessuno", Autre: "Altro" }),
-  osOptionGroups: buildOsOptionGroups({ ...OS_GROUP_LABELS_EN, Autre: "Altro" }),
-  hypervisorOptions: mapSelectOptions(SERVER_HYPERVISOR_OPTIONS, { Autre: "Altro" }),
+  storageRaidOptions: mapSelectOptions(STORAGE_RAID_OPTIONS, {
+    Aucun: "Nessuno",
+    Autre: "Altro"
+  }),
+  osOptionGroups: buildOsOptionGroups({
+    ...OS_GROUP_LABELS_EN,
+    Autre: "Altro"
+  }),
+  hypervisorOptions: mapSelectOptions(SERVER_HYPERVISOR_OPTIONS, {
+    Autre: "Altro"
+  }),
   widgets: {
     ...WIDGETS_EN,
     roleTagsSelect: {
       filterPlaceholder: "Filtra…",
       noMatch: "Nessun ruolo corrispondente",
       savedRoles: "Ruoli salvati",
-      removeAria: "Rimuovi {label}",
+      removeAria: "Rimuovi {label}"
     },
     serverSpec: {
       ...WIDGETS_EN.serverSpec,
       storage: "Storage",
       addVolume: "Aggiungi volume",
-      totalCapacityApprox: "Capacità totale ≈ {hint}",
+      totalCapacityApprox: "Capacità totale ≈ {hint}"
     },
     diskBay: {
       ...WIDGETS_EN.diskBay,
@@ -567,7 +564,7 @@ const IT = {
       installedSummary: "{active} / {max} installati",
       legendInstalled: "Disco installato",
       legendEmpty: "Alloggiamento libero",
-      baysLabel: "Alloggiamenti",
+      baysLabel: "Alloggiamenti"
     },
     remoteAccess: {
       ...WIDGETS_EN.remoteAccess,
@@ -578,47 +575,47 @@ const IT = {
         rdp: {
           label: "Desktop remoto (RDP)",
           description: "Indirizzo IP o nome host Windows",
-          idLabel: "Host RDP",
+          idLabel: "Host RDP"
         },
-        other: { label: "Altro", description: "Altro strumento (identificativo libero)", idLabel: "Identificativo" },
-      },
-    },
-  },
+        other: {
+          label: "Altro",
+          description: "Altro strumento (identificativo libero)",
+          idLabel: "Identificativo"
+        }
+      }
+    }
+  }
 };
-IT.serverRoleOptions = IT.serverRoleGroups.flatMap((group) => group.options);
-
+IT.serverRoleOptions = IT.serverRoleGroups.flatMap(group => group.options);
 const ES = {
   ...EN,
-  serverRoleGroups: buildServerRoleGroups(
-    {
-      ...SERVER_ROLE_GROUP_LABELS_EN,
-      Infrastructure: "Infraestructura",
-      "Annuaire & réseau": "Directorio y red",
-      "Fichiers & impression": "Archivos e impresión",
-      "Bureau à distance & VDI": "Escritorio remoto y VDI",
-      "Bases de données": "Bases de datos",
-      "Sauvegarde & reprise": "Copia de seguridad y recuperación",
-      "Supervision & sécurité": "Supervisión y seguridad",
-      "Messagerie & collaboration": "Mensajería y colaboración",
-      "Développement & DevOps": "Desarrollo y DevOps",
-      Autre: "Otro",
-    },
-    {
-      ...SERVER_ROLE_OPTION_LABELS_EN,
-      Hôte: "Host",
-      Hyperviseur: "Hipervisor",
-      "Load balancer": "Balanceador de carga",
-      "Stockage SAN/NAS": "Almacenamiento SAN/NAS",
-      "Contrôleur de domaine": "Controlador de dominio",
-      "Partage de fichiers": "Compartición de archivos",
-      Impression: "Impresión",
-      Sauvegarde: "Copia de seguridad",
-      Réplication: "Replicación",
-      Archivage: "Archivo",
-      Messagerie: "Mensajería",
-      Autres: "Otro",
-    }
-  ),
+  serverRoleGroups: buildServerRoleGroups({
+    ...SERVER_ROLE_GROUP_LABELS_EN,
+    Infrastructure: "Infraestructura",
+    "Annuaire & réseau": "Directorio y red",
+    "Fichiers & impression": "Archivos e impresión",
+    "Bureau à distance & VDI": "Escritorio remoto y VDI",
+    "Bases de données": "Bases de datos",
+    "Sauvegarde & reprise": "Copia de seguridad y recuperación",
+    "Supervision & sécurité": "Supervisión y seguridad",
+    "Messagerie & collaboration": "Mensajería y colaboración",
+    "Développement & DevOps": "Desarrollo y DevOps",
+    Autre: "Otro"
+  }, {
+    ...SERVER_ROLE_OPTION_LABELS_EN,
+    Hôte: "Host",
+    Hyperviseur: "Hipervisor",
+    "Load balancer": "Balanceador de carga",
+    "Stockage SAN/NAS": "Almacenamiento SAN/NAS",
+    "Contrôleur de domaine": "Controlador de dominio",
+    "Partage de fichiers": "Compartición de archivos",
+    Impression: "Impresión",
+    Sauvegarde: "Copia de seguridad",
+    Réplication: "Replicación",
+    Archivage: "Archivo",
+    Messagerie: "Mensajería",
+    Autres: "Otro"
+  }),
   storageRoleOptions: mapSelectOptions(STORAGE_ROLE_OPTIONS, {
     ...STORAGE_ROLE_LABELS_EN,
     "Stockage de sauvegarde": "Almacenamiento de backup",
@@ -626,24 +623,32 @@ const ES = {
     "Stockage principal": "Almacenamiento principal",
     "Stockage d'archivage": "Almacenamiento de archivo",
     "Stockage de réplication": "Almacenamiento de replicación",
-    Autre: "Otro",
+    Autre: "Otro"
   }),
-  storageRaidOptions: mapSelectOptions(STORAGE_RAID_OPTIONS, { Aucun: "Ninguno", Autre: "Otro" }),
-  osOptionGroups: buildOsOptionGroups({ ...OS_GROUP_LABELS_EN, Autre: "Otro" }),
-  hypervisorOptions: mapSelectOptions(SERVER_HYPERVISOR_OPTIONS, { Autre: "Otro" }),
+  storageRaidOptions: mapSelectOptions(STORAGE_RAID_OPTIONS, {
+    Aucun: "Ninguno",
+    Autre: "Otro"
+  }),
+  osOptionGroups: buildOsOptionGroups({
+    ...OS_GROUP_LABELS_EN,
+    Autre: "Otro"
+  }),
+  hypervisorOptions: mapSelectOptions(SERVER_HYPERVISOR_OPTIONS, {
+    Autre: "Otro"
+  }),
   widgets: {
     ...WIDGETS_EN,
     roleTagsSelect: {
       filterPlaceholder: "Filtrar…",
       noMatch: "Ningún rol coincidente",
       savedRoles: "Roles guardados",
-      removeAria: "Quitar {label}",
+      removeAria: "Quitar {label}"
     },
     serverSpec: {
       ...WIDGETS_EN.serverSpec,
       storage: "Almacenamiento",
       addVolume: "Añadir volumen",
-      totalCapacityApprox: "Capacidad total ≈ {hint}",
+      totalCapacityApprox: "Capacidad total ≈ {hint}"
     },
     diskBay: {
       ...WIDGETS_EN.diskBay,
@@ -652,7 +657,7 @@ const ES = {
       installedSummary: "{active} / {max} instalados",
       legendInstalled: "Disco instalado",
       legendEmpty: "Bahía libre",
-      baysLabel: "Bahías",
+      baysLabel: "Bahías"
     },
     remoteAccess: {
       ...WIDGETS_EN.remoteAccess,
@@ -663,21 +668,28 @@ const ES = {
         rdp: {
           label: "Escritorio remoto (RDP)",
           description: "Dirección IP o nombre de host Windows",
-          idLabel: "Host RDP",
+          idLabel: "Host RDP"
         },
-        other: { label: "Otro", description: "Otra herramienta (identificador libre)", idLabel: "Identificador" },
-      },
-    },
-  },
+        other: {
+          label: "Otro",
+          description: "Otra herramienta (identificador libre)",
+          idLabel: "Identificador"
+        }
+      }
+    }
+  }
 };
-ES.serverRoleOptions = ES.serverRoleGroups.flatMap((group) => group.options);
-
-const OPTIONS_COPY = { fr: FR, en: EN, de: DE, it: IT, es: ES };
-
+ES.serverRoleOptions = ES.serverRoleGroups.flatMap(group => group.options);
+const OPTIONS_COPY = {
+  fr: FR,
+  en: EN,
+  de: DE,
+  it: IT,
+  es: ES
+};
 export const getEquipmentFormOptionsCopy = createLocaleGetter(OPTIONS_COPY);
-
 export function getRoleOptionLabel(locale, value, optionsCopy) {
   const copy = optionsCopy || getEquipmentFormOptionsCopy(locale);
-  const match = copy.serverRoleOptions.find((entry) => entry.value === value);
+  const match = copy.serverRoleOptions.find(entry => entry.value === value);
   return match?.label ?? value;
 }

@@ -1,4 +1,4 @@
-/* Portail client · pages liste (coffre-fort, profil) alignées sur Mes tickets */
+
 
 .kpiRow2 {
   display: grid;
@@ -201,7 +201,7 @@
   align-items: center;
 }
 
-/* ── Profil ── */
+
 .profileStack {
   display: flex;
   flex-direction: column;
@@ -462,7 +462,7 @@
   color: var(--msp-accent, #2b5fab);
 }
 
-/* ── Modal secret révélé ── */
+
 .secretModalBody {
   display: flex;
   flex-direction: column;

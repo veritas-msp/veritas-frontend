@@ -3,148 +3,85 @@ import { Icon } from "@iconify/react";
 import { useAppLocale } from "../../hooks/useAppGeneralSettings";
 import { interpolate } from "../../i18n/translate";
 import { buildComputerFleetStats } from "../../utils/computerFleetStats";
-import {
-  KpiCard,
-  StatsPieChart,
-  StatsDistributionBars,
-  StatsDashboardBody,
-  statsDashboardStyles as fleetStyles,
-} from "../EnterprisesPage/StatsDashboardWidgets";
+import { KpiCard, StatsPieChart, StatsDistributionBars, StatsDashboardBody, statsDashboardStyles as fleetStyles } from "../EnterprisesPage/StatsDashboardWidgets";
 import { getClientPortalCopy } from "./clientPortalI18n";
 import styles from "./ClientPortalFleetStats.module.css";
-
 const LOCALE_MAP = {
-  fr: "fr-FR",
+  fr: "en-US",
   en: "en-US",
   de: "de-DE",
   es: "es-ES",
-  it: "it-IT",
+  it: "it-IT"
 };
-
 function formatMoney(value, locale) {
-  const fmtLocale = LOCALE_MAP[locale] || "fr-FR";
-  return value.toLocaleString(fmtLocale, { style: "currency", currency: "EUR" });
+  const fmtLocale = LOCALE_MAP[locale] || "en-US";
+  return value.toLocaleString(fmtLocale, {
+    style: "currency",
+    currency: "EUR"
+  });
 }
-
 function localizePowerProfile(profile, label, chartLabels) {
   const keyMap = {
     desktop: "powerDesktop",
     laptop: "laptop",
-    unknown: "powerGeneric",
+    unknown: "powerGeneric"
   };
   return chartLabels[keyMap[profile]] || label;
 }
-
-export default function ClientPortalFleetStats({ computers = [] }) {
+export default function ClientPortalFleetStats({
+  computers = []
+}) {
   const locale = useAppLocale();
   const copy = useMemo(() => getClientPortalCopy(locale), [locale]);
   const fleet = copy.fleet;
   const [powerPeriod, setPowerPeriod] = useState("monthly");
-
   const stats = useMemo(() => buildComputerFleetStats(computers), [computers]);
-  const localizedStats = useMemo(
-    () => ({
-      ...stats,
-      osDistribution: copy.localizeFleetDistribution(stats.osDistribution),
-      brandDistribution: copy.localizeFleetDistribution(stats.brandDistribution),
-      modelDistribution: copy.localizeFleetDistribution(stats.modelDistribution),
-      formFactorDistribution: copy.localizeFleetDistribution(stats.formFactorDistribution),
-      ramDistribution: copy.localizeFleetDistribution(stats.ramDistribution),
-      cpuDistribution: copy.localizeFleetDistribution(stats.cpuDistribution),
-      diskDistribution: copy.localizeFleetDistribution(stats.diskDistribution),
-      agentVersionDistribution: copy.localizeFleetDistribution(stats.agentVersionDistribution),
-    }),
-    [copy, stats]
-  );
-
+  const localizedStats = useMemo(() => ({
+    ...stats,
+    osDistribution: copy.localizeFleetDistribution(stats.osDistribution),
+    brandDistribution: copy.localizeFleetDistribution(stats.brandDistribution),
+    modelDistribution: copy.localizeFleetDistribution(stats.modelDistribution),
+    formFactorDistribution: copy.localizeFleetDistribution(stats.formFactorDistribution),
+    ramDistribution: copy.localizeFleetDistribution(stats.ramDistribution),
+    cpuDistribution: copy.localizeFleetDistribution(stats.cpuDistribution),
+    diskDistribution: copy.localizeFleetDistribution(stats.diskDistribution),
+    agentVersionDistribution: copy.localizeFleetDistribution(stats.agentVersionDistribution)
+  }), [copy, stats]);
   if (!stats.total) return null;
-
-  const attentionCount =
-    stats.fleetHealth?.attentionCount ??
-    (stats.windowsUpdates?.pending || 0) + (stats.diskAlerts || 0) + (stats.inventoryFreshness?.stale || 0);
+  const attentionCount = stats.fleetHealth?.attentionCount ?? (stats.windowsUpdates?.pending || 0) + (stats.diskAlerts || 0) + (stats.inventoryFreshness?.stale || 0);
   const fleetHealthLabel = copy.getFleetHealthLabel(attentionCount, stats.total);
-
   const powerKwh = powerPeriod === "annual" ? stats.power.annualKwh : stats.power.monthlyKwh;
   const powerCost = powerPeriod === "annual" ? stats.power.annualCostEur : stats.power.monthlyCostEur;
   const powerPriceLabel = formatMoney(stats.power.pricePerKwh, locale);
-
-  const rmmSub =
-    stats.manual > 1
-      ? interpolate(fleet.rmmManagedSubPlural, {
-          managed: String(stats.rmmManaged),
-          manual: String(stats.manual),
-        })
-      : interpolate(fleet.rmmManagedSub, {
-          managed: String(stats.rmmManaged),
-          manual: String(stats.manual),
-        });
-
+  const rmmSub = stats.manual > 1 ? interpolate(fleet.rmmManagedSubPlural, {
+    managed: String(stats.rmmManaged),
+    manual: String(stats.manual)
+  }) : interpolate(fleet.rmmManagedSub, {
+    managed: String(stats.rmmManaged),
+    manual: String(stats.manual)
+  });
   const rmmOnlineSub = interpolate(fleet.rmmOnlineSub, {
     online: String(stats.agentStatus.online),
-    offline: String(stats.agentStatus.offline),
+    offline: String(stats.agentStatus.offline)
   });
-
-  const ramSub =
-    stats.hardwareSummary.knownRamCount > 0
-      ? interpolate(fleet.cumulativeRam, { total: String(stats.hardwareSummary.totalRamGb) })
-      : fleet.rmmDataRequired;
-
-  const windowsSub =
-    stats.lifecycle.windows10 > 0
-      ? interpolate(fleet.stillOnWindows10, { count: String(stats.lifecycle.windows10) })
-      : fleet.migrationOsUpToDate;
-
-  const pendingUpdatesSuffix =
-    stats.windowsUpdates.pendingTotal > 0
-      ? interpolate(fleet.metricWindowsUpdatesFixes, { count: String(stats.windowsUpdates.pendingTotal) })
-      : "";
-
-  return (
-    <div className={styles.root}>
+  const ramSub = stats.hardwareSummary.knownRamCount > 0 ? interpolate(fleet.cumulativeRam, {
+    total: String(stats.hardwareSummary.totalRamGb)
+  }) : fleet.rmmDataRequired;
+  const windowsSub = stats.lifecycle.windows10 > 0 ? interpolate(fleet.stillOnWindows10, {
+    count: String(stats.lifecycle.windows10)
+  }) : fleet.migrationOsUpToDate;
+  const pendingUpdatesSuffix = stats.windowsUpdates.pendingTotal > 0 ? interpolate(fleet.metricWindowsUpdatesFixes, {
+    count: String(stats.windowsUpdates.pendingTotal)
+  }) : "";
+  return <div className={styles.root}>
       <StatsDashboardBody>
         <section className={`${fleetStyles.kpiGrid} ${styles.kpiGridWide}`}>
           <KpiCard icon="mdi:monitor-dashboard" label={fleet.totalFleet} value={stats.total} sub={rmmSub} />
-          <KpiCard
-            icon="mdi:shield-check-outline"
-            label={fleet.rmmCoverage}
-            value={`${stats.rmmCoveragePct}%`}
-            sub={rmmOnlineSub}
-            tone={stats.rmmCoveragePct >= 90 ? "good" : stats.rmmCoveragePct >= 70 ? "warn" : "bad"}
-          />
-          <KpiCard
-            icon="mdi:heart-pulse"
-            label={fleet.fleetHealth}
-            value={stats.fleetHealth.score != null ? `${stats.fleetHealth.score}%` : "-"}
-            sub={fleetHealthLabel}
-            tone={
-              stats.fleetHealth.score == null
-                ? "neutral"
-                : stats.fleetHealth.score >= 80
-                ? "good"
-                : stats.fleetHealth.score >= 60
-                ? "warn"
-                : "bad"
-            }
-          />
-          <KpiCard
-            icon="mdi:microsoft-windows"
-            label={fleet.windows11}
-            value={stats.lifecycle.windows11}
-            sub={windowsSub}
-            tone={stats.lifecycle.windows10 > 0 ? "warn" : "good"}
-          />
-          <KpiCard
-            icon="mdi:memory"
-            label={fleet.avgRam}
-            value={stats.hardwareSummary.avgRamGb != null ? `${stats.hardwareSummary.avgRamGb} Go` : "-"}
-            sub={ramSub}
-          />
-          <KpiCard
-            icon="mdi:flash-outline"
-            label={powerPeriod === "annual" ? fleet.powerAnnual : fleet.powerMonthly}
-            value={`${powerKwh} kWh`}
-            sub={`≈ ${formatMoney(powerCost, locale)}`}
-          />
+          <KpiCard icon="mdi:shield-check-outline" label={fleet.rmmCoverage} value={`${stats.rmmCoveragePct}%`} sub={rmmOnlineSub} tone={stats.rmmCoveragePct >= 90 ? "good" : stats.rmmCoveragePct >= 70 ? "warn" : "bad"} />
+          <KpiCard icon="mdi:heart-pulse" label={fleet.fleetHealth} value={stats.fleetHealth.score != null ? `${stats.fleetHealth.score}%` : "-"} sub={fleetHealthLabel} tone={stats.fleetHealth.score == null ? "neutral" : stats.fleetHealth.score >= 80 ? "good" : stats.fleetHealth.score >= 60 ? "warn" : "bad"} />
+          <KpiCard icon="mdi:microsoft-windows" label={fleet.windows11} value={stats.lifecycle.windows11} sub={windowsSub} tone={stats.lifecycle.windows10 > 0 ? "warn" : "good"} />
+          <KpiCard icon="mdi:memory" label={fleet.avgRam} value={stats.hardwareSummary.avgRamGb != null ? `${stats.hardwareSummary.avgRamGb} Go` : "-"} sub={ramSub} />
+          <KpiCard icon="mdi:flash-outline" label={powerPeriod === "annual" ? fleet.powerAnnual : fleet.powerMonthly} value={`${powerKwh} kWh`} sub={`≈ ${formatMoney(powerCost, locale)}`} />
         </section>
 
         <section className={`${fleetStyles.chartGrid} ${styles.chartGridWide}`}>
@@ -161,12 +98,7 @@ export default function ClientPortalFleetStats({ computers = [] }) {
               <Icon icon="mdi:laptop" />
               {fleet.modelsTitle}
             </h3>
-            <StatsPieChart
-              items={localizedStats.modelDistribution}
-              total={stats.total}
-              centerLabel={stats.total}
-              emptyLabel={fleet.modelsEmpty}
-            />
+            <StatsPieChart items={localizedStats.modelDistribution} total={stats.total} centerLabel={stats.total} emptyLabel={fleet.modelsEmpty} />
           </article>
 
           <article className={fleetStyles.panel}>
@@ -182,11 +114,7 @@ export default function ClientPortalFleetStats({ computers = [] }) {
               <Icon icon="mdi:laptop-account" />
               {fleet.formFactorTitle}
             </h3>
-            <StatsPieChart
-              items={localizedStats.formFactorDistribution}
-              total={stats.total}
-              centerLabel={stats.total}
-            />
+            <StatsPieChart items={localizedStats.formFactorDistribution} total={stats.total} centerLabel={stats.total} />
           </article>
         </section>
 
@@ -236,8 +164,8 @@ export default function ClientPortalFleetStats({ computers = [] }) {
               <li>
                 <span>
                   {interpolate(fleet.metricStaleInventory, {
-                    days: String(stats.inventoryFreshness.staleThresholdDays),
-                  })}
+                  days: String(stats.inventoryFreshness.staleThresholdDays)
+                })}
                 </span>
                 <strong className={stats.inventoryFreshness.stale > 0 ? fleetStyles.metricWarn : ""}>
                   {stats.inventoryFreshness.stale}
@@ -320,32 +248,20 @@ export default function ClientPortalFleetStats({ computers = [] }) {
               {fleet.powerTitle}
             </h3>
             <div className={fleetStyles.periodToggle} role="tablist" aria-label={fleet.powerPeriodAria}>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={powerPeriod === "monthly"}
-                className={powerPeriod === "monthly" ? fleetStyles.periodBtnActive : fleetStyles.periodBtn}
-                onClick={() => setPowerPeriod("monthly")}
-              >
+              <button type="button" role="tab" aria-selected={powerPeriod === "monthly"} className={powerPeriod === "monthly" ? fleetStyles.periodBtnActive : fleetStyles.periodBtn} onClick={() => setPowerPeriod("monthly")}>
                 {fleet.periodMonthly}
               </button>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={powerPeriod === "annual"}
-                className={powerPeriod === "annual" ? fleetStyles.periodBtnActive : fleetStyles.periodBtn}
-                onClick={() => setPowerPeriod("annual")}
-              >
+              <button type="button" role="tab" aria-selected={powerPeriod === "annual"} className={powerPeriod === "annual" ? fleetStyles.periodBtnActive : fleetStyles.periodBtn} onClick={() => setPowerPeriod("annual")}>
                 {fleet.periodAnnual}
               </button>
             </div>
           </div>
           <p className={fleetStyles.powerDisclaimer}>
             {interpolate(fleet.powerDisclaimer, {
-              hours: String(stats.power.hoursPerDay),
-              days: String(stats.power.daysPerMonth),
-              price: powerPriceLabel,
-            })}
+            hours: String(stats.power.hoursPerDay),
+            days: String(stats.power.daysPerMonth),
+            price: powerPriceLabel
+          })}
           </p>
           <div className={fleetStyles.powerSummary}>
             <div className={fleetStyles.powerHighlight}>
@@ -359,79 +275,61 @@ export default function ClientPortalFleetStats({ computers = [] }) {
               <span className={fleetStyles.powerHighlightLabel}>{fleet.powerEstimatedCost}</span>
             </div>
           </div>
-          {stats.power.breakdown.length > 0 ? (
-            <div className={fleetStyles.powerBreakdown}>
-              {stats.power.breakdown.map((row) => {
-                const countLabel = row.count > 1 ? fleet.workstationMany : fleet.workstationOne;
-                const profileLabel = localizePowerProfile(row.profile, row.label, fleet.chartLabels);
-                const kwhValue =
-                  powerPeriod === "annual"
-                    ? interpolate(fleet.powerBreakdownKwhYear, {
-                        value: String(Math.round(row.monthlyKwh * 12 * 10) / 10),
-                      })
-                    : interpolate(fleet.powerBreakdownKwhMonth, { value: String(row.monthlyKwh) });
-                return (
-                  <div key={row.profile} className={fleetStyles.powerBreakdownRow}>
+          {stats.power.breakdown.length > 0 ? <div className={fleetStyles.powerBreakdown}>
+              {stats.power.breakdown.map(row => {
+            const countLabel = row.count > 1 ? fleet.workstationMany : fleet.workstationOne;
+            const profileLabel = localizePowerProfile(row.profile, row.label, fleet.chartLabels);
+            const kwhValue = powerPeriod === "annual" ? interpolate(fleet.powerBreakdownKwhYear, {
+              value: String(Math.round(row.monthlyKwh * 12 * 10) / 10)
+            }) : interpolate(fleet.powerBreakdownKwhMonth, {
+              value: String(row.monthlyKwh)
+            });
+            return <div key={row.profile} className={fleetStyles.powerBreakdownRow}>
                     <span>
                       {interpolate(fleet.powerBreakdownLine, {
-                        label: profileLabel,
-                        count: String(row.count),
-                        countLabel,
-                        watts: String(row.watts),
-                      })}
+                  label: profileLabel,
+                  count: String(row.count),
+                  countLabel,
+                  watts: String(row.watts)
+                })}
                     </span>
                     <strong>{kwhValue}</strong>
-                  </div>
-                );
-              })}
-            </div>
-          ) : null}
+                  </div>;
+          })}
+            </div> : null}
         </article>
 
-        {(stats.windowsUpdates.pending > 0 ||
-          stats.diskAlerts > 0 ||
-          stats.inventoryFreshness.stale > 0) && (
-          <section className={styles.alertPanel}>
+        {(stats.windowsUpdates.pending > 0 || stats.diskAlerts > 0 || stats.inventoryFreshness.stale > 0) && <section className={styles.alertPanel}>
             <h3 className={styles.alertTitle}>
               <Icon icon="mdi:alert-circle-outline" />
               {fleet.alertsTitle}
             </h3>
             <ul className={styles.alertList}>
-              {stats.windowsUpdates.pending > 0 ? (
-                <li>
-                  {stats.windowsUpdates.pending > 1
-                    ? interpolate(fleet.windowsUpdatesPendingMany, {
-                        count: String(stats.windowsUpdates.pending),
-                      })
-                    : interpolate(fleet.windowsUpdatesPendingOne, {
-                        count: String(stats.windowsUpdates.pending),
-                      })}
-                </li>
-              ) : null}
-              {stats.diskAlerts > 0 ? (
-                <li>
-                  {stats.diskAlerts > 1
-                    ? interpolate(fleet.diskAlertsMany, { count: String(stats.diskAlerts) })
-                    : interpolate(fleet.diskAlertsOne, { count: String(stats.diskAlerts) })}
-                </li>
-              ) : null}
-              {stats.inventoryFreshness.stale > 0 ? (
-                <li>
-                  {stats.inventoryFreshness.stale > 1
-                    ? interpolate(fleet.staleInventoryMany, {
-                        count: String(stats.inventoryFreshness.stale),
-                        days: String(stats.inventoryFreshness.staleThresholdDays),
-                      })
-                    : interpolate(fleet.staleInventoryOne, {
-                        count: String(stats.inventoryFreshness.stale),
-                        days: String(stats.inventoryFreshness.staleThresholdDays),
-                      })}
-                </li>
-              ) : null}
+              {stats.windowsUpdates.pending > 0 ? <li>
+                  {stats.windowsUpdates.pending > 1 ? interpolate(fleet.windowsUpdatesPendingMany, {
+              count: String(stats.windowsUpdates.pending)
+            }) : interpolate(fleet.windowsUpdatesPendingOne, {
+              count: String(stats.windowsUpdates.pending)
+            })}
+                </li> : null}
+              {stats.diskAlerts > 0 ? <li>
+                  {stats.diskAlerts > 1 ? interpolate(fleet.diskAlertsMany, {
+              count: String(stats.diskAlerts)
+            }) : interpolate(fleet.diskAlertsOne, {
+              count: String(stats.diskAlerts)
+            })}
+                </li> : null}
+              {stats.inventoryFreshness.stale > 0 ? <li>
+                  {stats.inventoryFreshness.stale > 1 ? interpolate(fleet.staleInventoryMany, {
+              count: String(stats.inventoryFreshness.stale),
+              days: String(stats.inventoryFreshness.staleThresholdDays)
+            }) : interpolate(fleet.staleInventoryOne, {
+              count: String(stats.inventoryFreshness.stale),
+              days: String(stats.inventoryFreshness.staleThresholdDays)
+            })}
+                </li> : null}
             </ul>
-          </section>
-        )}
+          </section>}
       </StatsDashboardBody>
-    </div>
-  );
+    </div>;
 }

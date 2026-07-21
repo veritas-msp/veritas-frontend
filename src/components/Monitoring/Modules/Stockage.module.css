@@ -152,7 +152,7 @@
   margin-top: auto;
 }
 
-/* ───────────── SOUS-TITRE (META) ───────────── */
+
 .storageMetaFlex {
   display: flex;
   justify-content: space-between;
@@ -301,7 +301,7 @@
 }
 
 .withComment {
-  /* Style quand le commentaire est ouvert - peut être étendu si nécessaire */
+  
   min-height: auto;
 }
 
@@ -315,7 +315,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Badge de rôle en haut à droite */
+
 .roleBadge {
   position: absolute;
   top: 1.25rem;
@@ -323,7 +323,7 @@
   z-index: 10;
 }
 
-/* Conteneur pour les étiquettes en haut à droite */
+
 .topBadges {
   position: absolute;
   top: 1.25rem;
@@ -374,37 +374,37 @@
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
 }
 
-/* Statut Excellent */
+
 .statusDot.excellent {
   background-color: #10b981;
   color: #10b981;
 }
 
-/* Statut Good */
+
 .statusDot.good {
   background-color: #22c55e;
   color: #22c55e;
 }
 
-/* Statut Poor */
+
 .statusDot.poor {
   background-color: #eab308;
   color: #eab308;
 }
 
-/* Statut Warning */
+
 .statusDot.warning {
   background-color: #f59e0b;
   color: #f59e0b;
 }
 
-/* Statut Critical */
+
 .statusDot.critical {
   background-color: #ef4444;
   color: #ef4444;
 }
 
-/* Statut Unknown */
+
 .statusDot.unknown {
   background-color: #9ca3af;
   color: #9ca3af;
@@ -506,7 +506,7 @@
   flex: 0 0 auto;
 }
 
-/* Aligné sur le style des boutons du header EnterpriseDetailPage */
+
 .syncButton {
   display: inline-flex;
   align-items: center;
@@ -594,7 +594,7 @@
   background-color: #4b5563;
 }
 
-/* ───────────── LABELS DE RÔLE ───────────── */
+
 .roleLabel {
   font-size: 10px;
   font-weight: 600;
@@ -610,7 +610,7 @@
   letter-spacing: 0.3px;
 }
 
-/* Couleurs des rôles */
+
 .roleLabel.primary {
   background-color: #3b82f6;
 }
@@ -700,7 +700,7 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Section des disques */
+
 .diskSection {
   display: flex;
   flex-direction: column;
@@ -803,7 +803,7 @@
   height: 14px;
 }
 
-/* Informations sur les cassettes RDX */
+
 .cassettesInfo {
   display: flex;
   gap: 4px;
@@ -822,7 +822,7 @@
   transform: scale(1.1);
 }
 
-/* Section espace de stockage */
+
 .storageSpaceSection {
   margin-top: 0.5rem;
   width: 100%;
@@ -868,7 +868,7 @@
   color: #111827;
 }
 
-/* Masquer les flèches haut/bas */
+
 .spaceInput::-webkit-outer-spin-button,
 .spaceInput::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -876,7 +876,7 @@
   display: none;
 }
 
-/* Styles pour Firefox */
+
 .spaceInput[type="number"] {
   appearance: textfield;
   -moz-appearance: textfield;
@@ -919,7 +919,7 @@
   color: #9ca3af;
 }
 
-/* Barre de progression */
+
 .storageProgress {
   margin-top: 0.5rem;
   width: 100%;
@@ -1012,7 +1012,7 @@
   background-color: rgba(239, 68, 68, 0.25);
 }
 
-/* Supprimer les effets glossy qui causent le débordement */
+
 .progressFill::before,
 .progressFill::after {
   display: none;
@@ -1035,7 +1035,7 @@
   color: #9ca3af;
 }
 
-/* ───────────── STYLES POUR LES STATS ───────────── */
+
 .statsWrapper {
   display: flex;
   flex-direction: column;
@@ -1324,7 +1324,7 @@
   flex-shrink: 0;
 }
 
-/* Styles pour les cartes de statistiques (Services monitorés, Événements, Disponibilité) */
+
 .statCard {
   transition: all 0.2s ease;
 }
@@ -1411,7 +1411,7 @@
   background-color: #ffffff;
 }
 
-/* Masquer les flèches haut/bas */
+
 .metricInput::-webkit-outer-spin-button,
 .metricInput::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -1419,7 +1419,7 @@
   display: none;
 }
 
-/* Styles pour Firefox */
+
 .metricInput[type="number"] {
   appearance: textfield;
   -moz-appearance: textfield;
@@ -1561,7 +1561,7 @@
   color: #fca5a5;
 }
 
-/* Tooltip note globale */
+
 .scoreTooltipContainer {
   position: relative;
   display: inline-flex;
@@ -1710,7 +1710,7 @@
   border-bottom-color: #374151;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1200px) {
   .storageGrid {
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -1718,7 +1718,7 @@
   }
 }
 
-/* ───────────── MODAL D'ÉDITION ───────────── */
+
 .editModalOverlay {
   position: fixed;
   inset: 0;
@@ -1975,7 +1975,7 @@
   }
 }
 
-/* Classe pour masquer les spinners des inputs de type number */
+
 .noSpinner {
   -moz-appearance: textfield;
   appearance: textfield;

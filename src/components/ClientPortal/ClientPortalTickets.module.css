@@ -143,7 +143,7 @@
   flex-wrap: wrap;
 }
 
-/* Validation résolution (portail) */
+
 .portalValidationPanel {
   margin-top: 0;
   padding: 0.65rem 0.75rem;
@@ -290,7 +290,7 @@
   box-shadow: 0 1px 2px rgba(15, 28, 46, 0.03), 0 4px 16px rgba(15, 28, 46, 0.04);
 }
 
-/* Bandeau invitation avis (ticket terminé) */
+
 .satisfactionInviteBanner {
   display: flex;
   align-items: center;
@@ -501,7 +501,7 @@
   color: #fbbf24;
 }
 
-/* Modal avis support */
+
 .satisfactionModalOverlay {
   position: fixed;
   inset: 0;
@@ -665,7 +665,7 @@
   color: #b45309;
 }
 
-/* Satisfaction stars (portail) */
+
 .starRating {
   display: flex;
   gap: 6px;

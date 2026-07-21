@@ -1,11 +1,13 @@
 import { createLocaleGetter, interpolate } from "../../i18n/translate";
 import { getLocaleTag } from "../../i18n/locales";
-
 const COPY = {
   fr: {
     title: "Notifications",
     filterAria: "Filtrer les notifications",
-    tabs: { active: "Actives", archived: "Archivées" },
+    tabs: {
+      active: "Actives",
+      archived: "Archivées"
+    },
     unreadPill: "{count} non lue",
     unreadPillPlural: "{count} non lues",
     markAllRead: "Tout marquer lu",
@@ -13,8 +15,7 @@ const COPY = {
     archiving: "Archivage…",
     loading: "Chargement…",
     emptyActiveTitle: "Vous êtes à jour",
-    emptyActiveText:
-      "Aucune alerte en attente. On vous préviendra dès qu'il se passe quelque chose sur vos tickets.",
+    emptyActiveText: "Aucune alerte en attente. On vous préviendra dès qu'il se passe quelque chose sur vos tickets.",
     emptyArchivedTitle: "Aucune archive",
     emptyArchivedText: "Les notifications que vous archivez apparaîtront ici.",
     loadMoreHistory: "Afficher plus d'historique",
@@ -28,18 +29,21 @@ const COPY = {
       unread: "Nouvelles",
       today: "Aujourd'hui",
       history: "Historique",
-      archived: "Archives",
+      archived: "Archives"
     },
     relative: {
       justNow: "À l'instant",
       minutes: "Il y a {count} min",
-      hours: "Il y a {count} h",
-    },
+      hours: "Il y a {count} h"
+    }
   },
   en: {
     title: "Notifications",
     filterAria: "Filter notifications",
-    tabs: { active: "Active", archived: "Archived" },
+    tabs: {
+      active: "Active",
+      archived: "Archived"
+    },
     unreadPill: "{count} unread",
     unreadPillPlural: "{count} unread",
     markAllRead: "Mark all as read",
@@ -47,8 +51,7 @@ const COPY = {
     archiving: "Archiving…",
     loading: "Loading…",
     emptyActiveTitle: "You're all caught up",
-    emptyActiveText:
-      "No pending alerts. We'll notify you when something happens on your tickets.",
+    emptyActiveText: "No pending alerts. We'll notify you when something happens on your tickets.",
     emptyArchivedTitle: "No archives",
     emptyArchivedText: "Notifications you archive will appear here.",
     loadMoreHistory: "Show more history",
@@ -62,18 +65,21 @@ const COPY = {
       unread: "New",
       today: "Today",
       history: "History",
-      archived: "Archives",
+      archived: "Archives"
     },
     relative: {
       justNow: "Just now",
       minutes: "{count} min ago",
-      hours: "{count} h ago",
-    },
+      hours: "{count} h ago"
+    }
   },
   de: {
     title: "Benachrichtigungen",
     filterAria: "Benachrichtigungen filtern",
-    tabs: { active: "Aktiv", archived: "Archiviert" },
+    tabs: {
+      active: "Aktiv",
+      archived: "Archiviert"
+    },
     unreadPill: "{count} ungelesen",
     unreadPillPlural: "{count} ungelesen",
     markAllRead: "Alle als gelesen markieren",
@@ -81,8 +87,7 @@ const COPY = {
     archiving: "Archivierung…",
     loading: "Laden…",
     emptyActiveTitle: "Alles erledigt",
-    emptyActiveText:
-      "Keine ausstehenden Hinweise. Wir informieren Sie, sobald etwas bei Ihren Tickets passiert.",
+    emptyActiveText: "Keine ausstehenden Hinweise. Wir informieren Sie, sobald etwas bei Ihren Tickets passiert.",
     emptyArchivedTitle: "Keine Archive",
     emptyArchivedText: "Archivierte Benachrichtigungen erscheinen hier.",
     loadMoreHistory: "Mehr Verlauf anzeigen",
@@ -96,18 +101,21 @@ const COPY = {
       unread: "Neu",
       today: "Heute",
       history: "Verlauf",
-      archived: "Archive",
+      archived: "Archive"
     },
     relative: {
       justNow: "Gerade eben",
       minutes: "Vor {count} Min.",
-      hours: "Vor {count} Std.",
-    },
+      hours: "Vor {count} Std."
+    }
   },
   it: {
     title: "Notifiche",
     filterAria: "Filtra le notifiche",
-    tabs: { active: "Attive", archived: "Archiviate" },
+    tabs: {
+      active: "Attive",
+      archived: "Archiviate"
+    },
     unreadPill: "{count} non letta",
     unreadPillPlural: "{count} non lette",
     markAllRead: "Segna tutto come letto",
@@ -115,8 +123,7 @@ const COPY = {
     archiving: "Archiviazione…",
     loading: "Caricamento…",
     emptyActiveTitle: "Sei aggiornato",
-    emptyActiveText:
-      "Nessun avviso in sospeso. Ti avviseremo quando succede qualcosa sui tuoi ticket.",
+    emptyActiveText: "Nessun avviso in sospeso. Ti avviseremo quando succede qualcosa sui tuoi ticket.",
     emptyArchivedTitle: "Nessun archivio",
     emptyArchivedText: "Le notifiche archiviate appariranno qui.",
     loadMoreHistory: "Mostra più cronologia",
@@ -130,18 +137,21 @@ const COPY = {
       unread: "Nuove",
       today: "Oggi",
       history: "Cronologia",
-      archived: "Archivi",
+      archived: "Archivi"
     },
     relative: {
       justNow: "Adesso",
       minutes: "{count} min fa",
-      hours: "{count} h fa",
-    },
+      hours: "{count} h fa"
+    }
   },
   es: {
     title: "Notificaciones",
     filterAria: "Filtrar notificaciones",
-    tabs: { active: "Activas", archived: "Archivadas" },
+    tabs: {
+      active: "Activas",
+      archived: "Archivadas"
+    },
     unreadPill: "{count} sin leer",
     unreadPillPlural: "{count} sin leer",
     markAllRead: "Marcar todo como leído",
@@ -149,8 +159,7 @@ const COPY = {
     archiving: "Archivando…",
     loading: "Cargando…",
     emptyActiveTitle: "Está al día",
-    emptyActiveText:
-      "No hay alertas pendientes. Le avisaremos cuando ocurra algo en sus tickets.",
+    emptyActiveText: "No hay alertas pendientes. Le avisaremos cuando ocurra algo en sus tickets.",
     emptyArchivedTitle: "Sin archivos",
     emptyArchivedText: "Las notificaciones archivadas aparecerán aquí.",
     loadMoreHistory: "Mostrar más historial",
@@ -164,48 +173,51 @@ const COPY = {
       unread: "Nuevas",
       today: "Hoy",
       history: "Historial",
-      archived: "Archivos",
+      archived: "Archivos"
     },
     relative: {
       justNow: "Ahora mismo",
       minutes: "Hace {count} min",
-      hours: "Hace {count} h",
-    },
-  },
+      hours: "Hace {count} h"
+    }
+  }
 };
-
 export const getNotificationBellCopy = createLocaleGetter(COPY);
-
-export function formatNotificationRelativeTime(value, copy, locale, { emphasizeDate = false } = {}) {
+export function formatNotificationRelativeTime(value, copy, locale, {
+  emphasizeDate = false
+} = {}) {
   if (!value) return "";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "";
-
   const localeTag = getLocaleTag(locale);
   const now = new Date();
   const startOfToday = new Date(now);
   startOfToday.setHours(0, 0, 0, 0);
-
   if (emphasizeDate || date < startOfToday) {
     return date.toLocaleString(localeTag, {
       day: "2-digit",
       month: "short",
-      ...(date.getFullYear() !== now.getFullYear() ? { year: "numeric" } : {}),
+      ...(date.getFullYear() !== now.getFullYear() ? {
+        year: "numeric"
+      } : {}),
       hour: "2-digit",
-      minute: "2-digit",
+      minute: "2-digit"
     });
   }
-
   const diffMs = Date.now() - date.getTime();
   const diffMin = Math.floor(diffMs / 60000);
   if (diffMin < 1) return copy.relative.justNow;
-  if (diffMin < 60) return interpolate(copy.relative.minutes, { count: diffMin });
+  if (diffMin < 60) return interpolate(copy.relative.minutes, {
+    count: diffMin
+  });
   const diffHours = Math.floor(diffMin / 60);
-  if (diffHours < 24) return interpolate(copy.relative.hours, { count: diffHours });
+  if (diffHours < 24) return interpolate(copy.relative.hours, {
+    count: diffHours
+  });
   return date.toLocaleString(localeTag, {
     day: "2-digit",
     month: "short",
     hour: "2-digit",
-    minute: "2-digit",
+    minute: "2-digit"
   });
 }

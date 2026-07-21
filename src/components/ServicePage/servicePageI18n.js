@@ -1,22 +1,18 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 const TAB_KEYS = ["overview", "microsoft", "domain", "ssl"];
-
 const TAB_ICONS = {
   overview: "mdi:lightning-bolt",
   microsoft: "mdi:microsoft-azure",
   domain: "mdi:web",
-  ssl: "mdi:certificate-outline",
+  ssl: "mdi:certificate-outline"
 };
-
 const LOCALE_BCP47 = {
   fr: "fr-FR",
   en: "en-GB",
   de: "de-DE",
   it: "it-IT",
-  es: "es-ES",
+  es: "es-ES"
 };
-
 const SERVICE_PAGE = {
   fr: {
     eyebrow: "Services managés",
@@ -27,7 +23,7 @@ const SERVICE_PAGE = {
       overview: "À traiter",
       microsoft: "Tenant Microsoft",
       domain: "Nom de domaine",
-      ssl: "Certificat SSL",
+      ssl: "Certificat SSL"
     },
     overview: {
       hexTitle: "Vue d'ensemble",
@@ -40,7 +36,7 @@ const SERVICE_PAGE = {
         domainTotal: "NDD",
         sslIssues: "SSL",
         sslTotal: "Certificats",
-        health: "Santé (%)",
+        health: "Santé (%)"
       },
       healthLabel: "Santé cloud",
       eyebrow: "Synthèse",
@@ -59,7 +55,7 @@ const SERVICE_PAGE = {
         health: "Santé (%)",
         clients: "Entreprises",
         providers: "Registrars",
-        domainTotal: "Domaines",
+        domainTotal: "Domaines"
       },
       viewFleet: "Voir le parc",
       microsoft: {
@@ -67,26 +63,25 @@ const SERVICE_PAGE = {
         title: "Tenants Microsoft",
         descEmpty: "Aucun tenant Microsoft enregistré",
         descStats: "{clients} entreprise couverte",
-        descStatsPlural: "{clients} entreprises couvertes",
+        descStatsPlural: "{clients} entreprises couvertes"
       },
       domain: {
         eyebrow: "Nom de domaine",
         title: "Noms de domaine",
         descEmpty: "Aucun nom de domaine enregistré",
         descStats: "{clients} entreprise · {providers} registrar",
-        descStatsPlural: "{clients} entreprises · {providers} registrars",
+        descStatsPlural: "{clients} entreprises · {providers} registrars"
       },
       ssl: {
         eyebrow: "Certificat SSL",
         title: "Certificats SSL",
         descEmpty: "Aucun certificat SSL enregistré",
         descStats: "{clients} entreprise · {certificates} certificat",
-        descStatsPlural: "{clients} entreprises · {certificates} certificats",
+        descStatsPlural: "{clients} entreprises · {certificates} certificats"
       },
       priorityTitle: "À traiter en priorité",
       emptyTitle: "Aucune alerte services",
-      emptyText:
-        "Les tenants Microsoft et les noms de domaine du portefeuille sont dans un état nominal.",
+      emptyText: "Les tenants Microsoft et les noms de domaine du portefeuille sont dans un état nominal.",
       actionVerb: "Traiter",
       metaMicrosoftTenant: "Tenant Microsoft",
       actions: {
@@ -97,7 +92,7 @@ const SERVICE_PAGE = {
         expiringSoon: "Expiration proche",
         expiredSsl: "Certificat SSL expiré",
         expiringSsl: "Certificat SSL bientôt expiré",
-        sslError: "Erreur vérification SSL",
+        sslError: "Erreur vérification SSL"
       },
       sslStatus: {
         error: "Erreur",
@@ -105,13 +100,13 @@ const SERVICE_PAGE = {
         unknownInvalid: "Inconnu",
         expired: "Expiré",
         warning: "Expire bientôt",
-        active: "Valide",
+        active: "Valide"
       },
       domainStatus: {
         actif: "Actif",
         expiré: "Expiré",
-        expire_bientot: "Expire bientôt",
-      },
+        expire_bientot: "Expire bientôt"
+      }
     },
     microsoft: {
       healthLabel: "Santé Microsoft",
@@ -124,12 +119,12 @@ const SERVICE_PAGE = {
         tenants: "Tenants",
         active: "Actifs",
         inactive: "Inactifs",
-        toReview: "À traiter",
+        toReview: "À traiter"
       },
       statusFilters: {
         all: "Tous",
         actif: "Actifs",
-        inactif: "Inactifs",
+        inactif: "Inactifs"
       },
       statusFilterAria: "Filtre statut",
       searchPlaceholder: "Rechercher entreprise, tenant…",
@@ -158,9 +153,12 @@ const SERVICE_PAGE = {
         secureScore: "Score Entra",
         mfaAdmins: "MFA admins",
         mfaUsers: "MFA non admins",
-        lastSync: "Dernière synchronisation",
+        lastSync: "Dernière synchronisation"
       },
-      status: { actif: "Actif", inactif: "Inactif" },
+      status: {
+        actif: "Actif",
+        inactif: "Inactif"
+      },
       viewEnterprise: "Voir la fiche entreprise",
       rowsPerPage: "Lignes par page",
       prevPage: "Page précédente",
@@ -168,7 +166,7 @@ const SERVICE_PAGE = {
       pageOf: "Page {current} / {total}",
       showAllTenants: "Afficher tous les tenants",
       filterActive: "Filtrer : Actif",
-      filterInactive: "Filtrer : Inactif",
+      filterInactive: "Filtrer : Inactif"
     },
     domain: {
       healthLabel: "Santé NDD",
@@ -181,19 +179,19 @@ const SERVICE_PAGE = {
         domains: "Domaines",
         clients: "Entreprises",
         active: "Actifs",
-        toReview: "À traiter",
+        toReview: "À traiter"
       },
       statusFilters: {
         all: "Tous",
         actif: "Actifs",
         expire_bientot: "Expire bientôt",
-        expiré: "Expirés",
+        expiré: "Expirés"
       },
       statusMeta: {
         actif: "Actif",
         expire_bientot: "Expire bientôt",
         expiré: "Expiré",
-        inconnu: "Non renseigné",
+        inconnu: "Non renseigné"
       },
       statusFilterAria: "Filtre statut",
       registrarFilterAria: "Filtre registrar",
@@ -223,9 +221,9 @@ const SERVICE_PAGE = {
         status: "Statut",
         registrar: "Registrar",
         expiration: "Expiration",
-        lastSync: "Dernière sync",
+        lastSync: "Dernière sync"
       },
-      expPrefix: "exp.",
+      expPrefix: "exp."
     },
     ssl: {
       healthLabel: "Santé SSL",
@@ -238,7 +236,7 @@ const SERVICE_PAGE = {
         certificates: "Certificats",
         clients: "Entreprises",
         active: "Valides",
-        toReview: "À traiter",
+        toReview: "À traiter"
       },
       statusFilters: {
         all: "Tous",
@@ -246,7 +244,7 @@ const SERVICE_PAGE = {
         warning: "Expire bientôt",
         expired: "Expirés",
         error: "Erreurs",
-        unknown: "Non vérifiés",
+        unknown: "Non vérifiés"
       },
       statusMeta: {
         active: "Valide",
@@ -254,7 +252,7 @@ const SERVICE_PAGE = {
         expired: "Expiré",
         error: "Erreur",
         unknown: "Non vérifié",
-        unknownInvalid: "Inconnu",
+        unknownInvalid: "Inconnu"
       },
       statusFilterAria: "Filtre statut",
       searchPlaceholder: "Rechercher entreprise, hôte, émetteur…",
@@ -279,9 +277,9 @@ const SERVICE_PAGE = {
         status: "Statut",
         issuer: "Émetteur",
         expiration: "Expiration",
-        lastChecked: "Dernière vérification",
+        lastChecked: "Dernière vérification"
       },
-      expPrefix: "exp.",
+      expPrefix: "exp."
     },
     toasts: {
       syncMicrosoftStarted: "Synchronisation Microsoft en cours…",
@@ -295,8 +293,8 @@ const SERVICE_PAGE = {
       sslCheckSuccess: "Vérification SSL terminée",
       sslLoadError: "Erreur lors du chargement des certificats SSL",
       syncPreparing: "Préparation…",
-      syncDone: "Terminé",
-    },
+      syncDone: "Terminé"
+    }
   },
   en: {
     eyebrow: "Managed services",
@@ -307,7 +305,7 @@ const SERVICE_PAGE = {
       overview: "To do",
       microsoft: "Microsoft tenant",
       domain: "Domain names",
-      ssl: "SSL certificate",
+      ssl: "SSL certificate"
     },
     overview: {
       hexTitle: "Overview",
@@ -320,7 +318,7 @@ const SERVICE_PAGE = {
         domainTotal: "Domains",
         sslIssues: "SSL",
         sslTotal: "Certificates",
-        health: "Health (%)",
+        health: "Health (%)"
       },
       healthLabel: "Cloud health",
       eyebrow: "Overview",
@@ -339,7 +337,7 @@ const SERVICE_PAGE = {
         health: "Health (%)",
         clients: "Companies",
         providers: "Registrars",
-        domainTotal: "Domains",
+        domainTotal: "Domains"
       },
       viewFleet: "View fleet",
       microsoft: {
@@ -347,21 +345,21 @@ const SERVICE_PAGE = {
         title: "Microsoft tenants",
         descEmpty: "No Microsoft tenant registered",
         descStats: "{clients} company covered",
-        descStatsPlural: "{clients} companies covered",
+        descStatsPlural: "{clients} companies covered"
       },
       domain: {
         eyebrow: "Domain name",
         title: "Domain names",
         descEmpty: "No domain name registered",
         descStats: "{clients} company · {providers} registrar",
-        descStatsPlural: "{clients} companies · {providers} registrars",
+        descStatsPlural: "{clients} companies · {providers} registrars"
       },
       ssl: {
         eyebrow: "SSL certificate",
         title: "SSL certificates",
         descEmpty: "No SSL certificate registered",
         descStats: "{clients} company · {certificates} certificate",
-        descStatsPlural: "{clients} companies · {certificates} certificates",
+        descStatsPlural: "{clients} companies · {certificates} certificates"
       },
       priorityTitle: "Priority actions",
       emptyTitle: "No service alerts",
@@ -376,7 +374,7 @@ const SERVICE_PAGE = {
         expiringSoon: "Expiring soon",
         expiredSsl: "Expired SSL certificate",
         expiringSsl: "SSL certificate expiring soon",
-        sslError: "SSL check error",
+        sslError: "SSL check error"
       },
       sslStatus: {
         error: "Error",
@@ -384,13 +382,13 @@ const SERVICE_PAGE = {
         unknownInvalid: "Unknown",
         expired: "Expired",
         warning: "Expiring soon",
-        active: "Valid",
+        active: "Valid"
       },
       domainStatus: {
         actif: "Active",
         expiré: "Expired",
-        expire_bientot: "Expiring soon",
-      },
+        expire_bientot: "Expiring soon"
+      }
     },
     microsoft: {
       healthLabel: "Microsoft health",
@@ -403,9 +401,13 @@ const SERVICE_PAGE = {
         tenants: "Tenants",
         active: "Active",
         inactive: "Inactive",
-        toReview: "To review",
+        toReview: "To review"
       },
-      statusFilters: { all: "All", actif: "Active", inactif: "Inactive" },
+      statusFilters: {
+        all: "All",
+        actif: "Active",
+        inactif: "Inactive"
+      },
       statusFilterAria: "Status filter",
       searchPlaceholder: "Search company, tenant…",
       tenantCount: "{count} tenant",
@@ -433,9 +435,12 @@ const SERVICE_PAGE = {
         secureScore: "Entra score",
         mfaAdmins: "Admin MFA",
         mfaUsers: "Non-admin MFA",
-        lastSync: "Last sync",
+        lastSync: "Last sync"
       },
-      status: { actif: "Active", inactif: "Inactive" },
+      status: {
+        actif: "Active",
+        inactif: "Inactive"
+      },
       viewEnterprise: "View company record",
       rowsPerPage: "Rows per page",
       prevPage: "Previous page",
@@ -443,7 +448,7 @@ const SERVICE_PAGE = {
       pageOf: "Page {current} / {total}",
       showAllTenants: "Show all tenants",
       filterActive: "Filter: Active",
-      filterInactive: "Filter: Inactive",
+      filterInactive: "Filter: Inactive"
     },
     domain: {
       healthLabel: "Domain health",
@@ -456,19 +461,19 @@ const SERVICE_PAGE = {
         domains: "Domains",
         clients: "Companies",
         active: "Active",
-        toReview: "To review",
+        toReview: "To review"
       },
       statusFilters: {
         all: "All",
         actif: "Active",
         expire_bientot: "Expiring soon",
-        expiré: "Expired",
+        expiré: "Expired"
       },
       statusMeta: {
         actif: "Active",
         expire_bientot: "Expiring soon",
         expiré: "Expired",
-        inconnu: "Not specified",
+        unknown: "Not specified"
       },
       statusFilterAria: "Status filter",
       registrarFilterAria: "Registrar filter",
@@ -498,9 +503,9 @@ const SERVICE_PAGE = {
         status: "Status",
         registrar: "Registrar",
         expiration: "Expiration",
-        lastSync: "Last sync",
+        lastSync: "Last sync"
       },
-      expPrefix: "exp.",
+      expPrefix: "exp."
     },
     ssl: {
       healthLabel: "SSL health",
@@ -513,7 +518,7 @@ const SERVICE_PAGE = {
         certificates: "Certificates",
         clients: "Companies",
         active: "Valid",
-        toReview: "To review",
+        toReview: "To review"
       },
       statusFilters: {
         all: "All",
@@ -521,7 +526,7 @@ const SERVICE_PAGE = {
         warning: "Expiring soon",
         expired: "Expired",
         error: "Errors",
-        unknown: "Not checked",
+        unknown: "Not checked"
       },
       statusMeta: {
         active: "Valid",
@@ -529,7 +534,7 @@ const SERVICE_PAGE = {
         expired: "Expired",
         error: "Error",
         unknown: "Not checked",
-        unknownInvalid: "Unknown",
+        unknownInvalid: "Unknown"
       },
       statusFilterAria: "Status filter",
       searchPlaceholder: "Search company, host, issuer…",
@@ -554,9 +559,9 @@ const SERVICE_PAGE = {
         status: "Status",
         issuer: "Issuer",
         expiration: "Expiration",
-        lastChecked: "Last check",
+        lastChecked: "Last check"
       },
-      expPrefix: "exp.",
+      expPrefix: "exp."
     },
     toasts: {
       syncMicrosoftStarted: "Microsoft sync in progress…",
@@ -570,8 +575,8 @@ const SERVICE_PAGE = {
       sslCheckSuccess: "SSL check completed",
       sslLoadError: "Failed to load SSL certificates",
       syncPreparing: "Preparing…",
-      syncDone: "Done",
-    },
+      syncDone: "Done"
+    }
   },
   de: {
     eyebrow: "Managed Services",
@@ -582,7 +587,7 @@ const SERVICE_PAGE = {
       overview: "Zu erledigen",
       microsoft: "Microsoft-Mandant",
       domain: "Domainnamen",
-      ssl: "SSL-Zertifikat",
+      ssl: "SSL-Zertifikat"
     },
     overview: {
       hexTitle: "Übersicht",
@@ -595,7 +600,7 @@ const SERVICE_PAGE = {
         domainTotal: "Domains",
         sslIssues: "SSL",
         sslTotal: "Zertifikate",
-        health: "Gesundheit (%)",
+        health: "Gesundheit (%)"
       },
       healthLabel: "Cloud-Gesundheit",
       eyebrow: "Übersicht",
@@ -614,7 +619,7 @@ const SERVICE_PAGE = {
         health: "Gesundheit (%)",
         clients: "Unternehmen",
         providers: "Registrare",
-        domainTotal: "Domains",
+        domainTotal: "Domains"
       },
       viewFleet: "Bestand anzeigen",
       microsoft: {
@@ -622,21 +627,21 @@ const SERVICE_PAGE = {
         title: "Microsoft-Mandanten",
         descEmpty: "Kein Microsoft-Mandant registriert",
         descStats: "{clients} Unternehmen abgedeckt",
-        descStatsPlural: "{clients} Unternehmen abgedeckt",
+        descStatsPlural: "{clients} Unternehmen abgedeckt"
       },
       domain: {
         eyebrow: "Domainname",
         title: "Domainnamen",
         descEmpty: "Kein Domainname registriert",
         descStats: "{clients} Unternehmen · {providers} Registrar",
-        descStatsPlural: "{clients} Unternehmen · {providers} Registrare",
+        descStatsPlural: "{clients} Unternehmen · {providers} Registrare"
       },
       ssl: {
         eyebrow: "SSL-Zertifikat",
         title: "SSL-Zertifikate",
         descEmpty: "Kein SSL-Zertifikat registriert",
         descStats: "{clients} Unternehmen · {certificates} Zertifikat",
-        descStatsPlural: "{clients} Unternehmen · {certificates} Zertifikate",
+        descStatsPlural: "{clients} Unternehmen · {certificates} Zertifikate"
       },
       priorityTitle: "Vorrangig bearbeiten",
       emptyTitle: "Keine Service-Warnungen",
@@ -651,7 +656,7 @@ const SERVICE_PAGE = {
         expiringSoon: "Läuft bald ab",
         expiredSsl: "Abgelaufenes SSL-Zertifikat",
         expiringSsl: "SSL-Zertifikat läuft bald ab",
-        sslError: "SSL-Prüffehler",
+        sslError: "SSL-Prüffehler"
       },
       sslStatus: {
         error: "Fehler",
@@ -659,13 +664,13 @@ const SERVICE_PAGE = {
         unknownInvalid: "Unbekannt",
         expired: "Abgelaufen",
         warning: "Läuft bald ab",
-        active: "Gültig",
+        active: "Gültig"
       },
       domainStatus: {
         actif: "Aktiv",
         expiré: "Abgelaufen",
-        expire_bientot: "Läuft bald ab",
-      },
+        expire_bientot: "Läuft bald ab"
+      }
     },
     microsoft: {
       healthLabel: "Microsoft-Gesundheit",
@@ -678,9 +683,13 @@ const SERVICE_PAGE = {
         tenants: "Mandanten",
         active: "Aktiv",
         inactive: "Inaktiv",
-        toReview: "Zu prüfen",
+        toReview: "Zu prüfen"
       },
-      statusFilters: { all: "Alle", actif: "Aktiv", inactif: "Inaktiv" },
+      statusFilters: {
+        all: "Alle",
+        actif: "Aktiv",
+        inactif: "Inaktiv"
+      },
       statusFilterAria: "Statusfilter",
       searchPlaceholder: "Unternehmen, Mandant suchen…",
       tenantCount: "{count} Mandant",
@@ -708,9 +717,12 @@ const SERVICE_PAGE = {
         secureScore: "Entra-Score",
         mfaAdmins: "Admin-MFA",
         mfaUsers: "Nicht-Admin-MFA",
-        lastSync: "Letzte Synchronisation",
+        lastSync: "Letzte Synchronisation"
       },
-      status: { actif: "Aktiv", inactif: "Inaktiv" },
+      status: {
+        actif: "Aktiv",
+        inactif: "Inaktiv"
+      },
       viewEnterprise: "Unternehmensakte anzeigen",
       rowsPerPage: "Zeilen pro Seite",
       prevPage: "Vorherige Seite",
@@ -718,7 +730,7 @@ const SERVICE_PAGE = {
       pageOf: "Seite {current} / {total}",
       showAllTenants: "Alle Mandanten anzeigen",
       filterActive: "Filter: Aktiv",
-      filterInactive: "Filter: Inaktiv",
+      filterInactive: "Filter: Inaktiv"
     },
     domain: {
       healthLabel: "Domain-Gesundheit",
@@ -731,19 +743,19 @@ const SERVICE_PAGE = {
         domains: "Domains",
         clients: "Unternehmen",
         active: "Aktiv",
-        toReview: "Zu prüfen",
+        toReview: "Zu prüfen"
       },
       statusFilters: {
         all: "Alle",
         actif: "Aktiv",
         expire_bientot: "Läuft bald ab",
-        expiré: "Abgelaufen",
+        expiré: "Abgelaufen"
       },
       statusMeta: {
         actif: "Aktiv",
         expire_bientot: "Läuft bald ab",
         expiré: "Abgelaufen",
-        inconnu: "Nicht angegeben",
+        inconnu: "Nicht angegeben"
       },
       statusFilterAria: "Statusfilter",
       registrarFilterAria: "Registrar-Filter",
@@ -773,9 +785,9 @@ const SERVICE_PAGE = {
         status: "Status",
         registrar: "Registrar",
         expiration: "Ablauf",
-        lastSync: "Letzte Sync",
+        lastSync: "Letzte Sync"
       },
-      expPrefix: "Abl.",
+      expPrefix: "Abl."
     },
     ssl: {
       healthLabel: "SSL-Gesundheit",
@@ -784,12 +796,27 @@ const SERVICE_PAGE = {
       heroDescIssues: "{count} Zertifikat zu bearbeiten.",
       heroDescIssuesPlural: "{count} Zertifikate zu bearbeiten.",
       heroDescOk: "TLS-Überwachung und Abläufe Ihrer Kunden.",
-      kpi: { certificates: "Zertifikate", clients: "Unternehmen", active: "Gültig", toReview: "Zu prüfen" },
+      kpi: {
+        certificates: "Zertifikate",
+        clients: "Unternehmen",
+        active: "Gültig",
+        toReview: "Zu prüfen"
+      },
       statusFilters: {
-        all: "Alle", active: "Gültig", warning: "Läuft bald ab", expired: "Abgelaufen", error: "Fehler", unknown: "Nicht geprüft",
+        all: "Alle",
+        active: "Gültig",
+        warning: "Läuft bald ab",
+        expired: "Abgelaufen",
+        error: "Fehler",
+        unknown: "Nicht geprüft"
       },
       statusMeta: {
-        active: "Gültig", warning: "Läuft bald ab", expired: "Abgelaufen", error: "Fehler", unknown: "Nicht geprüft", unknownInvalid: "Unbekannt",
+        active: "Gültig",
+        warning: "Läuft bald ab",
+        expired: "Abgelaufen",
+        error: "Fehler",
+        unknown: "Nicht geprüft",
+        unknownInvalid: "Unbekannt"
       },
       statusFilterAria: "Statusfilter",
       searchPlaceholder: "Unternehmen, Host, Aussteller suchen…",
@@ -808,10 +835,15 @@ const SERVICE_PAGE = {
       emptyTextNone: "SSL-Zertifikate in den Unternehmensakten hinzufügen.",
       emptyTextNoMatch: "Filter oder Suche anpassen, um Zertifikate anzuzeigen.",
       table: {
-        stateAria: "Status", client: "Unternehmen", hostname: "Host", status: "Status",
-        issuer: "Aussteller", expiration: "Ablauf", lastChecked: "Letzte Prüfung",
+        stateAria: "Status",
+        client: "Unternehmen",
+        hostname: "Host",
+        status: "Status",
+        issuer: "Aussteller",
+        expiration: "Ablauf",
+        lastChecked: "Letzte Prüfung"
       },
-      expPrefix: "Abl.",
+      expPrefix: "Abl."
     },
     toasts: {
       syncMicrosoftStarted: "Microsoft-Synchronisation läuft…",
@@ -825,8 +857,8 @@ const SERVICE_PAGE = {
       sslCheckSuccess: "SSL-Prüfung abgeschlossen",
       sslLoadError: "SSL-Zertifikate konnten nicht geladen werden",
       syncPreparing: "Vorbereitung…",
-      syncDone: "Fertig",
-    },
+      syncDone: "Fertig"
+    }
   },
   it: {
     eyebrow: "Servizi gestiti",
@@ -837,7 +869,7 @@ const SERVICE_PAGE = {
       overview: "Da trattare",
       microsoft: "Tenant Microsoft",
       domain: "Nomi di dominio",
-      ssl: "Certificato SSL",
+      ssl: "Certificato SSL"
     },
     overview: {
       hexTitle: "Panoramica",
@@ -850,7 +882,7 @@ const SERVICE_PAGE = {
         domainTotal: "Domini",
         sslIssues: "SSL",
         sslTotal: "Certificati",
-        health: "Salute (%)",
+        health: "Salute (%)"
       },
       healthLabel: "Salute cloud",
       eyebrow: "Sintesi",
@@ -869,7 +901,7 @@ const SERVICE_PAGE = {
         health: "Salute (%)",
         clients: "Aziende",
         providers: "Registrar",
-        domainTotal: "Domini",
+        domainTotal: "Domini"
       },
       viewFleet: "Vedi parco",
       microsoft: {
@@ -877,21 +909,21 @@ const SERVICE_PAGE = {
         title: "Tenant Microsoft",
         descEmpty: "Nessun tenant Microsoft registrato",
         descStats: "{clients} azienda coperta",
-        descStatsPlural: "{clients} aziende coperte",
+        descStatsPlural: "{clients} aziende coperte"
       },
       domain: {
         eyebrow: "Nome di dominio",
         title: "Nomi di dominio",
         descEmpty: "Nessun nome di dominio registrato",
         descStats: "{clients} azienda · {providers} registrar",
-        descStatsPlural: "{clients} aziende · {providers} registrar",
+        descStatsPlural: "{clients} aziende · {providers} registrar"
       },
       ssl: {
         eyebrow: "Certificato SSL",
         title: "Certificati SSL",
         descEmpty: "Nessun certificato SSL registrato",
         descStats: "{clients} azienda · {certificates} certificato",
-        descStatsPlural: "{clients} aziende · {certificates} certificati",
+        descStatsPlural: "{clients} aziende · {certificates} certificati"
       },
       priorityTitle: "Da trattare in priorità",
       emptyTitle: "Nessun avviso servizi",
@@ -906,7 +938,7 @@ const SERVICE_PAGE = {
         expiringSoon: "Scadenza imminente",
         expiredSsl: "Certificato SSL scaduto",
         expiringSsl: "Certificato SSL in scadenza",
-        sslError: "Errore verifica SSL",
+        sslError: "Errore verifica SSL"
       },
       sslStatus: {
         error: "Errore",
@@ -914,13 +946,13 @@ const SERVICE_PAGE = {
         unknownInvalid: "Sconosciuto",
         expired: "Scaduto",
         warning: "In scadenza",
-        active: "Valido",
+        active: "Valido"
       },
       domainStatus: {
         actif: "Attivo",
         expiré: "Scaduto",
-        expire_bientot: "In scadenza",
-      },
+        expire_bientot: "In scadenza"
+      }
     },
     microsoft: {
       healthLabel: "Salute Microsoft",
@@ -933,9 +965,13 @@ const SERVICE_PAGE = {
         tenants: "Tenant",
         active: "Attivi",
         inactive: "Inattivi",
-        toReview: "Da trattare",
+        toReview: "Da trattare"
       },
-      statusFilters: { all: "Tutti", actif: "Attivi", inactif: "Inattivi" },
+      statusFilters: {
+        all: "Tutti",
+        actif: "Attivi",
+        inactif: "Inattivi"
+      },
       statusFilterAria: "Filtro stato",
       searchPlaceholder: "Cerca azienda, tenant…",
       tenantCount: "{count} tenant",
@@ -963,9 +999,12 @@ const SERVICE_PAGE = {
         secureScore: "Punteggio Entra",
         mfaAdmins: "MFA admin",
         mfaUsers: "MFA non admin",
-        lastSync: "Ultima sincronizzazione",
+        lastSync: "Ultima sincronizzazione"
       },
-      status: { actif: "Attivo", inactif: "Inattivo" },
+      status: {
+        actif: "Attivo",
+        inactif: "Inattivo"
+      },
       viewEnterprise: "Vedi scheda azienda",
       rowsPerPage: "Righe per pagina",
       prevPage: "Pagina precedente",
@@ -973,7 +1012,7 @@ const SERVICE_PAGE = {
       pageOf: "Pagina {current} / {total}",
       showAllTenants: "Mostra tutti i tenant",
       filterActive: "Filtra: Attivo",
-      filterInactive: "Filtra: Inattivo",
+      filterInactive: "Filtra: Inattivo"
     },
     domain: {
       healthLabel: "Salute domini",
@@ -986,19 +1025,19 @@ const SERVICE_PAGE = {
         domains: "Domini",
         clients: "Aziende",
         active: "Attivi",
-        toReview: "Da trattare",
+        toReview: "Da trattare"
       },
       statusFilters: {
         all: "Tutti",
         actif: "Attivi",
         expire_bientot: "In scadenza",
-        expiré: "Scaduti",
+        expiré: "Scaduti"
       },
       statusMeta: {
         actif: "Attivo",
         expire_bientot: "In scadenza",
         expiré: "Scaduto",
-        inconnu: "Non indicato",
+        inconnu: "Non indicato"
       },
       statusFilterAria: "Filtro stato",
       registrarFilterAria: "Filtro registrar",
@@ -1028,9 +1067,9 @@ const SERVICE_PAGE = {
         status: "Stato",
         registrar: "Registrar",
         expiration: "Scadenza",
-        lastSync: "Ultima sync",
+        lastSync: "Ultima sync"
       },
-      expPrefix: "scad.",
+      expPrefix: "scad."
     },
     ssl: {
       healthLabel: "Salute SSL",
@@ -1039,12 +1078,27 @@ const SERVICE_PAGE = {
       heroDescIssues: "{count} certificato da trattare.",
       heroDescIssuesPlural: "{count} certificati da trattare.",
       heroDescOk: "Monitoraggio TLS e scadenze dei clienti.",
-      kpi: { certificates: "Certificati", clients: "Aziende", active: "Validi", toReview: "Da trattare" },
+      kpi: {
+        certificates: "Certificati",
+        clients: "Aziende",
+        active: "Validi",
+        toReview: "Da trattare"
+      },
       statusFilters: {
-        all: "Tutti", active: "Validi", warning: "In scadenza", expired: "Scaduti", error: "Errori", unknown: "Non verificati",
+        all: "Tutti",
+        active: "Validi",
+        warning: "In scadenza",
+        expired: "Scaduti",
+        error: "Errori",
+        unknown: "Non verificati"
       },
       statusMeta: {
-        active: "Valido", warning: "In scadenza", expired: "Scaduto", error: "Errore", unknown: "Non verificato", unknownInvalid: "Sconosciuto",
+        active: "Valido",
+        warning: "In scadenza",
+        expired: "Scaduto",
+        error: "Errore",
+        unknown: "Non verificato",
+        unknownInvalid: "Sconosciuto"
       },
       statusFilterAria: "Filtro stato",
       searchPlaceholder: "Cerca azienda, host, emittente…",
@@ -1063,10 +1117,15 @@ const SERVICE_PAGE = {
       emptyTextNone: "Aggiungi certificati SSL dalle schede azienda.",
       emptyTextNoMatch: "Modifica filtri o ricerca per visualizzare i certificati.",
       table: {
-        stateAria: "Stato", client: "Azienda", hostname: "Host", status: "Stato",
-        issuer: "Emittente", expiration: "Scadenza", lastChecked: "Ultima verifica",
+        stateAria: "Stato",
+        client: "Azienda",
+        hostname: "Host",
+        status: "Stato",
+        issuer: "Emittente",
+        expiration: "Scadenza",
+        lastChecked: "Ultima verifica"
       },
-      expPrefix: "scad.",
+      expPrefix: "scad."
     },
     toasts: {
       syncMicrosoftStarted: "Sincronizzazione Microsoft in corso…",
@@ -1080,8 +1139,8 @@ const SERVICE_PAGE = {
       sslCheckSuccess: "Verifica SSL completata",
       sslLoadError: "Errore caricamento certificati SSL",
       syncPreparing: "Preparazione…",
-      syncDone: "Completato",
-    },
+      syncDone: "Completato"
+    }
   },
   es: {
     eyebrow: "Servicios gestionados",
@@ -1092,7 +1151,7 @@ const SERVICE_PAGE = {
       overview: "Por tratar",
       microsoft: "Tenant Microsoft",
       domain: "Nombres de dominio",
-      ssl: "Certificado SSL",
+      ssl: "Certificado SSL"
     },
     overview: {
       hexTitle: "Resumen",
@@ -1105,7 +1164,7 @@ const SERVICE_PAGE = {
         domainTotal: "Dominios",
         sslIssues: "SSL",
         sslTotal: "Certificados",
-        health: "Salud (%)",
+        health: "Salud (%)"
       },
       healthLabel: "Salud cloud",
       eyebrow: "Resumen",
@@ -1124,7 +1183,7 @@ const SERVICE_PAGE = {
         health: "Salud (%)",
         clients: "Empresas",
         providers: "Registradores",
-        domainTotal: "Dominios",
+        domainTotal: "Dominios"
       },
       viewFleet: "Ver parque",
       microsoft: {
@@ -1132,21 +1191,21 @@ const SERVICE_PAGE = {
         title: "Tenants Microsoft",
         descEmpty: "Ningún tenant Microsoft registrado",
         descStats: "{clients} empresa cubierta",
-        descStatsPlural: "{clients} empresas cubiertas",
+        descStatsPlural: "{clients} empresas cubiertas"
       },
       domain: {
         eyebrow: "Nombre de dominio",
         title: "Nombres de dominio",
         descEmpty: "Ningún nombre de dominio registrado",
         descStats: "{clients} empresa · {providers} registrador",
-        descStatsPlural: "{clients} empresas · {providers} registradores",
+        descStatsPlural: "{clients} empresas · {providers} registradores"
       },
       ssl: {
         eyebrow: "Certificado SSL",
         title: "Certificados SSL",
         descEmpty: "Ningún certificado SSL registrado",
         descStats: "{clients} empresa · {certificates} certificado",
-        descStatsPlural: "{clients} empresas · {certificates} certificados",
+        descStatsPlural: "{clients} empresas · {certificates} certificados"
       },
       priorityTitle: "Por tratar con prioridad",
       emptyTitle: "Sin alertas de servicios",
@@ -1161,7 +1220,7 @@ const SERVICE_PAGE = {
         expiringSoon: "Caduca pronto",
         expiredSsl: "Certificado SSL caducado",
         expiringSsl: "Certificado SSL caduca pronto",
-        sslError: "Error de verificación SSL",
+        sslError: "Error de verificación SSL"
       },
       sslStatus: {
         error: "Error",
@@ -1169,13 +1228,13 @@ const SERVICE_PAGE = {
         unknownInvalid: "Desconocido",
         expired: "Caducado",
         warning: "Caduca pronto",
-        active: "Válido",
+        active: "Válido"
       },
       domainStatus: {
         actif: "Activo",
         expiré: "Caducado",
-        expire_bientot: "Caduca pronto",
-      },
+        expire_bientot: "Caduca pronto"
+      }
     },
     microsoft: {
       healthLabel: "Salud Microsoft",
@@ -1188,9 +1247,13 @@ const SERVICE_PAGE = {
         tenants: "Tenants",
         active: "Activos",
         inactive: "Inactivos",
-        toReview: "Por tratar",
+        toReview: "Por tratar"
       },
-      statusFilters: { all: "Todos", actif: "Activos", inactif: "Inactivos" },
+      statusFilters: {
+        all: "Todos",
+        actif: "Activos",
+        inactif: "Inactivos"
+      },
       statusFilterAria: "Filtro de estado",
       searchPlaceholder: "Buscar empresa, tenant…",
       tenantCount: "{count} tenant",
@@ -1218,9 +1281,12 @@ const SERVICE_PAGE = {
         secureScore: "Puntuación Entra",
         mfaAdmins: "MFA admins",
         mfaUsers: "MFA no admins",
-        lastSync: "Última sincronización",
+        lastSync: "Última sincronización"
       },
-      status: { actif: "Activo", inactif: "Inactivo" },
+      status: {
+        actif: "Activo",
+        inactif: "Inactivo"
+      },
       viewEnterprise: "Ver ficha de empresa",
       rowsPerPage: "Filas por página",
       prevPage: "Página anterior",
@@ -1228,7 +1294,7 @@ const SERVICE_PAGE = {
       pageOf: "Página {current} / {total}",
       showAllTenants: "Mostrar todos los tenants",
       filterActive: "Filtrar: Activo",
-      filterInactive: "Filtrar: Inactivo",
+      filterInactive: "Filtrar: Inactivo"
     },
     domain: {
       healthLabel: "Salud dominios",
@@ -1241,19 +1307,19 @@ const SERVICE_PAGE = {
         domains: "Dominios",
         clients: "Empresas",
         active: "Activos",
-        toReview: "Por tratar",
+        toReview: "Por tratar"
       },
       statusFilters: {
         all: "Todos",
         actif: "Activos",
         expire_bientot: "Caduca pronto",
-        expiré: "Caducados",
+        expiré: "Caducados"
       },
       statusMeta: {
         actif: "Activo",
         expire_bientot: "Caduca pronto",
         expiré: "Caducado",
-        inconnu: "No indicado",
+        inconnu: "No indicado"
       },
       statusFilterAria: "Filtro de estado",
       registrarFilterAria: "Filtro de registrar",
@@ -1283,9 +1349,9 @@ const SERVICE_PAGE = {
         status: "Estado",
         registrar: "Registrar",
         expiration: "Caducidad",
-        lastSync: "Última sync",
+        lastSync: "Última sync"
       },
-      expPrefix: "cad.",
+      expPrefix: "cad."
     },
     ssl: {
       healthLabel: "Salud SSL",
@@ -1294,12 +1360,27 @@ const SERVICE_PAGE = {
       heroDescIssues: "{count} certificado por tratar.",
       heroDescIssuesPlural: "{count} certificados por tratar.",
       heroDescOk: "Monitorización TLS y caducidades de sus clientes.",
-      kpi: { certificates: "Certificados", clients: "Empresas", active: "Válidos", toReview: "Por tratar" },
+      kpi: {
+        certificates: "Certificados",
+        clients: "Empresas",
+        active: "Válidos",
+        toReview: "Por tratar"
+      },
       statusFilters: {
-        all: "Todos", active: "Válidos", warning: "Caduca pronto", expired: "Caducados", error: "Errores", unknown: "No verificados",
+        all: "Todos",
+        active: "Válidos",
+        warning: "Caduca pronto",
+        expired: "Caducados",
+        error: "Errores",
+        unknown: "No verificados"
       },
       statusMeta: {
-        active: "Válido", warning: "Caduca pronto", expired: "Caducado", error: "Error", unknown: "No verificado", unknownInvalid: "Desconocido",
+        active: "Válido",
+        warning: "Caduca pronto",
+        expired: "Caducado",
+        error: "Error",
+        unknown: "No verificado",
+        unknownInvalid: "Desconocido"
       },
       statusFilterAria: "Filtro de estado",
       searchPlaceholder: "Buscar empresa, host, emisor…",
@@ -1318,10 +1399,15 @@ const SERVICE_PAGE = {
       emptyTextNone: "Añada certificados SSL desde las fichas de empresa.",
       emptyTextNoMatch: "Ajuste filtros o búsqueda para mostrar certificados.",
       table: {
-        stateAria: "Estado", client: "Empresa", hostname: "Host", status: "Estado",
-        issuer: "Emisor", expiration: "Caducidad", lastChecked: "Última verificación",
+        stateAria: "Estado",
+        client: "Empresa",
+        hostname: "Host",
+        status: "Estado",
+        issuer: "Emisor",
+        expiration: "Caducidad",
+        lastChecked: "Última verificación"
       },
-      expPrefix: "cad.",
+      expPrefix: "cad."
     },
     toasts: {
       syncMicrosoftStarted: "Sincronización Microsoft en curso…",
@@ -1335,15 +1421,13 @@ const SERVICE_PAGE = {
       sslCheckSuccess: "Verificación SSL completada",
       sslLoadError: "Error al cargar certificados SSL",
       syncPreparing: "Preparando…",
-      syncDone: "Hecho",
-    },
-  },
+      syncDone: "Hecho"
+    }
+  }
 };
-
 function pluralPick(count, singular, plural) {
   return count > 1 ? plural : singular;
 }
-
 function buildServiceFleetDescription(stats, section, locale) {
   const t = pickLocaleMessages(SERVICE_PAGE, locale);
   const s = t.overview[section];
@@ -1352,147 +1436,145 @@ function buildServiceFleetDescription(stats, section, locale) {
   const providers = stats.providers ?? 0;
   if (section === "microsoft") {
     const template = clients > 1 ? s.descStatsPlural : s.descStats;
-    return interpolate(template, { clients: String(clients) });
+    return interpolate(template, {
+      clients: String(clients)
+    });
   }
   if (section === "ssl") {
     const certificates = stats.total ?? 0;
     const template = clients > 1 || certificates > 1 ? s.descStatsPlural : s.descStats;
     return interpolate(template, {
       clients: String(clients),
-      certificates: String(certificates),
+      certificates: String(certificates)
     });
   }
   if (clients > 0 && providers > 0) {
     const template = clients > 1 || providers > 1 ? s.descStatsPlural : s.descStats;
     return interpolate(template, {
       clients: String(clients),
-      providers: String(providers),
+      providers: String(providers)
     });
   }
   return s.descEmpty;
 }
-
 export function getServicePageCopy(locale) {
   const code = String(locale || "fr").slice(0, 2).toLowerCase();
   const t = pickLocaleMessages(SERVICE_PAGE, locale);
   const bcp47 = LOCALE_BCP47[code] || LOCALE_BCP47.fr;
-
-  const bind = (section) => ({
+  const bind = section => ({
     ...section,
-    formatCount: (key, count) =>
-      interpolate(
-        pluralPick(count, section[key], section[`${key}Plural`] || section[key]),
-        { count }
-      ),
+    formatCount: (key, count) => interpolate(pluralPick(count, section[key], section[`${key}Plural`] || section[key]), {
+      count
+    })
   });
-
   return {
     ...t,
     locale: code,
     bcp47,
-    tabs: TAB_KEYS.map((key) => ({
+    tabs: TAB_KEYS.map(key => ({
       key,
       label: t.tabs[key],
-      icon: TAB_ICONS[key],
+      icon: TAB_ICONS[key]
     })),
     overview: {
       ...t.overview,
-      formatHeroDesc: (count) =>
-        count > 0
-          ? interpolate(
-              pluralPick(count, t.overview.heroDescIssues, t.overview.heroDescIssuesPlural),
-              { count }
-            )
-          : t.overview.heroDescOk,
-      formatMfaAdmins: (pct) => interpolate(t.overview.actions.mfaAdmins, { pct }),
-      formatSecureScore: (pct) => interpolate(t.overview.actions.secureScore, { pct }),
-      getDomainStatusLabel: (status) => t.overview.domainStatus[status] || status,
-      formatMicrosoftFleetDescription: (stats) =>
-        buildServiceFleetDescription(stats, "microsoft", locale),
-      formatDomainFleetDescription: (stats) => buildServiceFleetDescription(stats, "domain", locale),
-      formatSslFleetDescription: (stats) => buildServiceFleetDescription(stats, "ssl", locale),
+      formatHeroDesc: count => count > 0 ? interpolate(pluralPick(count, t.overview.heroDescIssues, t.overview.heroDescIssuesPlural), {
+        count
+      }) : t.overview.heroDescOk,
+      formatMfaAdmins: pct => interpolate(t.overview.actions.mfaAdmins, {
+        pct
+      }),
+      formatSecureScore: pct => interpolate(t.overview.actions.secureScore, {
+        pct
+      }),
+      getDomainStatusLabel: status => t.overview.domainStatus[status] || status,
+      formatMicrosoftFleetDescription: stats => buildServiceFleetDescription(stats, "microsoft", locale),
+      formatDomainFleetDescription: stats => buildServiceFleetDescription(stats, "domain", locale),
+      formatSslFleetDescription: stats => buildServiceFleetDescription(stats, "ssl", locale)
     },
     microsoft: {
       ...bind(t.microsoft),
       locale: code,
-      formatHeroDesc: (count) =>
-        count > 0
-          ? interpolate(
-              pluralPick(count, t.microsoft.heroDescIssues, t.microsoft.heroDescIssuesPlural),
-              { count }
-            )
-          : t.microsoft.heroDescOk,
-      formatAlertCount: (count) =>
-        interpolate(pluralPick(count, t.microsoft.alertCount, t.microsoft.alertCountPlural), {
-          count,
-        }),
-      formatPageOf: (current, total) =>
-        interpolate(t.microsoft.pageOf, { current, total }),
-      statusFilters: [
-        { id: "all", label: t.microsoft.statusFilters.all },
-        { id: "actif", label: t.microsoft.statusFilters.actif },
-        { id: "inactif", label: t.microsoft.statusFilters.inactif },
-      ],
+      formatHeroDesc: count => count > 0 ? interpolate(pluralPick(count, t.microsoft.heroDescIssues, t.microsoft.heroDescIssuesPlural), {
+        count
+      }) : t.microsoft.heroDescOk,
+      formatAlertCount: count => interpolate(pluralPick(count, t.microsoft.alertCount, t.microsoft.alertCountPlural), {
+        count
+      }),
+      formatPageOf: (current, total) => interpolate(t.microsoft.pageOf, {
+        current,
+        total
+      }),
+      statusFilters: [{
+        id: "all",
+        label: t.microsoft.statusFilters.all
+      }, {
+        id: "actif",
+        label: t.microsoft.statusFilters.actif
+      }, {
+        id: "inactif",
+        label: t.microsoft.statusFilters.inactif
+      }]
     },
     domain: {
       ...bind(t.domain),
       locale: code,
-      formatHeroDesc: (count) =>
-        count > 0
-          ? interpolate(
-              pluralPick(count, t.domain.heroDescIssues, t.domain.heroDescIssuesPlural),
-              { count }
-            )
-          : t.domain.heroDescOk,
-      formatAlertCount: (count) =>
-        interpolate(pluralPick(count, t.domain.alertCount, t.domain.alertCountPlural), {
-          count,
-        }),
-      getStatusMeta: (status) => ({
-        label: t.domain.statusMeta[status] || t.domain.statusMeta.inconnu,
-        tone:
-          status === "expiré" ? "bad" : status === "expire_bientot" ? "warn" : status === "actif" ? "good" : "neutral",
+      formatHeroDesc: count => count > 0 ? interpolate(pluralPick(count, t.domain.heroDescIssues, t.domain.heroDescIssuesPlural), {
+        count
+      }) : t.domain.heroDescOk,
+      formatAlertCount: count => interpolate(pluralPick(count, t.domain.alertCount, t.domain.alertCountPlural), {
+        count
       }),
-      statusFilters: [
-        { id: "all", label: t.domain.statusFilters.all },
-        { id: "actif", label: t.domain.statusFilters.actif },
-        { id: "expire_bientot", label: t.domain.statusFilters.expire_bientot },
-        { id: "expiré", label: t.domain.statusFilters.expiré },
-      ],
+      getStatusMeta: status => ({
+        label: t.domain.statusMeta[status] || t.domain.statusMeta.inconnu,
+        tone: status === "expiré" ? "bad" : status === "expire_bientot" ? "warn" : status === "actif" ? "good" : "neutral"
+      }),
+      statusFilters: [{
+        id: "all",
+        label: t.domain.statusFilters.all
+      }, {
+        id: "actif",
+        label: t.domain.statusFilters.actif
+      }, {
+        id: "expire_bientot",
+        label: t.domain.statusFilters.expire_bientot
+      }, {
+        id: "expiré",
+        label: t.domain.statusFilters.expiré
+      }]
     },
     ssl: {
       ...bind(t.ssl),
       locale: code,
-      formatHeroDesc: (count) =>
-        count > 0
-          ? interpolate(
-              pluralPick(count, t.ssl.heroDescIssues, t.ssl.heroDescIssuesPlural),
-              { count }
-            )
-          : t.ssl.heroDescOk,
-      formatAlertCount: (count) =>
-        interpolate(pluralPick(count, t.ssl.alertCount, t.ssl.alertCountPlural), {
-          count,
-        }),
-      getStatusMeta: (statusKey) => ({
-        label: t.ssl.statusMeta[statusKey] || t.ssl.statusMeta.unknown,
-        tone:
-          statusKey === "expired" || statusKey === "error"
-            ? "bad"
-            : statusKey === "warning"
-              ? "warn"
-              : statusKey === "active"
-                ? "good"
-                : "neutral",
+      formatHeroDesc: count => count > 0 ? interpolate(pluralPick(count, t.ssl.heroDescIssues, t.ssl.heroDescIssuesPlural), {
+        count
+      }) : t.ssl.heroDescOk,
+      formatAlertCount: count => interpolate(pluralPick(count, t.ssl.alertCount, t.ssl.alertCountPlural), {
+        count
       }),
-      statusFilters: [
-        { id: "all", label: t.ssl.statusFilters.all },
-        { id: "active", label: t.ssl.statusFilters.active },
-        { id: "warning", label: t.ssl.statusFilters.warning },
-        { id: "expired", label: t.ssl.statusFilters.expired },
-        { id: "error", label: t.ssl.statusFilters.error },
-        { id: "unknown", label: t.ssl.statusFilters.unknown },
-      ],
-    },
+      getStatusMeta: statusKey => ({
+        label: t.ssl.statusMeta[statusKey] || t.ssl.statusMeta.unknown,
+        tone: statusKey === "expired" || statusKey === "error" ? "bad" : statusKey === "warning" ? "warn" : statusKey === "active" ? "good" : "neutral"
+      }),
+      statusFilters: [{
+        id: "all",
+        label: t.ssl.statusFilters.all
+      }, {
+        id: "active",
+        label: t.ssl.statusFilters.active
+      }, {
+        id: "warning",
+        label: t.ssl.statusFilters.warning
+      }, {
+        id: "expired",
+        label: t.ssl.statusFilters.expired
+      }, {
+        id: "error",
+        label: t.ssl.statusFilters.error
+      }, {
+        id: "unknown",
+        label: t.ssl.statusFilters.unknown
+      }]
+    }
   };
 }

@@ -1,9 +1,7 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 function pluralPick(count, one, many) {
   return Number(count) > 1 ? many : one;
 }
-
 const CONTRACT_MSP_DASHBOARD_COPY = {
   fr: {
     healthLabel: "Santé contrats",
@@ -11,24 +9,23 @@ const CONTRACT_MSP_DASHBOARD_COPY = {
     heroTitle: "Parc multi-entreprises",
     heroDescIssues: "{count} alerte à traiter.",
     heroDescIssuesPlural: "{count} alertes à traiter.",
-    heroDescOk:
-      "Aucune échéance expirée ou à renouveler dans les 60 prochains jours (contrats, antivirus, domaines, SSL, licences).",
+    heroDescOk: "Aucune échéance expirée ou à renouveler dans les 60 prochains jours (contrats, antivirus, domaines, SSL, licences).",
     kpi: {
       alerts: "Alertes",
       clients: "Entreprises",
       expired: "Expirées",
-      toRenew: "À renouveler",
+      toRenew: "À renouveler"
     },
     statusFilters: {
       all: "Toutes",
       expired: "Expirées",
       expiring: "À renouveler",
-      suspended: "Suspendues",
+      suspended: "Suspendues"
     },
     statusMeta: {
       expired: "Expiré",
       expiring: "Expire bientôt",
-      suspended: "Suspendu",
+      suspended: "Suspendu"
     },
     statusFilterAria: "Filtre statut",
     categoryFilterAria: "Filtre type",
@@ -44,8 +41,7 @@ const CONTRACT_MSP_DASHBOARD_COPY = {
     loading: "Chargement des alertes…",
     emptyTitleNone: "Contrats et licences OK",
     emptyTitleNoMatch: "Aucun résultat",
-    emptyTextNone:
-      "Aucune échéance expirée ou à renouveler dans les 60 prochains jours.",
+    emptyTextNone: "Aucune échéance expirée ou à renouveler dans les 60 prochains jours.",
     emptyTextNoMatch: "Ajustez les filtres ou la recherche pour afficher des alertes.",
     viewEnterprise: "Voir l'entreprise",
     table: {
@@ -54,8 +50,8 @@ const CONTRACT_MSP_DASHBOARD_COPY = {
       type: "Type",
       status: "Statut",
       expiration: "Expiration",
-      actions: "Actions",
-    },
+      actions: "Actions"
+    }
   },
   en: {
     healthLabel: "Contract health",
@@ -63,24 +59,23 @@ const CONTRACT_MSP_DASHBOARD_COPY = {
     heroTitle: "Multi-company fleet",
     heroDescIssues: "{count} alert to review.",
     heroDescIssuesPlural: "{count} alerts to review.",
-    heroDescOk:
-      "No expired or upcoming renewals within the next 60 days (contracts, antivirus, domains, SSL, licenses).",
+    heroDescOk: "No expired or upcoming renewals within the next 60 days (contracts, antivirus, domains, SSL, licenses).",
     kpi: {
       alerts: "Alerts",
       clients: "Companies",
       expired: "Expired",
-      toRenew: "To renew",
+      toRenew: "To renew"
     },
     statusFilters: {
       all: "All",
       expired: "Expired",
       expiring: "Expiring soon",
-      suspended: "Suspended",
+      suspended: "Suspended"
     },
     statusMeta: {
       expired: "Expired",
       expiring: "Expiring soon",
-      suspended: "Suspended",
+      suspended: "Suspended"
     },
     statusFilterAria: "Status filter",
     categoryFilterAria: "Type filter",
@@ -105,54 +100,49 @@ const CONTRACT_MSP_DASHBOARD_COPY = {
       type: "Type",
       status: "Status",
       expiration: "Expiration",
-      actions: "Actions",
-    },
-  },
+      actions: "Actions"
+    }
+  }
 };
-
 export function getContractMspDashboardCopy(locale) {
   const t = pickLocaleMessages(CONTRACT_MSP_DASHBOARD_COPY, locale);
   const code = locale?.slice?.(0, 2) || "fr";
-
   return {
     ...t,
     locale: code,
-    formatHeroDesc: (count) =>
-      count > 0
-        ? interpolate(
-            pluralPick(count, t.heroDescIssues, t.heroDescIssuesPlural),
-            { count: String(count) }
-          )
-        : t.heroDescOk,
-    formatAlertCount: (count) =>
-      interpolate(pluralPick(count, t.alertCount, t.alertCountPlural), {
-        count: String(count),
-      }),
+    formatHeroDesc: count => count > 0 ? interpolate(pluralPick(count, t.heroDescIssues, t.heroDescIssuesPlural), {
+      count: String(count)
+    }) : t.heroDescOk,
+    formatAlertCount: count => interpolate(pluralPick(count, t.alertCount, t.alertCountPlural), {
+      count: String(count)
+    }),
     formatCount: (key, count) => {
       const n = Number(count) || 0;
       if (key === "categoryCount") {
         return interpolate(pluralPick(n, t.categoryCount, t.categoryCountPlural), {
-          count: String(n),
+          count: String(n)
         });
       }
-      return interpolate(pluralPick(n, t.alertCount, t.alertCountPlural), { count: String(n) });
+      return interpolate(pluralPick(n, t.alertCount, t.alertCountPlural), {
+        count: String(n)
+      });
     },
-    getStatusMeta: (status) => ({
+    getStatusMeta: status => ({
       label: t.statusMeta[status] || t.statusMeta.expiring,
-      tone:
-        status === "expired"
-          ? "bad"
-          : status === "suspended"
-            ? "bad"
-            : status === "expiring"
-              ? "warn"
-              : "neutral",
+      tone: status === "expired" ? "bad" : status === "suspended" ? "bad" : status === "expiring" ? "warn" : "neutral"
     }),
-    statusFilters: [
-      { id: "all", label: t.statusFilters.all },
-      { id: "expired", label: t.statusFilters.expired },
-      { id: "expiring", label: t.statusFilters.expiring },
-      { id: "suspended", label: t.statusFilters.suspended },
-    ],
+    statusFilters: [{
+      id: "all",
+      label: t.statusFilters.all
+    }, {
+      id: "expired",
+      label: t.statusFilters.expired
+    }, {
+      id: "expiring",
+      label: t.statusFilters.expiring
+    }, {
+      id: "suspended",
+      label: t.statusFilters.suspended
+    }]
   };
 }

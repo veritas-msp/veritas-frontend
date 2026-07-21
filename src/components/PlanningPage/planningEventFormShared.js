@@ -1,26 +1,14 @@
 import moment from "moment";
 import { fetchClientsList, fetchClientModules } from "../../api/clients";
-
-export const INFRASTRUCTURE_TYPES = [
-  "Serveurs",
-  "Ordinateurs",
-  "NAS",
-  "SAN",
-  "Firewalls",
-  "Internet",
-  "Switch",
-  "BorneWifi",
-];
-export const CYBERSECURITY_TYPES = ["Antispam", "Antivirus", "Sauvegarde"];
+export const INFRASTRUCTURE_TYPES = ["Servers", "Ordinateurs", "NAS", "SAN", "Firewalls", "Internet", "Switch", "BorneWifi"];
+export const CYBERSECURITY_TYPES = ["Antispam", "Antivirus", "Backup"];
 export const SERVICE_TYPES = ["Office365", "NDD"];
-
 const PLANNING_CLIENTS_CACHE_KEY = "planning_clients_list_cache_v1";
 const PLANNING_CLIENTS_CACHE_TTL_MS = 5 * 60 * 1000;
 const PLANNING_CLIENT_MODULES_CACHE_KEY = "planning_client_modules_cache_v1";
 const PLANNING_CLIENT_MODULES_CACHE_TTL_MS = 5 * 60 * 1000;
 export const EVENT_META_MARKER = "<!--VERITAS_EVENT_META:";
 const planningClientModulesMemoryCache = new Map();
-
 function safeEncodeMeta(obj) {
   try {
     return btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
@@ -28,7 +16,6 @@ function safeEncodeMeta(obj) {
     return null;
   }
 }
-
 function safeDecodeMeta(encoded) {
   try {
     return JSON.parse(decodeURIComponent(escape(atob(encoded))));
@@ -36,47 +23,46 @@ function safeDecodeMeta(encoded) {
     return null;
   }
 }
-
 export function parseEventDescription(rawDescription) {
   const raw = (rawDescription || "").toString();
   const markerIndex = raw.indexOf(EVENT_META_MARKER);
   if (markerIndex === -1) {
-    return { text: raw, meta: null };
+    return {
+      text: raw,
+      meta: null
+    };
   }
   const endIndex = raw.indexOf("-->", markerIndex);
   if (endIndex === -1) {
-    return { text: raw, meta: null };
+    return {
+      text: raw,
+      meta: null
+    };
   }
   const encoded = raw.slice(markerIndex + EVENT_META_MARKER.length, endIndex).trim();
   const meta = safeDecodeMeta(encoded);
   const text = raw.slice(0, markerIndex).trimEnd();
-  return { text, meta: meta && typeof meta === "object" ? meta : null };
+  return {
+    text,
+    meta: meta && typeof meta === "object" ? meta : null
+  };
 }
-
 export function serializeEventDescription(text, meta) {
   const cleanText = (text || "").trim();
-  const hasMeta =
-    (Array.isArray(meta?.linkedItems) && meta.linkedItems.length > 0) ||
-    (Array.isArray(meta?.assignedUserIds) && meta.assignedUserIds.length > 0) ||
-    (Array.isArray(meta?.todos) && meta.todos.length > 0) ||
-    meta?.schedule?.allDay === true ||
-    meta?.schedule?.businessDaysOnly === false;
+  const hasMeta = Array.isArray(meta?.linkedItems) && meta.linkedItems.length > 0 || Array.isArray(meta?.assignedUserIds) && meta.assignedUserIds.length > 0 || Array.isArray(meta?.todos) && meta.todos.length > 0 || meta?.schedule?.allDay === true || meta?.schedule?.businessDaysOnly === false;
   if (!hasMeta) return cleanText || null;
   const encoded = safeEncodeMeta(meta);
   if (!encoded) return cleanText || null;
   return `${cleanText}\n\n${EVENT_META_MARKER}${encoded}-->`;
 }
-
 function isBusinessDay(dayMoment) {
   const day = dayMoment.day();
   return day !== 0 && day !== 6;
 }
-
 export function getBusinessEndDate(startDate, durationDays) {
   const safeDuration = Math.max(1, Number(durationDays) || 1);
   const cursor = moment(startDate).startOf("day");
   let counted = 0;
-
   while (counted < safeDuration) {
     if (isBusinessDay(cursor)) {
       counted += 1;
@@ -84,15 +70,12 @@ export function getBusinessEndDate(startDate, durationDays) {
     }
     cursor.add(1, "day");
   }
-
   return cursor;
 }
-
 export function getBusinessDaysCountInclusive(startDate, endDate) {
   const start = moment(startDate).startOf("day");
   const end = moment(endDate).startOf("day");
   if (!start.isValid() || !end.isValid() || end.isBefore(start)) return 1;
-
   let count = 0;
   const cursor = start.clone();
   while (cursor.isSameOrBefore(end, "day")) {
@@ -101,19 +84,16 @@ export function getBusinessDaysCountInclusive(startDate, endDate) {
   }
   return Math.max(1, count);
 }
-
 export function getCalendarEndDate(startDate, durationDays) {
   const safeDuration = Math.max(1, Number(durationDays) || 1);
   return moment(startDate).startOf("day").add(safeDuration - 1, "days");
 }
-
 export function getCalendarDaysCountInclusive(startDate, endDate) {
   const start = moment(startDate).startOf("day");
   const end = moment(endDate).startOf("day");
   if (!start.isValid() || !end.isValid() || end.isBefore(start)) return 1;
   return Math.max(1, end.diff(start, "days") + 1);
 }
-
 export function getSlotDefaultTimes(slotDate) {
   const base = moment(slotDate);
   if (!base.isValid()) {
@@ -121,7 +101,7 @@ export function getSlotDefaultTimes(slotDate) {
     return {
       startTime: "09:00",
       endTime: "12:00",
-      endDate: fallback.format("YYYY-MM-DD"),
+      endDate: fallback.format("YYYY-MM-DD")
     };
   }
   const isStartOfDay = base.hour() === 0 && base.minute() === 0 && base.second() === 0;
@@ -129,17 +109,16 @@ export function getSlotDefaultTimes(slotDate) {
     return {
       startTime: "09:00",
       endTime: "12:00",
-      endDate: base.format("YYYY-MM-DD"),
+      endDate: base.format("YYYY-MM-DD")
     };
   }
   const end = base.clone().add(1, "hour");
   return {
     startTime: base.format("HH:mm"),
     endTime: end.format("HH:mm"),
-    endDate: end.format("YYYY-MM-DD"),
+    endDate: end.format("YYYY-MM-DD")
   };
 }
-
 function normalizeClientListRow(client) {
   let modulesSnapshot = client.modules;
   if (typeof modulesSnapshot === "string") {
@@ -154,42 +133,38 @@ function normalizeClientListRow(client) {
   }
   return {
     ...client,
-    modules_monitoring: modulesSnapshot,
+    modules_monitoring: modulesSnapshot
   };
 }
-
-export async function loadPlanningClientsListCached({ force = false, signal } = {}) {
+export async function loadPlanningClientsListCached({
+  force = false,
+  signal
+} = {}) {
   if (!force) {
     try {
       const raw = sessionStorage.getItem(PLANNING_CLIENTS_CACHE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        const isFresh =
-          parsed?.savedAt &&
-          Array.isArray(parsed?.data) &&
-          Date.now() - parsed.savedAt < PLANNING_CLIENTS_CACHE_TTL_MS;
+        const isFresh = parsed?.savedAt && Array.isArray(parsed?.data) && Date.now() - parsed.savedAt < PLANNING_CLIENTS_CACHE_TTL_MS;
         if (isFresh) {
           return parsed.data.map(normalizeClientListRow);
         }
       }
-    } catch {
-      // ignore
-    }
+    } catch {}
   }
-  const clientsData = await fetchClientsList({ signal });
+  const clientsData = await fetchClientsList({
+    signal
+  });
   if (signal?.aborted) return [];
   const normalized = (Array.isArray(clientsData) ? clientsData : []).map(normalizeClientListRow);
   try {
-    sessionStorage.setItem(
-      PLANNING_CLIENTS_CACHE_KEY,
-      JSON.stringify({ savedAt: Date.now(), data: normalized })
-    );
-  } catch {
-    // ignore
-  }
+    sessionStorage.setItem(PLANNING_CLIENTS_CACHE_KEY, JSON.stringify({
+      savedAt: Date.now(),
+      data: normalized
+    }));
+  } catch {}
   return normalized;
 }
-
 function getPlanningClientModulesSessionCache() {
   try {
     const raw = sessionStorage.getItem(PLANNING_CLIENT_MODULES_CACHE_KEY);
@@ -199,26 +174,23 @@ function getPlanningClientModulesSessionCache() {
     return {};
   }
 }
-
 function setPlanningClientModulesSessionCache(cacheObj) {
   try {
     sessionStorage.setItem(PLANNING_CLIENT_MODULES_CACHE_KEY, JSON.stringify(cacheObj));
-  } catch {
-    // ignore
-  }
+  } catch {}
 }
-
-export async function loadClientModulesCached(clientId, { force = false, signal } = {}) {
+export async function loadClientModulesCached(clientId, {
+  force = false,
+  signal
+} = {}) {
   const idStr = String(clientId || "").trim();
   if (!idStr) return null;
   const now = Date.now();
-
   if (!force) {
     const mem = planningClientModulesMemoryCache.get(idStr);
     if (mem?.savedAt && mem?.data && now - mem.savedAt < PLANNING_CLIENT_MODULES_CACHE_TTL_MS) {
       return mem.data;
     }
-
     const sessionCache = getPlanningClientModulesSessionCache();
     const entry = sessionCache[idStr];
     if (entry?.savedAt && entry?.data && now - entry.savedAt < PLANNING_CLIENT_MODULES_CACHE_TTL_MS) {
@@ -226,59 +198,68 @@ export async function loadClientModulesCached(clientId, { force = false, signal 
       return entry.data;
     }
   }
-
-  const mod = await fetchClientModules(idStr, { signal });
+  const mod = await fetchClientModules(idStr, {
+    signal
+  });
   if (signal?.aborted || !mod) return mod;
-
-  const newEntry = { savedAt: now, data: mod };
+  const newEntry = {
+    savedAt: now,
+    data: mod
+  };
   planningClientModulesMemoryCache.set(idStr, newEntry);
   const sessionCache = getPlanningClientModulesSessionCache();
   sessionCache[idStr] = newEntry;
   setPlanningClientModulesSessionCache(sessionCache);
   return mod;
 }
-
 export async function hydrateClientsEquipements(clientIds, clientsBase, signal) {
   const need = [...new Set(clientIds.map(String).filter(Boolean))];
   if (need.length === 0) {
-    return clientsBase.map((c) => ({ ...c }));
+    return clientsBase.map(c => ({
+      ...c
+    }));
   }
-  const byId = new Map(clientsBase.map((c) => [String(c.id), { ...c }]));
-  await Promise.all(
-    need.map(async (idStr) => {
-      if (signal?.aborted) return;
-      try {
-        const mod = await loadClientModulesCached(idStr, { signal });
-        if (signal?.aborted || !mod) return;
-        const c = byId.get(idStr);
-        if (!c) return;
-        byId.set(idStr, {
-          ...c,
-          equipements: mod.equipements || {},
-          modules_monitoring: mod.modules_monitoring || c.modules_monitoring,
-        });
-      } catch (e) {
-        if (e?.name === "AbortError") throw e;
-        console.error("Planning: chargement modules client", idStr, e);
-      }
-    })
-  );
-  return clientsBase.map((c) => byId.get(String(c.id)) || { ...c });
+  const byId = new Map(clientsBase.map(c => [String(c.id), {
+    ...c
+  }]));
+  await Promise.all(need.map(async idStr => {
+    if (signal?.aborted) return;
+    try {
+      const mod = await loadClientModulesCached(idStr, {
+        signal
+      });
+      if (signal?.aborted || !mod) return;
+      const c = byId.get(idStr);
+      if (!c) return;
+      byId.set(idStr, {
+        ...c,
+        equipements: mod.equipements || {},
+        modules_monitoring: mod.modules_monitoring || c.modules_monitoring
+      });
+    } catch (e) {
+      if (e?.name === "AbortError") throw e;
+      console.error("Planning: chargement modules client", idStr, e);
+    }
+  }));
+  return clientsBase.map(c => byId.get(String(c.id)) || {
+    ...c
+  });
 }
-
 export function buildClientEquipmentLists(client, equipmentMappings = {}) {
   const peripheralsList = [];
   const cybersecuritiesList = [];
   const servicesList = [];
-
   if (!client?.equipements) {
-    return { peripherals: peripheralsList, cybersecurities: cybersecuritiesList, services: servicesList };
+    return {
+      peripherals: peripheralsList,
+      cybersecurities: cybersecuritiesList,
+      services: servicesList
+    };
   }
-
-  Object.keys(client.equipements).forEach((type) => {
+  Object.keys(client.equipements).forEach(type => {
     if (INFRASTRUCTURE_TYPES.includes(type)) {
       const equipmentsOfType = client.equipements[type] || [];
-      equipmentsOfType.forEach((eq) => {
+      equipmentsOfType.forEach(eq => {
         const equipmentName = eq.name || eq.nom || "Sans nom";
         const mappingKey = `${type}-${equipmentName}`;
         const mapping = equipmentMappings[mappingKey];
@@ -288,24 +269,22 @@ export function buildClientEquipmentLists(client, equipmentMappings = {}) {
           type,
           isMapped: mapping && mapping.checkmk_host_name && mapping.is_active !== false,
           mapping,
-          ip: eq.ip || eq.adresseIP || eq.adresse_ip || null,
+          ip: eq.ip || eq.adresseIP || eq.adresse_ip || null
         });
       });
     }
   });
-
-  Object.keys(client.equipements).forEach((type) => {
+  Object.keys(client.equipements).forEach(type => {
     if (!CYBERSECURITY_TYPES.includes(type)) return;
     const cybersecOfType = client.equipements[type];
-
-    if (type === "Sauvegarde" && cybersecOfType && typeof cybersecOfType === "object") {
+    if (type === "Backup" && cybersecOfType && typeof cybersecOfType === "object") {
       if (cybersecOfType.instances && Array.isArray(cybersecOfType.instances)) {
         cybersecOfType.instances.forEach((instance, index) => {
           const instanceName = instance.logiciel || instance.nom || instance.name || "Instance de sauvegarde";
           cybersecuritiesList.push({
             id: `${type}-${instance.logiciel || instance.nom || instance.name || "instance"}-${index}`,
             name: instanceName,
-            type,
+            type
           });
         });
       }
@@ -316,7 +295,7 @@ export function buildClientEquipmentLists(client, equipmentMappings = {}) {
           cybersecuritiesList.push({
             id: `${type}-${solution.logiciel || solution.companyName || "solution"}-${index}`,
             name: solutionName,
-            type,
+            type
           });
         });
       }
@@ -327,7 +306,7 @@ export function buildClientEquipmentLists(client, equipmentMappings = {}) {
           cybersecuritiesList.push({
             id: `${type}-${solution.logiciel || "solution"}-${index}`,
             name: solutionName,
-            type,
+            type
           });
         });
       }
@@ -338,23 +317,22 @@ export function buildClientEquipmentLists(client, equipmentMappings = {}) {
           cybersecuritiesList.push({
             id: cyber.id || `${type}-${displayName}-${index}`,
             name: displayName,
-            type,
+            type
           });
         }
       });
     }
   });
-
-  Object.keys(client.equipements).forEach((type) => {
+  Object.keys(client.equipements).forEach(type => {
     if (!SERVICE_TYPES.includes(type)) return;
     const servicesOfType = client.equipements[type] || [];
     if (Array.isArray(servicesOfType)) {
-      servicesOfType.forEach((svc) => {
+      servicesOfType.forEach(svc => {
         if (svc && typeof svc === "object" && svc.id) {
           servicesList.push({
             id: svc.id,
             name: svc.name || svc.nom || type,
-            type,
+            type
           });
         }
       });
@@ -362,19 +340,19 @@ export function buildClientEquipmentLists(client, equipmentMappings = {}) {
       servicesList.push({
         id: servicesOfType.id,
         name: servicesOfType.name || servicesOfType.nom || "Office 365",
-        type,
+        type
       });
     }
   });
-
-  return { peripherals: peripheralsList, cybersecurities: cybersecuritiesList, services: servicesList };
+  return {
+    peripherals: peripheralsList,
+    cybersecurities: cybersecuritiesList,
+    services: servicesList
+  };
 }
-
 export function getLinkedTypeOrderIndex(itemOrType) {
-  const typeValue =
-    typeof itemOrType === "string" ? itemOrType : itemOrType?.type || itemOrType?.group || "";
+  const typeValue = typeof itemOrType === "string" ? itemOrType : itemOrType?.type || itemOrType?.group || "";
   const type = String(typeValue).toLowerCase();
-
   if (type.includes("internet")) return 0;
   if (type.includes("firewall")) return 1;
   if (type.includes("serveur")) return 2;
@@ -390,69 +368,59 @@ export function getLinkedTypeOrderIndex(itemOrType) {
   if (type.includes("ndd") || type.includes("domaine")) return 12;
   return 99;
 }
-
 export function buildLinkableItems(peripherals, cybersecurities, services) {
   const byId = new Map();
-  const pushUnique = (item) => {
+  const pushUnique = item => {
     if (!item?.id) return;
     const key = `${item.group}:${String(item.id)}`;
     if (byId.has(key)) return;
     byId.set(key, item);
   };
-  peripherals.forEach((p) => {
+  peripherals.forEach(p => {
     pushUnique({
       id: String(p.id),
       label: p.name,
       type: p.type,
-      group: "Infrastructure",
+      group: "Infrastructure"
     });
   });
-  cybersecurities.forEach((c) => {
+  cybersecurities.forEach(c => {
     pushUnique({
       id: String(c.id),
       label: c.name,
       type: c.type,
-      group: c.type === "Antivirus" || c.type === "Antispam" ? c.type : "Cybersécurité",
+      group: c.type === "Antivirus" || c.type === "Antispam" ? c.type : "Cybersecurity"
     });
   });
-  services.forEach((s) => {
+  services.forEach(s => {
     pushUnique({
       id: String(s.id),
       label: s.name,
       type: s.type,
-      group: s.type === "Office365" ? "Tenant" : "NDD",
+      group: s.type === "Office365" ? "Tenant" : "NDD"
     });
   });
   return Array.from(byId.values());
 }
-
 export function buildLinkableItemsByGroup(linkableItems, linkedSearch, linkedTypeFilter, locale = "fr") {
   const grouped = {};
   const query = linkedSearch.trim().toLowerCase();
-  linkableItems
-    .filter((item) => {
-      if (linkedTypeFilter !== "all" && item.type !== linkedTypeFilter) return false;
-      if (!query) return true;
-      return (
-        (item.label || "").toLowerCase().includes(query) ||
-        (item.type || "").toLowerCase().includes(query) ||
-        (item.group || "").toLowerCase().includes(query)
-      );
-    })
-    .sort((a, b) => {
-      const typeCmp = getLinkedTypeOrderIndex(a) - getLinkedTypeOrderIndex(b);
-      if (typeCmp !== 0) return typeCmp;
-      return String(a.label || "").localeCompare(String(b.label || ""), locale);
-    })
-    .forEach((item) => {
-      if (!grouped[item.group]) grouped[item.group] = [];
-      grouped[item.group].push(item);
-    });
+  linkableItems.filter(item => {
+    if (linkedTypeFilter !== "all" && item.type !== linkedTypeFilter) return false;
+    if (!query) return true;
+    return (item.label || "").toLowerCase().includes(query) || (item.type || "").toLowerCase().includes(query) || (item.group || "").toLowerCase().includes(query);
+  }).sort((a, b) => {
+    const typeCmp = getLinkedTypeOrderIndex(a) - getLinkedTypeOrderIndex(b);
+    if (typeCmp !== 0) return typeCmp;
+    return String(a.label || "").localeCompare(String(b.label || ""), locale);
+  }).forEach(item => {
+    if (!grouped[item.group]) grouped[item.group] = [];
+    grouped[item.group].push(item);
+  });
   return grouped;
 }
-
 export function getLinkedTypeOptions(linkableItems, locale = "fr") {
-  const set = new Set(linkableItems.map((item) => item.type).filter(Boolean));
+  const set = new Set(linkableItems.map(item => item.type).filter(Boolean));
   return Array.from(set).sort((a, b) => {
     const orderDiff = getLinkedTypeOrderIndex(a) - getLinkedTypeOrderIndex(b);
     if (orderDiff !== 0) return orderDiff;

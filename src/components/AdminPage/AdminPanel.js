@@ -13,9 +13,11 @@ import AdminTechNewsFeeds from "./AdminTechNewsFeeds";
 import AdminContractModuleOptions from "./AdminContractModuleOptions";
 import AdminEquipmentFamilies from "./AdminEquipmentFamilies";
 import AdminUsers from "./AdminUsers";
+import AdminPermissions from "./AdminPermissions";
 import AdminClients from "./AdminClients";
 import AdminTickets from "./AdminTickets";
 import AdminInterconnections from "./AdminInterconnections";
+import AdminAi from "./AdminAi";
 import AdminRmm from "./AdminRmm";
 import AdminMaintenance from "./AdminMaintenance";
 import AdminClientPortal from "./AdminClientPortal";
@@ -29,23 +31,14 @@ import AdminNotificationsHub from "./AdminNotificationsHub";
 import AdminInAppNotificationsSettings from "./AdminInAppNotificationsSettings";
 import AdminMailCollectPage from "./AdminMailCollectPage";
 import { Page } from "./AdminUi";
-import {
-  buildAdminNavSections,
-  findParentGroupKey,
-  flattenNavItems,
-  getAdminPanelCopy,
-} from "./adminPanelI18n";
+import { buildAdminNavSections, findParentGroupKey, flattenNavItems, getAdminPanelCopy } from "./adminPanelI18n";
 import { interpolate } from "../../i18n/translate";
 import { useAppLocale } from "../../hooks/useAppGeneralSettings";
-
 function AdminInAppNotificationsPage() {
-  return (
-    <Page>
+  return <Page>
       <AdminInAppNotificationsSettings />
-    </Page>
-  );
+    </Page>;
 }
-
 const TAB_COMPONENTS = {
   general: AdminGeneralSettings,
   "login-branding": AdminLoginBranding,
@@ -53,6 +46,7 @@ const TAB_COMPONENTS = {
   "contract-modules": AdminContractModuleOptions,
   "equipment-families": AdminEquipmentFamilies,
   users: AdminUsers,
+  permissions: AdminPermissions,
   teams: AdminTeams,
   "client-portal": AdminClientPortal,
   clients: AdminClients,
@@ -64,12 +58,12 @@ const TAB_COMPONENTS = {
   "notifications-inapp": AdminInAppNotificationsPage,
   notifications: AdminNotificationsHub,
   integrations: AdminInterconnections,
+  ai: AdminAi,
   "scheduled-alerts": AdminScheduledAlertsSettings,
   rmm: AdminRmm,
   maintenance: AdminMaintenance,
-  license: AdminLicense,
+  license: AdminLicense
 };
-
 const ADMIN_PANEL_PRO_PROMO = {
   "login-branding": "adminLoginBranding",
   "tech-news-feeds": "adminTechNewsFeeds",
@@ -81,158 +75,198 @@ const ADMIN_PANEL_PRO_PROMO = {
   "sales-forms": "prestations",
   notifications: "adminNotifications",
   integrations: "adminIntegrations",
-  "scheduled-alerts": "adminScheduledAlerts",
+  "scheduled-alerts": "adminScheduledAlerts"
 };
-
 function normalizeAdminNavSearch(value) {
-  return String(value || "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .trim();
+  return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 }
-
 function navItemMatchesSearch(item, sectionTitle, tokens) {
-  const haystack = normalizeAdminNavSearch(
-    [sectionTitle, item.label, item.description, item.key.replace(/-/g, " ")].join(" ")
-  );
-  return tokens.every((token) => haystack.includes(token));
+  const haystack = normalizeAdminNavSearch([sectionTitle, item.label, item.description, item.key.replace(/-/g, " ")].join(" "));
+  return tokens.every(token => haystack.includes(token));
 }
-
 function resolveLegacyNavigation(parsed) {
-  const fromTickets = (view) => parsed?.tab === "tickets" && parsed?.ticketView === view;
-
-  if (fromTickets("support-credits")) return { tab: "support-credits" };
-  if (fromTickets("sales-forms")) return { tab: "sales-forms" };
-  if (fromTickets("scheduled-alerts")) return { tab: "scheduled-alerts" };
+  const fromTickets = view => parsed?.tab === "tickets" && parsed?.ticketView === view;
+  if (fromTickets("support-credits")) return {
+    tab: "support-credits"
+  };
+  if (fromTickets("sales-forms")) return {
+    tab: "sales-forms"
+  };
+  if (fromTickets("scheduled-alerts")) return {
+    tab: "scheduled-alerts"
+  };
   if (fromTickets("notifications")) {
-    return { tab: "notifications", hub: { hub: "notifications", view: "events" } };
+    return {
+      tab: "notifications",
+      hub: {
+        hub: "notifications",
+        view: "events"
+      }
+    };
   }
   if (fromTickets("webhooks")) {
-    return { tab: "notifications", hub: { hub: "notifications", view: "webhooks" } };
+    return {
+      tab: "notifications",
+      hub: {
+        hub: "notifications",
+        view: "webhooks"
+      }
+    };
   }
   if (fromTickets("collectors")) {
-    return { tab: "mail-collect", hub: { hub: "mail-collect", view: "collectors" } };
+    return {
+      tab: "mail-collect",
+      hub: {
+        hub: "mail-collect",
+        view: "collectors"
+      }
+    };
   }
   if (fromTickets("email-ingestion")) {
-    return { tab: "mail-collect", hub: { hub: "mail-collect", view: "email-ingestion" } };
+    return {
+      tab: "mail-collect",
+      hub: {
+        hub: "mail-collect",
+        view: "email-ingestion"
+      }
+    };
   }
   if (fromTickets("mail-collect-options")) {
-    return { tab: "mail-collect", hub: { hub: "mail-collect", view: "mail-collect-options" } };
+    return {
+      tab: "mail-collect",
+      hub: {
+        hub: "mail-collect",
+        view: "mail-collect-options"
+      }
+    };
   }
-
   const tab = parsed?.tab;
   if (tab === "webhooks") {
-    return { tab: "notifications", hub: { hub: "notifications", view: "webhooks" } };
+    return {
+      tab: "notifications",
+      hub: {
+        hub: "notifications",
+        view: "webhooks"
+      }
+    };
   }
   if (tab === "collectors") {
-    return { tab: "mail-collect", hub: { hub: "mail-collect", view: "collectors" } };
+    return {
+      tab: "mail-collect",
+      hub: {
+        hub: "mail-collect",
+        view: "collectors"
+      }
+    };
   }
   if (tab === "email-ingestion") {
-    return { tab: "mail-collect", hub: { hub: "mail-collect", view: "email-ingestion" } };
+    return {
+      tab: "mail-collect",
+      hub: {
+        hub: "mail-collect",
+        view: "email-ingestion"
+      }
+    };
   }
   if (tab === "mail-collect-options") {
-    return { tab: "mail-collect", hub: { hub: "mail-collect", view: "mail-collect-options" } };
+    return {
+      tab: "mail-collect",
+      hub: {
+        hub: "mail-collect",
+        view: "mail-collect-options"
+      }
+    };
   }
   if (tab === "notifications") {
-    return { tab: "notifications", hub: { hub: "notifications", view: "events" } };
+    return {
+      tab: "notifications",
+      hub: {
+        hub: "notifications",
+        view: "events"
+      }
+    };
   }
-
-  return { tab };
+  return {
+    tab
+  };
 }
-
 export default function AdminPanel({
   isCommunity = false,
   routeTab = null,
-  onRouteTabChange,
+  onRouteTabChange
 }) {
-  const { userRole } = useAuthContext();
+  const {
+    userRole
+  } = useAuthContext();
   const locale = useAppLocale();
   const panelCopy = useMemo(() => getAdminPanelCopy(locale), [locale]);
   const [activeTab, setActiveTab] = useState("general");
   const [proPromoFeature, setProPromoFeature] = useState(null);
   const [navSearch, setNavSearch] = useState("");
   const [expandedGroups, setExpandedGroups] = useState(() => new Set());
-
   useEffect(() => {
-    setProFeaturePromoHandler((featureKey) => setProPromoFeature(featureKey));
+    setProFeaturePromoHandler(featureKey => setProPromoFeature(featureKey));
     return () => setProFeaturePromoHandler(null);
   }, []);
-
   const navSections = useMemo(() => {
-    const applyProOnly = (item) => {
+    const applyProOnly = item => {
       if (item.children) {
         return {
           ...item,
-          children: item.children.map((child) => ({
+          children: item.children.map(child => ({
             ...child,
-            proOnly: !COMMUNITY_ADMIN_KEYS.has(child.key),
-          })),
+            proOnly: !COMMUNITY_ADMIN_KEYS.has(child.key)
+          }))
         };
       }
       return {
         ...item,
-        proOnly: !COMMUNITY_ADMIN_KEYS.has(item.key),
+        proOnly: !COMMUNITY_ADMIN_KEYS.has(item.key)
       };
     };
-
     if (!isCommunity) return buildAdminNavSections(locale);
-    return buildAdminNavSections(locale).map((section) => ({
+    return buildAdminNavSections(locale).map(section => ({
       ...section,
-      items: section.items.map(applyProOnly),
+      items: section.items.map(applyProOnly)
     }));
   }, [isCommunity, locale]);
-
-  const visibleItems = useMemo(
-    () => navSections.flatMap((section) => flattenNavItems(section.items)),
-    [navSections]
-  );
-  const allowedNavKeys = useMemo(
-    () => visibleItems.filter((item) => !item.proOnly).map((item) => item.key),
-    [visibleItems]
-  );
-
+  const visibleItems = useMemo(() => navSections.flatMap(section => flattenNavItems(section.items)), [navSections]);
+  const allowedNavKeys = useMemo(() => visibleItems.filter(item => !item.proOnly).map(item => item.key), [visibleItems]);
   const navSearchTokens = useMemo(() => {
     const query = normalizeAdminNavSearch(navSearch);
     return query ? query.split(/\s+/).filter(Boolean) : [];
   }, [navSearch]);
-
   const filteredNavSections = useMemo(() => {
     if (navSearchTokens.length === 0) return navSections;
-    return navSections
-      .map((section) => ({
-        ...section,
-        items: section.items.flatMap((item) => {
-          if (!item.children) {
-            return navItemMatchesSearch(item, section.title, navSearchTokens) ? [item] : [];
-          }
-
-          const groupMatches = navItemMatchesSearch(item, section.title, navSearchTokens);
-          const matchingChildren = item.children.filter((child) =>
-            navItemMatchesSearch(child, [section.title, item.label].filter(Boolean).join(" "), navSearchTokens)
-          );
-
-          if (groupMatches) return [{ ...item, children: item.children }];
-          if (matchingChildren.length > 0) return [{ ...item, children: matchingChildren }];
-          return [];
-        }),
-      }))
-      .filter((section) => section.items.length > 0);
+    return navSections.map(section => ({
+      ...section,
+      items: section.items.flatMap(item => {
+        if (!item.children) {
+          return navItemMatchesSearch(item, section.title, navSearchTokens) ? [item] : [];
+        }
+        const groupMatches = navItemMatchesSearch(item, section.title, navSearchTokens);
+        const matchingChildren = item.children.filter(child => navItemMatchesSearch(child, [section.title, item.label].filter(Boolean).join(" "), navSearchTokens));
+        if (groupMatches) return [{
+          ...item,
+          children: item.children
+        }];
+        if (matchingChildren.length > 0) return [{
+          ...item,
+          children: matchingChildren
+        }];
+        return [];
+      })
+    })).filter(section => section.items.length > 0);
   }, [navSections, navSearchTokens]);
-
-  const isGroupExpanded = (groupKey) =>
-    expandedGroups.has(groupKey) || navSearchTokens.length > 0;
-
-  const toggleNavGroup = (groupKey) => {
-    setExpandedGroups((prev) => {
+  const isGroupExpanded = groupKey => expandedGroups.has(groupKey) || navSearchTokens.length > 0;
+  const toggleNavGroup = groupKey => {
+    setExpandedGroups(prev => {
       const next = new Set(prev);
-      if (next.has(groupKey)) next.delete(groupKey);
-      else next.add(groupKey);
+      if (next.has(groupKey)) next.delete(groupKey);else next.add(groupKey);
       return next;
     });
   };
-
-  const handleNavClick = (item) => {
+  const handleNavClick = item => {
     if (isCommunity && item.proOnly) {
       const promoKey = ADMIN_PANEL_PRO_PROMO[item.key];
       if (promoKey) setProPromoFeature(promoKey);
@@ -241,25 +275,26 @@ export default function AdminPanel({
     setActiveTab(item.key);
     onRouteTabChange?.(item.key);
   };
-
   useEffect(() => {
     const parentGroup = findParentGroupKey(activeTab);
     if (!parentGroup) return;
-    setExpandedGroups((prev) => {
+    setExpandedGroups(prev => {
       if (prev.has(parentGroup)) return prev;
       const next = new Set(prev);
       next.add(parentGroup);
       return next;
     });
   }, [activeTab]);
-
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem("veritas_admin_nav");
       if (!raw) return;
       sessionStorage.removeItem("veritas_admin_nav");
       const parsed = JSON.parse(raw);
-      const { tab: resolvedTab, hub } = resolveLegacyNavigation(parsed);
+      const {
+        tab: resolvedTab,
+        hub
+      } = resolveLegacyNavigation(parsed);
       if (hub) {
         sessionStorage.setItem("veritas_admin_hub_view", JSON.stringify(hub));
       }
@@ -277,31 +312,23 @@ export default function AdminPanel({
           sessionStorage.setItem("veritas_admin_ticket_view", parsed.ticketView);
         }
       }
-    } catch {
-      // ignore invalid navigation payload
-    }
+    } catch {}
   }, [allowedNavKeys, isCommunity]);
-
   useEffect(() => {
     if (!allowedNavKeys.includes(activeTab)) {
       setActiveTab(allowedNavKeys[0] || "general");
     }
   }, [activeTab, allowedNavKeys]);
-
   useEffect(() => {
     if (!routeTab || !allowedNavKeys.includes(routeTab)) return;
     setActiveTab(routeTab);
   }, [routeTab, allowedNavKeys]);
-
   if (userRole !== "admin") {
     return <AdminAccessDenied />;
   }
-
   const ActiveComponent = TAB_COMPONENTS[activeTab];
-  const meta = visibleItems.find((item) => item.key === activeTab);
-
-  return (
-    <div className={layout.layout}>
+  const meta = visibleItems.find(item => item.key === activeTab);
+  return <div className={layout.layout}>
       <aside className={layout.sidebar} aria-label="Navigation administration">
         <div className={layout.sidebarTop}>
           <div className={layout.sidebarBrand}>
@@ -314,57 +341,29 @@ export default function AdminPanel({
 
           <label className={layout.sidebarSearch}>
             <Icon icon="mdi:magnify" className={layout.sidebarSearchIcon} aria-hidden />
-            <input
-              type="search"
-              className={layout.sidebarSearchInput}
-              value={navSearch}
-              onChange={(event) => setNavSearch(event.target.value)}
-              placeholder={panelCopy.searchPlaceholder}
-              aria-label={panelCopy.searchPlaceholder}
-            />
-            {navSearch ? (
-              <button
-                type="button"
-                className={layout.sidebarSearchClear}
-                onClick={() => setNavSearch("")}
-                aria-label={panelCopy.clearSearch}
-              >
+            <input type="search" className={layout.sidebarSearchInput} value={navSearch} onChange={event => setNavSearch(event.target.value)} placeholder={panelCopy.searchPlaceholder} aria-label={panelCopy.searchPlaceholder} />
+            {navSearch ? <button type="button" className={layout.sidebarSearchClear} onClick={() => setNavSearch("")} aria-label={panelCopy.clearSearch}>
                 <Icon icon="mdi:close" />
-              </button>
-            ) : null}
+              </button> : null}
           </label>
         </div>
 
         <div className={layout.sidebarNav}>
-        {filteredNavSections.length === 0 && navSearchTokens.length > 0 ? (
-          <p className={layout.navSearchEmpty}>
-            {interpolate(panelCopy.noResults, { query: navSearch.trim() })}
-          </p>
-        ) : null}
+        {filteredNavSections.length === 0 && navSearchTokens.length > 0 ? <p className={layout.navSearchEmpty}>
+            {interpolate(panelCopy.noResults, {
+            query: navSearch.trim()
+          })}
+          </p> : null}
 
-        {filteredNavSections.map((section) => (
-          <div key={section.title || section.items[0]?.key} className={layout.navSection}>
-            {section.title ? (
-              <div className={layout.navSectionTitle}>{section.title}</div>
-            ) : null}
+        {filteredNavSections.map(section => <div key={section.title || section.items[0]?.key} className={layout.navSection}>
+            {section.title ? <div className={layout.navSectionTitle}>{section.title}</div> : null}
             <ul className={layout.navList}>
-              {section.items.map((item) => {
-                if (item.children) {
-                  const expanded = isGroupExpanded(item.key);
-                  const hasActiveChild = item.children.some(
-                    (child) => activeTab === child.key && !child.proOnly
-                  );
-
-                  return (
-                    <li key={item.key} className={layout.navGroup}>
-                      <button
-                        type="button"
-                        className={`${layout.navItem} ${layout.navGroupToggle} ${
-                          hasActiveChild ? layout.navGroupActive : ""
-                        }`}
-                        onClick={() => toggleNavGroup(item.key)}
-                        aria-expanded={expanded}
-                      >
+              {section.items.map(item => {
+              if (item.children) {
+                const expanded = isGroupExpanded(item.key);
+                const hasActiveChild = item.children.some(child => activeTab === child.key && !child.proOnly);
+                return <li key={item.key} className={layout.navGroup}>
+                      <button type="button" className={`${layout.navItem} ${layout.navGroupToggle} ${hasActiveChild ? layout.navGroupActive : ""}`} onClick={() => toggleNavGroup(item.key)} aria-expanded={expanded}>
                         <Icon icon={item.icon} className={layout.navIcon} />
                         <span className={layout.navItemText}>
                           <span className={layout.navItemLabelRow}>
@@ -372,74 +371,38 @@ export default function AdminPanel({
                           </span>
                           <span className={layout.navItemDesc}>{item.description}</span>
                         </span>
-                        <Icon
-                          icon="mdi:chevron-down"
-                          className={`${layout.navGroupChevron} ${
-                            expanded ? layout.navGroupChevronOpen : ""
-                          }`}
-                          aria-hidden
-                        />
+                        <Icon icon="mdi:chevron-down" className={`${layout.navGroupChevron} ${expanded ? layout.navGroupChevronOpen : ""}`} aria-hidden />
                       </button>
-                      {expanded ? (
-                        <ul className={layout.navSubList}>
-                          {item.children.map((child) => (
-                            <li key={child.key}>
-                              <button
-                                type="button"
-                                className={`${layout.navItem} ${layout.navSubItem} ${
-                                  activeTab === child.key && !child.proOnly ? layout.navItemActive : ""
-                                } ${child.proOnly ? layout.navItemProLocked : ""}`}
-                                onClick={() => handleNavClick(child)}
-                                aria-disabled={child.proOnly || undefined}
-                              >
+                      {expanded ? <ul className={layout.navSubList}>
+                          {item.children.map(child => <li key={child.key}>
+                              <button type="button" className={`${layout.navItem} ${layout.navSubItem} ${activeTab === child.key && !child.proOnly ? layout.navItemActive : ""} ${child.proOnly ? layout.navItemProLocked : ""}`} onClick={() => handleNavClick(child)} aria-disabled={child.proOnly || undefined}>
                                 <span className={layout.navItemText}>
                                   <span className={layout.navItemLabelRow}>
                                     <span className={layout.navItemLabel}>{child.label}</span>
-                                    {child.proOnly ? (
-                                      <ProFeatureBadge
-                                        variant="inline"
-                                        className={layout.navItemProBadge}
-                                      />
-                                    ) : null}
+                                    {child.proOnly ? <ProFeatureBadge variant="inline" className={layout.navItemProBadge} /> : null}
                                   </span>
                                   <span className={layout.navItemDesc}>{child.description}</span>
                                 </span>
                               </button>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : null}
-                    </li>
-                  );
-                }
-
-                return (
-                  <li key={item.key}>
-                    <button
-                      type="button"
-                      className={`${layout.navItem} ${
-                        activeTab === item.key && !item.proOnly ? layout.navItemActive : ""
-                      } ${item.proOnly ? layout.navItemProLocked : ""}`}
-                      onClick={() => handleNavClick(item)}
-                      aria-disabled={item.proOnly || undefined}
-                    >
+                            </li>)}
+                        </ul> : null}
+                    </li>;
+              }
+              return <li key={item.key}>
+                    <button type="button" className={`${layout.navItem} ${activeTab === item.key && !item.proOnly ? layout.navItemActive : ""} ${item.proOnly ? layout.navItemProLocked : ""}`} onClick={() => handleNavClick(item)} aria-disabled={item.proOnly || undefined}>
                       <Icon icon={item.icon} className={layout.navIcon} />
                       <span className={layout.navItemText}>
                         <span className={layout.navItemLabelRow}>
                           <span className={layout.navItemLabel}>{item.label}</span>
-                          {item.proOnly ? (
-                            <ProFeatureBadge variant="inline" className={layout.navItemProBadge} />
-                          ) : null}
+                          {item.proOnly ? <ProFeatureBadge variant="inline" className={layout.navItemProBadge} /> : null}
                         </span>
                         <span className={layout.navItemDesc}>{item.description}</span>
                       </span>
                     </button>
-                  </li>
-                );
-              })}
+                  </li>;
+            })}
             </ul>
-          </div>
-        ))}
+          </div>)}
 
         </div>
       </aside>
@@ -447,21 +410,19 @@ export default function AdminPanel({
       <div className={layout.main}>
         <header className={layout.topBar}>
           <h1 className={layout.pageTitle}>{meta?.label ?? panelCopy.adminSubtitle}</h1>
-          {meta?.description && (
-            <p className={layout.pageDesc}>{meta.description}</p>
-          )}
+          {meta?.description && <p className={layout.pageDesc}>{meta.description}</p>}
         </header>
 
         <div className={layout.content}>
-          {ActiveComponent ? <ActiveComponent isCommunity={isCommunity} /> : null}
+          {ActiveComponent ? <ActiveComponent isCommunity={isCommunity} onNavigate={tab => {
+          if (allowedNavKeys.includes(tab)) {
+            setActiveTab(tab);
+            onRouteTabChange?.(tab);
+          }
+        }} /> : null}
         </div>
       </div>
 
-      <ProFeaturePromoModal
-        open={Boolean(proPromoFeature)}
-        featureKey={proPromoFeature}
-        onClose={() => setProPromoFeature(null)}
-      />
-    </div>
-  );
+      <ProFeaturePromoModal open={Boolean(proPromoFeature)} featureKey={proPromoFeature} onClose={() => setProPromoFeature(null)} />
+    </div>;
 }

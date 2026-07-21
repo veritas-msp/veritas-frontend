@@ -1,36 +1,30 @@
 import { interpolate, normalizeLocale, pickLocaleMessages } from "../../i18n/translate";
 import { REPORT_TYPE_DEFS } from "./reportTypeConstants";
-
 const WIZARD_STEPS = {
   supervisionEtat: ["Périmètre", "État temps réel", "Synthèse", "Validation"],
   intervention: ["Contexte", "Interventions", "Compte-rendu", "Validation"],
-  cahierRecette: ["Périmètre projet", "Solutions & matériel", "Fonctionnement", "Recette"],
+  cahierRecette: ["Périmètre projet", "Solutions & matériel", "Fonctionnement", "Recette"]
 };
-
 const WIZARD_STEPS_EN = {
   supervisionEtat: ["Scope", "Live status", "Summary", "Sign-off"],
   intervention: ["Context", "Interventions", "Report", "Sign-off"],
-  cahierRecette: ["Project scope", "Solutions & hardware", "Operation", "Acceptance"],
+  cahierRecette: ["Project scope", "Solutions & hardware", "Operation", "Acceptance"]
 };
-
 const WIZARD_STEPS_DE = {
   supervisionEtat: ["Umfang", "Live-Status", "Zusammenfassung", "Freigabe"],
   intervention: ["Kontext", "Einsätze", "Bericht", "Freigabe"],
-  cahierRecette: ["Projektumfang", "Lösungen & Hardware", "Betrieb", "Abnahme"],
+  cahierRecette: ["Projektumfang", "Lösungen & Hardware", "Betrieb", "Abnahme"]
 };
-
 const WIZARD_STEPS_IT = {
   supervisionEtat: ["Perimetro", "Stato in tempo reale", "Sintesi", "Validazione"],
   intervention: ["Contesto", "Interventi", "Resoconto", "Validazione"],
-  cahierRecette: ["Perimetro progetto", "Soluzioni & hardware", "Funzionamento", "Collaudo"],
+  cahierRecette: ["Perimetro progetto", "Soluzioni & hardware", "Funzionamento", "Collaudo"]
 };
-
 const WIZARD_STEPS_ES = {
   supervisionEtat: ["Alcance", "Estado en tiempo real", "Síntesis", "Validación"],
   intervention: ["Contexto", "Intervenciones", "Informe", "Validación"],
-  cahierRecette: ["Alcance del proyecto", "Soluciones y hardware", "Funcionamiento", "Recette"],
+  cahierRecette: ["Alcance del proyecto", "Soluciones y hardware", "Funcionamiento", "Recette"]
 };
-
 function buildWizard(localeCopy) {
   return {
     progressAria: localeCopy.wizardProgressAria,
@@ -54,11 +48,10 @@ function buildWizard(localeCopy) {
     placeholderHint: localeCopy.wizardPlaceholderHint,
     placeholderBadge: localeCopy.wizardPlaceholderBadge,
     finishSoon: localeCopy.wizardFinishSoon,
-    formatStepOf: (current, total) =>
-      interpolate(localeCopy.wizardStepOf, {
-        current: String(current),
-        total: String(total),
-      }),
+    formatStepOf: (current, total) => interpolate(localeCopy.wizardStepOf, {
+      current: String(current),
+      total: String(total)
+    }),
     clearSearch: localeCopy.wizardClearSearch,
     clearSearchAria: localeCopy.wizardClearSearchAria,
     loadingClients: localeCopy.wizardLoadingClients,
@@ -66,60 +59,62 @@ function buildWizard(localeCopy) {
     changeClient: localeCopy.wizardChangeClient,
     formatResultsCount: (filtered, total) => {
       if (filtered === total) {
-        return interpolate(localeCopy.wizardResultsAll, { total: String(total) });
+        return interpolate(localeCopy.wizardResultsAll, {
+          total: String(total)
+        });
       }
       return interpolate(localeCopy.wizardResultsFiltered, {
         filtered: String(filtered),
-        total: String(total),
+        total: String(total)
       });
     },
-    formatDevices: (count) => {
+    formatDevices: count => {
       const safe = Number(count) || 0;
       if (safe <= 0) return localeCopy.wizardDevicesNone;
       if (safe === 1) return localeCopy.wizardDevicesOne;
-      return interpolate(localeCopy.wizardDevicesMany, { count: String(safe) });
+      return interpolate(localeCopy.wizardDevicesMany, {
+        count: String(safe)
+      });
     },
-    formatServices: (count) => {
+    formatServices: count => {
       const safe = Number(count) || 0;
       if (safe <= 0) return localeCopy.wizardServicesNone;
       if (safe === 1) return localeCopy.wizardServicesOne;
-      return interpolate(localeCopy.wizardServicesMany, { count: String(safe) });
+      return interpolate(localeCopy.wizardServicesMany, {
+        count: String(safe)
+      });
     },
-    formatContinueWith: (name) =>
-      interpolate(localeCopy.wizardContinueWith, { name: String(name || "") }),
+    formatContinueWith: name => interpolate(localeCopy.wizardContinueWith, {
+      name: String(name || "")
+    })
   };
 }
-
 const RAPPORT_PAGE = {
   fr: {
     bcp47: "fr-FR",
     eyebrow: "Documents",
     pageTitle: "Rapports",
-    subtitle:
-      "Choisissez une entreprise, puis le type de rapport à rédiger.",
+    subtitle: "Choisissez une entreprise, puis le type de rapport à rédiger.",
     create: {
       enterpriseLabel: "Entreprise",
       enterpriseSearch: "Rechercher une entreprise…",
       noEnterprise: "Aucune entreprise trouvée",
       badgeSoon: "Bientôt disponible",
-      getClientLabel: (id) => `Client #${id}`,
+      getClientLabel: id => `Client #${id}`
     },
     reportTypes: {
       supervisionEtat: {
         title: "État de supervision",
-        description:
-          "Instantané temps réel du parc supervisé : alertes, disponibilité et indicateurs clés.",
+        description: "Instantané temps réel du parc supervisé : alertes, disponibilité et indicateurs clés."
       },
       intervention: {
         title: "Rapport d'intervention",
-        description:
-          "Compte-rendu d'une intervention technique : contexte, actions réalisées et résultat.",
+        description: "Compte-rendu d'une intervention technique : contexte, actions réalisées et résultat."
       },
       cahierRecette: {
         title: "Cahier de recette",
-        description:
-          "Solutions, produits et matériels installés : rôle, fonctionnement et validation client.",
-      },
+        description: "Solutions, produits et matériels installés : rôle, fonctionnement et validation client."
+      }
     },
     wizardProgressAria: "Progression de création",
     wizardStepClient: "Client",
@@ -153,8 +148,7 @@ const RAPPORT_PAGE = {
     wizardStartReport: "Commencer le rapport",
     wizardBackToSelection: "Retour à la sélection",
     wizardPlaceholderTitle: "Contenu à venir",
-    wizardPlaceholderHint:
-      "Les formulaires et données de cette étape seront disponibles dans une prochaine version.",
+    wizardPlaceholderHint: "Les formulaires et données de cette étape seront disponibles dans une prochaine version.",
     wizardPlaceholderBadge: "En développement",
     wizardFinishSoon: "Finaliser · bientôt disponible",
     wizardStepOf: "Étape {current} sur {total}",
@@ -175,8 +169,8 @@ const RAPPORT_PAGE = {
       contractExpiringSoon: "Expire bientôt",
       contractExpired: "Expiré",
       contractSuspended: "Suspendu",
-      contractUnknown: "Non renseigné",
-    },
+      contractUnknown: "Non renseigné"
+    }
   },
   en: {
     bcp47: "en-GB",
@@ -188,23 +182,21 @@ const RAPPORT_PAGE = {
       enterpriseSearch: "Search for a company…",
       noEnterprise: "No company found",
       badgeSoon: "Coming soon",
-      getClientLabel: (id) => `Client #${id}`,
+      getClientLabel: id => `Client #${id}`
     },
     reportTypes: {
       supervisionEtat: {
-        title: "Supervision snapshot",
-        description:
-          "Real-time view of supervised assets: alerts, availability and key indicators.",
+        title: "Monitoring snapshot",
+        description: "Real-time view of supervised assets: alerts, availability and key indicators."
       },
       intervention: {
         title: "Intervention report",
-        description: "Technical intervention report: context, actions performed and outcome.",
+        description: "Technical intervention report: context, actions performed and outcome."
       },
       cahierRecette: {
         title: "Acceptance workbook",
-        description:
-          "Installed solutions, products and hardware: role, operation and client sign-off.",
-      },
+        description: "Installed solutions, products and hardware: role, operation and client sign-off."
+      }
     },
     wizardProgressAria: "Creation progress",
     wizardStepClient: "Client",
@@ -259,8 +251,8 @@ const RAPPORT_PAGE = {
       contractExpiringSoon: "Expiring soon",
       contractExpired: "Expired",
       contractSuspended: "Suspended",
-      contractUnknown: "Not set",
-    },
+      contractUnknown: "Not set"
+    }
   },
   de: {
     bcp47: "de-DE",
@@ -272,23 +264,21 @@ const RAPPORT_PAGE = {
       enterpriseSearch: "Unternehmen suchen…",
       noEnterprise: "Kein Unternehmen gefunden",
       badgeSoon: "Demnächst",
-      getClientLabel: (id) => `Kunde #${id}`,
+      getClientLabel: id => `Kunde #${id}`
     },
     reportTypes: {
       supervisionEtat: {
         title: "Supervisionsstatus",
-        description:
-          "Echtzeit-Snapshot der überwachten Assets: Alarme, Verfügbarkeit und Kennzahlen.",
+        description: "Echtzeit-Snapshot der überwachten Assets: Alarme, Verfügbarkeit und Kennzahlen."
       },
       intervention: {
         title: "Interventionsbericht",
-        description: "Technischer Einsatzbericht: Kontext, Maßnahmen und Ergebnis.",
+        description: "Technischer Einsatzbericht: Kontext, Maßnahmen und Ergebnis."
       },
       cahierRecette: {
         title: "Abnahmebuch",
-        description:
-          "Installierte Lösungen, Produkte und Hardware: Rolle, Betrieb und Kundenfreigabe.",
-      },
+        description: "Installierte Lösungen, Produkte und Hardware: Rolle, Betrieb und Kundenfreigabe."
+      }
     },
     wizardProgressAria: "Erstellungsfortschritt",
     wizardStepClient: "Kunde",
@@ -343,8 +333,8 @@ const RAPPORT_PAGE = {
       contractExpiringSoon: "Läuft bald ab",
       contractExpired: "Abgelaufen",
       contractSuspended: "Ausgesetzt",
-      contractUnknown: "Nicht angegeben",
-    },
+      contractUnknown: "Nicht angegeben"
+    }
   },
   it: {
     bcp47: "it-IT",
@@ -356,23 +346,21 @@ const RAPPORT_PAGE = {
       enterpriseSearch: "Cerca un'azienda…",
       noEnterprise: "Nessuna azienda trovata",
       badgeSoon: "Prossimamente",
-      getClientLabel: (id) => `Cliente #${id}`,
+      getClientLabel: id => `Cliente #${id}`
     },
     reportTypes: {
       supervisionEtat: {
         title: "Stato di supervisione",
-        description:
-          "Istantanea in tempo reale del parco supervisionato: alert, disponibilità e KPI.",
+        description: "Istantanea in tempo reale del parco supervisionato: alert, disponibilità e KPI."
       },
       intervention: {
         title: "Report di intervento",
-        description: "Resoconto di intervento tecnico: contesto, azioni svolte e esito.",
+        description: "Resoconto di intervento tecnico: contesto, azioni svolte e esito."
       },
       cahierRecette: {
         title: "Cahier de recette",
-        description:
-          "Soluzioni, prodotti e hardware installati: ruolo, funzionamento e validazione cliente.",
-      },
+        description: "Soluzioni, prodotti e hardware installati: ruolo, funzionamento e validazione cliente."
+      }
     },
     wizardProgressAria: "Avanzamento creazione",
     wizardStepClient: "Cliente",
@@ -427,8 +415,8 @@ const RAPPORT_PAGE = {
       contractExpiringSoon: "In scadenza",
       contractExpired: "Scaduto",
       contractSuspended: "Sospeso",
-      contractUnknown: "Non indicato",
-    },
+      contractUnknown: "Non indicato"
+    }
   },
   es: {
     bcp47: "es-ES",
@@ -440,23 +428,21 @@ const RAPPORT_PAGE = {
       enterpriseSearch: "Buscar una empresa…",
       noEnterprise: "Ninguna empresa encontrada",
       badgeSoon: "Próximamente",
-      getClientLabel: (id) => `Cliente #${id}`,
+      getClientLabel: id => `Cliente #${id}`
     },
     reportTypes: {
       supervisionEtat: {
         title: "Estado de supervisión",
-        description:
-          "Instantánea en tiempo real del parque supervisado: alertas, disponibilidad e indicadores.",
+        description: "Instantánea en tiempo real del parque supervisado: alertas, disponibilidad e indicadores."
       },
       intervention: {
         title: "Informe de intervención",
-        description: "Informe de intervención técnica: contexto, acciones realizadas y resultado.",
+        description: "Informe de intervención técnica: contexto, acciones realizadas y resultado."
       },
       cahierRecette: {
         title: "Cuaderno de recette",
-        description:
-          "Soluciones, productos y hardware instalados: rol, funcionamiento y validación del cliente.",
-      },
+        description: "Soluciones, productos y hardware instalados: rol, funcionamiento y validación del cliente."
+      }
     },
     wizardProgressAria: "Progreso de creación",
     wizardStepClient: "Cliente",
@@ -511,19 +497,17 @@ const RAPPORT_PAGE = {
       contractExpiringSoon: "Próximo a vencer",
       contractExpired: "Vencido",
       contractSuspended: "Suspendido",
-      contractUnknown: "No indicado",
-    },
-  },
+      contractUnknown: "No indicado"
+    }
+  }
 };
-
 const WIZARD_STEP_MAP_BY_LOCALE = {
   fr: WIZARD_STEPS,
   en: WIZARD_STEPS_EN,
   de: WIZARD_STEPS_DE,
   it: WIZARD_STEPS_IT,
-  es: WIZARD_STEPS_ES,
+  es: WIZARD_STEPS_ES
 };
-
 export function getRapportPageCopy(locale) {
   const code = normalizeLocale(locale);
   const copy = pickLocaleMessages(RAPPORT_PAGE, locale);
@@ -531,22 +515,20 @@ export function getRapportPageCopy(locale) {
     ...copy,
     wizard: buildWizard(copy),
     recap: copy.recap,
-    localeCode: code,
+    localeCode: code
   };
 }
-
 export function getReportTypes(pageCopy, locale = "fr") {
   const stepMap = WIZARD_STEP_MAP_BY_LOCALE[locale] || WIZARD_STEPS;
-  return REPORT_TYPE_DEFS.map((def) => ({
+  return REPORT_TYPE_DEFS.map(def => ({
     id: def.id,
     icon: def.icon,
     key: def.key,
     title: pageCopy.reportTypes[def.key].title,
     description: pageCopy.reportTypes[def.key].description,
-    steps: stepMap[def.key] || [],
+    steps: stepMap[def.key] || []
   }));
 }
-
 export function getReportTypeLabel(pageCopy, rawType) {
   const normalized = String(rawType || "").trim().toLowerCase();
   if (normalized.includes("intervention")) return pageCopy.reportTypes.intervention.title;

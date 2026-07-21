@@ -66,7 +66,7 @@
   overflow: visible;
   position: relative;
   min-height: 260px;
-  height: auto;       /* Laisse la carte s'adapter à son contenu (ex: commentaire ouvert) */
+  height: auto;       
   max-height: none;
 }
 
@@ -132,37 +132,37 @@
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
 }
 
-/* Statut Excellent */
+
 .statusDot.excellent {
   background-color: #10b981;
   color: #10b981;
 }
 
-/* Statut Good */
+
 .statusDot.good {
   background-color: #22c55e;
   color: #22c55e;
 }
 
-/* Statut Poor */
+
 .statusDot.poor {
   background-color: #eab308;
   color: #eab308;
 }
 
-/* Statut Warning */
+
 .statusDot.warning {
   background-color: #f59e0b;
   color: #f59e0b;
 }
 
-/* Statut Critical */
+
 .statusDot.critical {
   background-color: #ef4444;
   color: #ef4444;
 }
 
-/* Statut Unknown */
+
 .statusDot.unknown {
   background-color: #9ca3af;
   color: #9ca3af;
@@ -282,7 +282,7 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Aligné sur le style des boutons du header EnterpriseDetailPage */
+
 .syncButton {
   display: inline-flex;
   align-items: center;
@@ -458,7 +458,7 @@
 }
 
 
-/* Couleur de carte selon le statut du module */
+
 .moduleItem.active {
   background-color: #ecfdf5;
   border-color: #22c55e;
@@ -503,8 +503,7 @@
   text-align: left;
 }
 
-/* L'indicateur ponctuel de statut (moduleStatus) n'est plus utilisé :
-   la couleur de la carte moduleItem reflète désormais le statut. */
+
 
 .metricsTable {
   flex: 1 1 auto;
@@ -639,7 +638,7 @@
   background-color: #ffffff;
 }
 
-/* Masquer les flèches haut/bas */
+
 .metricInput::-webkit-outer-spin-button,
 .metricInput::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -647,7 +646,7 @@
   display: none;
 }
 
-/* Styles pour Firefox */
+
 .metricInput[type="number"] {
   appearance: textfield;
   -moz-appearance: textfield;
@@ -748,7 +747,7 @@
 }
 
 
-/* Tooltip note globale */
+
 .scoreTooltipContainer {
   position: relative;
   display: inline-flex;
@@ -943,7 +942,7 @@
 }
 
 
-/* Responsive Design */
+
 @media (max-width: 1200px) {
   .firewallGrid {
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -1255,7 +1254,7 @@
   margin-top: 0.25rem;
 }
 
-/* ───────────── STYLES POUR LES CARTES ───────────── */
+
 .firewallCardFlex {
   position: relative;
   display: flex;
@@ -1332,7 +1331,7 @@
   overflow: auto;
 }
 
-/* ───────────── STYLES POUR LES STATS ───────────── */
+
 .statsWrapper {
   display: flex;
   flex-direction: column;
@@ -1539,7 +1538,7 @@
   font-size: 0.75rem;
 }
 
-/* ───────────── STYLES POUR LES TOOLTIPS ───────────── */
+
 .tooltipContainer {
   position: fixed;
   background: var(--bg-primary);
@@ -1659,7 +1658,7 @@
   width: 100%;
 }
 
-/* ───────────── STYLES POUR LES LICENCES ───────────── */
+
 .licensesSection {
   marginTop: 0.5rem;
 }
@@ -1730,7 +1729,7 @@
   fontWeight: 500;
 }
 
-/* ───────────── STYLES POUR LES MÉTRIQUES ───────────── */
+
 .metricsWrapper {
   display: flex;
   alignItems: center;
@@ -1758,7 +1757,7 @@
   border-color: #fca5a5;
 }
 
-/* ───────────── STYLES POUR LES ICÔNES ───────────── */
+
 .siteIcon {
   marginRight: 0.75rem;
   flexShrink: 0;

@@ -8,7 +8,7 @@
   overflow: hidden;
 }
 
-/* ── Sidebar admin ── */
+
 .sidebar {
   --sb-bg: var(--msp-surface);
   --sb-top-bg: var(--msp-surface);
@@ -463,7 +463,7 @@
   text-align: center;
 }
 
-/* ── Zone principale ── */
+
 .main {
   flex: 1;
   display: flex;
@@ -510,7 +510,7 @@
   flex-direction: column;
 }
 
-/* ── Accès refusé ── */
+
 .denied {
   display: flex;
   align-items: center;
@@ -550,7 +550,7 @@
   line-height: 1.5;
 }
 
-/* Champs de formulaire · thème MSP (priorité sur les règles legacy globales) */
+
 .layout input:not([type="checkbox"]):not([type="radio"]):focus,
 .layout input:not([type="checkbox"]):not([type="radio"]):focus-visible,
 .layout select:focus,

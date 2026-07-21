@@ -1,9 +1,10 @@
 import { getPlanningEventColors } from "./planningAgentColors";
-
 export { getPlanningEventColors } from "./planningAgentColors";
-
 export function planningEventStyleGetter(event) {
-  const { backgroundColor, borderColor } = getPlanningEventColors(event);
+  const {
+    backgroundColor,
+    borderColor
+  } = getPlanningEventColors(event);
   return {
     style: {
       backgroundColor,
@@ -13,7 +14,7 @@ export function planningEventStyleGetter(event) {
       borderRadius: "4px",
       padding: "4px 8px",
       cursor: "pointer",
-      color: "#fff",
-    },
+      color: "#fff"
+    }
   };
 }

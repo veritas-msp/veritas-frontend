@@ -109,7 +109,7 @@
   flex: 0 0 auto;
 }
 
-/* Aligné sur le style des boutons du header EnterpriseDetailPage */
+
 .syncButton {
   display: inline-flex;
   align-items: center;
@@ -165,7 +165,7 @@
   flex: 1;
 }
 
-/* Styles pour le chargement */
+
 .loadingWrapper {
   display: flex;
   flex-direction: column;
@@ -210,7 +210,7 @@
   font-size: 0.7rem;
 }
 
-/* Carte de notation (55% de la largeur) */
+
 .scoreCardLeft {
   flex: 0 0 55%;
   min-width: 0;
@@ -229,7 +229,7 @@
   height: 100px;
 }
 
-/* Styles pour les statistiques (45% de la largeur) */
+
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -323,7 +323,7 @@
   font-weight: 700;
 }
 
-/* Modal d'édition */
+
 .editModalOverlay {
   position: fixed;
   inset: 0;
@@ -476,7 +476,7 @@
   opacity: 0.6;
 }
 
-/* Tooltip note globale */
+
 .scoreTooltipContainer {
   position: relative;
   display: inline-flex;
@@ -527,7 +527,7 @@
   border-color: #4a4a6a;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1200px) {
   .wifiGrid {
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));

@@ -1,6 +1,4 @@
-/* ──────────────────────────────
-   🎨 ServicePage
-   ────────────────────────────── */
+
 
 @keyframes fadeInTab {
   from {
@@ -110,7 +108,7 @@
   margin: 0.5rem 0 0 0;
 }
 
-/* Onglets */
+
 .tabsContainer {
   margin-top: 0;
   padding: 0;
@@ -165,7 +163,7 @@
   color: inherit;
 }
 
-/* Contenu des onglets */
+
 .tabContent {
   flex: 1;
   min-height: 0;
@@ -185,7 +183,7 @@
   animation: fadeIn 0.3s ease;
 }
 
-/* Cartes KPI cliquables (filtres par statut) */
+
 .statsCards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -245,7 +243,7 @@
   font-weight: 500;
 }
 
-/* Stats Grid - Vue d'ensemble */
+
 .overviewCard {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -319,7 +317,7 @@
   color: #1a1a1a;
 }
 
-/* Tables Container */
+
 .tablesContainer {
   flex: 1;
   min-height: 0;
@@ -330,7 +328,7 @@
   flex-direction: column;
 }
 
-/* Pagination (même style que EnterprisesPage) */
+
 .paginationBar {
   display: flex;
   justify-content: space-between;
@@ -483,7 +481,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* Progress Bar */
+
 .progressBarWrapper {
   margin: 1rem 0;
   padding: 1rem;
@@ -527,7 +525,7 @@
   transition: width 0.3s ease;
 }
 
-/* Table Styles */
+
 .tableWrapper {
   overflow: auto;
   border: 1px solid var(--msp-border-light, #e2e8f0);
@@ -581,12 +579,12 @@
   vertical-align: middle;
 }
 
-.equipmentTable td:nth-child(1) { min-width: 150px; } /* Client */
-.equipmentTable td:nth-child(2) { min-width: 150px; } /* Type/Domaine */
-.equipmentTable td:nth-child(3) { min-width: 120px; } /* État/Registrar */
-.equipmentTable td:nth-child(4) { min-width: 150px; } /* Statut/Email */
-.equipmentTable td:nth-child(5) { min-width: 120px; } /* Date */
-.equipmentTable td:nth-child(6) { min-width: 150px; } /* Sync */
+.equipmentTable td:nth-child(1) { min-width: 150px; } 
+.equipmentTable td:nth-child(2) { min-width: 150px; } 
+.equipmentTable td:nth-child(3) { min-width: 120px; } 
+.equipmentTable td:nth-child(4) { min-width: 150px; } 
+.equipmentTable td:nth-child(5) { min-width: 120px; } 
+.equipmentTable td:nth-child(6) { min-width: 150px; } 
 
 .equipmentTable tbody tr:hover {
   background-color: var(--msp-surface-3, #f4f7fb);
@@ -607,7 +605,7 @@
   gap: 0.5rem;
 }
 
-/* Lien fiche entreprise : uniquement le texte (pas toute la largeur de cellule) */
+
 .enterpriseLinkText {
   background: none;
   border: none;
@@ -647,14 +645,14 @@
   font-size: 0.8125rem;
 }
 
-/* Icône de notification sur l'onglet (alerte domaine expiré / expire bientôt) */
+
 .tabAlertBadge {
   flex-shrink: 0;
   font-size: 0.875rem;
   margin-left: 0.25rem;
 }
 
-/* Bandeau expiration domaines (même style que Cybersécurité) */
+
 .domainAlertBandeau {
   display: flex;
   align-items: center;
@@ -688,7 +686,7 @@
   font-size: 1.25rem;
 }
 
-/* Loading State */
+
 .loadingState {
   display: flex;
   flex-direction: column;
@@ -704,7 +702,7 @@
   animation: spin 1s linear infinite;
 }
 
-/* Empty State */
+
 .emptyState {
   display: flex;
   flex-direction: column;
@@ -789,7 +787,7 @@
   font-size: 0.875rem !important;
 }
 
-/* Partner Microsoft Container */
+
 .partnerContainer {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -839,7 +837,7 @@
   font-size: 1rem;
 }
 
-/* Dark mode */
+
 :global(.dark) .pageWrapper {
   background-color: #1a1a1a;
   color: #e5e7eb;
@@ -888,7 +886,7 @@
   color: #d1d5db;
 }
 
-/* Sidebar · thème MSP */
+
 .sidebar {
   width: 220px;
   background-color: var(--msp-surface, #ffffff);
@@ -1072,7 +1070,7 @@
   font-size: 0.875rem;
 }
 
-/* Search Box */
+
 .searchBox {
   position: relative;
   display: flex;
@@ -1118,9 +1116,7 @@
   color: var(--text-primary, #f9fafb);
 }
 
-/* ──────────────────────────────
-   Skeleton fantôme (onglet Nom de domaine) pendant la synchronisation
-   ────────────────────────────── */
+
 .domainSyncSkeleton {
   display: flex;
   flex-direction: column;

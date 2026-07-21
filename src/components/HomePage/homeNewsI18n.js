@@ -1,5 +1,4 @@
 import { pickLocaleMessages } from "../../i18n/translate";
-
 const STRINGS = {
   fr: {
     title: "Fil tech & cybersécurité",
@@ -14,17 +13,17 @@ const STRINGS = {
     reactionsLabel: "Réactions",
     addReaction: "Ajouter cette réaction",
     removeReaction: "Retirer votre réaction",
-    reactedWith: (emoji) => `Ont réagi avec ${emoji}`,
+    reactedWith: emoji => `Ont réagi avec ${emoji}`,
     categories: {
       cve: "CVE",
       security: "Sécurité",
       news: "Actualités",
-      tech: "Technologie",
+      tech: "Technologie"
     },
     timeAgo: (n, unit) => `Il y a ${n} ${unit}`,
     minutes: "min",
     hours: "h",
-    days: "j",
+    days: "j"
   },
   en: {
     title: "Tech & security feed",
@@ -39,17 +38,17 @@ const STRINGS = {
     reactionsLabel: "Reactions",
     addReaction: "Add this reaction",
     removeReaction: "Remove your reaction",
-    reactedWith: (emoji) => `Reacted with ${emoji}`,
+    reactedWith: emoji => `Reacted with ${emoji}`,
     categories: {
       cve: "CVE",
       security: "Security",
       news: "News",
-      tech: "Technology",
+      tech: "Technology"
     },
     timeAgo: (n, unit) => `${n} ${unit} ago`,
     minutes: "min",
     hours: "h",
-    days: "d",
+    days: "d"
   },
   de: {
     title: "Tech- & Security-Feed",
@@ -64,17 +63,17 @@ const STRINGS = {
     reactionsLabel: "Reaktionen",
     addReaction: "Diese Reaktion hinzufügen",
     removeReaction: "Ihre Reaktion entfernen",
-    reactedWith: (emoji) => `Reagiert mit ${emoji}`,
+    reactedWith: emoji => `Reagiert mit ${emoji}`,
     categories: {
       cve: "CVE",
       security: "Sicherheit",
       news: "Nachrichten",
-      tech: "Technologie",
+      tech: "Technologie"
     },
     timeAgo: (n, unit) => `vor ${n} ${unit}`,
     minutes: "Min.",
     hours: "Std.",
-    days: "Tg.",
+    days: "Tg."
   },
   it: {
     title: "Feed tech e sicurezza",
@@ -89,17 +88,17 @@ const STRINGS = {
     reactionsLabel: "Reazioni",
     addReaction: "Aggiungi questa reazione",
     removeReaction: "Rimuovi la tua reazione",
-    reactedWith: (emoji) => `Hanno reagito con ${emoji}`,
+    reactedWith: emoji => `Hanno reagito con ${emoji}`,
     categories: {
       cve: "CVE",
       security: "Sicurezza",
       news: "Notizie",
-      tech: "Tecnologia",
+      tech: "Tecnologia"
     },
     timeAgo: (n, unit) => `${n} ${unit} fa`,
     minutes: "min",
     hours: "h",
-    days: "g",
+    days: "g"
   },
   es: {
     title: "Feed tech y ciberseguridad",
@@ -114,20 +113,19 @@ const STRINGS = {
     reactionsLabel: "Reacciones",
     addReaction: "Añadir esta reacción",
     removeReaction: "Quitar tu reacción",
-    reactedWith: (emoji) => `Reaccionaron con ${emoji}`,
+    reactedWith: emoji => `Reaccionaron con ${emoji}`,
     categories: {
       cve: "CVE",
       security: "Seguridad",
       news: "Noticias",
-      tech: "Tecnología",
+      tech: "Tecnología"
     },
     timeAgo: (n, unit) => `Hace ${n} ${unit}`,
     minutes: "min",
     hours: "h",
-    days: "d",
-  },
+    days: "d"
+  }
 };
-
 export function getHomeNewsStrings(locale) {
   return pickLocaleMessages(STRINGS, locale);
 }

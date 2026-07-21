@@ -76,31 +76,31 @@
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
 }
 
-/* Statut Excellent */
+
 .statusDot.excellent {
   background-color: #10b981;
   color: #10b981;
 }
 
-/* Statut Good */
+
 .statusDot.good {
   background-color: #22c55e;
   color: #22c55e;
 }
 
-/* Statut Warning */
+
 .statusDot.warning {
   background-color: #f59e0b;
   color: #f59e0b;
 }
 
-/* Statut Critical */
+
 .statusDot.critical {
   background-color: #ef4444;
   color: #ef4444;
 }
 
-/* Statut Unknown */
+
 .statusDot.unknown {
   background-color: #9ca3af;
   color: #9ca3af;
@@ -234,7 +234,7 @@
   color: #f9fafb;
 }
 
-/* Styles pour les nouvelles sections BitDefender */
+
 .sectionTitle {
   font-size: 1rem;
   font-weight: 600;
@@ -308,13 +308,13 @@
   border-radius: 8px;
   border: 1px solid #e5e7eb;
   background-color: #ffffff;
-  /* Masquer la scrollbar horizontale */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
 
 .endpointsTableContainer::-webkit-scrollbar {
-  height: 0; /* Masquer la scrollbar horizontale */
+  height: 0; 
   display: none;
 }
 
@@ -514,7 +514,7 @@
   font-weight: 600;
 }
 
-/* Supprimer les flèches haut/bas des champs numériques */
+
 .threatCount::-webkit-outer-spin-button,
 .threatCount::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -665,7 +665,7 @@
   font-weight: 700;
 }
 
-/* Supprimer les flèches haut/bas des champs numériques */
+
 .threatsInput::-webkit-outer-spin-button,
 .threatsInput::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -782,7 +782,7 @@
   border-color: #4a4a6a;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1200px) {
   .antivirusGrid {
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -889,7 +889,7 @@
   }
 }
 
-/* Bouton de synchronisation */
+
 .syncAllButton {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -937,13 +937,13 @@
   opacity: 0.6;
 }
 
-/* Section des statistiques */
+
 .statisticsSection {
   padding: 0;
   margin-top: 1rem;
 }
 
-/* Métriques principales compactes */
+
 .metricsRow {
   display: flex;
   gap: 1rem;
@@ -990,14 +990,14 @@
   color: #f9fafb;
 }
 
-/* Container des graphiques */
+
 .chartsContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
 }
 
-/* Carte de graphique */
+
 .chartCard {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -1026,7 +1026,7 @@
   color: #d1d5db;
 }
 
-/* Carte de conformité */
+
 .complianceCard {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -1081,7 +1081,7 @@
   color: #f9fafb;
 }
 
-/* Message pas de données */
+
 .noDataMessage {
   grid-column: 1 / -1;
   text-align: center;
@@ -1094,7 +1094,7 @@
   color: #9ca3af;
 }
 
-/* Section des rapports */
+
 .reportsSection {
   margin-top: 1.5rem;
   padding: 1.5rem;
@@ -1252,7 +1252,7 @@
   animation: spin 1s linear infinite;
 }
 
-/* Tooltip pour la note globale */
+
 .scoreTooltipContainer {
   position: relative;
   display: inline-flex;
@@ -1366,7 +1366,7 @@
   flex-shrink: 0;
 }
 
-/* Zone de commentaire */
+
 .commentTextarea {
   width: 100%;
   padding: 6px 8px;
@@ -1392,7 +1392,7 @@
   min-height: 300px;
 }
 
-/* ─── Skeleton fantôme pendant la synchronisation ─── */
+
 .syncSkeleton {
   display: flex;
   flex-direction: column;

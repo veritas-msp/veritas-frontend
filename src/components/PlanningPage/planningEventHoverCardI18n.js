@@ -1,5 +1,4 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
-
 const HOVER_CARD = {
   fr: {
     eventTypes: {
@@ -11,18 +10,18 @@ const HOVER_CARD = {
       conge: "Congé",
       integration_monitoring: "Monitoring",
       campagne: "Campagne cybersécurité",
-      other: "Autre",
+      other: "Autre"
     },
     campaignStatus: {
       active: "Active",
       inactive: "Terminée",
       draft: "Brouillon",
-      planned: "Planifiée",
+      planned: "Planifiée"
     },
     campaignTypes: {
       microsoft_security: "Microsoft Security",
       phishing: "Phishing",
-      awareness: "Sensibilisation",
+      awareness: "Sensibilisation"
     },
     labels: {
       date: "Date",
@@ -42,34 +41,34 @@ const HOVER_CARD = {
       campaignType: "Type campagne",
       progress: "Progression",
       todos: "To-do ({done}/{total})",
-      notes: "Notes ({count})",
+      notes: "Notes ({count})"
     },
     schedule: {
       allDay: "Journée complète",
       businessDaysOnly: "Jours ouvrables uniquement",
-      durationDays: "{count} jour(s)",
+      durationDays: "{count} jour(s)"
     },
     assignee: {
       change: "Changer l'agent assigné",
       choose: "Choisir…",
       search: "Rechercher…",
       typeToSearch: "Saisissez un caractère pour rechercher",
-      noAgentFound: "Aucun agent trouvé",
+      noAgentFound: "Aucun agent trouvé"
     },
     footer: {
       close: "Fermer",
       edit: "Modifier",
-      viewCampaign: "Voir la campagne",
+      viewCampaign: "Voir la campagne"
     },
     defaults: {
       event: "Événement",
       reminder: "Rappel",
-      user: "Utilisateur",
+      user: "Utilisateur"
     },
     weekView: {
       resizeStart: "Modifier le début",
-      resizeEnd: "Modifier la fin",
-    },
+      resizeEnd: "Modifier la fin"
+    }
   },
   en: {
     eventTypes: {
@@ -81,18 +80,18 @@ const HOVER_CARD = {
       conge: "Leave",
       integration_monitoring: "Monitoring",
       campagne: "Cybersecurity campaign",
-      other: "Other",
+      other: "Other"
     },
     campaignStatus: {
       active: "Active",
       inactive: "Completed",
       draft: "Draft",
-      planned: "Planned",
+      planned: "Planned"
     },
     campaignTypes: {
       microsoft_security: "Microsoft Security",
       phishing: "Phishing",
-      awareness: "Awareness",
+      awareness: "Awareness"
     },
     labels: {
       date: "Date",
@@ -112,34 +111,34 @@ const HOVER_CARD = {
       campaignType: "Campaign type",
       progress: "Progress",
       todos: "To-do ({done}/{total})",
-      notes: "Notes ({count})",
+      notes: "Notes ({count})"
     },
     schedule: {
       allDay: "All day",
       businessDaysOnly: "Business days only",
-      durationDays: "{count} day(s)",
+      durationDays: "{count} day(s)"
     },
     assignee: {
       change: "Change assignee",
       choose: "Choose…",
       search: "Search…",
       typeToSearch: "Type a character to search",
-      noAgentFound: "No assignee found",
+      noAgentFound: "No assignee found"
     },
     footer: {
       close: "Close",
       edit: "Edit",
-      viewCampaign: "View campaign",
+      viewCampaign: "View campaign"
     },
     defaults: {
       event: "Event",
       reminder: "Reminder",
-      user: "User",
+      user: "User"
     },
     weekView: {
       resizeStart: "Adjust start",
-      resizeEnd: "Adjust end",
-    },
+      resizeEnd: "Adjust end"
+    }
   },
   de: {
     eventTypes: {
@@ -151,18 +150,18 @@ const HOVER_CARD = {
       conge: "Urlaub",
       integration_monitoring: "Überwachung",
       campagne: "Cybersicherheitskampagne",
-      other: "Sonstiges",
+      other: "Sonstiges"
     },
     campaignStatus: {
       active: "Aktiv",
       inactive: "Abgeschlossen",
       draft: "Entwurf",
-      planned: "Geplant",
+      planned: "Geplant"
     },
     campaignTypes: {
       microsoft_security: "Microsoft Security",
       phishing: "Phishing",
-      awareness: "Sensibilisierung",
+      awareness: "Sensibilisierung"
     },
     labels: {
       date: "Datum",
@@ -182,34 +181,34 @@ const HOVER_CARD = {
       campaignType: "Kampagnentyp",
       progress: "Fortschritt",
       todos: "Aufgaben ({done}/{total})",
-      notes: "Notizen ({count})",
+      notes: "Notizen ({count})"
     },
     schedule: {
       allDay: "Ganztägig",
       businessDaysOnly: "Nur Werktage",
-      durationDays: "{count} Tag(e)",
+      durationDays: "{count} Tag(e)"
     },
     assignee: {
       change: "Zugewiesenen Mitarbeiter ändern",
       choose: "Auswählen…",
       search: "Suchen…",
       typeToSearch: "Geben Sie ein Zeichen ein, um zu suchen",
-      noAgentFound: "Kein Mitarbeiter gefunden",
+      noAgentFound: "Kein Mitarbeiter gefunden"
     },
     footer: {
       close: "Schließen",
       edit: "Bearbeiten",
-      viewCampaign: "Kampagne anzeigen",
+      viewCampaign: "Kampagne anzeigen"
     },
     defaults: {
       event: "Ereignis",
       reminder: "Erinnerung",
-      user: "Benutzer",
+      user: "Benutzer"
     },
     weekView: {
       resizeStart: "Beginn anpassen",
-      resizeEnd: "Ende anpassen",
-    },
+      resizeEnd: "Ende anpassen"
+    }
   },
   it: {
     eventTypes: {
@@ -221,18 +220,18 @@ const HOVER_CARD = {
       conge: "Permesso",
       integration_monitoring: "Monitoraggio",
       campagne: "Campagna cybersicurezza",
-      other: "Altro",
+      other: "Altro"
     },
     campaignStatus: {
       active: "Attiva",
       inactive: "Completata",
       draft: "Bozza",
-      planned: "Pianificata",
+      planned: "Pianificata"
     },
     campaignTypes: {
       microsoft_security: "Microsoft Security",
       phishing: "Phishing",
-      awareness: "Sensibilizzazione",
+      awareness: "Sensibilizzazione"
     },
     labels: {
       date: "Data",
@@ -252,34 +251,34 @@ const HOVER_CARD = {
       campaignType: "Tipo campagna",
       progress: "Avanzamento",
       todos: "Attività ({done}/{total})",
-      notes: "Note ({count})",
+      notes: "Note ({count})"
     },
     schedule: {
       allDay: "Giornata intera",
       businessDaysOnly: "Solo giorni lavorativi",
-      durationDays: "{count} giorno/i",
+      durationDays: "{count} giorno/i"
     },
     assignee: {
       change: "Cambia agente assegnato",
       choose: "Scegli…",
       search: "Cerca…",
       typeToSearch: "Digita un carattere per cercare",
-      noAgentFound: "Nessun agente trovato",
+      noAgentFound: "Nessun agente trovato"
     },
     footer: {
       close: "Chiudi",
       edit: "Modifica",
-      viewCampaign: "Vedi campagna",
+      viewCampaign: "Vedi campagna"
     },
     defaults: {
       event: "Evento",
       reminder: "Promemoria",
-      user: "Utente",
+      user: "Utente"
     },
     weekView: {
       resizeStart: "Modifica inizio",
-      resizeEnd: "Modifica fine",
-    },
+      resizeEnd: "Modifica fine"
+    }
   },
   es: {
     eventTypes: {
@@ -291,18 +290,18 @@ const HOVER_CARD = {
       conge: "Permiso",
       integration_monitoring: "Supervisión",
       campagne: "Campaña de ciberseguridad",
-      other: "Otro",
+      other: "Otro"
     },
     campaignStatus: {
       active: "Activa",
       inactive: "Finalizada",
       draft: "Borrador",
-      planned: "Planificada",
+      planned: "Planificada"
     },
     campaignTypes: {
       microsoft_security: "Microsoft Security",
       phishing: "Phishing",
-      awareness: "Concienciación",
+      awareness: "Concienciación"
     },
     labels: {
       date: "Fecha",
@@ -322,48 +321,56 @@ const HOVER_CARD = {
       campaignType: "Tipo de campaña",
       progress: "Progreso",
       todos: "Tareas ({done}/{total})",
-      notes: "Notas ({count})",
+      notes: "Notas ({count})"
     },
     schedule: {
       allDay: "Todo el día",
       businessDaysOnly: "Solo días laborables",
-      durationDays: "{count} día(s)",
+      durationDays: "{count} día(s)"
     },
     assignee: {
       change: "Cambiar agente asignado",
       choose: "Elegir…",
       search: "Buscar…",
       typeToSearch: "Escriba un carácter para buscar",
-      noAgentFound: "Ningún agente encontrado",
+      noAgentFound: "Ningún agente encontrado"
     },
     footer: {
       close: "Cerrar",
       edit: "Editar",
-      viewCampaign: "Ver campaña",
+      viewCampaign: "Ver campaña"
     },
     defaults: {
       event: "Evento",
       reminder: "Recordatorio",
-      user: "Usuario",
+      user: "Usuario"
     },
     weekView: {
       resizeStart: "Ajustar inicio",
-      resizeEnd: "Ajustar fin",
-    },
-  },
+      resizeEnd: "Ajustar fin"
+    }
+  }
 };
-
 export function getPlanningEventHoverCardCopy(locale) {
   const t = pickLocaleMessages(HOVER_CARD, locale);
   return {
     ...t,
     locale,
-    getEventTypeLabel: (key) => t.eventTypes[key] || key,
-    getCampaignStatusLabel: (status) => t.campaignStatus[status] || status,
-    getCampaignTypeLabel: (type) => t.campaignTypes[type] || type,
-    formatLinkedObjects: (count) => interpolate(t.labels.linkedObjects, { count }),
-    formatTodos: (done, total) => interpolate(t.labels.todos, { done, total }),
-    formatNotes: (count) => interpolate(t.labels.notes, { count }),
-    formatDurationDays: (count) => interpolate(t.schedule.durationDays, { count }),
+    getEventTypeLabel: key => t.eventTypes[key] || key,
+    getCampaignStatusLabel: status => t.campaignStatus[status] || status,
+    getCampaignTypeLabel: type => t.campaignTypes[type] || type,
+    formatLinkedObjects: count => interpolate(t.labels.linkedObjects, {
+      count
+    }),
+    formatTodos: (done, total) => interpolate(t.labels.todos, {
+      done,
+      total
+    }),
+    formatNotes: count => interpolate(t.labels.notes, {
+      count
+    }),
+    formatDurationDays: count => interpolate(t.schedule.durationDays, {
+      count
+    })
   };
 }

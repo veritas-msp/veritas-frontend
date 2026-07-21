@@ -1,6 +1,4 @@
-/* ──────────────────────────────
-   🎨 Admin Panel - Même style que EnterprisesPage
-   ────────────────────────────── */
+
 
 .contratPage {
   display: flex;
@@ -34,7 +32,7 @@
   z-index: 1;
 }
 
-/* Rendu propre des icones Iconify/MingCute dans l'admin */
+
 .contratPage :global(.iconify) {
   display: inline-block;
   vertical-align: middle;
@@ -54,7 +52,7 @@
   width: 100%;
 }
 
-/* Header avec titre + onglets (style CybersecuritePage) */
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -169,7 +167,7 @@
   flex-direction: column;
 }
 
-/* Palette unifiée pour les cartes (inclut Mon Profil et autres) */
+
 .typeCard,
 .envCard,
 .pdfCard,
@@ -185,7 +183,7 @@
   border-color: rgba(0, 0, 0, 0.08);
 }
 
-/* Texte foncé pour le thème clair */
+
 .introTitle,
 .introIcon {
   color: #111827;
@@ -220,7 +218,7 @@
   color: #111827 !important;
 }
 
-/* Section intro - Style Home */
+
 .introSection {
   text-align: center;
   margin-top: 0;
@@ -284,7 +282,7 @@
   flex-shrink: 0;
 }
 
-/* Tabs */
+
 .tabsContainer {
   margin-top: 0;
 }
@@ -298,9 +296,9 @@
   padding-bottom: 0.5rem;
 }
 
-/* ────────────────────────────── */
-/* 📑 Onglets de Navigation      */
-/* ────────────────────────────── */
+
+
+
 .tabBar {
   display: flex;
   gap: 0.5rem;
@@ -371,9 +369,9 @@
   }
 }
 
-/* ────────────────────────────── */
-/* 🃏 Styles de Cartes & Sections */
-/* ────────────────────────────── */
+
+
+
 .section h3,
 .sectionHeader h3 {
   font-size: 1.2rem;
@@ -436,7 +434,7 @@
   transform: translateY(-2px);
 }
 
-/* --- PDF Preview Custom --- */
+
 .pdfSection {
   display: flex;
   justify-content: center;
@@ -505,9 +503,9 @@
   margin-top: 0.5rem;
 }
 
-/* ────────────────────────────── */
-/* 📝 Formulaires & Boutons       */
-/* ────────────────────────────── */
+
+
+
 .contratPage input:not([type="checkbox"]):not([type="radio"]),
 .contratPage select {
   background-color: #ffffff;
@@ -703,9 +701,9 @@ textarea:disabled {
   background-color: #dc2626;
 }
 
-/* ────────────────────────────── */
-/* 📊 Tableaux                    */
-/* ────────────────────────────── */
+
+
+
 .userTableWrapper {
   width: 100%;
   overflow-x: auto;
@@ -1012,7 +1010,7 @@ textarea:disabled {
   width: 72px;
 }
 
-/* Table Entreprises: grande colonne Nom + colonnes quanti compactes */
+
 .enterpriseAdminTable {
   table-layout: fixed;
 }
@@ -1355,9 +1353,9 @@ textarea:disabled {
   margin-top: 1rem;
 }
 
-/* ────────────────────────────── */
-/* 📊 Tableau Accès par profil   */
-/* ────────────────────────────── */
+
+
+
 .accessMatrix {
   width: 100%;
   border-collapse: collapse;
@@ -1387,7 +1385,7 @@ textarea:disabled {
   text-align: center;
 }
 
-/* Première colonne : profil aligné à gauche (seulement pour l'en-tête de 1ère ligne et le body) */
+
 .accessMatrix thead tr:first-child th:first-child,
 .accessMatrix tbody td:first-child {
   text-align: left;
@@ -1410,40 +1408,40 @@ textarea:disabled {
   border-left: 12px solid rgba(15, 165, 120, 0.18);
 }
 
-/* Variantes de couleur par catégorie */
+
 .categoryDocuments {
-  background: #eef2ff; /* indigo très clair */
+  background: #eef2ff; 
 }
 
 .categorySurveillance {
-  background: #ecfeff; /* cyan très clair */
+  background: #ecfeff; 
 }
 
 .categoryService {
-  background: #fff7ed; /* orange très clair */
+  background: #fff7ed; 
 }
 
 .categoryContrat {
-  background: #fef2f2; /* rouge très clair */
+  background: #fef2f2; 
 }
 
 .categoryOutils {
-  background: #f5f3ff; /* violet très clair */
+  background: #f5f3ff; 
 }
 
-/* Délimitation verticale entre catégories (ligne 2 + body) */
+
 .categoryDividerRight {
   border-right: 2px solid #e5e7eb !important;
 }
 
-/* Délimitation de la colonne Profil */
+
 .profileColumn {
   border-right: 2px solid #e5e7eb;
 }
 
-/* ────────────────────────────── */
-/* 🔳 Toggle Switch (Accès Profil) */
-/* ────────────────────────────── */
+
+
+
 .toggle {
   width: 48px;
   height: 26px;
@@ -1475,9 +1473,9 @@ textarea:disabled {
   transform: translateX(22px);
 }
 
-/* ────────────────────────────── */
-/* 💬 Modals                      */
-/* ────────────────────────────── */
+
+
+
 .modalOverlay {
   position: fixed;
   inset: 0;
@@ -1515,7 +1513,7 @@ textarea:disabled {
   animation-fill-mode: forwards;
 }
 
-/* Texte foncé généralisé dans les modals */
+
 .modalContent h1,
 .modalContent h2,
 .modalContent h3,
@@ -1657,9 +1655,9 @@ textarea:disabled {
   }
 }
 
-/* ────────────────────────────── */
-/* ⚙️ Page Paramètres (AdminSettings) */
-/* ────────────────────────────── */
+
+
+
 
 .simpleLayout {
   width: 100%;
@@ -1800,9 +1798,9 @@ textarea.input {
   margin: 1.5rem 0 0 0;
 }
 
-/* ────────────────────────────── */
-/* 🛠️ Carte Maintenance */
-/* ────────────────────────────── */
+
+
+
 .maintenanceCard {
   width: 100%;
   background: #ffffff;
@@ -2163,9 +2161,7 @@ textarea.input {
   gap: 0.75rem;
 }
 
-/* (Onglet Abonnement) : on réutilise volontairement les styles génériques
-   (.sectionBlock, .settingsGrid, .settingRow, etc.) pour un rendu identique
-   aux autres onglets. */
+
 
 .pricingGrid {
   display: grid;
@@ -2485,9 +2481,9 @@ textarea.input {
   stroke: #ffffff !important;
 }
 
-/* ============================= */
-/* Maintenance card v2 (rebuilt) */
-/* ============================= */
+
+
+
 .maintenanceCardV2 {
   width: 100%;
   background: #ffffff;
@@ -2736,9 +2732,9 @@ textarea.input {
   color: #ffffff !important;
 }
 
-/* ========================= */
-/* Licence card v2 (rebuilt) */
-/* ========================= */
+
+
+
 .licenseCardV2 {
   width: 100%;
   background: #ffffff;
@@ -3137,7 +3133,7 @@ textarea.input {
   color: #111827;
 }
 
-/* Cartes de titre blanches */
+
 .titleCard {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -3161,7 +3157,7 @@ textarea.input {
   color: #f9f5f9;
 }
 
-/* Cartes complètes (titre + contenu) */
+
 .titleCardBlock {
   background: #f8f9fa;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -3347,7 +3343,7 @@ textarea.input {
   padding-left: 1rem;
 }
 
-/* Assure le profil (première colonne) bien lisible */
+
 .accessMatrix td:first-child {
   color: #f3f4f6;
 }
@@ -3742,7 +3738,7 @@ textarea.input {
   padding-right: 40px;
 }
 
-/* Responsive */
+
 @media (max-width: 1200px) {
   .settingsGrid {
     grid-template-columns: 1fr 1fr;
@@ -3908,7 +3904,7 @@ textarea.input {
   }
 }
 
-/* Dark mode */
+
 :global(.dark) .pageWrapper {
   background-color: #1a1a1a;
   color: #e5e7eb;
@@ -4334,7 +4330,7 @@ textarea.input {
   background: #f4f8fd;
 }
 
-/* Sous-pages admin legacy (tickets) · alignement thème Veritas */
+
 .adminUsersContent .sectionBlock {
   background: #fff;
   border: 1px solid #e4e8ee !important;
@@ -4346,7 +4342,7 @@ textarea.input {
   border-color: #e4e8ee;
 }
 
-/* ── Mode sombre · composants admin legacy ── */
+
 :global(html.dark) .userTableWrapper,
 :global(html.dark) .paginationButton,
 :global(html.dark) .bulkActionsBar,

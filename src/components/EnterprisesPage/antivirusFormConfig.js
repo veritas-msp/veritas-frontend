@@ -1,23 +1,16 @@
-import {
-  getEndpointSecurityIntegrations,
-  getIntegrationById,
-  isIntegrationConfigured,
-} from "../AdminPage/integrationsCatalog";
-
+import { getEndpointSecurityIntegrations, getIntegrationById, isIntegrationConfigured } from "../AdminPage/integrationsCatalog";
 export const ANTIVIRUS_MANUAL_PROVIDER = {
   id: "manual",
   integrationId: null,
-  label: "Autre solution",
+  label: "Other solution",
   solutionName: null,
   icon: "mdi:shield-plus-outline",
-  description:
-    "Enregistrement manuel sans synchronisation API (licences, expiration).",
+  description: "Manual entry without API synchronization (licenses, expiration).",
   status: "available",
   isManual: true,
   supportsGlobal: false,
-  supportsDedicated: false,
+  supportsDedicated: false
 };
-
 export function catalogIntegrationToAntivirusProvider(integration) {
   return {
     id: integration.id,
@@ -32,29 +25,17 @@ export function catalogIntegrationToAntivirusProvider(integration) {
     proOnly: Boolean(integration.proOnly),
     supportsGlobal: integration.status === "available",
     supportsDedicated: integration.status === "available",
-    catalogIntegration: integration,
+    catalogIntegration: integration
   };
 }
-
 export function getAntivirusProviderOptions() {
-  return [
-    ...getEndpointSecurityIntegrations().map(catalogIntegrationToAntivirusProvider),
-    ANTIVIRUS_MANUAL_PROVIDER,
-  ];
+  return [...getEndpointSecurityIntegrations().map(catalogIntegrationToAntivirusProvider), ANTIVIRUS_MANUAL_PROVIDER];
 }
-
-/** @deprecated Utiliser getAntivirusProviderOptions */
 export const ANTIVIRUS_PROVIDERS = getAntivirusProviderOptions();
-
 export function getAntivirusProvider(providerId) {
-  return getAntivirusProviderOptions().find((provider) => provider.id === providerId) || null;
+  return getAntivirusProviderOptions().find(provider => provider.id === providerId) || null;
 }
-
-export function resolveProviderGlobalConfigured(
-  providerId,
-  settingsMap = {},
-  apiGlobalStatus = {}
-) {
+export function resolveProviderGlobalConfigured(providerId, settingsMap = {}, apiGlobalStatus = {}) {
   if (!providerId || providerId === "manual") return false;
   if (providerId === "bitdefender") {
     return Boolean(apiGlobalStatus.bitdefender);
@@ -62,7 +43,6 @@ export function resolveProviderGlobalConfigured(
   const integration = getIntegrationById(providerId);
   return isIntegrationConfigured(integration, settingsMap);
 }
-
 export function inferProviderIdFromSolution(solution) {
   if (!solution) return null;
   if (solution.providerId) return solution.providerId;
@@ -71,59 +51,49 @@ export function inferProviderIdFromSolution(solution) {
     return "bitdefender";
   }
   const name = (solution.solution || solution.nom || solution.name || "").toLowerCase();
-  const match = getEndpointSecurityIntegrations().find(
-    (integration) =>
-      name.includes(integration.id) || name.includes(integration.name.toLowerCase())
-  );
+  const match = getEndpointSecurityIntegrations().find(integration => name.includes(integration.id) || name.includes(integration.name.toLowerCase()));
   if (match) return match.id;
   return "manual";
 }
-
 export function buildAntivirusNavSections({
   selectedProviderId,
   globalConfigured = false,
-  visibleTenantMode = null,
+  visibleTenantMode = null
 }) {
-  const sections = [
-    {
-      id: "overview",
-      label: "Solution enregistrée",
-      description: "Pour ce client",
-      icon: "mdi:view-list-outline",
-    },
-    {
-      id: "solution",
-      label: "Solution paramétrable",
-      description: "Fournisseurs",
-      icon: "mdi:shield-check-outline",
-    },
-  ];
-
+  const sections = [{
+    id: "overview",
+    label: "Solution saved",
+    description: "Pour ce client",
+    icon: "mdi:view-list-outline"
+  }, {
+    id: "solution",
+    label: "Configurable solution",
+    description: "Fournisseurs",
+    icon: "mdi:shield-check-outline"
+  }];
   const provider = getAntivirusProvider(selectedProviderId);
   if (selectedProviderId && selectedProviderId !== "manual" && provider?.supportsDedicated) {
     if (visibleTenantMode === "reseller") {
       sections.push({
         id: "reseller",
         label: "Tenant global",
-        description: globalConfigured
-          ? "Intégration configurée en administration"
-          : "Non configuré en administration",
+        description: globalConfigured ? "Integration configured in administration" : "Not configured in administration",
         icon: "mdi:store-cog-outline",
-        disabled: !globalConfigured,
+        disabled: !globalConfigured
       });
     } else if (visibleTenantMode === "dedicated") {
       sections.push({
         id: "dedicated",
-        label: "Tenant dédié",
+        label: "Dedicated tenant",
         description: "Credentials API propres au client",
-        icon: "mdi:shield-key-outline",
+        icon: "mdi:shield-key-outline"
       });
       if (selectedProviderId === "bitdefender") {
         sections.push({
           id: "guide",
           label: "Guide",
-          description: "Obtenir une clé API",
-          icon: "mdi:book-open-outline",
+          description: "Get an API key",
+          icon: "mdi:book-open-outline"
         });
       }
     }
@@ -131,16 +101,13 @@ export function buildAntivirusNavSections({
     sections.push({
       id: "manual",
       label: "Saisie manuelle",
-      description: "Licences et expiration",
-      icon: "mdi:form-textbox",
+      description: "Licenses et expiration",
+      icon: "mdi:form-textbox"
     });
   }
-
   return sections;
 }
-
-/** @deprecated Utiliser buildAntivirusNavSections */
 export const ANTIVIRUS_FORM_SECTIONS = buildAntivirusNavSections({
   selectedProviderId: "bitdefender",
-  globalConfigured: true,
+  globalConfigured: true
 });

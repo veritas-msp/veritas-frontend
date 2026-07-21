@@ -1,12 +1,10 @@
 import { jsPDF } from "jspdf";
-
 function addSectionTitle(doc, text, y, color, font, size, margin) {
   doc.setFont(font, "bold").setFontSize(size).setTextColor(color);
   doc.text(text, margin, y);
   doc.setTextColor(0);
   return y + size + 2;
 }
-
 function addSectionText(doc, text, y, font, size, pageWidth, margin, color = 0) {
   doc.setFont(font, "normal").setFontSize(size).setTextColor(color);
   const lines = doc.splitTextToSize(text || "-", pageWidth - margin * 2);
@@ -14,7 +12,6 @@ function addSectionText(doc, text, y, font, size, pageWidth, margin, color = 0) 
   doc.setTextColor(0);
   return y + lines.length * (size + 2);
 }
-
 function checkPage(doc, y, needed, margin) {
   const pageHeight = doc.internal.pageSize.getHeight();
   if (y + needed > pageHeight - margin) {
@@ -23,7 +20,6 @@ function checkPage(doc, y, needed, margin) {
   }
   return y;
 }
-
 function drawMaterialTable(doc, mouvements, labels, y, margin, pageWidth, font) {
   if (!mouvements?.length) return y;
   y = checkPage(doc, y, 80, margin);
@@ -31,11 +27,9 @@ function drawMaterialTable(doc, mouvements, labels, y, margin, pageWidth, font) 
   doc.text(labels.materiel, margin, y);
   y += 14;
   doc.setTextColor(0);
-
   const colWidths = [180, 50, 70, pageWidth - margin * 2 - 300];
   const headers = [labels.designation, labels.quantite, labels.mouvement, labels.commentaire];
   const rowHeight = 18;
-
   doc.setFillColor(220, 228, 242);
   doc.rect(margin, y, pageWidth - margin * 2, rowHeight, "F");
   doc.setFont(font, "bold").setFontSize(9);
@@ -45,19 +39,13 @@ function drawMaterialTable(doc, mouvements, labels, y, margin, pageWidth, font) 
     x += colWidths[index];
   });
   y += rowHeight;
-
   doc.setFont(font, "normal").setFontSize(9);
-  mouvements.forEach((row) => {
+  mouvements.forEach(row => {
     y = checkPage(doc, y, rowHeight + 4, margin);
     doc.setDrawColor(180, 180, 180);
     doc.rect(margin, y, pageWidth - margin * 2, rowHeight);
     x = margin + 4;
-    const cells = [
-      row.designation || "-",
-      String(row.quantite ?? "-"),
-      row.type || "-",
-      row.commentaire || "-",
-    ];
+    const cells = [row.designation || "-", String(row.quantite ?? "-"), row.type || "-", row.commentaire || "-"];
     cells.forEach((cell, index) => {
       const clipped = doc.splitTextToSize(String(cell), colWidths[index] - 8);
       doc.text(clipped[0] || "-", x, y + 12);
@@ -67,19 +55,25 @@ function drawMaterialTable(doc, mouvements, labels, y, margin, pageWidth, font) 
   });
   return y + 10;
 }
-
-export function exportInterventionPdf(data, labels, { asBlob = false, fileName = "rapport-intervention.pdf" } = {}) {
-  const doc = new jsPDF({ unit: "pt", format: "a4", orientation: "portrait" });
+export function exportInterventionPdf(data, labels, {
+  asBlob = false,
+  fileName = "rapport-intervention.pdf"
+} = {}) {
+  const doc = new jsPDF({
+    unit: "pt",
+    format: "a4",
+    orientation: "portrait"
+  });
   const selectedFont = "helvetica";
   const pageWidth = doc.internal.pageSize.getWidth();
   const margin = 40;
   let y = margin;
-
   doc.setFont(selectedFont, "bold").setFontSize(22).setTextColor("#2b5fab");
-  doc.text(labels.title, pageWidth / 2, y, { align: "center" });
+  doc.text(labels.title, pageWidth / 2, y, {
+    align: "center"
+  });
   y += 40;
   doc.setTextColor(0);
-
   doc.setFont(selectedFont, "bold").setFontSize(12);
   doc.text(labels.intervenant, margin, y);
   doc.text(labels.beneficiaire, pageWidth / 2 + 20, y);
@@ -94,12 +88,10 @@ export function exportInterventionPdf(data, labels, { asBlob = false, fileName =
   doc.text(`${labels.companyTaxId} : ${data.companyTaxId || "-"}`, margin, y);
   doc.text(`${labels.contactSite} : ${data.contactSite || "-"}`, pageWidth / 2 + 20, y);
   y += 20;
-
   doc.setDrawColor("#b3b3b3");
   doc.setLineWidth(1);
   doc.line(margin, y, pageWidth - margin, y);
   y += 18;
-
   doc.setFont(selectedFont, "bold");
   doc.text(`${labels.numero} :`, margin, y);
   doc.setFont(selectedFont, "normal");
@@ -114,38 +106,31 @@ export function exportInterventionPdf(data, labels, { asBlob = false, fileName =
   doc.setFont(selectedFont, "normal");
   doc.text(`${data.dureeIntervention || "-"} ${labels.heures}`, pageWidth / 2 + 80, y);
   y += 24;
-
   y = checkPage(doc, y, 60, margin);
   y = addSectionTitle(doc, labels.demande, y, "#3366cc", selectedFont, 13, margin);
   y = addSectionText(doc, data.descriptionDemande, y, selectedFont, 10, pageWidth, margin, "#222");
   y += 10;
-
   y = checkPage(doc, y, 60, margin);
   y = addSectionTitle(doc, labels.compteRendu, y, "#3366cc", selectedFont, 13, margin);
   y = addSectionText(doc, data.compteRendu, y, selectedFont, 10, pageWidth, margin, "#222");
   y += 10;
-
-  const todos = (data.todos || []).filter((item) => String(item?.text || "").trim());
+  const todos = (data.todos || []).filter(item => String(item?.text || "").trim());
   if (todos.length > 0) {
     y = checkPage(doc, y, 60, margin);
     y = addSectionTitle(doc, labels.todos, y, "#3366cc", selectedFont, 13, margin);
     doc.setFont(selectedFont, "normal").setFontSize(10);
-    todos.forEach((item) => {
+    todos.forEach(item => {
       y = checkPage(doc, y, 20, margin);
       const status = item.done ? labels.todoDone : labels.todoPending;
       const planned = String(item.plannedFor || "").trim();
-      const line = planned
-        ? `${status} · ${item.text} (${labels.plannedFor}: ${planned})`
-        : `${status} · ${item.text}`;
+      const line = planned ? `${status} · ${item.text} (${labels.plannedFor}: ${planned})` : `${status} · ${item.text}`;
       const lines = doc.splitTextToSize(line, pageWidth - margin * 2);
       doc.text(lines, margin, y);
       y += lines.length * 12 + 4;
     });
     y += 6;
   }
-
   y = drawMaterialTable(doc, data.mouvements, labels, y, margin, pageWidth, selectedFont);
-
   y = checkPage(doc, y, 120, margin);
   doc.setDrawColor("#b3b3b3");
   doc.line(margin, y, pageWidth - margin, y);
@@ -174,7 +159,6 @@ export function exportInterventionPdf(data, labels, { asBlob = false, fileName =
   doc.setFont(selectedFont, "normal");
   doc.text(data.signatureDate || "-", pageWidth - margin - 50, y);
   y += 30;
-
   if (data.requireSignature) {
     doc.setFont(selectedFont, "bold").setFontSize(10);
     doc.text(labels.prestataire, margin, y);
@@ -199,14 +183,12 @@ export function exportInterventionPdf(data, labels, { asBlob = false, fileName =
       doc.addImage(data.signatureClient, "PNG", pageWidth - margin - 160, y, 160, 60);
     }
   }
-
   if (asBlob) {
     return doc.output("blob");
   }
   doc.save(fileName);
   return null;
 }
-
 export function buildInterventionPdfLabels(copy) {
   const ctx = copy.context;
   const inter = copy.interventions;
@@ -246,6 +228,6 @@ export function buildInterventionPdfLabels(copy) {
     yes: rep.yes,
     no: rep.no,
     prestataire: rep.prestataire,
-    clientSign: rep.clientSign,
+    clientSign: rep.clientSign
   };
 }

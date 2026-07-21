@@ -33,7 +33,7 @@ code {
   box-sizing: border-box;
 }
 
-/* S'assurer que tous les éléments héritent du fond */
+
 #root {
   background-color: var(--bg-primary);
   height: 100%;
@@ -41,14 +41,14 @@ code {
   overflow-x: hidden;
 }
 
-/* Correction pour le scroll en mode sombre */
+
 html.dark,
 body.dark,
 #root.dark {
   background-color: #0f0f23 !important;
 }
 
-/* S'assurer que les éléments de scroll ont le bon fond */
+
 html.dark::-webkit-scrollbar {
   width: 12px;
 }

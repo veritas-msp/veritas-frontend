@@ -1,9 +1,7 @@
 import { interpolate, pickLocaleMessages } from "../../i18n/translate";
 import { PLANNING_EVENT_TYPES } from "./planningEventTypes";
 import { getLinkedItemIcon } from "./planningEventFormConfig";
-
 const SECTION_IDS = ["general", "schedule", "description", "objects", "todos"];
-
 const PLANNING_EVENT_FORM_COPY = {
   fr: {
     eyebrow: "Planning",
@@ -22,11 +20,26 @@ const PLANNING_EVENT_FORM_COPY = {
     meSuffix: "(Moi)",
     sectionsAria: "Sections du formulaire",
     sections: {
-      general: { label: "Général", description: "Titre, type et client" },
-      schedule: { label: "Dates", description: "Créneau et agents" },
-      description: { label: "Description", description: "Contexte et détails" },
-      objects: { label: "Objets", description: "Équipements liés" },
-      todos: { label: "To-do", description: "Liste de tâches" },
+      general: {
+        label: "Général",
+        description: "Titre, type et client"
+      },
+      schedule: {
+        label: "Dates",
+        description: "Créneau et agents"
+      },
+      description: {
+        label: "Description",
+        description: "Contexte et détails"
+      },
+      objects: {
+        label: "Objets",
+        description: "Équipements liés"
+      },
+      todos: {
+        label: "To-do",
+        description: "Liste de tâches"
+      }
     },
     fields: {
       eventType: "Type d'événement",
@@ -77,7 +90,7 @@ const PLANNING_EVENT_FORM_COPY = {
       markTask: "Marquer la tâche « {text} »",
       editTaskLabel: "Modifier le libellé de la tâche",
       editTaskNamed: "Modifier la tâche « {text} »",
-      deleteTaskNamed: "Supprimer la tâche « {text} »",
+      deleteTaskNamed: "Supprimer la tâche « {text} »"
     },
     eventTypes: {
       intervention: "Intervention",
@@ -88,7 +101,7 @@ const PLANNING_EVENT_FORM_COPY = {
       conge: "Congé",
       integration_monitoring: "Monitoring",
       campagne: "Campagne",
-      other: "Autre",
+      other: "Autre"
     },
     linkedTypes: {
       all: "Tous",
@@ -96,7 +109,7 @@ const PLANNING_EVENT_FORM_COPY = {
       domain: "Nom de domaine",
       backup: "Sauvegardes",
       wifi: "Borne wifi",
-      camera: "Caméra de sécurité",
+      camera: "Caméra de sécurité"
     },
     toasts: {
       titleRequired: "Le titre est requis",
@@ -108,13 +121,13 @@ const PLANNING_EVENT_FORM_COPY = {
       updated: "Événement mis à jour avec succès",
       saveError: "Erreur lors de l'enregistrement de l'événement",
       createError: "Erreur lors de la création de l'événement",
-      updateError: "Erreur lors de la mise à jour de l'événement",
+      updateError: "Erreur lors de la mise à jour de l'événement"
     },
     deleteEvent: {
       confirm: "Êtes-vous sûr de vouloir supprimer cet événement ?",
       success: "Événement supprimé avec succès",
-      error: "Erreur lors de la suppression de l'événement",
-    },
+      error: "Erreur lors de la suppression de l'événement"
+    }
   },
   en: {
     eyebrow: "Planning",
@@ -133,11 +146,26 @@ const PLANNING_EVENT_FORM_COPY = {
     meSuffix: "(Me)",
     sectionsAria: "Form sections",
     sections: {
-      general: { label: "General", description: "Title, type, and client" },
-      schedule: { label: "Schedule", description: "Slot and assignees" },
-      description: { label: "Description", description: "Context and details" },
-      objects: { label: "Objects", description: "Linked equipment" },
-      todos: { label: "To-do", description: "Task list" },
+      general: {
+        label: "General",
+        description: "Title, type, and client"
+      },
+      schedule: {
+        label: "Schedule",
+        description: "Slot and assignees"
+      },
+      description: {
+        label: "Description",
+        description: "Context and details"
+      },
+      objects: {
+        label: "Objects",
+        description: "Linked equipment"
+      },
+      todos: {
+        label: "To-do",
+        description: "Task list"
+      }
     },
     fields: {
       eventType: "Event type",
@@ -188,7 +216,7 @@ const PLANNING_EVENT_FORM_COPY = {
       markTask: "Mark task « {text} »",
       editTaskLabel: "Edit task label",
       editTaskNamed: "Edit task « {text} »",
-      deleteTaskNamed: "Delete task « {text} »",
+      deleteTaskNamed: "Delete task « {text} »"
     },
     eventTypes: {
       intervention: "Intervention",
@@ -199,7 +227,7 @@ const PLANNING_EVENT_FORM_COPY = {
       conge: "Leave",
       integration_monitoring: "Monitoring",
       campagne: "Campaign",
-      other: "Other",
+      other: "Other"
     },
     linkedTypes: {
       all: "All",
@@ -207,7 +235,7 @@ const PLANNING_EVENT_FORM_COPY = {
       domain: "Domain name",
       backup: "Backups",
       wifi: "Wi-Fi access point",
-      camera: "Security camera",
+      camera: "Security camera"
     },
     toasts: {
       titleRequired: "Title is required",
@@ -219,13 +247,13 @@ const PLANNING_EVENT_FORM_COPY = {
       updated: "Event updated successfully",
       saveError: "Error saving event",
       createError: "Error creating event",
-      updateError: "Error updating event",
+      updateError: "Error updating event"
     },
     deleteEvent: {
       confirm: "Are you sure you want to delete this event?",
       success: "Event deleted successfully",
-      error: "Error deleting event",
-    },
+      error: "Error deleting event"
+    }
   },
   de: {
     eyebrow: "Planung",
@@ -244,11 +272,26 @@ const PLANNING_EVENT_FORM_COPY = {
     meSuffix: "(Ich)",
     sectionsAria: "Formularbereiche",
     sections: {
-      general: { label: "Allgemein", description: "Titel, Typ und Kunde" },
-      schedule: { label: "Termine", description: "Slot und Zuständige" },
-      description: { label: "Beschreibung", description: "Kontext und Details" },
-      objects: { label: "Objekte", description: "Verknüpfte Geräte" },
-      todos: { label: "To-do", description: "Aufgabenliste" },
+      general: {
+        label: "Allgemein",
+        description: "Titel, Typ und Kunde"
+      },
+      schedule: {
+        label: "Termine",
+        description: "Slot und Zuständige"
+      },
+      description: {
+        label: "Beschreibung",
+        description: "Kontext und Details"
+      },
+      objects: {
+        label: "Objekte",
+        description: "Verknüpfte Geräte"
+      },
+      todos: {
+        label: "To-do",
+        description: "Aufgabenliste"
+      }
     },
     fields: {
       eventType: "Ereignistyp",
@@ -299,7 +342,7 @@ const PLANNING_EVENT_FORM_COPY = {
       markTask: "Aufgabe « {text} » markieren",
       editTaskLabel: "Aufgabenbezeichnung bearbeiten",
       editTaskNamed: "Aufgabe « {text} » bearbeiten",
-      deleteTaskNamed: "Aufgabe « {text} » löschen",
+      deleteTaskNamed: "Aufgabe « {text} » löschen"
     },
     eventTypes: {
       intervention: "Einsatz",
@@ -310,7 +353,7 @@ const PLANNING_EVENT_FORM_COPY = {
       conge: "Urlaub",
       integration_monitoring: "Monitoring",
       campagne: "Kampagne",
-      other: "Sonstiges",
+      other: "Sonstiges"
     },
     linkedTypes: {
       all: "Alle",
@@ -318,7 +361,7 @@ const PLANNING_EVENT_FORM_COPY = {
       domain: "Domainname",
       backup: "Backups",
       wifi: "WLAN-Zugangspunkt",
-      camera: "Überwachungskamera",
+      camera: "Überwachungskamera"
     },
     toasts: {
       titleRequired: "Titel ist erforderlich",
@@ -330,13 +373,13 @@ const PLANNING_EVENT_FORM_COPY = {
       updated: "Ereignis erfolgreich aktualisiert",
       saveError: "Fehler beim Speichern des Ereignisses",
       createError: "Fehler beim Erstellen des Ereignisses",
-      updateError: "Fehler beim Aktualisieren des Ereignisses",
+      updateError: "Fehler beim Aktualisieren des Ereignisses"
     },
     deleteEvent: {
       confirm: "Möchten Sie dieses Ereignis wirklich löschen?",
       success: "Ereignis erfolgreich gelöscht",
-      error: "Fehler beim Löschen des Ereignisses",
-    },
+      error: "Fehler beim Löschen des Ereignisses"
+    }
   },
   it: {
     eyebrow: "Pianificazione",
@@ -355,11 +398,26 @@ const PLANNING_EVENT_FORM_COPY = {
     meSuffix: "(Io)",
     sectionsAria: "Sezioni del modulo",
     sections: {
-      general: { label: "Generale", description: "Titolo, tipo e cliente" },
-      schedule: { label: "Date", description: "Slot e agenti" },
-      description: { label: "Descrizione", description: "Contesto e dettagli" },
-      objects: { label: "Oggetti", description: "Apparecchiature collegate" },
-      todos: { label: "To-do", description: "Elenco attività" },
+      general: {
+        label: "Generale",
+        description: "Titolo, tipo e cliente"
+      },
+      schedule: {
+        label: "Date",
+        description: "Slot e agenti"
+      },
+      description: {
+        label: "Descrizione",
+        description: "Contesto e dettagli"
+      },
+      objects: {
+        label: "Oggetti",
+        description: "Apparecchiature collegate"
+      },
+      todos: {
+        label: "To-do",
+        description: "Elenco attività"
+      }
     },
     fields: {
       eventType: "Tipo di evento",
@@ -410,7 +468,7 @@ const PLANNING_EVENT_FORM_COPY = {
       markTask: "Segna attività « {text} »",
       editTaskLabel: "Modifica etichetta attività",
       editTaskNamed: "Modifica attività « {text} »",
-      deleteTaskNamed: "Elimina attività « {text} »",
+      deleteTaskNamed: "Elimina attività « {text} »"
     },
     eventTypes: {
       intervention: "Intervento",
@@ -421,7 +479,7 @@ const PLANNING_EVENT_FORM_COPY = {
       conge: "Congedo",
       integration_monitoring: "Monitoraggio",
       campagne: "Campagna",
-      other: "Altro",
+      other: "Altro"
     },
     linkedTypes: {
       all: "Tutti",
@@ -429,7 +487,7 @@ const PLANNING_EVENT_FORM_COPY = {
       domain: "Nome di dominio",
       backup: "Backup",
       wifi: "Punto Wi-Fi",
-      camera: "Telecamera di sicurezza",
+      camera: "Telecamera di sicurezza"
     },
     toasts: {
       titleRequired: "Il titolo è obbligatorio",
@@ -441,13 +499,13 @@ const PLANNING_EVENT_FORM_COPY = {
       updated: "Evento aggiornato con successo",
       saveError: "Errore durante il salvataggio dell'evento",
       createError: "Errore durante la creazione dell'evento",
-      updateError: "Errore durante l'aggiornamento dell'evento",
+      updateError: "Errore durante l'aggiornamento dell'evento"
     },
     deleteEvent: {
       confirm: "Eliminare questo evento?",
       success: "Evento eliminato con successo",
-      error: "Errore durante l'eliminazione dell'evento",
-    },
+      error: "Errore durante l'eliminazione dell'evento"
+    }
   },
   es: {
     eyebrow: "Planificación",
@@ -466,11 +524,26 @@ const PLANNING_EVENT_FORM_COPY = {
     meSuffix: "(Yo)",
     sectionsAria: "Secciones del formulario",
     sections: {
-      general: { label: "General", description: "Título, tipo y cliente" },
-      schedule: { label: "Fechas", description: "Horario y agentes" },
-      description: { label: "Descripción", description: "Contexto y detalles" },
-      objects: { label: "Objetos", description: "Equipos vinculados" },
-      todos: { label: "To-do", description: "Lista de tareas" },
+      general: {
+        label: "General",
+        description: "Título, tipo y cliente"
+      },
+      schedule: {
+        label: "Fechas",
+        description: "Horario y agentes"
+      },
+      description: {
+        label: "Descripción",
+        description: "Contexto y detalles"
+      },
+      objects: {
+        label: "Objetos",
+        description: "Equipos vinculados"
+      },
+      todos: {
+        label: "To-do",
+        description: "Lista de tareas"
+      }
     },
     fields: {
       eventType: "Tipo de evento",
@@ -521,7 +594,7 @@ const PLANNING_EVENT_FORM_COPY = {
       markTask: "Marcar tarea « {text} »",
       editTaskLabel: "Editar etiqueta de la tarea",
       editTaskNamed: "Editar tarea « {text} »",
-      deleteTaskNamed: "Eliminar tarea « {text} »",
+      deleteTaskNamed: "Eliminar tarea « {text} »"
     },
     eventTypes: {
       intervention: "Intervención",
@@ -532,7 +605,7 @@ const PLANNING_EVENT_FORM_COPY = {
       conge: "Permiso",
       integration_monitoring: "Supervisión",
       campagne: "Campaña",
-      other: "Otro",
+      other: "Otro"
     },
     linkedTypes: {
       all: "Todos",
@@ -540,7 +613,7 @@ const PLANNING_EVENT_FORM_COPY = {
       domain: "Nombre de dominio",
       backup: "Copias de seguridad",
       wifi: "Punto Wi-Fi",
-      camera: "Cámara de seguridad",
+      camera: "Cámara de seguridad"
     },
     toasts: {
       titleRequired: "El título es obligatorio",
@@ -552,16 +625,15 @@ const PLANNING_EVENT_FORM_COPY = {
       updated: "Evento actualizado correctamente",
       saveError: "Error al guardar el evento",
       createError: "Error al crear el evento",
-      updateError: "Error al actualizar el evento",
+      updateError: "Error al actualizar el evento"
     },
     deleteEvent: {
       confirm: "¿Eliminar este evento?",
       success: "Evento eliminado correctamente",
-      error: "Error al eliminar el evento",
-    },
-  },
+      error: "Error al eliminar el evento"
+    }
+  }
 };
-
 function getLinkedTypeLabel(type, copy) {
   const normalized = String(type || "").toLowerCase();
   if (normalized.includes("office365")) return copy.linkedTypes.tenant;
@@ -571,40 +643,35 @@ function getLinkedTypeLabel(type, copy) {
   if (normalized.includes("camera") || normalized.includes("cam")) return copy.linkedTypes.camera;
   return type;
 }
-
 export function getPlanningEventFormCopy(locale) {
   const t = pickLocaleMessages(PLANNING_EVENT_FORM_COPY, locale);
   return {
     ...t,
     locale,
-    sections: SECTION_IDS.map((id) => ({
+    sections: SECTION_IDS.map(id => ({
       id,
       label: t.sections[id].label,
       description: t.sections[id].description,
-      icon:
-        id === "general"
-          ? "mdi:calendar-text-outline"
-          : id === "schedule"
-            ? "mdi:clock-outline"
-            : id === "description"
-              ? "mdi:text-box-outline"
-              : id === "objects"
-                ? "mdi:cube-outline"
-                : "mdi:format-list-checks",
+      icon: id === "general" ? "mdi:calendar-text-outline" : id === "schedule" ? "mdi:clock-outline" : id === "description" ? "mdi:text-box-outline" : id === "objects" ? "mdi:cube-outline" : "mdi:format-list-checks"
     })),
-    planningTypes: PLANNING_EVENT_TYPES.map((type) => ({
+    planningTypes: PLANNING_EVENT_TYPES.map(type => ({
       ...type,
-      label: t.eventTypes[type.value] || type.label,
+      label: t.eventTypes[type.value] || type.label
     })),
-    getLinkedTypeLabel: (type) => getLinkedTypeLabel(type, t),
-    formatColorLabel: (color) => interpolate(t.fields.colorLabel, { color }),
-    linkedTypeButtons: (linkedTypeOptions) => [
-      { key: "all", label: t.linkedTypes.all, icon: "mdi:view-grid-outline" },
-      ...linkedTypeOptions.map((type) => ({
-        key: type,
-        label: getLinkedTypeLabel(type, t),
-        icon: getLinkedItemIcon({ type }),
-      })),
-    ],
+    getLinkedTypeLabel: type => getLinkedTypeLabel(type, t),
+    formatColorLabel: color => interpolate(t.fields.colorLabel, {
+      color
+    }),
+    linkedTypeButtons: linkedTypeOptions => [{
+      key: "all",
+      label: t.linkedTypes.all,
+      icon: "mdi:view-grid-outline"
+    }, ...linkedTypeOptions.map(type => ({
+      key: type,
+      label: getLinkedTypeLabel(type, t),
+      icon: getLinkedItemIcon({
+        type
+      })
+    }))]
   };
 }

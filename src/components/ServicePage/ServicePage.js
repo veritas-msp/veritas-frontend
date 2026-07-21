@@ -1,6 +1,3 @@
-// ──────────────────────────────
-// 📦 Dépendances
-// ──────────────────────────────
 import { useState, useEffect, useMemo, useRef } from "react";
 import React from "react";
 import { Icon } from "@iconify/react";
@@ -17,18 +14,12 @@ import DomainMspDashboard from "./DomainMspDashboard";
 import SslMspDashboard from "./SslMspDashboard";
 import MicrosoftTenantMspDashboard from "./MicrosoftTenantMspDashboard";
 import { getServicePageCopy } from "./servicePageI18n";
-
-// ──────────────────────────────
-// 🧩 Composant : ServicePage
-// ──────────────────────────────
 const SERVICE_CLIENTS_CACHE_KEY = "service_clients_list_cache_v2";
 const SERVICE_CLIENTS_CACHE_TTL_MS = 5 * 60 * 1000;
 const SERVICE_DOMAINS_CACHE_KEY = "service_domains_all_cache_v1";
 const SERVICE_DOMAINS_CACHE_TTL_MS = 2 * 60 * 1000;
 const SERVICE_SSL_CACHE_KEY = "service_ssl_all_cache_v1";
 const SERVICE_SSL_CACHE_TTL_MS = 2 * 60 * 1000;
-
-/** Liste /clients/list + colonne modules → même usage que fetchClients (modules_monitoring depuis v_b_clients.modules) */
 function normalizeClientListRow(client) {
   let modulesSnapshot = client.modules;
   if (typeof modulesSnapshot === "string") {
@@ -43,27 +34,19 @@ function normalizeClientListRow(client) {
   }
   return {
     ...client,
-    modules_monitoring: modulesSnapshot,
+    modules_monitoring: modulesSnapshot
   };
 }
-
-/**
- * Score Entra depuis le snapshot O365 (securityData).
- * Attention : pour MFA, le snapshot issu de sync-all contient souvent des zéros factices
- * (securityPromise ne remplit pas mfaReport / admin réels). Les taux MFA affichés dans
- * la table sont complétés via GET /office365/stats/saved (v_b_clients_c_azure_mfa).
- */
 function extractSecuritySnapshotMetrics(snapshotData) {
   const empty = {
     secureScoreCurrent: null,
     secureScoreMax: null,
     mfaAdminPct: null,
-    mfaNonAdminPct: null,
+    mfaNonAdminPct: null
   };
   if (!snapshotData || typeof snapshotData !== "object") return empty;
   const raw = snapshotData.securityData;
   if (!raw || raw.success === false) return empty;
-
   const ss = raw.secureScore || snapshotData.secureScore;
   let secureScoreCurrent = null;
   let secureScoreMax = null;
@@ -71,22 +54,15 @@ function extractSecuritySnapshotMetrics(snapshotData) {
     secureScoreCurrent = Number(ss.currentScore);
     secureScoreMax = Number(ss.maxScore);
   }
-
   const mfa = raw.mfa || {};
   const adminStats = raw.adminStats || {};
   let mfaAdminPct = null;
   if (typeof adminStats.mfaRate === "number") {
     mfaAdminPct = adminStats.mfaRate;
   } else if (adminStats.total > 0 && adminStats.withMFA != null) {
-    mfaAdminPct = Math.round((adminStats.withMFA / adminStats.total) * 100);
+    mfaAdminPct = Math.round(adminStats.withMFA / adminStats.total * 100);
   }
-
-  const totalUsers =
-    typeof mfa.totalUsers === "number"
-      ? mfa.totalUsers
-      : Array.isArray(snapshotData.users)
-        ? snapshotData.users.length
-        : 0;
+  const totalUsers = typeof mfa.totalUsers === "number" ? mfa.totalUsers : Array.isArray(snapshotData.users) ? snapshotData.users.length : 0;
   const totalAdmins = adminStats.total ?? 0;
   const usersWithMFA = mfa.usersWithMFA ?? 0;
   const adminsWithMFA = adminStats.withMFA ?? 0;
@@ -94,26 +70,25 @@ function extractSecuritySnapshotMetrics(snapshotData) {
   const nonAdminWithMfa = Math.max(0, usersWithMFA - adminsWithMFA);
   let mfaNonAdminPct = null;
   if (nonAdminUsers > 0) {
-    mfaNonAdminPct = Math.round((nonAdminWithMfa / nonAdminUsers) * 100);
+    mfaNonAdminPct = Math.round(nonAdminWithMfa / nonAdminUsers * 100);
   } else if (typeof mfa.mfaRate === "number" && totalAdmins === 0) {
     mfaNonAdminPct = mfa.mfaRate;
   }
-
   return {
     secureScoreCurrent,
     secureScoreMax,
     mfaAdminPct,
-    mfaNonAdminPct,
+    mfaNonAdminPct
   };
 }
-
-export default function ServicePage({ onNavigate, serviceParams }) {
+export default function ServicePage({
+  onNavigate,
+  serviceParams
+}) {
   const locale = useAppLocale();
   const pageCopy = useMemo(() => getServicePageCopy(locale), [locale]);
   const publicUrl = process.env.PUBLIC_URL || '';
-  const [activeTab, setActiveTab] = useState(
-    serviceParams?.activeTab === "magicinfo" ? "overview" : serviceParams?.activeTab || "overview"
-  );
+  const [activeTab, setActiveTab] = useState(serviceParams?.activeTab === "magicinfo" ? "overview" : serviceParams?.activeTab || "overview");
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(false);
   const [syncing, setSyncing] = useState(false);
@@ -125,25 +100,19 @@ export default function ServicePage({ onNavigate, serviceParams }) {
   const [allSslCerts, setAllSslCerts] = useState([]);
   const [loadingSsl, setLoadingSsl] = useState(false);
   const [checkingSsl, setCheckingSsl] = useState(false);
-  
-  // État pour stocker les données O365 par client
   const [o365DataByClient, setO365DataByClient] = useState({});
-  
   const clientsControllerRef = useRef(null);
   const domainsAbortRef = useRef(null);
   const sslAbortRef = useRef(null);
   const o365AbortRef = useRef(null);
-
   useEffect(() => {
     loadClients();
   }, []);
-
   useEffect(() => {
     if (serviceParams?.activeTab && serviceParams.activeTab !== "overview") {
       setActiveTab(serviceParams.activeTab === "magicinfo" ? "overview" : serviceParams.activeTab);
     }
   }, [serviceParams?.activeTab]);
-
   useEffect(() => {
     if (activeTab === 'domain' || activeTab === 'overview') {
       loadAllDomains();
@@ -155,7 +124,6 @@ export default function ServicePage({ onNavigate, serviceParams }) {
       loadO365DataForClients();
     }
   }, [activeTab, clients]);
-
   useEffect(() => {
     return () => {
       clientsControllerRef.current?.abort();
@@ -164,25 +132,22 @@ export default function ServicePage({ onNavigate, serviceParams }) {
       o365AbortRef.current?.abort();
     };
   }, []);
-  
-  // Charger les données O365 depuis la base pour tous les clients avec Office365 activé
-  const loadO365DataForClients = async (clientsList) => {
+  const loadO365DataForClients = async clientsList => {
     const sourceClients = Array.isArray(clientsList) ? clientsList : clients;
     o365AbortRef.current?.abort();
     const controller = new AbortController();
     o365AbortRef.current = controller;
-    const { signal } = controller;
-
+    const {
+      signal
+    } = controller;
     const clientsWithO365 = sourceClients.filter(client => client.modules_monitoring?.Office365);
     if (clientsWithO365.length === 0) {
       if (!signal.aborted) setO365DataByClient({});
       return;
     }
-    
     try {
       const o365DataMap = {};
-      // Charger les snapshots O365 et les credentials Azure pour chaque client en parallèle
-      const promises = clientsWithO365.map(async (client) => {
+      const promises = clientsWithO365.map(async client => {
         let tenantId = null;
         let lastSync = null;
         let userCount = null;
@@ -192,12 +157,13 @@ export default function ServicePage({ onNavigate, serviceParams }) {
         let mfaAdminPct = null;
         let mfaNonAdminPct = null;
         try {
-          // On ne fetch que le snapshot O365 et les credentials Azure
-          const [snapshotResponse, credentialsResponse] = await Promise.all([
-            fetch(`${API_BASE_URL}/clients/${client.id}/o365`, { credentials: 'include', signal }),
-            fetch(`${API_BASE_URL}/client-office365/${client.id}`, { credentials: 'include', signal }).catch(() => null)
-          ]);
-          // Récupérer les données du snapshot
+          const [snapshotResponse, credentialsResponse] = await Promise.all([fetch(`${API_BASE_URL}/clients/${client.id}/o365`, {
+            credentials: 'include',
+            signal
+          }), fetch(`${API_BASE_URL}/client-office365/${client.id}`, {
+            credentials: 'include',
+            signal
+          }).catch(() => null)]);
           let users = [];
           if (snapshotResponse.ok) {
             const result = await snapshotResponse.json();
@@ -206,7 +172,6 @@ export default function ServicePage({ onNavigate, serviceParams }) {
               if (latestSnapshot.data) {
                 tenantId = latestSnapshot.data.tenantId || latestSnapshot.item_key || null;
                 lastSync = latestSnapshot.data.lastUpdate || latestSnapshot.updated_at || null;
-                // Utilisateurs filtrés
                 if (latestSnapshot.data.users && Array.isArray(latestSnapshot.data.users)) {
                   users = latestSnapshot.data.users;
                   userCount = users.filter(u => {
@@ -214,26 +179,17 @@ export default function ServicePage({ onNavigate, serviceParams }) {
                     const upn = (u.userPrincipalName || u.email || '').toString();
                     const email = (u.email || '').toString();
                     const combined = `${name} ${upn} ${email}`.toLowerCase();
-                    const patterns = [
-                      /aad_/, /msol_/, /sync_/, /svc_/, /service_/, /\$@/,
-                      /_srv/, /_service/, /_sync/,
-                      /compte de service|service account|compte service/,
-                      /bot\./, /bot@/, /connector/, /automation/,
-                      /azure ad sync|ad sync|dirsync|aadconnect|dir sync/,
-                      /directory synchronization|synchronization service|on-premises/,
-                      /healthmailbox|systemmailbox|federatedemail/
-                    ];
+                    const patterns = [/aad_/, /msol_/, /sync_/, /svc_/, /service_/, /\$@/, /_srv/, /_service/, /_sync/, /compte de service|service account|compte service/, /bot\./, /bot@/, /connector/, /automation/, /azure ad sync|ad sync|dirsync|aadconnect|dir sync/, /directory synchronization|synchronization service|on-premises/, /healthmailbox|systemmailbox|federatedemail/];
                     return !patterns.some(p => p.test(combined));
                   }).length;
                 }
-                // Nombre total de licences (somme des licences avec total valide, comme O365.js)
                 const licences = latestSnapshot.data.licences || [];
                 if (Array.isArray(licences) && licences.length > 0) {
-                  const validLicences = licences.filter(lic => {
+                  const validLicenses = licences.filter(lic => {
                     const t = lic.total ?? lic.totalLicenses ?? 0;
                     return t > 0 && t < 10000;
                   });
-                  totalLicenses = validLicences.reduce((sum, lic) => sum + (lic.total ?? lic.totalLicenses ?? 0), 0);
+                  totalLicenses = validLicenses.reduce((sum, lic) => sum + (lic.total ?? lic.totalLicenses ?? 0), 0);
                   if (totalLicenses === 0) totalLicenses = licences.reduce((sum, lic) => sum + (lic.total ?? lic.totalLicenses ?? 0), 0);
                 }
                 const sec = extractSecuritySnapshotMetrics(latestSnapshot.data);
@@ -252,13 +208,11 @@ export default function ServicePage({ onNavigate, serviceParams }) {
               }
             } catch (credErr) {}
           }
-
-          // Taux MFA réels : table v_b_clients_c_azure_mfa (sync MFA / détail tenant), pas le snapshot sync-all
           try {
-            const statsRes = await fetch(
-              `${API_BASE_URL}/office365/stats/saved/${client.id}`,
-              { credentials: "include", signal }
-            );
+            const statsRes = await fetch(`${API_BASE_URL}/office365/stats/saved/${client.id}`, {
+              credentials: "include",
+              signal
+            });
             if (statsRes.ok) {
               const json = await statsRes.json();
               if (json?.success && json.stats) {
@@ -271,10 +225,7 @@ export default function ServicePage({ onNavigate, serviceParams }) {
                 }
               }
             }
-          } catch {
-            // ignore · pas de stats MFA en base encore
-          }
-
+          } catch {}
           o365DataMap[client.id] = {
             tenantId: tenantId || '-',
             lastSync,
@@ -283,12 +234,11 @@ export default function ServicePage({ onNavigate, serviceParams }) {
             secureScoreCurrent,
             secureScoreMax,
             mfaAdminPct,
-            mfaNonAdminPct,
+            mfaNonAdminPct
           };
         } catch (error) {
           if (error?.name === 'AbortError') throw error;
-          console.error(`Erreur lors du chargement des données O365 pour le client ${client.id}:`, error);
-          // Mettre des valeurs par défaut en cas d'erreur
+          console.error(`Error loading O365 data for client ${client.id}:`, error);
           o365DataMap[client.id] = {
             tenantId: '-',
             lastSync: null,
@@ -297,92 +247,80 @@ export default function ServicePage({ onNavigate, serviceParams }) {
             secureScoreCurrent: null,
             secureScoreMax: null,
             mfaAdminPct: null,
-            mfaNonAdminPct: null,
+            mfaNonAdminPct: null
           };
         }
       });
-
       await Promise.all(promises);
       if (signal.aborted) return;
       setO365DataByClient(o365DataMap);
     } catch (error) {
       if (error?.name === 'AbortError') return;
-      console.error('Erreur lors du chargement des données O365:', error);
+      console.error('Error loading O365 data:', error);
     }
   };
-
-  const loadClients = async ({ force = false } = {}) => {
+  const loadClients = async ({
+    force = false
+  } = {}) => {
     if (!force) {
       try {
         const raw = sessionStorage.getItem(SERVICE_CLIENTS_CACHE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw);
-          const isFresh =
-            parsed?.savedAt &&
-            Array.isArray(parsed?.data) &&
-            Date.now() - parsed.savedAt < SERVICE_CLIENTS_CACHE_TTL_MS;
+          const isFresh = parsed?.savedAt && Array.isArray(parsed?.data) && Date.now() - parsed.savedAt < SERVICE_CLIENTS_CACHE_TTL_MS;
           if (isFresh) {
             setClients(parsed.data);
             return parsed.data;
           }
         }
-      } catch {
-        // ignore cache parse errors
-      }
+      } catch {}
     }
-
     try {
       clientsControllerRef.current?.abort();
       const controller = new AbortController();
       clientsControllerRef.current = controller;
       setLoading(true);
-      const clientsData = await fetchClientsList({ signal: controller.signal });
+      const clientsData = await fetchClientsList({
+        signal: controller.signal
+      });
       if (controller.signal.aborted) return undefined;
       const normalized = (Array.isArray(clientsData) ? clientsData : []).map(normalizeClientListRow);
       setClients(normalized);
       try {
-        sessionStorage.setItem(
-          SERVICE_CLIENTS_CACHE_KEY,
-          JSON.stringify({ savedAt: Date.now(), data: normalized })
-        );
-      } catch {
-        // ignore cache write errors
-      }
+        sessionStorage.setItem(SERVICE_CLIENTS_CACHE_KEY, JSON.stringify({
+          savedAt: Date.now(),
+          data: normalized
+        }));
+      } catch {}
       return normalized;
     } catch (error) {
       if (error?.name === 'AbortError') return undefined;
-      console.error('Erreur lors du chargement des clients:', error);
+      console.error('Error loading clients:', error);
       setClients([]);
       return [];
     } finally {
       setLoading(false);
     }
   };
-
-  const loadAllDomains = async ({ force = false } = {}) => {
+  const loadAllDomains = async ({
+    force = false
+  } = {}) => {
     if (!force) {
       try {
         const raw = sessionStorage.getItem(SERVICE_DOMAINS_CACHE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw);
-          const isFresh =
-            parsed?.savedAt &&
-            Array.isArray(parsed?.data) &&
-            Date.now() - parsed.savedAt < SERVICE_DOMAINS_CACHE_TTL_MS;
+          const isFresh = parsed?.savedAt && Array.isArray(parsed?.data) && Date.now() - parsed.savedAt < SERVICE_DOMAINS_CACHE_TTL_MS;
           if (isFresh) {
             setAllDomains(parsed.data);
             return;
           }
         }
-      } catch {
-        // ignore cache parse errors
-      }
+      } catch {}
     }
-
     domainsAbortRef.current?.abort();
     const controller = new AbortController();
     domainsAbortRef.current = controller;
-
     try {
       setLoadingDomains(true);
       const response = await fetch(`${API_BASE_URL}/clients/domains/all`, {
@@ -390,84 +328,72 @@ export default function ServicePage({ onNavigate, serviceParams }) {
         signal: controller.signal
       });
       if (!response.ok) {
-        throw new Error('Erreur lors du chargement des domaines');
+        throw new Error('Error loading domains');
       }
       const domainsData = await response.json();
       if (controller.signal.aborted) return;
       const list = domainsData || [];
       setAllDomains(list);
       try {
-        sessionStorage.setItem(
-          SERVICE_DOMAINS_CACHE_KEY,
-          JSON.stringify({ savedAt: Date.now(), data: list })
-        );
-      } catch {
-        // ignore cache write errors
-      }
+        sessionStorage.setItem(SERVICE_DOMAINS_CACHE_KEY, JSON.stringify({
+          savedAt: Date.now(),
+          data: list
+        }));
+      } catch {}
     } catch (error) {
       if (error?.name === 'AbortError') return;
-      console.error('Erreur lors du chargement de tous les domaines:', error);
+      console.error('Error while loading de tous les domaines:', error);
       setAllDomains([]);
     } finally {
       setLoadingDomains(false);
     }
   };
-
-  const loadAllSslCerts = async ({ force = false } = {}) => {
+  const loadAllSslCerts = async ({
+    force = false
+  } = {}) => {
     if (!force) {
       try {
         const raw = sessionStorage.getItem(SERVICE_SSL_CACHE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw);
-          const isFresh =
-            parsed?.savedAt &&
-            Array.isArray(parsed?.data) &&
-            Date.now() - parsed.savedAt < SERVICE_SSL_CACHE_TTL_MS;
+          const isFresh = parsed?.savedAt && Array.isArray(parsed?.data) && Date.now() - parsed.savedAt < SERVICE_SSL_CACHE_TTL_MS;
           if (isFresh) {
             setAllSslCerts(parsed.data);
             return;
           }
         }
-      } catch {
-        // ignore cache parse errors
-      }
+      } catch {}
     }
-
     sslAbortRef.current?.abort();
     const controller = new AbortController();
     sslAbortRef.current = controller;
-
     try {
       setLoadingSsl(true);
       const response = await fetch(`${API_BASE_URL}/clients/ssl-certificates/all`, {
         credentials: "include",
-        signal: controller.signal,
+        signal: controller.signal
       });
       if (!response.ok) {
-        throw new Error("Erreur lors du chargement des certificats SSL");
+        throw new Error("Error loading SSL certificates");
       }
       const sslData = await response.json();
       if (controller.signal.aborted) return;
       const list = sslData || [];
       setAllSslCerts(list);
       try {
-        sessionStorage.setItem(
-          SERVICE_SSL_CACHE_KEY,
-          JSON.stringify({ savedAt: Date.now(), data: list })
-        );
-      } catch {
-        // ignore cache write errors
-      }
+        sessionStorage.setItem(SERVICE_SSL_CACHE_KEY, JSON.stringify({
+          savedAt: Date.now(),
+          data: list
+        }));
+      } catch {}
     } catch (error) {
       if (error?.name === "AbortError") return;
-      console.error("Erreur lors du chargement des certificats SSL:", error);
+      console.error("Error loading SSL certificates:", error);
       setAllSslCerts([]);
     } finally {
       setLoadingSsl(false);
     }
   };
-
-  // Données Microsoft - Filtrer les clients avec Office365 activé
   const microsoftData = useMemo(() => {
     const data = [];
     clients.forEach(client => {
@@ -484,22 +410,19 @@ export default function ServicePage({ onNavigate, serviceParams }) {
           secureScoreCurrent: o365Data.secureScoreCurrent ?? null,
           secureScoreMax: o365Data.secureScoreMax ?? null,
           mfaAdminPct: o365Data.mfaAdminPct ?? null,
-          mfaNonAdminPct: o365Data.mfaNonAdminPct ?? null,
+          mfaNonAdminPct: o365Data.mfaNonAdminPct ?? null
         });
       }
     });
     return data;
-    }, [clients, o365DataByClient]);
-
+  }, [clients, o365DataByClient]);
   const handleSyncMicrosoft = async () => {
     if (syncing) return;
     setSyncing(true);
     setSyncProgress(0);
     setSyncStatus(pageCopy.toasts.syncPreparing);
-
     try {
       toast.success(pageCopy.toasts.syncMicrosoftStarted);
-      // Implémentation API si nécessaire
       setSyncProgress(100);
       setSyncStatus(pageCopy.toasts.syncDone);
       setTimeout(() => {
@@ -508,21 +431,18 @@ export default function ServicePage({ onNavigate, serviceParams }) {
         setSyncStatus('');
       }, 1500);
     } catch (error) {
-      console.error('Erreur synchronisation:', error);
+      console.error('Sync error:', error);
       toast.error(pageCopy.toasts.syncMicrosoftError);
       setSyncing(false);
     }
   };
-
   const handleSyncDomains = async () => {
     if (syncingDomains) return;
     setSyncingDomains(true);
     setSyncProgress(0);
     setSyncStatus(pageCopy.toasts.syncPreparing);
-
     try {
       toast.info(pageCopy.toasts.syncDomainsStarted);
-      
       const response = await fetch(`${API_BASE_URL}/ovh/domains/sync-all`, {
         method: 'POST',
         credentials: 'include',
@@ -530,22 +450,19 @@ export default function ServicePage({ onNavigate, serviceParams }) {
           'Content-Type': 'application/json'
         }
       });
-
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Erreur lors de la synchronisation');
+        throw new Error(errorData.error || 'Error during sync');
       }
-
       const result = await response.json();
       setSyncProgress(100);
       setSyncStatus(pageCopy.toasts.syncDone);
-      
-      // Recharger les domaines après synchronisation (invalider le cache navigateur)
-      await loadAllDomains({ force: true });
-      
+      await loadAllDomains({
+        force: true
+      });
       toast.success(result.message || pageCopy.toasts.syncDomainsSuccess);
     } catch (error) {
-      console.error('Erreur synchronisation domaines:', error);
+      console.error('Domain sync error:', error);
       toast.error(error.message || pageCopy.toasts.syncDomainsError);
     } finally {
       setTimeout(() => {
@@ -555,42 +472,33 @@ export default function ServicePage({ onNavigate, serviceParams }) {
       }, 1500);
     }
   };
-
   const handleCheckAllSsl = async () => {
     if (checkingSsl) return;
     setCheckingSsl(true);
     setSyncProgress(0);
     setSyncStatus(pageCopy.toasts.syncPreparing);
-
     try {
       toast.info(pageCopy.toasts.sslCheckStarted);
-
       const response = await fetch(`${API_BASE_URL}/clients/ssl-certificates/check-all`, {
         method: "POST",
         credentials: "include",
         headers: {
-          "Content-Type": "application/json",
-        },
+          "Content-Type": "application/json"
+        }
       });
-
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || "Erreur lors de la vérification SSL");
+        throw new Error(errorData.error || "Error during SSL check");
       }
-
       const result = await response.json();
       setSyncProgress(100);
       setSyncStatus(pageCopy.toasts.syncDone);
-
-      await loadAllSslCerts({ force: true });
-
-      toast.success(
-        result.checked != null
-          ? `${pageCopy.toasts.sslCheckSuccess} (${result.checked})`
-          : pageCopy.toasts.sslCheckSuccess
-      );
+      await loadAllSslCerts({
+        force: true
+      });
+      toast.success(result.checked != null ? `${pageCopy.toasts.sslCheckSuccess} (${result.checked})` : pageCopy.toasts.sslCheckSuccess);
     } catch (error) {
-      console.error("Erreur vérification SSL:", error);
+      console.error("SSL check error:", error);
       toast.error(error.message || pageCopy.toasts.sslCheckError);
     } finally {
       setTimeout(() => {
@@ -600,45 +508,30 @@ export default function ServicePage({ onNavigate, serviceParams }) {
       }, 1500);
     }
   };
-
-  const serviceOverviewStats = useMemo(
-    () => computeServiceOverviewStats(microsoftData, allDomains, allSslCerts),
-    [microsoftData, allDomains, allSslCerts]
-  );
-
-  const tabBadges = useMemo(
-    () => ({
-      overview: serviceOverviewStats.total,
-      microsoft: microsoftData.length,
-      domain: allDomains.length,
-      ssl: allSslCerts.length,
-    }),
-    [serviceOverviewStats, microsoftData, allDomains, allSslCerts]
-  );
-
-  const overviewLoading =
-    (loading || loadingDomains || loadingSsl) && activeTab === "overview";
-
+  const serviceOverviewStats = useMemo(() => computeServiceOverviewStats(microsoftData, allDomains, allSslCerts), [microsoftData, allDomains, allSslCerts]);
+  const tabBadges = useMemo(() => ({
+    overview: serviceOverviewStats.total,
+    microsoft: microsoftData.length,
+    domain: allDomains.length,
+    ssl: allSslCerts.length
+  }), [serviceOverviewStats, microsoftData, allDomains, allSslCerts]);
+  const overviewLoading = (loading || loadingDomains || loadingSsl) && activeTab === "overview";
   const handleOpenServiceClient = (clientId, clientName) => {
     if (!onNavigate || !clientId) return;
-    onNavigate("ContratDetail", { clientId, name: clientName });
+    onNavigate("ContratDetail", {
+      clientId,
+      name: clientName
+    });
   };
-
   const handleOpenTenant = (item, options) => {
     if (!onNavigate) return;
-    onNavigate(
-      "TenantDetail",
-      {
-        ...item,
-        clientId: item.clientId,
-        clientName: item.clientName,
-      },
-      options
-    );
+    onNavigate("TenantDetail", {
+      ...item,
+      clientId: item.clientId,
+      clientName: item.clientName
+    }, options);
   };
-
-  return (
-    <div className={`${cyberStyles.mspPage} ${cyberStyles.mspPageOrbital}`}>
+  return <div className={`${cyberStyles.mspPage} ${cyberStyles.mspPageOrbital}`}>
       <SupportOrbitalBackground variant="page" />
       <div className={cyberStyles.mspLayout}>
       <div className={cyberStyles.mspMain}>
@@ -654,107 +547,43 @@ export default function ServicePage({ onNavigate, serviceParams }) {
             </div>
           </div>
           <nav className={cyberStyles.mspTabBar} role="tablist" aria-label={pageCopy.tabSectionsAria}>
-            {pageCopy.tabs.map((tab) => {
+            {pageCopy.tabs.map(tab => {
               const badge = tabBadges[tab.key] || 0;
-              const showBadge =
-                tab.key === "overview"
-                  ? badge > 0
-                  : tab.key === "microsoft" || tab.key === "domain" || tab.key === "ssl";
-              return (
-                <button
-                  key={tab.key}
-                  type="button"
-                  role="tab"
-                  aria-selected={activeTab === tab.key}
-                  className={`${cyberStyles.mspTab} ${activeTab === tab.key ? cyberStyles.mspTabActive : ""}`}
-                  onClick={() => setActiveTab(tab.key)}
-                  title={tab.label}
-                >
+              const showBadge = tab.key === "overview" ? badge > 0 : tab.key === "microsoft" || tab.key === "domain" || tab.key === "ssl";
+              return <button key={tab.key} type="button" role="tab" aria-selected={activeTab === tab.key} className={`${cyberStyles.mspTab} ${activeTab === tab.key ? cyberStyles.mspTabActive : ""}`} onClick={() => setActiveTab(tab.key)} title={tab.label}>
                   <Icon icon={tab.icon} className={cyberStyles.mspTabIcon} />
                   <span className={cyberStyles.mspTabLabelRow}>
                     <span>{tab.label}</span>
-                    {showBadge ? (
-                      <span
-                        className={`${supervisionStyles.tabCount} ${
-                          badge === 0 ? supervisionStyles.tabCountMuted : ""
-                        }`}
-                      >
+                    {showBadge ? <span className={`${supervisionStyles.tabCount} ${badge === 0 ? supervisionStyles.tabCountMuted : ""}`}>
                         {badge}
-                      </span>
-                    ) : null}
+                      </span> : null}
                   </span>
-                </button>
-              );
+                </button>;
             })}
           </nav>
         </header>
 
-        <main className={`${cyberStyles.mspContent} ${cyberStyles.mspContentList}`}>
+        <main className={cyberStyles.mspContent}>
           <div className={`${layout.shell} ${layout.shellWide} ${layout.shellFull}`}>
           <div className={cyberStyles.tabContent}>
-          {activeTab === "overview" && (
-            <ServiceOverviewPanel
-              microsoftData={microsoftData}
-              allDomains={allDomains}
-              allSslCerts={allSslCerts}
-              loading={overviewLoading}
-              onGoTab={setActiveTab}
-              onOpenClient={handleOpenServiceClient}
-              copy={pageCopy.overview}
-            />
-          )}
+          {activeTab === "overview" && <ServiceOverviewPanel microsoftData={microsoftData} allDomains={allDomains} allSslCerts={allSslCerts} loading={overviewLoading} onGoTab={setActiveTab} onOpenClient={handleOpenServiceClient} copy={pageCopy.overview} />}
 
-          {activeTab === "microsoft" && (
-            <MicrosoftTenantMspDashboard
-              tenants={microsoftData}
-              loading={loading}
-              syncing={syncing}
-              onSync={handleSyncMicrosoft}
-              copy={pageCopy.microsoft}
-              bcp47={pageCopy.bcp47}
-              onOpenTenant={handleOpenTenant}
-              onOpenClient={(row) => handleOpenServiceClient(row.clientId, row.clientName)}
-            />
-          )}
+          {activeTab === "microsoft" && <MicrosoftTenantMspDashboard tenants={microsoftData} loading={loading} syncing={syncing} onSync={handleSyncMicrosoft} copy={pageCopy.microsoft} bcp47={pageCopy.bcp47} onOpenTenant={handleOpenTenant} onOpenClient={row => handleOpenServiceClient(row.clientId, row.clientName)} />}
 
-          {activeTab === "domain" && (
-            <DomainMspDashboard
-              domains={allDomains}
-              loading={loadingDomains}
-              syncing={syncingDomains}
-              onSync={handleSyncDomains}
-              copy={pageCopy.domain}
-              bcp47={pageCopy.bcp47}
-              onOpenClient={(row) => {
-                const clientId =
-                  row.clientId || clients.find((client) => client.name === row.clientName)?.id;
+          {activeTab === "domain" && <DomainMspDashboard domains={allDomains} loading={loadingDomains} syncing={syncingDomains} onSync={handleSyncDomains} copy={pageCopy.domain} bcp47={pageCopy.bcp47} onOpenClient={row => {
+                const clientId = row.clientId || clients.find(client => client.name === row.clientName)?.id;
                 if (clientId) handleOpenServiceClient(clientId, row.clientName);
-              }}
-            />
-          )}
+              }} />}
 
-          {activeTab === "ssl" && (
-            <SslMspDashboard
-              certificates={allSslCerts}
-              loading={loadingSsl}
-              checking={checkingSsl}
-              onCheckAll={handleCheckAllSsl}
-              copy={pageCopy.ssl}
-              bcp47={pageCopy.bcp47}
-              onOpenClient={(row) => {
-                const clientId =
-                  row.clientId || clients.find((client) => client.name === row.clientName)?.id;
+          {activeTab === "ssl" && <SslMspDashboard certificates={allSslCerts} loading={loadingSsl} checking={checkingSsl} onCheckAll={handleCheckAllSsl} copy={pageCopy.ssl} bcp47={pageCopy.bcp47} onOpenClient={row => {
+                const clientId = row.clientId || clients.find(client => client.name === row.clientName)?.id;
                 if (clientId) handleOpenServiceClient(clientId, row.clientName);
-              }}
-            />
-          )}
+              }} />}
 
           </div>
           </div>
         </main>
       </div>
       </div>
-    </div>
-  );
+    </div>;
 }
-

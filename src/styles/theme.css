@@ -1,17 +1,17 @@
-/* styles/theme.css */
-/* test */
-/* ────────────────────────────── */
-/* 🎨 Variables de Thème         */
-/* ────────────────────────────── */
 
-/* ☀️ Thème Clair (par défaut) */
+
+
+
+
+
+
 html.light {
   --bg-primary: #ffffff;
   --bg-secondary: #f9fafb;
   --bg-tertiary: #f3f4f6;
   --bg-sidebar: #ffffff;
   
-  /* ✅ Texte global en noir pur */
+  
   --text-primary: #000000;
   --text-secondary: #000000;
   --text-muted: #6b7280;
@@ -29,7 +29,7 @@ html.light {
   --accent-primary-rgb: 19, 186, 142;
   --calendar-picker-filter: none;
 
-  /* Pages MSP (accueil, admin, entreprises) */
+  
   --msp-page-bg: #d0d9e6;
   --msp-surface: #ffffff;
   --msp-surface-2: #f7f9fc;
@@ -45,7 +45,7 @@ html.light {
   --msp-accent-soft: rgba(43, 95, 171, 0.1);
 }
 
-/* 🌙 Thème Sombre */
+
 html.dark {
   --bg-primary: #0f0f23;
   --bg-secondary: #1a1a2e;
@@ -69,7 +69,7 @@ html.dark {
   --accent-primary-rgb: 19, 186, 142;
   --calendar-picker-filter: invert(1) brightness(0.8);
 
-  /* Pages MSP (accueil, admin, entreprises) */
+  
   --msp-page-bg: #060a10;
   --msp-surface: #1a2540;
   --msp-surface-2: #152035;
@@ -85,17 +85,17 @@ html.dark {
   --msp-accent-soft: rgba(74, 143, 212, 0.15);
 }
 
-/* ────────────────────────────── */
-/* 🔧 Corrections Globales       */
-/* ────────────────────────────── */
 
-/* S'assurer que le fond est cohérent partout */
+
+
+
+
 html.dark,
 body.dark {
   background-color: #0f0f23 !important;
 }
 
-/* Correction pour les éléments de scroll */
+
 html.dark::-webkit-scrollbar,
 body.dark::-webkit-scrollbar {
   width: 12px;
@@ -117,9 +117,9 @@ body.dark::-webkit-scrollbar-thumb:hover {
   background: #4a4a6a;
 }
 
-/* ────────────────────────────── */
-/* ✒️ Styles pour Quill en Dark Mode */
-/* ────────────────────────────── */
+
+
+
 
 .quill-dark .ql-toolbar {
   border-color: #3a3a5a !important;

@@ -1,13 +1,9 @@
-/**
- * Routage agent MSP · chemins stables, parse / build, contrôle d'accès UI.
- */
 import { isProOnlyDocType } from "../config/edition";
-
-/** Clé d'accès profil (Sidebar) pour chaque type de document */
 export const DOC_TYPE_ACCESS_KEY = {
   Hardware: "Hardware",
   Equipment: "Hardware",
   EquipmentDetail: "Hardware",
+  JobDetail: "Hardware",
   ComputerFleetStats: "Hardware",
   Cybersecurite: "Cybersecurite",
   CampaignDetail: "Cybersecurite",
@@ -29,28 +25,21 @@ export const DOC_TYPE_ACCESS_KEY = {
   Mon: "Mon",
   MonitoringDetail: "Mon",
   Rapport: "Mon",
-  DocumentsHub: "DocumentsHub",
+  DocumentsHub: "DocumentsHub"
 };
-
 const QUERY_KEYS = {
-  AntivirusDetail: [
-    "companyId",
-    "mappingMode",
-    "bitdefenderTenantId",
-    "productName",
-    "antivirusId",
-  ],
+  AntivirusDetail: ["companyId", "mappingMode", "bitdefenderTenantId", "productName", "antivirusId"],
   AntispamDetail: ["customerId", "mailinblackTenantId", "productName", "logiciel", "solution"],
   EquipmentDetail: ["id", "clientId", "type", "name"],
+  JobDetail: ["id", "clientId", "nom", "name"],
   ComputerFleetStats: ["equipmentType", "siteFilter"],
   Cybersecurite: ["tab", "clientId"],
   Service: ["tab", "clientId"],
   Contrat: ["openClientId", "highlight"],
   Contact: ["openContactId", "highlight"],
   TicketCreate: ["clientId", "contactId"],
-  TicketSalesCreate: ["kind", "category"],
+  TicketSalesCreate: ["kind", "category"]
 };
-
 function appendQuery(path, data, docType) {
   const keys = QUERY_KEYS[docType];
   if (!keys || !data) return path;
@@ -64,7 +53,6 @@ function appendQuery(path, data, docType) {
   const qs = params.toString();
   return qs ? `${path}?${qs}` : path;
 }
-
 function readQuery(search) {
   const params = new URLSearchParams(search || "");
   const data = {};
@@ -73,17 +61,11 @@ function readQuery(search) {
   });
   return data;
 }
-
 function encodeSeg(value) {
   return encodeURIComponent(String(value ?? ""));
 }
-
-/**
- * @returns {string|null}
- */
 export function buildAgentPath(docType, data = null, options = {}) {
   const d = data || {};
-
   switch (docType) {
     case "Home":
       return "/";
@@ -95,33 +77,40 @@ export function buildAgentPath(docType, data = null, options = {}) {
       return "/supervision";
     case "EquipmentDetail":
       return appendQuery("/supervision/items", d, docType);
-    case "ComputerFleetStats": {
-      const clientId = d.clientId;
-      if (!clientId) return "/supervision";
-      return appendQuery(`/supervision/clients/${encodeSeg(clientId)}/fleet`, d, docType);
-    }
+    case "JobDetail":
+      return appendQuery("/supervision/backup-jobs", d, docType);
+    case "ComputerFleetStats":
+      {
+        const clientId = d.clientId;
+        if (!clientId) return "/supervision";
+        return appendQuery(`/supervision/clients/${encodeSeg(clientId)}/fleet`, d, docType);
+      }
     case "Cybersecurite":
       return appendQuery("/cybersecurity", d, docType);
-    case "CampaignDetail": {
-      const campaignId = d.campaignId || d.id;
-      return campaignId ? `/cybersecurity/campaigns/${encodeSeg(campaignId)}` : "/cybersecurity";
-    }
-    case "AntivirusDetail": {
-      const clientId = d.clientId;
-      if (!clientId) return "/cybersecurity";
-      return appendQuery(`/cybersecurity/antivirus/${encodeSeg(clientId)}`, d, docType);
-    }
-    case "AntispamDetail": {
-      const clientId = d.clientId;
-      if (!clientId) return "/cybersecurity";
-      return appendQuery(`/cybersecurity/antispam/${encodeSeg(clientId)}`, d, docType);
-    }
+    case "CampaignDetail":
+      {
+        const campaignId = d.campaignId || d.id;
+        return campaignId ? `/cybersecurity/campaigns/${encodeSeg(campaignId)}` : "/cybersecurity";
+      }
+    case "AntivirusDetail":
+      {
+        const clientId = d.clientId;
+        if (!clientId) return "/cybersecurity";
+        return appendQuery(`/cybersecurity/antivirus/${encodeSeg(clientId)}`, d, docType);
+      }
+    case "AntispamDetail":
+      {
+        const clientId = d.clientId;
+        if (!clientId) return "/cybersecurity";
+        return appendQuery(`/cybersecurity/antispam/${encodeSeg(clientId)}`, d, docType);
+      }
     case "Service":
       return appendQuery("/services", d, docType);
-    case "TenantDetail": {
-      const clientId = d.clientId || d.tenantId;
-      return clientId ? `/services/tenants/${encodeSeg(clientId)}` : "/services";
-    }
+    case "TenantDetail":
+      {
+        const clientId = d.clientId || d.tenantId;
+        return clientId ? `/services/tenants/${encodeSeg(clientId)}` : "/services";
+      }
     case "Planning":
       return "/planning";
     case "Dashboard":
@@ -130,40 +119,45 @@ export function buildAgentPath(docType, data = null, options = {}) {
       return "/tickets";
     case "TicketCreate":
       return appendQuery("/tickets/new", d, docType);
-    case "TicketDetail": {
-      const ticketId = d.ticketId || d.id;
-      return ticketId ? `/tickets/${encodeSeg(ticketId)}` : "/tickets";
-    }
+    case "TicketDetail":
+      {
+        const ticketId = d.ticketId || d.id;
+        return ticketId ? `/tickets/${encodeSeg(ticketId)}` : "/tickets";
+      }
     case "TicketSales":
       return "/sales";
     case "TicketSalesCreate":
       return appendQuery("/sales/new", d, docType);
     case "Contrat":
       return appendQuery("/enterprises", d, docType);
-    case "ContratDetail": {
-      const clientId = d.clientId || d.id;
-      return clientId ? `/enterprises/${encodeSeg(clientId)}` : "/enterprises";
-    }
+    case "ContratDetail":
+      {
+        const clientId = d.clientId || d.id;
+        return clientId ? `/enterprises/${encodeSeg(clientId)}` : "/enterprises";
+      }
     case "Contact":
       return appendQuery("/contacts", d, docType);
-    case "ContactDetail": {
-      const contactId = d.contactId || d.id;
-      return contactId ? `/contacts/${encodeSeg(contactId)}` : "/contacts";
-    }
+    case "ContactDetail":
+      {
+        const contactId = d.contactId || d.id;
+        return contactId ? `/contacts/${encodeSeg(contactId)}` : "/contacts";
+      }
     case "Rapport":
       return "/reports";
     case "DocumentsHub":
       return "/documents";
     case "Mon":
       return "/reports";
-    case "MonitoringDetail": {
-      const clientId = d.client?.id || d.clientId;
-      return clientId ? `/monitoring/report/${encodeSeg(clientId)}` : "/monitoring";
-    }
-    case "Admin": {
-      const tab = options.adminTab || d.adminTab || d.tab;
-      return tab ? `/admin/${encodeSeg(tab)}` : "/admin";
-    }
+    case "MonitoringDetail":
+      {
+        const clientId = d.client?.id || d.clientId;
+        return clientId ? `/monitoring/report/${encodeSeg(clientId)}` : "/monitoring";
+      }
+    case "Admin":
+      {
+        const tab = options.adminTab || d.adminTab || d.tab;
+        return tab ? `/admin/${encodeSeg(tab)}` : "/admin";
+      }
     case "ReportBug":
       return "/support";
     case "User":
@@ -174,156 +168,276 @@ export function buildAgentPath(docType, data = null, options = {}) {
       return null;
   }
 }
-
-/**
- * @returns {{ docType: string, data: object|null, adminTab: string|null, path: string }|null}
- */
 export function parseAgentPath(pathname, search = "") {
   const path = (pathname || "/").replace(/\/+$/, "") || "/";
   const query = readQuery(search);
-
-  const matchers = [
-    {
-      re: /^\/admin\/([^/]+)$/,
-      run: ([, tab]) => ({
-        docType: "Admin",
-        data: null,
-        adminTab: decodeURIComponent(tab),
-      }),
-    },
-    { re: /^\/admin$/, run: () => ({ docType: "Admin", data: null, adminTab: null }) },
-    {
-      re: /^\/monitoring\/report\/([^/]+)$/,
-      run: ([, clientId]) => ({
-        docType: "MonitoringDetail",
-        data: { clientId: decodeURIComponent(clientId) },
-        adminTab: null,
-      }),
-    },
-    { re: /^\/monitoring$/, run: () => ({ docType: "Rapport", data: null, adminTab: null }) },
-    {
-      re: /^\/supervision\/clients\/([^/]+)\/equipment\/([^/]+)$/,
-      run: ([, clientId, equipmentType]) => ({
-        docType: "Equipment",
-        data: {
-          clientId: decodeURIComponent(clientId),
-          equipmentType: decodeURIComponent(equipmentType),
-        },
-        adminTab: null,
-      }),
-    },
-    {
-      re: /^\/supervision\/clients\/([^/]+)\/fleet$/,
-      run: ([, clientId]) => ({
-        docType: "ComputerFleetStats",
-        data: { clientId: decodeURIComponent(clientId), ...query },
-        adminTab: null,
-      }),
-    },
-    { re: /^\/supervision\/items$/, run: () => ({ docType: "EquipmentDetail", data: query, adminTab: null }) },
-    { re: /^\/supervision$/, run: () => ({ docType: "Hardware", data: null, adminTab: null }) },
-    {
-      re: /^\/cybersecurity\/campaigns\/([^/]+)$/,
-      run: ([, campaignId]) => ({
-        docType: "CampaignDetail",
-        data: { campaignId: decodeURIComponent(campaignId), id: decodeURIComponent(campaignId) },
-        adminTab: null,
-      }),
-    },
-    {
-      re: /^\/cybersecurity\/antivirus\/([^/]+)$/,
-      run: ([, clientId]) => ({
-        docType: "AntivirusDetail",
-        data: { clientId: decodeURIComponent(clientId), ...query },
-        adminTab: null,
-      }),
-    },
-    {
-      re: /^\/cybersecurity\/antispam\/([^/]+)$/,
-      run: ([, clientId]) => ({
-        docType: "AntispamDetail",
-        data: { clientId: decodeURIComponent(clientId), ...query },
-        adminTab: null,
-      }),
-    },
-    {
-      re: /^\/cybersecurity$/,
-      run: () => ({ docType: "Cybersecurite", data: Object.keys(query).length ? query : null, adminTab: null }),
-    },
-    {
-      re: /^\/services\/tenants\/([^/]+)$/,
-      run: ([, clientId]) => ({
-        docType: "TenantDetail",
-        data: { clientId: decodeURIComponent(clientId) },
-        adminTab: null,
-      }),
-    },
-    {
-      re: /^\/services$/,
-      run: () => ({ docType: "Service", data: Object.keys(query).length ? query : null, adminTab: null }),
-    },
-    {
-      re: /^\/enterprises\/([^/]+)$/,
-      run: ([, clientId]) => ({
-        docType: "ContratDetail",
-        data: { clientId: decodeURIComponent(clientId) },
-        adminTab: null,
-      }),
-    },
-    {
-      re: /^\/enterprises$/,
-      run: () => ({ docType: "Contrat", data: Object.keys(query).length ? query : null, adminTab: null }),
-    },
-    {
-      re: /^\/contacts\/([^/]+)$/,
-      run: ([, contactId]) => ({
-        docType: "ContactDetail",
-        data: { contactId: decodeURIComponent(contactId) },
-        adminTab: null,
-      }),
-    },
-    {
-      re: /^\/contacts$/,
-      run: () => ({ docType: "Contact", data: Object.keys(query).length ? query : null, adminTab: null }),
-    },
-    { re: /^\/tickets\/new$/, run: () => ({ docType: "TicketCreate", data: query, adminTab: null }) },
-    {
-      re: /^\/tickets\/([^/]+)$/,
-      run: ([, ticketId]) => ({
-        docType: "TicketDetail",
-        data: { ticketId: decodeURIComponent(ticketId) },
-        adminTab: null,
-      }),
-    },
-    { re: /^\/tickets$/, run: () => ({ docType: "Ticket", data: null, adminTab: null }) },
-    { re: /^\/sales\/new$/, run: () => ({ docType: "TicketSalesCreate", data: query, adminTab: null }) },
-    { re: /^\/sales$/, run: () => ({ docType: "TicketSales", data: null, adminTab: null }) },
-    { re: /^\/planning$/, run: () => ({ docType: "Planning", data: null, adminTab: null }) },
-    { re: /^\/dashboard$/, run: () => ({ docType: "Dashboard", data: null, adminTab: null }) },
-    { re: /^\/reports$/, run: () => ({ docType: "Rapport", data: null, adminTab: null }) },
-    { re: /^\/documents$/, run: () => ({ docType: "DocumentsHub", data: null, adminTab: null }) },
-    { re: /^\/support$/, run: () => ({ docType: "ReportBug", data: null, adminTab: null }) },
-    { re: /^\/account$/, run: () => ({ docType: "User", data: null, adminTab: null }) },
-    { re: /^\/open$/, run: () => ({ docType: "TabLauncher", data: null, adminTab: null }) },
-    { re: /^\/$/, run: () => ({ docType: "Home", data: null, adminTab: null }) },
-  ];
-
-  for (const { re, run } of matchers) {
+  const matchers = [{
+    re: /^\/admin\/([^/]+)$/,
+    run: ([, tab]) => ({
+      docType: "Admin",
+      data: null,
+      adminTab: decodeURIComponent(tab)
+    })
+  }, {
+    re: /^\/admin$/,
+    run: () => ({
+      docType: "Admin",
+      data: null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/monitoring\/report\/([^/]+)$/,
+    run: ([, clientId]) => ({
+      docType: "MonitoringDetail",
+      data: {
+        clientId: decodeURIComponent(clientId)
+      },
+      adminTab: null
+    })
+  }, {
+    re: /^\/monitoring$/,
+    run: () => ({
+      docType: "Rapport",
+      data: null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/supervision\/clients\/([^/]+)\/equipment\/([^/]+)$/,
+    run: ([, clientId, equipmentType]) => ({
+      docType: "Equipment",
+      data: {
+        clientId: decodeURIComponent(clientId),
+        equipmentType: decodeURIComponent(equipmentType)
+      },
+      adminTab: null
+    })
+  }, {
+    re: /^\/supervision\/clients\/([^/]+)\/fleet$/,
+    run: ([, clientId]) => ({
+      docType: "ComputerFleetStats",
+      data: {
+        clientId: decodeURIComponent(clientId),
+        ...query
+      },
+      adminTab: null
+    })
+  }, {
+    re: /^\/supervision\/items$/,
+    run: () => ({
+      docType: "EquipmentDetail",
+      data: query,
+      adminTab: null
+    })
+  }, {
+    re: /^\/supervision\/backup-jobs$/,
+    run: () => ({
+      docType: "JobDetail",
+      data: query,
+      adminTab: null
+    })
+  }, {
+    re: /^\/supervision$/,
+    run: () => ({
+      docType: "Hardware",
+      data: null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/cybersecurity\/campaigns\/([^/]+)$/,
+    run: ([, campaignId]) => ({
+      docType: "CampaignDetail",
+      data: {
+        campaignId: decodeURIComponent(campaignId),
+        id: decodeURIComponent(campaignId)
+      },
+      adminTab: null
+    })
+  }, {
+    re: /^\/cybersecurity\/antivirus\/([^/]+)$/,
+    run: ([, clientId]) => ({
+      docType: "AntivirusDetail",
+      data: {
+        clientId: decodeURIComponent(clientId),
+        ...query
+      },
+      adminTab: null
+    })
+  }, {
+    re: /^\/cybersecurity\/antispam\/([^/]+)$/,
+    run: ([, clientId]) => ({
+      docType: "AntispamDetail",
+      data: {
+        clientId: decodeURIComponent(clientId),
+        ...query
+      },
+      adminTab: null
+    })
+  }, {
+    re: /^\/cybersecurity$/,
+    run: () => ({
+      docType: "Cybersecurite",
+      data: Object.keys(query).length ? query : null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/services\/tenants\/([^/]+)$/,
+    run: ([, clientId]) => ({
+      docType: "TenantDetail",
+      data: {
+        clientId: decodeURIComponent(clientId)
+      },
+      adminTab: null
+    })
+  }, {
+    re: /^\/services$/,
+    run: () => ({
+      docType: "Service",
+      data: Object.keys(query).length ? query : null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/enterprises\/([^/]+)$/,
+    run: ([, clientId]) => ({
+      docType: "ContratDetail",
+      data: {
+        clientId: decodeURIComponent(clientId)
+      },
+      adminTab: null
+    })
+  }, {
+    re: /^\/enterprises$/,
+    run: () => ({
+      docType: "Contrat",
+      data: Object.keys(query).length ? query : null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/contacts\/([^/]+)$/,
+    run: ([, contactId]) => ({
+      docType: "ContactDetail",
+      data: {
+        contactId: decodeURIComponent(contactId)
+      },
+      adminTab: null
+    })
+  }, {
+    re: /^\/contacts$/,
+    run: () => ({
+      docType: "Contact",
+      data: Object.keys(query).length ? query : null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/tickets\/new$/,
+    run: () => ({
+      docType: "TicketCreate",
+      data: query,
+      adminTab: null
+    })
+  }, {
+    re: /^\/tickets\/([^/]+)$/,
+    run: ([, ticketId]) => ({
+      docType: "TicketDetail",
+      data: {
+        ticketId: decodeURIComponent(ticketId)
+      },
+      adminTab: null
+    })
+  }, {
+    re: /^\/tickets$/,
+    run: () => ({
+      docType: "Ticket",
+      data: null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/sales\/new$/,
+    run: () => ({
+      docType: "TicketSalesCreate",
+      data: query,
+      adminTab: null
+    })
+  }, {
+    re: /^\/sales$/,
+    run: () => ({
+      docType: "TicketSales",
+      data: null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/planning$/,
+    run: () => ({
+      docType: "Planning",
+      data: null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/dashboard$/,
+    run: () => ({
+      docType: "Dashboard",
+      data: null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/reports$/,
+    run: () => ({
+      docType: "Rapport",
+      data: null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/documents$/,
+    run: () => ({
+      docType: "DocumentsHub",
+      data: null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/support$/,
+    run: () => ({
+      docType: "ReportBug",
+      data: null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/account$/,
+    run: () => ({
+      docType: "User",
+      data: null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/open$/,
+    run: () => ({
+      docType: "TabLauncher",
+      data: null,
+      adminTab: null
+    })
+  }, {
+    re: /^\/$/,
+    run: () => ({
+      docType: "Home",
+      data: null,
+      adminTab: null
+    })
+  }];
+  for (const {
+    re,
+    run
+  } of matchers) {
     const match = path.match(re);
     if (match) {
       const parsed = run(match);
-      return { ...parsed, path };
+      return {
+        ...parsed,
+        path
+      };
     }
   }
-
   return null;
 }
-
 export function getSafeReturnPath(pathname, search = "") {
-  const path =
-    search && pathname && !String(pathname).includes("?")
-      ? `${pathname}${search}`
-      : String(pathname || "/") || "/";
+  const path = search && pathname && !String(pathname).includes("?") ? `${pathname}${search}` : String(pathname || "/") || "/";
   if (!path.startsWith("/")) return "/";
   if (path.startsWith("/login") || path.startsWith("/reset-password") || path.startsWith("/setup")) {
     return "/";
@@ -331,27 +445,31 @@ export function getSafeReturnPath(pathname, search = "") {
   if (path.startsWith("/client")) return "/";
   return path;
 }
-
-export function isAgentPathAllowed(docType, { userRole, access, isCommunity }) {
+export function isAgentPathAllowed(docType, {
+  userRole,
+  access,
+  isCommunity
+}) {
   if (!docType) return false;
   if (docType === "Admin" && userRole !== "admin") return false;
   if (isCommunity && isProOnlyDocType(docType)) return false;
-
   const accessKey = DOC_TYPE_ACCESS_KEY[docType];
   if (accessKey && access && access[accessKey] === false) return false;
-
   return true;
 }
-
-/**
- * Produit les mises à jour d'état MainApp à partir d'une route parsée.
- */
 export function routeToMainAppState(parsed) {
   if (!parsed) {
-    return { docType: "Home", adminTab: null, resets: true };
+    return {
+      docType: "Home",
+      adminTab: null,
+      resets: true
+    };
   }
-
-  const { docType, data, adminTab } = parsed;
+  const {
+    docType,
+    data,
+    adminTab
+  } = parsed;
   const state = {
     docType,
     adminTab: adminTab || null,
@@ -368,12 +486,12 @@ export function routeToMainAppState(parsed) {
     contactDetailData: null,
     equipmentFilterParams: null,
     equipmentDetailData: null,
+    jobDetailData: null,
     computerFleetStatsData: null,
     cybersecuriteParams: null,
     serviceParams: null,
-    planningParams: null,
+    planningParams: null
   };
-
   switch (docType) {
     case "ContratDetail":
       state.contratDetailData = data;
@@ -414,6 +532,9 @@ export function routeToMainAppState(parsed) {
     case "EquipmentDetail":
       state.equipmentDetailData = data;
       break;
+    case "JobDetail":
+      state.jobDetailData = data;
+      break;
     case "ComputerFleetStats":
       state.computerFleetStatsData = data;
       break;
@@ -429,6 +550,5 @@ export function routeToMainAppState(parsed) {
     default:
       break;
   }
-
   return state;
 }

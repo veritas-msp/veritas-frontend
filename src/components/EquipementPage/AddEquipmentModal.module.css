@@ -1,6 +1,6 @@
-/* ────────────────────────────── */
-/* AddEquipmentModal - flux multi-étapes */
-/* ────────────────────────────── */
+
+
+
 
 .overlay {
   position: fixed;
@@ -324,7 +324,7 @@
   color: var(--text-muted, #6b7280);
 }
 
-/* Étape 4 : Saisie client + matériel */
+
 .step4Form {
   display: flex;
   flex-direction: column;
@@ -428,7 +428,7 @@
   font-size: 0.9rem;
 }
 
-/* Boutons génériques pour les modals (utilisés aussi par RapportPage) */
+
 .secondaryButton {
   display: inline-flex;
   align-items: center;

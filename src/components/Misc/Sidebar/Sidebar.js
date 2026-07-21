@@ -1,6 +1,3 @@
-// ──────────────────────────────
-// 📦 Dépendances
-// ──────────────────────────────
 import React, { useState, useEffect, useRef, useCallback, useLayoutEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
@@ -21,12 +18,10 @@ import NotificationBell from "../../Notifications/NotificationBell";
 import PageGuideTour from "../../PageGuide/PageGuideTour";
 import { buildSidebarGuideSteps } from "../../PageGuide/sidebarGuideI18n";
 import { useSidebarGuide } from "../../../hooks/useSidebarGuide";
-
 function normalizeProfileLabel(profile) {
   if (profile == null) return "";
   return String(profile).replace(/\s+$/, "").trim();
 }
-
 function getUserInitials(user) {
   if (!user) return "?";
   const name = (user.name || user.displayName || "").toString().trim();
@@ -44,30 +39,27 @@ function getUserInitials(user) {
   }
   return (local.slice(0, 2) || "?").toUpperCase();
 }
-
-/** Séparateur de section animé */
-function AnimatedSectionDivider({ show, isCollapsed, isMobile }) {
+function AnimatedSectionDivider({
+  show,
+  isCollapsed,
+  isMobile
+}) {
   const className = isCollapsed && !isMobile ? styles.sectionDividerCollapsed : styles.separator;
-  return (
-    <AnimatePresence initial={false}>
-      {show && (
-        <motion.hr
-          key={className}
-          className={className}
-          initial={{ opacity: 0, scaleX: 0.55 }}
-          animate={{ opacity: 1, scaleX: 1 }}
-          exit={{ opacity: 0, scaleX: 0.55 }}
-          transition={{ duration: 0.18 }}
-          aria-hidden
-        />
-      )}
-    </AnimatePresence>
-  );
+  return <AnimatePresence initial={false}>
+      {show && <motion.hr key={className} className={className} initial={{
+      opacity: 0,
+      scaleX: 0.55
+    }} animate={{
+      opacity: 1,
+      scaleX: 1
+    }} exit={{
+      opacity: 0,
+      scaleX: 0.55
+    }} transition={{
+      duration: 0.18
+    }} aria-hidden />}
+    </AnimatePresence>;
 }
-
-// ──────────────────────────────
-// 📁 Composant principal : Sidebar
-// ──────────────────────────────
 export default function Sidebar({
   current,
   onSelect,
@@ -78,56 +70,54 @@ export default function Sidebar({
   profile,
   drafts,
   access,
-  onCollapseChange,
+  onCollapseChange
 }) {
-  // 📱 Mode mobile (si largeur < 1024px)
   const [isMobile, setIsMobile] = useState(false);
-
-  // 📂 Affichage ou non du menu (mobile)
   const [showMenu, setShowMenu] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [userMenuFixedStyle, setUserMenuFixedStyle] = useState(null);
   const userMenuRef = useRef(null);
   const userMenuDropdownRef = useRef(null);
-
   const closeUserMenu = useCallback(() => setUserMenuOpen(false), []);
-  const { theme, toggleTheme } = useTheme();
-  const { isCommunity } = useVeritasEdition();
+  const {
+    theme,
+    toggleTheme
+  } = useTheme();
+  const {
+    isCommunity
+  } = useVeritasEdition();
   const locale = useAppLocale();
   const copy = useMemo(() => getSidebarCopy(locale), [locale]);
   const [proPromoFeature, setProPromoFeature] = useState(null);
-  const { open: sidebarGuideOpen, close: closeSidebarGuide, start: startSidebarGuide } = useSidebarGuide(user?.id);
+  const {
+    open: sidebarGuideOpen,
+    close: closeSidebarGuide,
+    start: startSidebarGuide
+  } = useSidebarGuide(user?.id);
   const isDarkTheme = theme === "dark";
   const themeTooltip = isDarkTheme ? copy.theme.lightMode : copy.theme.darkMode;
   const themeMenuIcon = isDarkTheme ? "mdi:weather-sunny" : "mdi:weather-night";
-
-  // Sidebar toujours repliée sur desktop ; pleine largeur en menu mobile
   const isCollapsed = !isMobile;
-
-  // Notifier le parent du changement d'état
   useEffect(() => {
     if (onCollapseChange) {
       onCollapseChange(isCollapsed);
     }
   }, [isCollapsed, onCollapseChange]);
-
-  // 📏 Détection de la taille de l'écran au montage + écoute du resize
   useEffect(() => {
     const checkSize = () => setIsMobile(window.innerWidth < 1024);
-    checkSize(); // Appel immédiat
+    checkSize();
     window.addEventListener("resize", checkSize);
     return () => window.removeEventListener("resize", checkSize);
   }, []);
-
   useEffect(() => {
     if (!userMenuOpen) return;
-    const onDocMouseDown = (e) => {
+    const onDocMouseDown = e => {
       if (userMenuRef.current?.contains(e.target) || userMenuDropdownRef.current?.contains(e.target)) {
         return;
       }
       setUserMenuOpen(false);
     };
-    const onKeyDown = (e) => {
+    const onKeyDown = e => {
       if (e.key === "Escape") setUserMenuOpen(false);
     };
     document.addEventListener("mousedown", onDocMouseDown);
@@ -137,38 +127,21 @@ export default function Sidebar({
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [userMenuOpen]);
-
   const showIconTooltip = isCollapsed && !isMobile;
   const userInitials = getUserInitials(user);
   const profileLabel = normalizeProfileLabel(profile);
   const openUserMenuToRight = isCollapsed && !isMobile;
-
   const showCrmSection = !!(access["Contrat"] || access["Contact"]);
   const showExploitationSection = !!(access["Ticket"] || access["TicketSales"] || access["Planning"]);
   const showManagedSection = !!(access["Hardware"] || access["Cybersecurite"] || access["Service"]);
-  const showPilotageSection = !!(
-    access["Dashboard"] ||
-    DOCUMENTS_CONFIG.some(
-      (doc) =>
-        access[doc.key] &&
-        doc.key !== "Mon" &&
-        !(doc.key === "DocumentsHub" && isCommunity)
-    ) ||
-    (!!access["Mon"] && !isCommunity)
-  );
-
-  const sidebarGuide = useMemo(
-    () =>
-      buildSidebarGuideSteps({
-        locale,
-        showCrmSection,
-        showExploitationSection,
-        showManagedSection,
-        showPilotageSection,
-      }),
-    [locale, showCrmSection, showExploitationSection, showManagedSection, showPilotageSection]
-  );
-
+  const showPilotageSection = !!(access["Dashboard"] || DOCUMENTS_CONFIG.some(doc => access[doc.key] && doc.key !== "Mon" && !(doc.key === "DocumentsHub" && isCommunity)) || !!access["Mon"] && !isCommunity);
+  const sidebarGuide = useMemo(() => buildSidebarGuideSteps({
+    locale,
+    showCrmSection,
+    showExploitationSection,
+    showManagedSection,
+    showPilotageSection
+  }), [locale, showCrmSection, showExploitationSection, showManagedSection, showPilotageSection]);
   const updateUserMenuPosition = useCallback(() => {
     const root = userMenuRef.current;
     if (!root || !userMenuOpen) return;
@@ -181,31 +154,24 @@ export default function Sidebar({
       const centerY = rect.top + rect.height / 2;
       const minCenter = pad + menuH / 2;
       const maxCenter = window.innerHeight - pad - menuH / 2;
-      const clampedCenter =
-        maxCenter >= minCenter
-          ? Math.max(minCenter, Math.min(maxCenter, centerY))
-          : window.innerHeight / 2;
+      const clampedCenter = maxCenter >= minCenter ? Math.max(minCenter, Math.min(maxCenter, centerY)) : window.innerHeight / 2;
       setUserMenuFixedStyle({
         position: "fixed",
         top: clampedCenter,
         left: rect.right + gap,
-        transform: "translateY(-50%)",
+        transform: "translateY(-50%)"
       });
     } else {
       const estH = userMenuDropdownRef.current?.offsetHeight ?? 280;
-      const top = Math.min(
-        rect.top - gap - estH,
-        window.innerHeight - estH - 8
-      );
+      const top = Math.min(rect.top - gap - estH, window.innerHeight - estH - 8);
       setUserMenuFixedStyle({
         position: "fixed",
         top: Math.max(8, top),
         left: Math.min(rect.left, window.innerWidth - 228),
-        transform: "none",
+        transform: "none"
       });
     }
   }, [userMenuOpen, openUserMenuToRight]);
-
   useLayoutEffect(() => {
     if (!userMenuOpen) {
       setUserMenuFixedStyle(null);
@@ -222,578 +188,303 @@ export default function Sidebar({
       window.removeEventListener("scroll", onResize, true);
     };
   }, [userMenuOpen, updateUserMenuPosition, isCollapsed, isMobile]);
-
-  const runUserMenuAction = (fn) => {
+  const runUserMenuAction = fn => {
     fn();
     closeUserMenu();
     if (isMobile) setShowMenu(false);
   };
-
   const openModulesPromo = () => {
     setProPromoFeature("sidebarModules");
     if (isMobile) setShowMenu(false);
   };
-
-  return (
-    <>
-      {/* ☰ Bouton burger pour les petits écrans */}
-      {isMobile && (
-        <button
-          className={styles.burgerButton}
-          onClick={() => setShowMenu(prev => !prev)}
-        >
+  return <>
+      {}
+      {isMobile && <button className={styles.burgerButton} onClick={() => setShowMenu(prev => !prev)}>
           ☰
-        </button>
-      )}
+        </button>}
 
-      {/* Affichage de la barre latérale si non-mobile ou menu ouvert */}
-      {(showMenu || !isMobile) && (
-        <motion.nav
-          className={`${styles.sidebar} ${isMobile ? styles.mobileSidebar : ''} ${isCollapsed && !isMobile ? styles.sidebarCollapsed : ''}`}
-          data-sidebar-guide="sidebar-root"
-          initial={{ x: isMobile ? '-100%' : 0, opacity: 1 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: isMobile ? '-100%' : -50, opacity: isMobile ? 1 : 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-        >
+      {}
+      {(showMenu || !isMobile) && <motion.nav className={`${styles.sidebar} ${isMobile ? styles.mobileSidebar : ''} ${isCollapsed && !isMobile ? styles.sidebarCollapsed : ''}`} data-sidebar-guide="sidebar-root" initial={{
+      x: isMobile ? '-100%' : 0,
+      opacity: 1
+    }} animate={{
+      x: 0,
+      opacity: 1
+    }} exit={{
+      x: isMobile ? '-100%' : -50,
+      opacity: isMobile ? 1 : 0
+    }} transition={{
+      duration: 0.4,
+      ease: "easeOut"
+    }}>
           <div className={styles.sidebarContent}>
             <div className={styles.logoHeader} data-sidebar-guide="brand">
-              {showIconTooltip ? (
-                <SidebarTooltip as="span" content={copy.home} className={styles.sidebarTooltipHost}>
+              {showIconTooltip ? <SidebarTooltip as="span" content={copy.home} className={styles.sidebarTooltipHost}>
                   <div className={styles.logoWrapper} onClick={() => onSelect("Home")}>
                     <div className={styles.brandMark}>V</div>
                     {!isCollapsed && <span className={styles.logoText}>Veritas</span>}
                   </div>
-                </SidebarTooltip>
-              ) : (
-                <div className={styles.logoWrapper} onClick={() => onSelect("Home")}>
+                </SidebarTooltip> : <div className={styles.logoWrapper} onClick={() => onSelect("Home")}>
                   <div className={styles.brandMark}>V</div>
                   {!isCollapsed && <span className={styles.logoText}>Veritas</span>}
-                </div>
-              )}
+                </div>}
 
             </div>
 
-            {isMobile && (
-              <button className={styles.closeButton} onClick={() => setShowMenu(false)}>✖</button>
-            )}
+            {isMobile && <button className={styles.closeButton} onClick={() => setShowMenu(false)}>✖</button>}
 
             <hr className={styles.separator} />
 
-            {/* Clients */}
+            {}
             <AnimatePresence initial={false}>
-              {showCrmSection && (
-                <motion.div
-                  key="nav-section-crm"
-                  data-sidebar-guide="crm"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.22, ease: "easeOut" }}
-                  style={{ overflow: "hidden" }}
-                >
+              {showCrmSection && <motion.div key="nav-section-crm" data-sidebar-guide="crm" initial={{
+            opacity: 0,
+            height: 0
+          }} animate={{
+            opacity: 1,
+            height: "auto"
+          }} exit={{
+            opacity: 0,
+            height: 0
+          }} transition={{
+            duration: 0.22,
+            ease: "easeOut"
+          }} style={{
+            overflow: "hidden"
+          }}>
                   {(!isCollapsed || isMobile) && <div className={styles.sectionTitle}>{copy.sections.crm}</div>}
                   <ul className={styles.navList}>
                     <LayoutGroup id="sidebar-crm">
                     <AnimatePresence initial={false} mode="popLayout">
-                      {!!access["Contrat"] && (
-                        <SidebarAccessNavItem
-                          key="Contrat"
-                          itemKey="Contrat"
-                          showTooltip={showIconTooltip}
-                          tooltip={copy.nav.enterprises}
-                          className={`${styles.navItem} ${current === "Contrat" || current === "ContratDetail" ? styles.active : ""}`}
-                          onClick={() => {
-                            onSelect("Contrat");
-                            if (isMobile) setShowMenu(false);
-                          }}
-                          icon={<Icon icon="mingcute:building-1-fill" className={styles.itemIcon} />}
-                          label={!isCollapsed ? copy.nav.enterprises : null}
-                        />
-                      )}
-                      {!!access["Contact"] && (
-                        <SidebarAccessNavItem
-                          key="Contact"
-                          itemKey="Contact"
-                          showTooltip={showIconTooltip}
-                          tooltip={copy.nav.contact}
-                          className={`${styles.navItem} ${current === "Contact" || current === "ContactDetail" ? styles.active : ""}`}
-                          onClick={() => {
-                            onSelect("Contact");
-                            if (isMobile) setShowMenu(false);
-                          }}
-                          icon={<Icon icon="mingcute:contacts-3-fill" className={styles.itemIcon} />}
-                          label={!isCollapsed ? copy.nav.contact : null}
-                        />
-                      )}
+                      {!!access["Contrat"] && <SidebarAccessNavItem key="Contrat" itemKey="Contrat" showTooltip={showIconTooltip} tooltip={copy.nav.enterprises} className={`${styles.navItem} ${current === "Contrat" || current === "ContratDetail" ? styles.active : ""}`} onClick={() => {
+                    onSelect("Contrat");
+                    if (isMobile) setShowMenu(false);
+                  }} icon={<Icon icon="mingcute:building-1-fill" className={styles.itemIcon} />} label={!isCollapsed ? copy.nav.enterprises : null} />}
+                      {!!access["Contact"] && <SidebarAccessNavItem key="Contact" itemKey="Contact" showTooltip={showIconTooltip} tooltip={copy.nav.contact} className={`${styles.navItem} ${current === "Contact" || current === "ContactDetail" ? styles.active : ""}`} onClick={() => {
+                    onSelect("Contact");
+                    if (isMobile) setShowMenu(false);
+                  }} icon={<Icon icon="mingcute:contacts-3-fill" className={styles.itemIcon} />} label={!isCollapsed ? copy.nav.contact : null} />}
                     </AnimatePresence>
                     </LayoutGroup>
                   </ul>
-                </motion.div>
-              )}
+                </motion.div>}
             </AnimatePresence>
             <AnimatedSectionDivider show={showCrmSection} isCollapsed={isCollapsed} isMobile={isMobile} />
 
             <AnimatePresence initial={false}>
-              {showExploitationSection && (
-                <motion.div
-                  key="nav-section-exploitation"
-                  data-sidebar-guide="exploitation"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.22, ease: "easeOut" }}
-                  style={{ overflow: "hidden" }}
-                >
+              {showExploitationSection && <motion.div key="nav-section-exploitation" data-sidebar-guide="exploitation" initial={{
+            opacity: 0,
+            height: 0
+          }} animate={{
+            opacity: 1,
+            height: "auto"
+          }} exit={{
+            opacity: 0,
+            height: 0
+          }} transition={{
+            duration: 0.22,
+            ease: "easeOut"
+          }} style={{
+            overflow: "hidden"
+          }}>
                   {(!isCollapsed || isMobile) && <div className={styles.sectionTitle}>{copy.sections.exploitation}</div>}
                   <ul className={styles.navList}>
                     <LayoutGroup id="sidebar-exploitation">
                     <AnimatePresence initial={false} mode="popLayout">
-                      {!!access["Ticket"] && (
-                        <SidebarAccessNavItem
-                          key="Ticket"
-                          itemKey="Ticket"
-                          showTooltip={showIconTooltip}
-                          tooltip={copy.nav.support}
-                          className={`${styles.navItem} ${current === "Ticket" || current === "TicketDetail" || current === "TicketCreate" ? styles.active : ""}`}
-                          onClick={() => {
-                            onSelect("Ticket");
-                            if (isMobile) setShowMenu(false);
-                          }}
-                          icon={<Icon icon="mingcute:ticket-fill" className={styles.itemIcon} />}
-                          label={!isCollapsed ? copy.nav.support : null}
-                        />
-                      )}
-                      {!!access["TicketSales"] && (
-                        <SidebarAccessNavItem
-                          key="TicketSales"
-                          itemKey="TicketSales"
-                          showTooltip={showIconTooltip}
-                          tooltip={copy.nav.sales}
-                          className={`${styles.navItem} ${current === "TicketSales" || current === "TicketSalesCreate" ? styles.active : ""}`}
-                          onClick={() => {
-                            onSelect("TicketSales");
-                            if (isMobile) setShowMenu(false);
-                          }}
-                          icon={<Icon icon="mdi:briefcase-edit-outline" className={styles.itemIcon} />}
-                          label={!isCollapsed ? copy.nav.sales : null}
-                        />
-                      )}
-                      {!!access["Planning"] && (
-                        <SidebarAccessNavItem
-                          key="Planning"
-                          itemKey="Planning"
-                          showTooltip={showIconTooltip}
-                          tooltip={copy.nav.planning}
-                          className={`${styles.navItem} ${current === "Planning" ? styles.active : ""}`}
-                          onClick={() => {
-                            onSelect("Planning");
-                            if (isMobile) setShowMenu(false);
-                          }}
-                          icon={<Icon icon="mingcute:calendar-time-add-fill" className={styles.itemIcon} />}
-                          label={!isCollapsed ? copy.nav.planning : null}
-                        />
-                      )}
+                      {!!access["Ticket"] && <SidebarAccessNavItem key="Ticket" itemKey="Ticket" showTooltip={showIconTooltip} tooltip={copy.nav.support} className={`${styles.navItem} ${current === "Ticket" || current === "TicketDetail" || current === "TicketCreate" ? styles.active : ""}`} onClick={() => {
+                    onSelect("Ticket");
+                    if (isMobile) setShowMenu(false);
+                  }} icon={<Icon icon="mingcute:ticket-fill" className={styles.itemIcon} />} label={!isCollapsed ? copy.nav.support : null} />}
+                      {!!access["TicketSales"] && <SidebarAccessNavItem key="TicketSales" itemKey="TicketSales" showTooltip={showIconTooltip} tooltip={copy.nav.sales} className={`${styles.navItem} ${current === "TicketSales" || current === "TicketSalesCreate" ? styles.active : ""}`} onClick={() => {
+                    onSelect("TicketSales");
+                    if (isMobile) setShowMenu(false);
+                  }} icon={<Icon icon="mdi:briefcase-edit-outline" className={styles.itemIcon} />} label={!isCollapsed ? copy.nav.sales : null} />}
+                      {!!access["Planning"] && <SidebarAccessNavItem key="Planning" itemKey="Planning" showTooltip={showIconTooltip} tooltip={copy.nav.planning} className={`${styles.navItem} ${current === "Planning" ? styles.active : ""}`} onClick={() => {
+                    onSelect("Planning");
+                    if (isMobile) setShowMenu(false);
+                  }} icon={<Icon icon="mingcute:calendar-time-add-fill" className={styles.itemIcon} />} label={!isCollapsed ? copy.nav.planning : null} />}
                     </AnimatePresence>
                     </LayoutGroup>
                   </ul>
-                </motion.div>
-              )}
+                </motion.div>}
             </AnimatePresence>
             <AnimatedSectionDivider show={showExploitationSection} isCollapsed={isCollapsed} isMobile={isMobile} />
 
-            {/* Centre de supervision */}
+            {}
             <AnimatePresence initial={false}>
-              {showManagedSection && (
-                <motion.div
-                  key="nav-section-managed"
-                  data-sidebar-guide="managed"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.22, ease: "easeOut" }}
-                  style={{ overflow: "hidden" }}
-                >
+              {showManagedSection && <motion.div key="nav-section-managed" data-sidebar-guide="managed" initial={{
+            opacity: 0,
+            height: 0
+          }} animate={{
+            opacity: 1,
+            height: "auto"
+          }} exit={{
+            opacity: 0,
+            height: 0
+          }} transition={{
+            duration: 0.22,
+            ease: "easeOut"
+          }} style={{
+            overflow: "hidden"
+          }}>
                   {(!isCollapsed || isMobile) && <div className={styles.sectionTitle}>{copy.sections.managed}</div>}
                   <ul className={styles.navList}>
                     <LayoutGroup id="sidebar-managed">
                     <AnimatePresence initial={false} mode="popLayout">
-                      {!!access["Hardware"] && (
-                        <SidebarAccessNavItem
-                          key="Hardware"
-                          itemKey="Hardware"
-                          showTooltip={showIconTooltip}
-                          tooltip={copy.nav.supervision}
-                          className={`${styles.navItem} ${current === "Hardware" || current === "Equipment" ? styles.active : ""}`}
-                          onClick={() => {
-                            onSelect("Hardware");
-                            if (isMobile) setShowMenu(false);
-                          }}
-                          icon={<Icon icon="mdi:radar" className={`${styles.itemIcon} ${styles.itemIconInfra}`} />}
-                          label={!isCollapsed ? copy.nav.supervision : null}
-                        />
-                      )}
-                      {!!access["Cybersecurite"] && (
-                        <SidebarAccessNavItem
-                          key="Cybersecurite"
-                          itemKey="Cybersecurite"
-                          showTooltip={showIconTooltip}
-                          tooltip={copy.nav.cyber}
-                          className={`${styles.navItem} ${current === "Cybersecurite" || current === "CampaignDetail" || current === "AntivirusDetail" || current === "AntispamDetail" ? styles.active : ""}`}
-                          onClick={() => {
-                            onSelect("Cybersecurite");
-                            if (isMobile) setShowMenu(false);
-                          }}
-                          icon={<Icon icon="mdi:shield-lock" className={`${styles.itemIcon} ${styles.itemIconCyber}`} />}
-                          label={!isCollapsed ? copy.nav.cyber : null}
-                        />
-                      )}
-                      {!!access["Service"] && (
-                        <SidebarAccessNavItem
-                          key="Service"
-                          itemKey="Service"
-                          showTooltip={showIconTooltip}
-                          tooltip={copy.nav.cloud}
-                          className={`${styles.navItem} ${current === "Service" || current === "TenantDetail" ? styles.active : ""}`}
-                          onClick={() => {
-                            onSelect("Service");
-                            if (isMobile) setShowMenu(false);
-                          }}
-                          icon={<Icon icon="mdi:cloud-outline" className={`${styles.itemIcon} ${styles.itemIconService}`} />}
-                          label={!isCollapsed ? copy.nav.cloud : null}
-                        />
-                      )}
+                      {!!access["Hardware"] && <SidebarAccessNavItem key="Hardware" itemKey="Hardware" showTooltip={showIconTooltip} tooltip={copy.nav.supervision} className={`${styles.navItem} ${current === "Hardware" || current === "Equipment" ? styles.active : ""}`} onClick={() => {
+                    onSelect("Hardware");
+                    if (isMobile) setShowMenu(false);
+                  }} icon={<Icon icon="mdi:radar" className={`${styles.itemIcon} ${styles.itemIconInfra}`} />} label={!isCollapsed ? copy.nav.supervision : null} />}
+                      {!!access["Cybersecurite"] && <SidebarAccessNavItem key="Cybersecurite" itemKey="Cybersecurite" showTooltip={showIconTooltip} tooltip={copy.nav.cyber} className={`${styles.navItem} ${current === "Cybersecurite" || current === "CampaignDetail" || current === "AntivirusDetail" || current === "AntispamDetail" ? styles.active : ""}`} onClick={() => {
+                    onSelect("Cybersecurite");
+                    if (isMobile) setShowMenu(false);
+                  }} icon={<Icon icon="mdi:shield-lock" className={`${styles.itemIcon} ${styles.itemIconCyber}`} />} label={!isCollapsed ? copy.nav.cyber : null} />}
+                      {!!access["Service"] && <SidebarAccessNavItem key="Service" itemKey="Service" showTooltip={showIconTooltip} tooltip={copy.nav.cloud} className={`${styles.navItem} ${current === "Service" || current === "TenantDetail" ? styles.active : ""}`} onClick={() => {
+                    onSelect("Service");
+                    if (isMobile) setShowMenu(false);
+                  }} icon={<Icon icon="mdi:cloud-outline" className={`${styles.itemIcon} ${styles.itemIconService}`} />} label={!isCollapsed ? copy.nav.cloud : null} />}
                     </AnimatePresence>
                     </LayoutGroup>
                   </ul>
-                </motion.div>
-              )}
+                </motion.div>}
             </AnimatePresence>
             <AnimatedSectionDivider show={showManagedSection} isCollapsed={isCollapsed} isMobile={isMobile} />
 
-            {/* Pilotage */}
+            {}
             <AnimatePresence initial={false}>
-              {showPilotageSection && (
-                <motion.div
-                  key="nav-section-pilotage"
-                  data-sidebar-guide="pilotage"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.22, ease: "easeOut" }}
-                  style={{ overflow: "hidden" }}
-                >
+              {showPilotageSection && <motion.div key="nav-section-pilotage" data-sidebar-guide="pilotage" initial={{
+            opacity: 0,
+            height: 0
+          }} animate={{
+            opacity: 1,
+            height: "auto"
+          }} exit={{
+            opacity: 0,
+            height: 0
+          }} transition={{
+            duration: 0.22,
+            ease: "easeOut"
+          }} style={{
+            overflow: "hidden"
+          }}>
                   {(!isCollapsed || isMobile) && <div className={styles.sectionTitle}>{copy.sections.pilotage}</div>}
                   <ul className={styles.navList}>
                     <LayoutGroup id="sidebar-pilotage-access">
                     <AnimatePresence initial={false} mode="popLayout">
-                    {!!access["Dashboard"] && (
-                      <SidebarAccessNavItem
-                        key="Dashboard"
-                        itemKey="Dashboard"
-                        showTooltip={showIconTooltip}
-                        tooltip={copy.nav.dashboard}
-                        className={`${styles.navItem} ${current === "Dashboard" ? styles.active : ""}`}
-                        onClick={() => {
-                          onSelect("Dashboard");
-                          if (isMobile) setShowMenu(false);
-                        }}
-                        icon={<Icon icon="mdi:chart-box-outline" className={styles.itemIcon} />}
-                        label={!isCollapsed ? copy.nav.dashboard : null}
-                      />
-                    )}
-                    {DOCUMENTS_CONFIG.filter((doc) => {
-                      if (doc.key === "Mon") return false;
-                      if (doc.key === "DocumentsHub" && isCommunity) return false;
-                      return access[doc.key];
-                    }).map((doc) => {
-                      const iconName =
-                        doc.icon?.startsWith("mdi:") || doc.icon?.startsWith("material-symbols:")
-                          ? doc.icon
-                          : doc.key === "Synth"
-                          ? "material-symbols:home"
-                          : "";
-
-                      const isActive = current === doc.key;
-
-                      return (
-                        <SidebarAccessNavItem
-                          key={doc.key}
-                          itemKey={doc.key}
-                          showTooltip={showIconTooltip}
-                          tooltip={localizeDocumentLabel(doc.key, doc.label, locale)}
-                          className={`${styles.navItem} ${isActive ? styles.active : ""}`}
-                          onClick={() => {
-                            onSelect(doc.key);
-                            if (isMobile) setShowMenu(false);
-                          }}
-                          icon={iconName ? <Icon icon={iconName} className={styles.itemIcon} /> : null}
-                          label={
-                            !isCollapsed ? (
-                              <span className={styles.labelWithDot}>
+                    {!!access["Dashboard"] && <SidebarAccessNavItem key="Dashboard" itemKey="Dashboard" showTooltip={showIconTooltip} tooltip={copy.nav.dashboard} className={`${styles.navItem} ${current === "Dashboard" ? styles.active : ""}`} onClick={() => {
+                    onSelect("Dashboard");
+                    if (isMobile) setShowMenu(false);
+                  }} icon={<Icon icon="mdi:chart-box-outline" className={styles.itemIcon} />} label={!isCollapsed ? copy.nav.dashboard : null} />}
+                    {DOCUMENTS_CONFIG.filter(doc => {
+                    if (doc.key === "Mon") return false;
+                    if (doc.key === "DocumentsHub" && isCommunity) return false;
+                    return access[doc.key];
+                  }).map(doc => {
+                    const iconName = doc.icon?.startsWith("mdi:") || doc.icon?.startsWith("material-symbols:") ? doc.icon : doc.key === "Synth" ? "material-symbols:home" : "";
+                    const isActive = current === doc.key;
+                    return <SidebarAccessNavItem key={doc.key} itemKey={doc.key} showTooltip={showIconTooltip} tooltip={localizeDocumentLabel(doc.key, doc.label, locale)} className={`${styles.navItem} ${isActive ? styles.active : ""}`} onClick={() => {
+                      onSelect(doc.key);
+                      if (isMobile) setShowMenu(false);
+                    }} icon={iconName ? <Icon icon={iconName} className={styles.itemIcon} /> : null} label={!isCollapsed ? <span className={styles.labelWithDot}>
                                 <span>{localizeDocumentLabel(doc.key, doc.label, locale)}</span>
                                 {drafts?.[doc.key] && <span className={styles.draftDot}>⬤</span>}
-                              </span>
-                            ) : drafts?.[doc.key] ? (
-                              <span className={styles.draftDot}>⬤</span>
-                            ) : null
-                          }
-                        />
-                      );
-                    })}
+                              </span> : drafts?.[doc.key] ? <span className={styles.draftDot}>⬤</span> : null} />;
+                  })}
 
-                      {!!access["Mon"] && !isCommunity && (
-                        <SidebarAccessNavItem
-                          key="Rapport"
-                          itemKey="Rapport"
-                          showTooltip={showIconTooltip}
-                          tooltip={copy.nav.reports}
-                          className={`${styles.navItem} ${current === "Rapport" ? styles.active : ""}`}
-                          onClick={() => {
-                            onSelect("Rapport");
-                            if (isMobile) setShowMenu(false);
-                          }}
-                          icon={<Icon icon="mingcute:report-forms-fill" className={styles.itemIcon} />}
-                          label={!isCollapsed ? copy.nav.reports : null}
-                        />
-                      )}
+                      {!!access["Mon"] && !isCommunity && <SidebarAccessNavItem key="Report" itemKey="Report" showTooltip={showIconTooltip} tooltip={copy.nav.reports} className={`${styles.navItem} ${current === "Report" ? styles.active : ""}`} onClick={() => {
+                    onSelect("Report");
+                    if (isMobile) setShowMenu(false);
+                  }} icon={<Icon icon="mingcute:report-forms-fill" className={styles.itemIcon} />} label={!isCollapsed ? copy.nav.reports : null} />}
                     </AnimatePresence>
                     </LayoutGroup>
                   </ul>
-                </motion.div>
-              )}
+                </motion.div>}
             </AnimatePresence>
             <AnimatedSectionDivider show={showPilotageSection} isCollapsed={isCollapsed} isMobile={isMobile} />
 
-            {isCommunity ? (
-            <div className={styles.upgradeSection}>
-              {(!isCollapsed || isMobile) && (
-                <div className={styles.sectionTitle}>{copy.sections.modules}</div>
-              )}
+            {isCommunity ? <div className={styles.upgradeSection}>
+              {(!isCollapsed || isMobile) && <div className={styles.sectionTitle}>{copy.sections.modules}</div>}
               <div className={styles.upgradeAddBtnWrap}>
-                {showIconTooltip ? (
-                  <SidebarTooltip
-                    as="button"
-                    type="button"
-                    content={copy.modules.addModule}
-                    className={styles.upgradeAddBtn}
-                    onClick={openModulesPromo}
-                    aria-label={copy.modules.addModuleAria}
-                  >
+                {showIconTooltip ? <SidebarTooltip as="button" type="button" content={copy.modules.addModule} className={styles.upgradeAddBtn} onClick={openModulesPromo} aria-label={copy.modules.addModuleAria}>
                     <Icon icon="mdi:plus" className={styles.upgradeIcon} aria-hidden />
-                  </SidebarTooltip>
-                ) : (
-                  <button
-                    type="button"
-                    className={styles.upgradeAddBtn}
-                    onClick={openModulesPromo}
-                    aria-label={copy.modules.addModuleAria}
-                  >
+                  </SidebarTooltip> : <button type="button" className={styles.upgradeAddBtn} onClick={openModulesPromo} aria-label={copy.modules.addModuleAria}>
                     <Icon icon="mdi:plus" className={styles.upgradeIcon} aria-hidden />
-                  </button>
-                )}
+                  </button>}
                 <ProFeatureBadge variant="inline" className={styles.upgradeProBadge} />
               </div>
-            </div>
-            ) : null}
+            </div> : null}
 
             <div className={styles.utilitiesSection} data-sidebar-guide="utilities">
-              {(!isCollapsed || isMobile) && (
-                <div className={styles.sectionTitle}>{copy.sections.appearance}</div>
-              )}
+              {(!isCollapsed || isMobile) && <div className={styles.sectionTitle}>{copy.sections.appearance}</div>}
               <div className={styles.utilitiesBtnRow}>
-                {showIconTooltip ? (
-                  <SidebarTooltip
-                    as="button"
-                    type="button"
-                    content={sidebarGuide.helpAria}
-                    className={`${styles.squareBtn} ${sidebarGuideOpen ? styles.squareBtnActive : ""}`}
-                    onClick={startSidebarGuide}
-                    aria-label={sidebarGuide.helpAria}
-                  >
+                {showIconTooltip ? <SidebarTooltip as="button" type="button" content={sidebarGuide.helpAria} className={`${styles.squareBtn} ${sidebarGuideOpen ? styles.squareBtnActive : ""}`} onClick={startSidebarGuide} aria-label={sidebarGuide.helpAria}>
                     <span className={styles.helpBtnLabel} aria-hidden>
                       ?
                     </span>
-                  </SidebarTooltip>
-                ) : (
-                  <button
-                    type="button"
-                    className={`${styles.squareBtn} ${sidebarGuideOpen ? styles.squareBtnActive : ""}`}
-                    onClick={startSidebarGuide}
-                    aria-label={sidebarGuide.helpAria}
-                  >
+                  </SidebarTooltip> : <button type="button" className={`${styles.squareBtn} ${sidebarGuideOpen ? styles.squareBtnActive : ""}`} onClick={startSidebarGuide} aria-label={sidebarGuide.helpAria}>
                     <span className={styles.helpBtnLabel} aria-hidden>
                       ?
                     </span>
-                  </button>
-                )}
+                  </button>}
 
-                {showIconTooltip ? (
-                  <SidebarTooltip
-                    as="button"
-                    type="button"
-                    content={themeTooltip}
-                    className={styles.squareBtn}
-                    onClick={toggleTheme}
-                    aria-label={themeTooltip}
-                  >
+                {showIconTooltip ? <SidebarTooltip as="button" type="button" content={themeTooltip} className={styles.squareBtn} onClick={toggleTheme} aria-label={themeTooltip}>
                     <Icon icon={themeMenuIcon} className={styles.squareBtnIcon} aria-hidden />
-                  </SidebarTooltip>
-                ) : (
-                  <button
-                    type="button"
-                    className={styles.squareBtn}
-                    onClick={toggleTheme}
-                    aria-label={themeTooltip}
-                  >
+                  </SidebarTooltip> : <button type="button" className={styles.squareBtn} onClick={toggleTheme} aria-label={themeTooltip}>
                     <Icon icon={themeMenuIcon} className={styles.squareBtnIcon} aria-hidden />
-                  </button>
-                )}
+                  </button>}
 
-                <NotificationBell
-                  onNavigate={onNavigate || onSelect}
-                  isCollapsed={isCollapsed}
-                  isMobile={isMobile}
-                  showIconTooltip={showIconTooltip}
-                  TooltipComponent={SidebarTooltip}
-                  triggerClassName={styles.squareBtn}
-                  triggerIconClassName={styles.squareBtnIcon}
-                  rootClassName={styles.notificationBellRoot}
-                />
+                <NotificationBell onNavigate={onNavigate || onSelect} isCollapsed={isCollapsed} isMobile={isMobile} showIconTooltip={showIconTooltip} TooltipComponent={SidebarTooltip} triggerClassName={styles.squareBtn} triggerIconClassName={styles.squareBtnIcon} rootClassName={styles.notificationBellRoot} />
               </div>
             </div>
 
-            {/* 👤 Menu compte (avatar + options) */}
+            {}
             <div className={styles.userSection} ref={userMenuRef} data-sidebar-guide="account">
-              <div
-                className={`${styles.userMenuTriggerRow} ${
-                  isCollapsed && !isMobile ? styles.userMenuTriggerRowCollapsed : ""
-                }`}
-              >
-                {showIconTooltip ? (
-                  <SidebarTooltip as="span" content={copy.account.menu} className={styles.userAvatarTooltipHost}>
-                    <button
-                      type="button"
-                      className={`${styles.userAvatarButton} ${userMenuOpen ? styles.userAvatarButtonOpen : ""} ${
-                        ["MyDocs", "ReportBug", "Admin", "User"].includes(current) ? styles.userAvatarButtonActive : ""
-                      }`}
-                      onClick={() => setUserMenuOpen((o) => !o)}
-                      aria-expanded={userMenuOpen}
-                      aria-haspopup="menu"
-                      aria-label={copy.account.menuAria}
-                    >
+              <div className={`${styles.userMenuTriggerRow} ${isCollapsed && !isMobile ? styles.userMenuTriggerRowCollapsed : ""}`}>
+                {showIconTooltip ? <SidebarTooltip as="span" content={copy.account.menu} className={styles.userAvatarTooltipHost}>
+                    <button type="button" className={`${styles.userAvatarButton} ${userMenuOpen ? styles.userAvatarButtonOpen : ""} ${["MyDocs", "ReportBug", "Admin", "User"].includes(current) ? styles.userAvatarButtonActive : ""}`} onClick={() => setUserMenuOpen(o => !o)} aria-expanded={userMenuOpen} aria-haspopup="menu" aria-label={copy.account.menuAria}>
                       {user ? <UserAvatar user={user} name={user.username || user.email} size={32} variant="agent" /> : userInitials}
                     </button>
-                  </SidebarTooltip>
-                ) : (
-                  <button
-                    type="button"
-                    className={`${styles.userAvatarButton} ${userMenuOpen ? styles.userAvatarButtonOpen : ""} ${
-                      ["MyDocs", "ReportBug", "Admin", "User"].includes(current) ? styles.userAvatarButtonActive : ""
-                    }`}
-                    onClick={() => setUserMenuOpen((o) => !o)}
-                    aria-expanded={userMenuOpen}
-                    aria-haspopup="menu"
-                    aria-label={copy.account.menuAria}
-                  >
+                  </SidebarTooltip> : <button type="button" className={`${styles.userAvatarButton} ${userMenuOpen ? styles.userAvatarButtonOpen : ""} ${["MyDocs", "ReportBug", "Admin", "User"].includes(current) ? styles.userAvatarButtonActive : ""}`} onClick={() => setUserMenuOpen(o => !o)} aria-expanded={userMenuOpen} aria-haspopup="menu" aria-label={copy.account.menuAria}>
                     {user ? <UserAvatar user={user} name={user.username || user.email} size={32} variant="agent" /> : userInitials}
-                  </button>
-                )}
-                {!isCollapsed && (
-                  <button
-                    type="button"
-                    className={styles.userMenuLabelButton}
-                    onClick={() => setUserMenuOpen((o) => !o)}
-                    aria-expanded={userMenuOpen}
-                    aria-haspopup="menu"
-                  >
+                  </button>}
+                {!isCollapsed && <button type="button" className={styles.userMenuLabelButton} onClick={() => setUserMenuOpen(o => !o)} aria-expanded={userMenuOpen} aria-haspopup="menu">
                     <span className={styles.userMenuLabelTitle}>{getRoleLabel(userRole, locale)}</span>
-                    {profileLabel ? (
-                      <span className={styles.userMenuLabelSubtitle} title={profileLabel}>
+                    {profileLabel ? <span className={styles.userMenuLabelSubtitle} title={profileLabel}>
                         {profileLabel}
-                      </span>
-                    ) : null}
-                  </button>
-                )}
+                      </span> : null}
+                  </button>}
               </div>
 
-              {userMenuOpen &&
-                userMenuFixedStyle &&
-                createPortal(
-                  <div
-                    ref={userMenuDropdownRef}
-                    className={styles.userMenuDropdown}
-                    style={userMenuFixedStyle}
-                    role="menu"
-                    aria-labelledby="sidebar-user-menu-title"
-                  >
+              {userMenuOpen && userMenuFixedStyle && createPortal(<div ref={userMenuDropdownRef} className={styles.userMenuDropdown} style={userMenuFixedStyle} role="menu" aria-labelledby="sidebar-user-menu-title">
                     <div className={styles.userMenuDropdownTitle} id="sidebar-user-menu-title">
                       {copy.account.menu}
                     </div>
-                    <button
-                      type="button"
-                      role="menuitem"
-                      className={`${styles.userMenuItem} ${current === "User" ? styles.userMenuItemActive : ""}`}
-                      onClick={() => runUserMenuAction(() => onSelect("User"))}
-                    >
+                    <button type="button" role="menuitem" className={`${styles.userMenuItem} ${current === "User" ? styles.userMenuItemActive : ""}`} onClick={() => runUserMenuAction(() => onSelect("User"))}>
                       <Icon icon="mingcute:contacts-4-fill" className={styles.userMenuItemIcon} />
                       {copy.account.myAccount}
                     </button>
-                    {userRole === "admin" && (
-                      <button
-                        type="button"
-                        role="menuitem"
-                        className={`${styles.userMenuItem} ${current === "Admin" ? styles.userMenuItemActive : ""}`}
-                        onClick={() => runUserMenuAction(() => onSelect("Admin"))}
-                      >
+                    {userRole === "admin" && <button type="button" role="menuitem" className={`${styles.userMenuItem} ${current === "Admin" ? styles.userMenuItemActive : ""}`} onClick={() => runUserMenuAction(() => onSelect("Admin"))}>
                         <Icon icon="mingcute:settings-6-fill" className={styles.userMenuItemIcon} />
                         {copy.account.admin}
-                      </button>
-                    )}
-                    <button
-                      type="button"
-                      role="menuitem"
-                      className={`${styles.userMenuItem} ${current === "ReportBug" ? styles.userMenuItemActive : ""}`}
-                      onClick={() => runUserMenuAction(() => onSelect("ReportBug"))}
-                    >
+                      </button>}
+                    <button type="button" role="menuitem" className={`${styles.userMenuItem} ${current === "ReportBug" ? styles.userMenuItemActive : ""}`} onClick={() => runUserMenuAction(() => onSelect("ReportBug"))}>
                       <Icon icon="mingcute:bug-fill" className={styles.userMenuItemIcon} />
                       {copy.account.support}
                     </button>
                     <div className={styles.userMenuDivider} role="separator" />
-                    <button
-                      type="button"
-                      role="menuitem"
-                      className={`${styles.userMenuItem} ${styles.userMenuItemDanger}`}
-                      onClick={() => runUserMenuAction(() => onLogout())}
-                    >
+                    <button type="button" role="menuitem" className={`${styles.userMenuItem} ${styles.userMenuItemDanger}`} onClick={() => runUserMenuAction(() => onLogout())}>
                       <Icon icon="mingcute:exit-fill" className={styles.userMenuItemIcon} />
                       {copy.account.logout}
                     </button>
-                  </div>,
-                  document.body
-                )}
+                  </div>, document.body)}
             </div>
           </div>
-        </motion.nav>
-      )}
+        </motion.nav>}
 
-      {isMobile && showMenu && (
-        <div className={styles.overlay} onClick={() => setShowMenu(false)}></div>
-      )}
+      {isMobile && showMenu && <div className={styles.overlay} onClick={() => setShowMenu(false)}></div>}
 
-      <ProFeaturePromoModal
-        open={Boolean(proPromoFeature)}
-        featureKey={proPromoFeature}
-        onClose={() => setProPromoFeature(null)}
-      />
+      <ProFeaturePromoModal open={Boolean(proPromoFeature)} featureKey={proPromoFeature} onClose={() => setProPromoFeature(null)} />
 
-      <PageGuideTour
-        open={sidebarGuideOpen}
-        steps={sidebarGuide.steps}
-        title={sidebarGuide.tourTitle}
-        locale={locale}
-        onClose={closeSidebarGuide}
-      />
-    </>
-  );
+      <PageGuideTour open={sidebarGuideOpen} steps={sidebarGuide.steps} title={sidebarGuide.tourTitle} locale={locale} onClose={closeSidebarGuide} />
+    </>;
 }

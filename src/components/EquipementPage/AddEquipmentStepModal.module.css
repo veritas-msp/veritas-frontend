@@ -1,7 +1,6 @@
-/* Modal d'ajout d'équipement - styles propres à EquipementPage */
+
 .modalStepsWrapper {
-  /* Copie du style d'overlay de AddEquipmentModal pour que le blur
-     se comporte exactement comme sur les autres étapes du formulaire */
+  
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.7);

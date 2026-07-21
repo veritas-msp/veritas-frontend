@@ -1,118 +1,97 @@
 import { DEFAULT_METRICS, METRICS_FIELDS } from "./rmmMetricsStorageUtils";
-
 export const COLLECTOR_GROUPS = {
-  system: "Système & réseau",
-  hardware: "Matériel",
-  monitoring: "Supervision & sécurité",
-  sync: "Inventaire complet (sync)",
+  system: "System & network",
+  hardware: "Hardware",
+  monitoring: "Monitoring & security",
+  sync: "Full inventory (sync)"
 };
-
-export const COLLECTORS = [
-  {
-    key: "os",
-    group: "system",
-    label: "Système d'exploitation",
-    description: "Version, build, édition Windows, installation et dernier démarrage.",
-  },
-  {
-    key: "domain",
-    group: "system",
-    label: "Domaine / workgroup",
-    description: "Appartenance au domaine Active Directory ou workgroup.",
-  },
-  {
-    key: "network",
-    group: "system",
-    label: "Réseau",
-    description: "Cartes actives, IP, MAC, passerelle et DNS.",
-  },
-  {
-    key: "session",
-    group: "system",
-    label: "Session utilisateur",
-    description: "Compte Windows actuellement connecté sur le poste.",
-  },
-  {
-    key: "updates",
-    group: "system",
-    label: "Correctifs Windows",
-    description: "Hotfixes récents, MAJ/pilotes en attente et redémarrage requis.",
-  },
-  {
-    key: "license",
-    group: "system",
-    label: "Licence Windows",
-    description: "Édition Windows activée sur le poste.",
-  },
-  {
-    key: "chassis",
-    group: "hardware",
-    label: "Marque, modèle & n° de série",
-    description: "Constructeur, modèle du poste et numéro de série BIOS.",
-  },
-  {
-    key: "hardware",
-    group: "hardware",
-    label: "Matériel",
-    description: "CPU, RAM, disques logiques/physiques et GPU.",
-  },
-  {
-    key: "performance",
-    group: "monitoring",
-    label: "Performance",
-    description: "Charge CPU, RAM utilisée, uptime et processus actifs.",
-  },
-  {
-    key: "sensors",
-    group: "monitoring",
-    label: "Capteurs",
-    description: "Températures WMI et batterie (portables).",
-  },
-  {
-    key: "security",
-    group: "monitoring",
-    label: "Sécurité locale",
-    description: "Defender, pare-feu et BitLocker.",
-  },
-  {
-    key: "printers",
-    group: "sync",
-    label: "Imprimantes",
-    description: "Imprimantes installées, pilote, port et imprimante par défaut.",
-    syncOnly: true,
-  },
-  {
-    key: "shares",
-    group: "sync",
-    label: "Partages & lecteurs mappés",
-    description: "Lecteurs réseau mappés et partages locaux Windows.",
-    syncOnly: true,
-  },
-  {
-    key: "services",
-    group: "sync",
-    label: "Services critiques",
-    description: "État des services essentiels (spooler, Defender, RPC…).",
-    syncOnly: true,
-  },
-  {
-    key: "peripherals",
-    group: "sync",
-    label: "Écrans & périphériques USB",
-    description: "Moniteurs connectés et périphériques USB/HID.",
-    syncOnly: true,
-  },
-  {
-    key: "software",
-    group: "sync",
-    label: "Logiciels installés",
-    description:
-      "Programmes détectés via le registre (150 max.). Collecté uniquement lors d'une synchronisation complète.",
-    syncOnly: true,
-    heavy: true,
-  },
-];
-
+export const COLLECTORS = [{
+  key: "os",
+  group: "system",
+  label: "Operating system",
+  description: "Version, build, Windows edition, installation and last boot."
+}, {
+  key: "domain",
+  group: "system",
+  label: "Domain / workgroup",
+  description: "Active Directory domain or workgroup membership."
+}, {
+  key: "network",
+  group: "system",
+  label: "Network",
+  description: "Active adapters, IP, MAC, gateway and DNS."
+}, {
+  key: "session",
+  group: "system",
+  label: "User session",
+  description: "Windows account currently logged in on the endpoint."
+}, {
+  key: "updates",
+  group: "system",
+  label: "Windows updates",
+  description: "Recent hotfixes, pending updates/drivers and reboot required."
+}, {
+  key: "license",
+  group: "system",
+  label: "Windows license",
+  description: "Windows edition activated on the endpoint."
+}, {
+  key: "chassis",
+  group: "hardware",
+  label: "Brand, model & serial number",
+  description: "Manufacturer, endpoint model and BIOS serial number."
+}, {
+  key: "hardware",
+  group: "hardware",
+  label: "Hardware",
+  description: "CPU, RAM, logical/physical disks and GPU."
+}, {
+  key: "performance",
+  group: "monitoring",
+  label: "Performance",
+  description: "CPU load, RAM used, uptime and active processes."
+}, {
+  key: "sensors",
+  group: "monitoring",
+  label: "Sensors",
+  description: "WMI temperatures and battery (laptops)."
+}, {
+  key: "security",
+  group: "monitoring",
+  label: "Local security",
+  description: "Defender, firewall and BitLocker."
+}, {
+  key: "printers",
+  group: "sync",
+  label: "Printers",
+  description: "Installed printers, driver, port and default printer.",
+  syncOnly: true
+}, {
+  key: "shares",
+  group: "sync",
+  label: "Shares & mapped drives",
+  description: "Mapped network drives and local Windows shares.",
+  syncOnly: true
+}, {
+  key: "services",
+  group: "sync",
+  label: "Critical services",
+  description: "Status of essential services (spooler, Defender, RPC…).",
+  syncOnly: true
+}, {
+  key: "peripherals",
+  group: "sync",
+  label: "Displays & USB devices",
+  description: "Connected monitors and USB/HID devices.",
+  syncOnly: true
+}, {
+  key: "software",
+  group: "sync",
+  label: "Installed software",
+  description: "Programs detected via the registry (150 max.). Collected only during a full sync.",
+  syncOnly: true,
+  heavy: true
+}];
 export function buildOverridesFromForm(global, form) {
   const overrides = {};
   if (form.customized.heartbeatIntervalMinutes) {
@@ -141,37 +120,35 @@ export function buildOverridesFromForm(global, form) {
   }
   return overrides;
 }
-
 export function formStateFromClientSettings(data) {
   const global = data?.global || {};
   const overrides = data?.overrides || {};
   const effective = data?.effective || global;
-
   const customized = {
     heartbeatIntervalMinutes: overrides.heartbeatIntervalMinutes != null,
     offlineThresholdMinutes: overrides.offlineThresholdMinutes != null,
     collectors: {},
-    metrics: {},
+    metrics: {}
   };
   for (const collector of COLLECTORS) {
-    customized.collectors[collector.key] =
-      overrides.collectors?.[collector.key] !== undefined &&
-      overrides.collectors?.[collector.key] !== null;
+    customized.collectors[collector.key] = overrides.collectors?.[collector.key] !== undefined && overrides.collectors?.[collector.key] !== null;
   }
   for (const field of METRICS_FIELDS) {
-    customized.metrics[field.key] =
-      overrides.metrics?.[field.key] !== undefined && overrides.metrics?.[field.key] !== null;
+    customized.metrics[field.key] = overrides.metrics?.[field.key] !== undefined && overrides.metrics?.[field.key] !== null;
   }
-
   return {
     useCustom: Boolean(data?.hasCustomConfig),
     customized,
     values: {
       heartbeatIntervalMinutes: effective.heartbeatIntervalMinutes,
       offlineThresholdMinutes: effective.offlineThresholdMinutes,
-      collectors: { ...effective.collectors },
-      metrics: { ...(effective.metrics || DEFAULT_METRICS) },
+      collectors: {
+        ...effective.collectors
+      },
+      metrics: {
+        ...(effective.metrics || DEFAULT_METRICS)
+      }
     },
-    global,
+    global
   };
 }

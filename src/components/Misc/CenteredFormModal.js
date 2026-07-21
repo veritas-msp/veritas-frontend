@@ -2,58 +2,35 @@ import React from "react";
 import { createPortal } from "react-dom";
 import { Icon as IconifyIcon } from "@iconify/react";
 import addStyles from "../EquipementPage/AddEquipmentModal.module.css";
-
-/**
- * Modal générique centré, réutilisable pour les formulaires
- * (campagnes cybersécurité, solutions antivirus, solutions antispam, etc.)
- *
- * - Utilise le même overlay / header / close button que AddEquipmentModal.
- * - Le contenu (formulaire + footer) est passé via children.
- */
 export default function CenteredFormModal({
   isOpen,
   title,
   icon,
   onClose,
   closeOnOverlayClick = true,
-  children,
+  children
 }) {
   if (!isOpen) return null;
-
   const handleOverlayClick = () => {
     if (closeOnOverlayClick && onClose) onClose();
   };
-
-  const handleContentClick = (e) => {
+  const handleContentClick = e => {
     e.stopPropagation();
   };
-
-  const modalContent = (
-    <div className={addStyles.overlay} onClick={handleOverlayClick}>
+  const modalContent = <div className={addStyles.overlay} onClick={handleOverlayClick}>
       <div className={addStyles.modal} onClick={handleContentClick}>
         <div className={addStyles.header}>
           <h2 className={addStyles.title}>
-            {icon && (
-              <IconifyIcon icon={icon} className={addStyles.titleIcon} />
-            )}
+            {icon && <IconifyIcon icon={icon} className={addStyles.titleIcon} />}
             {title}
           </h2>
-          <button
-            type="button"
-            className={addStyles.closeBtn}
-            onClick={onClose}
-            title="Fermer"
-            aria-label="Fermer"
-          >
+          <button type="button" className={addStyles.closeBtn} onClick={onClose} title="Close" aria-label="Close">
             ×
           </button>
         </div>
 
         {children}
       </div>
-    </div>
-  );
-
+    </div>;
   return createPortal(modalContent, document.body);
 }
-

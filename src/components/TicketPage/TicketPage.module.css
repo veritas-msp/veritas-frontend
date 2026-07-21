@@ -1,4 +1,4 @@
-/* TicketPage · extensions MSP (base : EnterprisesPage.module.css) */
+
 
 .ticketShell {
   padding: 0;
@@ -561,7 +561,7 @@
   box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.25);
 }
 
-/* ── Vues tickets ── */
+
 
 .viewsLayout {
   display: grid;
@@ -979,7 +979,7 @@
   }
 }
 
-/* Mode sombre · liste tickets */
+
 :global(html.dark) .table thead {
   background: var(--msp-surface-2, #152035);
 }

@@ -4,22 +4,19 @@ import { FaTimes } from "react-icons/fa";
 import layout from "../EnterprisesPage/EnterpriseFormModal.module.css";
 import formStyles from "./IngestionRuleFormModal.module.css";
 import styles from "./RmmEnrollmentTokenCreatedModal.module.css";
-
-export default function RmmEnrollmentTokenCreatedModal({ open, copy, token, onClose, onCopy }) {
+export default function RmmEnrollmentTokenCreatedModal({
+  open,
+  copy,
+  token,
+  onClose,
+  onCopy
+}) {
   const tc = copy.tokenCreated;
-
   if (!open || !token) return null;
-
-  return createPortal(
-    <div className={layout.overlay} onClick={onClose} role="presentation">
-      <div
-        className={layout.shell}
-        style={{ maxWidth: "min(640px, 100%)" }}
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="rmm-token-created-title"
-      >
+  return createPortal(<div className={layout.overlay} onClick={onClose} role="presentation">
+      <div className={layout.shell} style={{
+      maxWidth: "min(640px, 100%)"
+    }} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="rmm-token-created-title">
         <div className={layout.accentBar} aria-hidden />
         <header className={layout.header}>
           <div className={layout.headerMain}>
@@ -39,23 +36,22 @@ export default function RmmEnrollmentTokenCreatedModal({ open, copy, token, onCl
           </button>
         </header>
 
-        <div className={layout.body} style={{ gridTemplateColumns: "1fr" }}>
+        <div className={layout.body} style={{
+        gridTemplateColumns: "1fr"
+      }}>
           <div className={layout.content}>
             <div className={formStyles.statusRow}>
               <div>
                 <div className={formStyles.statusLabel}>{tc.usageTitle}</div>
                 <p className={formStyles.statusHint}>{tc.usageHint}</p>
               </div>
-              <Icon icon="mdi:information-outline" style={{ fontSize: "1.35rem", color: "var(--msp-muted)" }} aria-hidden />
+              <Icon icon="mdi:information-outline" style={{
+              fontSize: "1.35rem",
+              color: "var(--msp-muted)"
+            }} aria-hidden />
             </div>
             <div className={styles.tokenFieldWrap}>
-              <input
-                className={styles.tokenInput}
-                readOnly
-                value={token}
-                onFocus={(e) => e.target.select()}
-                aria-label={tc.tokenAria}
-              />
+              <input className={styles.tokenInput} readOnly value={token} onFocus={e => e.target.select()} aria-label={tc.tokenAria} />
               <button type="button" className={styles.copyBtn} onClick={onCopy} title={tc.copyTitle}>
                 <Icon icon="mdi:content-copy" aria-hidden />
               </button>
@@ -76,7 +72,5 @@ export default function RmmEnrollmentTokenCreatedModal({ open, copy, token, onCl
           </div>
         </footer>
       </div>
-    </div>,
-    document.getElementById("modal-root") || document.body
-  );
+    </div>, document.getElementById("modal-root") || document.body);
 }
